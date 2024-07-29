@@ -77,7 +77,7 @@ const VerifierTable = ({ classNames }: any) => {
         switch (columnKey) {
             case "name":
                 return (<div className="flex items-center gap-2">
-                    <Image text={item?.[columnKey]?.[0]} src={item?.logo} className="size-8 rounded-full" />
+                    <Image text={item?.[columnKey]?.[0]} src={item?.logo} className="size-8 rounded-full object-contain" />
                     <span>{item?.[columnKey]}</span>
                 </div>)
             case 'status':
