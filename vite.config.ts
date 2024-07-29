@@ -11,6 +11,9 @@ export default defineConfig({
   // build: {
   //   outDir: 'dist/m'
   // },
+  esbuild: {
+    drop: ['console', 'debugger'],
+  },
   assetsInclude: ['**/*.wasm'],
   plugins: [react()],
   resolve: {
