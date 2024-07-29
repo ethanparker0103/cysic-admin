@@ -36,7 +36,7 @@ export default function App() {
                     <BrowserView
                         className="px-[5rem] flex flex-col gap-10 items-center justify-center flex-[4] relative"
                         style={{
-                            background: `url(/m/bg.svg)`,
+                            background: `url(/bg.svg)`,
                             backgroundSize: "100%",
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center",
