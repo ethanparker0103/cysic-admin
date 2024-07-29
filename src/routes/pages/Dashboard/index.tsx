@@ -97,9 +97,10 @@ const MainCard = (props: any) => {
         " flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
       )}
       style={{
-        background: `url('/m/btn-bg.svg')`,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "auto",
+        backgroundColor: '#10141a'
+        // background: `url('/m/btn-bg.svg')`,
+        // backgroundRepeat: "no-repeat",
+        // backgroundSize: "auto",
       }}
       {...props}
     >
