@@ -1,0 +1,102 @@
+import { createBrowserRouter } from "react-router-dom";
+import Root from "./routes/root";
+import Home from "./routes/pages/Home/index";
+import BasicLayout from "@/routes/layout/BasicLayout/index";
+import DashboardLayout from "@/routes/layout/DashboardLayout/index";
+import Project from "@/routes/pages/Project";
+import Computility from "@/routes/pages/Computility";
+import Test from "@/routes/pages/Test";
+import Verify from "@/routes/pages/Verify";
+import Dashboard from "@/routes/pages/Dashboard";
+import Verifier from "@/routes/pages/Dashboard/Verifier";
+import VerifierDetail from "@/routes/pages/Dashboard/Verifier/Detail";
+import DashboardComputility from "@/routes/pages/Dashboard/Computility";
+import ComputilityDetail from "@/routes/pages/Dashboard/Computility/Detail";
+import DashboardProject from "@/routes/pages/Dashboard/Project";
+import ProjectDetail from "@/routes/pages/Dashboard/Project/Detail";
+import Task from "@/routes/pages/Dashboard/Task";
+import TaskDetail from "@/routes/pages/Dashboard/Task/Detail";
+
+
+/* eslint-enable react-refresh/only-export-components */
+
+export const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Root />,
+        children: [
+            {
+                path: 'dashboard',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Dashboard />
+                    },
+                    {
+                        path: 'verifier',
+                        element: <Verifier />,
+                    },
+                    {
+                        path: 'verifier/:id',
+                        element: <VerifierDetail />,
+                    },
+                    {
+                        path: 'provider',
+                        element: <DashboardComputility />,
+                    },
+                    {
+                        path: 'provider/:id',
+                        element: <ComputilityDetail />,
+                    },
+                    {
+                        path: 'project',
+                        element: <DashboardProject />,
+                      
+                    },
+                    {
+                        path: 'project/:id',
+                        element: <ProjectDetail />,
+                    },
+                    {
+                        path: 'task',
+                        element: <Task />,
+                      
+                    },
+                    {
+                        path: 'task/:id',
+                        element: <TaskDetail />,
+                    }
+                ]
+            },
+            {
+                path: "/register",
+                element: <BasicLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Home />
+                    },
+                    {
+                        path: 'provider',
+                        element: <Computility />
+                    },
+                    {
+                        path: 'project',
+                        element: <Project />
+                    },
+                    {
+                        path: 'verifier',
+                        element: <Verify />
+                    },
+                    {
+                        path: 'test',
+                        element: <Test />
+                    }
+                ],
+            },
+        ],
+    }
+], {
+    basename: '/m'
+});

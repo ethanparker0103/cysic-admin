@@ -1,0 +1,19 @@
+<svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="7" y="1" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="10.5" y="1" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="14" y="1" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="17.5" y="1" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="7" y="22" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="10.5" y="22" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="14" y="22" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="17.5" y="22" width="1.5" height="3" rx="0.75" fill="white"/>
+<rect x="25" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 25 7)" fill="white"/>
+<rect x="25" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 10.5)" fill="white"/>
+<rect x="25" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 25 14)" fill="white"/>
+<rect x="25" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 17.5)" fill="white"/>
+<rect x="4" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 4 7)" fill="white"/>
+<rect x="4" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 10.5)" fill="white"/>
+<rect x="4" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 4 14)" fill="white"/>
+<rect x="4" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 17.5)" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9 6C7.34315 6 6 7.34315 6 9V17C6 18.6569 7.34315 20 9 20H17C18.6569 20 20 18.6569 20 17V9C20 7.34315 18.6569 6 17 6H9ZM10.5 9.5C9.94772 9.5 9.5 9.94772 9.5 10.5V15.5C9.5 16.0523 9.94772 16.5 10.5 16.5H15.5C16.0523 16.5 16.5 16.0523 16.5 15.5V10.5C16.5 9.94772 16.0523 9.5 15.5 9.5H10.5Z" fill="white"/>
+</svg>

@@ -1,0 +1,34 @@
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Thin.otf');
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Light.otf');
+    font-weight: 300;
+}
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Regular.otf');
+    font-weight: 400;
+}
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Medium.otf');
+    font-weight: 500;
+}
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Bold.otf');
+    font-weight: 600;
+}
+@font-face {
+    font-family: "Gemsbuck";
+    src: url('../fonts/gemsbuck/Gemsbuck-01-Black.otf');
+    font-weight: 700;
+}
+
+.Gemsbuck {
+    font-family: "Gemsbuck";
+}

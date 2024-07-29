@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --toastify-color-light: var(--base-200);
+    --toastify-text-color-light: var(--secGray-900);
+
+    .Toastify__close-button--light {
+        color: var(--secGray-900);
+        opacity: 1;
+    }
+
+    .Toastify__toast-icon{
+        width: 2rem;
+        height: 2rem;
+    }
+}

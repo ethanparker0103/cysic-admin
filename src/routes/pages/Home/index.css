@@ -1,0 +1,31 @@
+@keyframes zoomOut {
+    from{
+        transform: scale(1);
+    }
+    to{
+        transform: scale(0);
+    }
+}
+
+@keyframes zoomIn {
+    from{
+        transform: scale(0);
+    }
+    to{
+        transform: scale(1);
+    }
+}
+
+.zoomOut{
+    animation: zoomOut ease-in-out 1s forwards 0.2s;   
+}
+.zoomIn{
+    animation: zoomIn linear 0.6s forwards 1s;
+}
+
+.beaver-img-container{
+
+}
+.Typewriter{
+    display: inline;
+}
