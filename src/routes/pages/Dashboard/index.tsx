@@ -10,6 +10,29 @@ import TaskTable from "@/routes/pages/Dashboard/Task/table";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import clsx from "clsx";
+import BigNumber from "bignumber.js";
+
+
+const fmt = {
+  decimalSeparator: '.',
+  groupSeparator: ',',
+  groupSize: 3,
+  secondaryGroupSize: 0,
+  fractionGroupSeparator: ' ',
+  fractionGroupSize: 0
+}
+
+BigNumber.config({ FORMAT: fmt })
+
+const removeNegativeZero = (str: string)=>{
+  return str?.split('.')?.[0]
+}
+
+const format = (value: string|number, defaultValue = undefined)=>{
+  if(!value) return defaultValue
+  return removeNegativeZero(BigNumber(value).toFormat())
+}
+
 
 const Hero = (props?: any) => (
   <svg
@@ -67,7 +90,7 @@ const Hero = (props?: any) => (
   </svg>
 );
 
-const getKey = (key) => {
+const getKey = (key, t) => {
   switch (key) {
     case "project_num":
       return "Project";
@@ -97,7 +120,7 @@ const MainCard = (props: any) => {
         " flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
       )}
       style={{
-        backgroundColor: '#10141a'
+        backgroundColor: "#10141a",
         // background: `url('/m/btn-bg.svg')`,
         // backgroundRepeat: "no-repeat",
         // backgroundSize: "auto",
@@ -106,7 +129,9 @@ const MainCard = (props: any) => {
     >
       <div className="flex items-center gap-1 text-[#A3A3A3]">
         {/* <Hero className="size-4 text-[#A3A3A3]" /> */}
-        <span className="text-[18px]">{t(props?.title)}</span>
+        <span className="text-[18px] text-[#fff]">
+          {typeof props?.title == "string" ? t(props?.title) : props?.title}
+        </span>
       </div>
       <div className="text-[24px] text-[#fff] font-bold">{props?.children}</div>
     </div>
@@ -150,16 +175,24 @@ const Dashboard = () => {
 
   const overview: any = overviewData?.data || mock1?.data;
   const overview1: any = {
-    project_num: overviewData?.data?.project_num,
-    provider_num: overviewData?.data?.provider_num,
-    verifier_num: overviewData?.data?.verifier_num,
+    project_num: format(overviewData?.data?.project_num),
+    provider_num: format(overviewData?.data?.provider_num),
+    // verifier_num: overviewData?.data?.verifier_num ? `${overviewData?.data?.approved_verifier_num} / ${overviewData?.data?.verifier_num}` : undefined,
+
+    verifier_num: {
+      Running: format(overviewData?.data?.approved_verifier_num),
+      Applied: format(overviewData?.data?.verifier_num),
+    },
+
+    // approved_project_num: overviewData?.data?.approved_project_num,
+    // approved_provider_num: overviewData?.data?.approved_provider_num,
+    // approved_verifier_num: overviewData?.data?.approved_verifier_num,
   };
   const overview2: any = {
-    total_task: overviewData?.data?.total_task,
-    running_task: overviewData?.data?.running_task,
-    total_reward: overviewData?.data?.total_reward,
+    total_task: format(overviewData?.data?.total_task),
+    running_task: format(overviewData?.data?.running_task),
+    total_reward: overviewData?.data?.total_reward ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_reward)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
   };
-  console.log("overview", overview);
 
   // const tabs = [
   //     {
@@ -180,19 +213,31 @@ const Dashboard = () => {
     {
       name: "all",
       cmp: () => (
-        <TaskTable key='all' status={0} classNames={{ wrapper: "!border-0 !p-0" }} />
+        <TaskTable
+          key="all"
+          status={0}
+          classNames={{ wrapper: "!border-0 !p-0" }}
+        />
       ),
     },
     {
       name: "inProgress",
       cmp: () => (
-        <TaskTable key='inProgress' status={1} classNames={{ wrapper: "!border-0 !p-0" }} />
+        <TaskTable
+          key="inProgress"
+          status={1}
+          classNames={{ wrapper: "!border-0 !p-0" }}
+        />
       ),
     },
     {
       name: "finished",
       cmp: () => (
-        <TaskTable key='finished' status={2} classNames={{ wrapper: "!border-0 !p-0" }} />
+        <TaskTable
+          key="finished"
+          status={2}
+          classNames={{ wrapper: "!border-0 !p-0" }}
+        />
       ),
     },
   ];
@@ -209,8 +254,21 @@ const Dashboard = () => {
           <div className="flex flex-wrap gap-3">
             {Object.entries(overview1)?.map(([key, value]: any, index) => {
               return (
-                <MainCard key={index} title={getKey(key)}>
-                  {value}
+                <MainCard key={index} title={getKey(key, t)}>
+                  {typeof value == "string"
+                    ? value
+                    : <div className="flex items-center gap-8">
+                      {
+                        Object.entries(value || {})?.map(([key, value]: any, index) => {
+                          return (
+                            <div className={clsx("flex flex-col gap-1", index != 0 ? 'pl-8 border-l border-solid border-[#2B2B2B]' : '')} key={index}>
+                              <span className="font-[500] text-sm text-[#A3A3A3]">{t(key)}</span>
+                              <span className="text-[24px] text-[#fff]">{value}</span>
+                            </div>
+                          );
+                        })
+                      }
+                      </div>}
                 </MainCard>
               );
             })}
@@ -218,7 +276,7 @@ const Dashboard = () => {
           <div className="flex flex-wrap gap-3 flex-wrap">
             {Object.entries(overview2)?.map(([key, value]: any, index) => {
               return (
-                <MainCard key={index} title={getKey(key)}>
+                <MainCard key={index} title={getKey(key, t)}>
                   {value}
                 </MainCard>
               );
