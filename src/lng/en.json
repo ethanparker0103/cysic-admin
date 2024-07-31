@@ -87,5 +87,8 @@
     "taskCount": "Task Count",
     "bonus": "Bonus",
 
-    "registerSuccess": "Register Success"
+    "registerSuccess": "Register Success",
+    "verifier_running_applied": "(Running / Applied)",
+    "Running": "Running",
+    "Applied": "Applied"
 }
