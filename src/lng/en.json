@@ -90,5 +90,6 @@
     "registerSuccess": "Register Success",
     "verifier_running_applied": "(Running / Applied)",
     "Running": "Running",
-    "Applied": "Applied"
+    "Applied": "Applied",
+    "totalPointsForVerifiers": "Total Points for Verifiers"
 }

@@ -105,7 +105,7 @@ const getKey = (key, t) => {
     case "running_task":
       return "taskInProgress";
     case "total_reward":
-      return "totalPoints";
+      return "totalPointsForVerifiers";
     default:
       return key;
   }
