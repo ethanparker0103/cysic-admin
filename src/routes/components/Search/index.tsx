@@ -58,7 +58,7 @@ const Search = () => {
             const res = await axios(`/api/v1/verifier/byReward/${addr}`)
             const id = res?.data?.ID
             if(id){
-                navigate(`/m/dashboard/verifier/${id}`)
+                navigate(`/dashboard/verifier/${id}`)
             }
         } catch (e: any) {
             console.log('error', e)
