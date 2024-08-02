@@ -191,7 +191,7 @@ const Dashboard = () => {
   const overview2: any = {
     total_task: format(overviewData?.data?.total_task),
     running_task: format(overviewData?.data?.running_task),
-    total_reward: overviewData?.data?.total_reward ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_reward)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
+    total_reward: overviewData?.data?.total_task ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_task * 10)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
   };
 
   // const tabs = [
