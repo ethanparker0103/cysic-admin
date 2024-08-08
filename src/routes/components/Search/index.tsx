@@ -110,7 +110,11 @@ const Search = () => {
     }, [debouncedAddr])
 
     return (
-        <div className="max-w-[32rem] flex-1 relative">
+        <>
+        {
+            searchContainerVisible ? (<div className="z-[1] w-full h-screen fixed top-0 left-0 bottom-0 right-0 bg-[#0000005a]" />) : null
+        }
+        <div className="max-w-[32rem] flex-1 relative z-[2]">
             <Input
                 onFocus={() => setSearchContainerVisible(true)}
                 onBlur={() => setSearchContainerVisible(false)}
@@ -203,6 +207,7 @@ const Search = () => {
                 </div> : null
             }
         </div>
+        </>
     );
 };
 
