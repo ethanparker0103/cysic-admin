@@ -145,9 +145,17 @@ const TaskList = (props?: any) => {
     <rect x="8" y="11" width="6" height="1.5" rx="0.75" fill="currentColor" />
     <rect x="8" y="7.5" width="10" height="1.5" rx="0.75" fill="currentColor" />
   </svg>
-
 }
-export const dashboardNavs = [
+
+const MyPage = (props?: any)=>{
+  return <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <path d="M16.4939 10.0644C16.8056 9.79168 16.8372 9.31786 16.5644 9.00613C16.2917 8.6944 15.8178 8.66282 15.5061 8.93558L12.0342 11.9735L11.0303 10.9697C10.7374 10.6768 10.2626 10.6768 9.96967 10.9697C9.67678 11.2626 9.67678 11.7374 9.96967 12.0303L11.4697 13.5303C11.7489 13.8095 12.1967 13.8245 12.4939 13.5644L16.4939 10.0644Z" fill="currentColor"/>
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M5 2C3.34315 2 2 3.34315 2 5V21C2 22.6569 3.34315 24 5 24H21C22.6569 24 24 22.6569 24 21V5C24 3.34315 22.6569 2 21 2H5ZM7.25 19.5C6.83579 19.5 6.5 19.8358 6.5 20.25C6.5 20.6642 6.83579 21 7.25 21H18.75C19.1642 21 19.5 20.6642 19.5 20.25C19.5 19.8358 19.1642 19.5 18.75 19.5H7.25ZM19.5 11.5C19.5 15.0899 16.5899 18 13 18C9.41015 18 6.5 15.0899 6.5 11.5C6.5 7.91015 9.41015 5 13 5C16.5899 5 19.5 7.91015 19.5 11.5Z" fill="currentColor"/>
+  </svg>
+  
+}
+
+export const dashboardNavs_ = [
   {
     prefix: <Hero className="size-6" />,
     text: "Dashboard",
@@ -173,6 +181,12 @@ export const dashboardNavs = [
     text: "TaskList",
     link: "/dashboard/task",
   },
+  {
+    prefix: <MyPage className="size-6 scale-[1.3]" />,
+    text: "MyPage",
+    link: "/dashboard/my",
+    needAccount: true,
+  },
 ];
 
 export default function App() {
@@ -186,8 +200,11 @@ export default function App() {
 
   const handleNav = () => { };
 
-
   const { address } = useAccount();
+
+  const dashboardNavs = dashboardNavs_?.filter(i=> i?.needAccount ? !!address : true)
+
+
   const { data: myPoints } = useRequest(
     () => axios.get(`/api/v1/dashboard/myPoint/${address}`),
     {
@@ -307,7 +324,7 @@ export default function App() {
             )}
           >
 
-            <BrowserView className="px-10 pt-4 pb-8 sticky top-0 right-0 left-0 w-full backdrop-blur bg-[#00000065] z-[1] flex items-center justify-end gap-1">
+            <BrowserView className="px-10 pt-4 pb-8 sticky top-0 right-0 left-0 w-full backdrop-blur bg-[#00000065] z-[1] flex items-center justify-between gap-1">
               <Search />
               {
                 address ? (<div className="px-3 text-[#A3A3A3] text-sm font-[500] h-10 bg-[#FFFFFF1F] rounded-[6px] flex items-center gap-2">
