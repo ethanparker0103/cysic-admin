@@ -1,5 +1,5 @@
-import TaskTable from "@/routes/pages/Dashboard/My/table";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
+import VerifierDetail from "@/routes/pages/Dashboard/My/Detail";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import BigNumber from "bignumber.js";
@@ -45,6 +45,14 @@ const MainCard = (props: any) => {
   );
 };
 
+// {
+//     "avg_point": "255",
+//     "avg_task_completion": "2",
+//     "provider_points": "0",
+//     "provider_task_cnt": 0,
+//     "verifier_points": "0",
+//     "verifier_task_cnt": 0
+// }
 const Overview = () => {
   const { address } = useAccount();
   const [userInfo, setUserInfo] = useState<any>({});
@@ -52,7 +60,7 @@ const Overview = () => {
   useRequest(
     async () => {
       if (!address) return;
-      const res = await axios(`/api/v1/dashboard/queryByReward/${address}`);
+      const res = await axios(`/api/v1/myPage/${address}/overview`);
       return res;
     },
     {
@@ -65,19 +73,19 @@ const Overview = () => {
     }
   );
 
-  const verifierPoints = BigNumber(userInfo?.verifier?.success_task || 0).toString() 
-  const provePoints = BigNumber(userInfo?.provider?.success_task || 0).toString()
+  const verifierPoints = BigNumber(userInfo?.verifier_points || 0).toString() 
+  const provePoints = BigNumber(userInfo?.provider_points || 0).toString()
   const totalPoints = BigNumber(verifierPoints).plus(provePoints).toString()
 
 
-  const verifierTask = BigNumber(userInfo?.verifier?.success_task || 0).toString() 
-  const proveTask = BigNumber(userInfo?.provider?.success_task || 0).toString()
-  const totalTask = BigNumber(verifierPoints).plus(provePoints).toString()
+  const verifierTask = BigNumber(userInfo?.verifier_task_cnt || 0).toString() 
+  const proveTask = BigNumber(userInfo?.provider_task_cnt || 0).toString()
+  const totalTask = BigNumber(verifierTask).plus(proveTask).toString()
 
-  const averageCompletion = 3000
-  const averageRewards = 1000
+  const averageCompletion = BigNumber(userInfo?.avg_task_completion || 0).toString() 
+  const averageRewards = BigNumber(userInfo?.avg_point || 0).toString() 
   return (
-    <div className="flex items-center gap-3">
+    <div className={isMobile ? "flex flex-col gap-3" :  "flex items-center gap-3"}>
       <MainCard>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-2 text-lg">
@@ -149,7 +157,8 @@ const Task = () => {
             "shadow-[0px_4px_0px_0px_#000000] border-[#000] border rounded-[14px]"
           )}
         >
-          <TaskTable />
+            {/* only verifier so far */}
+          <VerifierDetail />
         </div>
       </div>
     </MainContainer>

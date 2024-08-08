@@ -24,12 +24,12 @@ const fmt = {
 
 BigNumber.config({ FORMAT: fmt })
 
-const removeNegativeZero = (str: string)=>{
+const removeNegativeZero = (str: string) => {
   return str?.split('.')?.[0]
 }
 
-const format = (value: string|number, defaultValue = undefined)=>{
-  if(!value) return defaultValue
+const format = (value: string | number, defaultValue = undefined) => {
+  if (!value) return defaultValue
   return removeNegativeZero(BigNumber(value).toFormat())
 }
 
@@ -127,12 +127,12 @@ const MainCard = (props: any) => {
       }}
       {...props}
     >
-      <div className="flex items-center gap-1 text-[#A3A3A3]">
+     {props?.title ?  <div className="flex items-center gap-1 text-[#A3A3A3]">
         {/* <Hero className="size-4 text-[#A3A3A3]" /> */}
         <span className="text-[18px] text-[#fff]">
           {typeof props?.title == "string" ? t(props?.title) : props?.title}
         </span>
-      </div>
+      </div> : null}
       <div className="text-[24px] text-[#fff] font-bold">{props?.children}</div>
     </div>
   );
@@ -191,8 +191,11 @@ const Dashboard = () => {
   const overview2: any = {
     total_task: format(overviewData?.data?.total_task),
     running_task: format(overviewData?.data?.running_task),
-    total_reward: overviewData?.data?.total_task ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_task * 10)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
+    // total_reward: overviewData?.data?.total_task ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_task * 10)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
   };
+  const verifier_reward = format(overviewData?.data?.verifier_reward)
+  const provider_reward = format(overviewData?.data?.provider_reward)
+  const total_reward = format(BigNumber(overviewData?.data?.verifier_reward || 0).plus(overviewData?.data?.provider_reward || 0).toString())
 
   // const tabs = [
   //     {
@@ -268,7 +271,7 @@ const Dashboard = () => {
                           );
                         })
                       }
-                      </div>}
+                    </div>}
                 </MainCard>
               );
             })}
@@ -281,6 +284,25 @@ const Dashboard = () => {
                 </MainCard>
               );
             })}
+            <MainCard>
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-2 text-lg leading-none">
+                  <span className="font-[400]">{t('totalPoints')}</span>
+                  <span className="font-[600]">{total_reward}</span>
+                </div>
+                <div className="flex items-center gap-8">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[#A3A3A3] text-sm font-[400]">Verifier</span>
+                    <div className="text-[#fff] text-lg">{verifier_reward}</div>
+                  </div>
+                  <div className="w-px h-10 bg-[#2B2B2B]" />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[#A3A3A3] text-sm font-[400]">Prover</span>
+                    <div className="text-[#fff] text-lg">{provider_reward}</div>
+                  </div>
+                </div>
+              </div>
+            </MainCard>
           </div>
         </div>
 

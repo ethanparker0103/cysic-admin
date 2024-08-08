@@ -10,6 +10,7 @@ import {
 import Button from "@/components/Button";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
+import { isMobile } from "react-device-detect";
 
 export default function ConnectButton({className}: any) {
   const { t } = useTranslation();
@@ -124,7 +125,7 @@ export default function ConnectButton({className}: any) {
             src={connector?.icon || getImageUrl(`@/assets/images/wallet/${connector?.id}.svg`)}
           />
           <span className="text-sm font-[500]">
-            {shortStr(address as string, 10)}
+            {shortStr(address as string, isMobile ? 4 : 10)}
           </span>
         </div>
       </div>

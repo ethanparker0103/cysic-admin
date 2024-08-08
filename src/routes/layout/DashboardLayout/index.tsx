@@ -253,6 +253,8 @@ export default function App() {
               className="w-8"
               src={getImageUrl("@/assets/images/_global/logo.svg")}
             />
+              <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div>
+
             <div className="flex items-center gap-2">
               <ConnectButton className="!py-0 !min-h-10 !h-10 [&>span]:!text-xs !px-4" />
 

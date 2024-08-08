@@ -92,5 +92,7 @@
     "verifier_running_applied": "(Running / Applied)",
     "Running": "Running",
     "Applied": "Applied",
-    "totalPointsForVerifiers": "Total Points for Verifiers"
+    "totalPointsForVerifiers": "Total Points for Verifiers",
+
+    "taskType": "Task Type"
 }
