@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 import clsx from "clsx";
 import { useMatches, useNavigate } from "react-router-dom";
 
-const MainContainer = ({ title, children, className }: any) => {
+const MainContainer = ({ noRoute, title, children, className }: any) => {
   const { t } = useTranslation();
   const navigate = useNavigate()
   const matches = useMatches()
@@ -15,7 +15,7 @@ const MainContainer = ({ title, children, className }: any) => {
     <div className={clsx(isMobile ? "gap-4" : "gap-8", "flex flex-col")}>
       <div className="flex items-center gap-2">
         {/* back */}
-        {(title && nonZeroRegex.test(ids)) ? (
+        {(title && nonZeroRegex.test(ids) && !noRoute) ? (
           <div className="cursor-pointer" onClick={()=>navigate(lastHref.join('/'))}>
             <svg
               width="32"

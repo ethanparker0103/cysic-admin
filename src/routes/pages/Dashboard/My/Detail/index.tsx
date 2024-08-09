@@ -1,24 +1,11 @@
-import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
-import MainDetailContainer from "@/routes/pages/Dashboard/components/mainDetailContainer";
-import { useRequest } from "ahooks";
-import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-  getKeyValue,
+  Tabs, Tab
 } from "@nextui-org/react";
-import Image from "@/components/Image";
-import { getImageUrl, shortStr } from "@/utils/tools";
 import { useTranslation } from "react-i18next";
-import usePagnation from "@/hooks/usePagnation";
-import { commonPageSize, TaskStatus } from "@/config";
-import Pagination from "@/components/Pagination";
-import { useAccount } from "wagmi";
+import VerifierTable from "@/routes/pages/Dashboard/My/Detail/verifier";
+import { useState } from "react";
+import clsx from "clsx";
 
 const mock = {
   msg: "success",
@@ -64,141 +51,62 @@ const mock = {
   },
 };
 
-const VerifierDetail = () => {
+
+const tabs = [
+  {
+    name: "Verifier",
+    cmp: () => (
+      <VerifierTable
+        key="verifier"
+        // classNames={{ wrapper: "!border-0 !p-0" }}
+      />
+    ),
+  },
+  {
+    name: "Prover",
+    cmp: null,
+    disabled: true
+  },
+];
+
+const Detail = () => {
   const { t } = useTranslation();
-  const { address } = useAccount()
+  // const { address } = useAccount()
 
-  const { data: taskList, totalPage, currentPage, setCurrentPage } = usePagnation(
-    (page: number) => {
-      // return Promise.resolve(mock);
-
-      return axios.get(`/api/v1/verifier/taskList/byAddr/${address}`, {
-        params: {
-          pageNum: page,
-          pageSize: commonPageSize,
-        },
-      });
-    },
-    {
-      ready: !!address,
-      refreshDeps: [address],
-    }
-  );
-
-  const tableData = taskList?.data?.list;
-
-  const rows = tableData || [];
-
-  const columns = [
-    {
-      key: "ID",
-      label: "Task ID",
-    },
-    {
-      key: "task_hash",
-      label: "Task Hash",
-    },
-    {
-      key: "provider_ids",
-      label: "providers",
-    },
-    {
-      key: "task_type",
-      label: "taskType",
-    },
-    {
-      key: "task_status",
-      label: "Result",
-    },
-    {
-      key: "action",
-      label: "Detail",
-    },
-  ];
-
-  const renderCell = (item: any, columnKey: any) => {
-    switch (columnKey) {
-      case "task_type":
-        return (t('Verifier'))
-      case "action":
-        return (
-          <Link
-            to={"/dashboard/task/" + item?.ID?.toString()}
-            className="flex items-center gap-1"
-          >
-            <span className="text-[#21E9FA]">Detail</span>
-            <Image
-              className="size-3"
-              src={getImageUrl("@/assets/images/dashboard/share.svg")}
-            />
-          </Link>
-        );
-      case "provider_ids":
-        const addrs = getKeyValue(item, 'prover_addr_list')?.split(",");
-        const ids = getKeyValue(item, columnKey)?.split(",");
-        return (
-          <div className="flex items-center gap-2">
-            {ids?.map((i, index) => (
-              <Link to={`/dashboard/provider/${i}`}>
-                <span className="underline" key={i}>
-                  {shortStr(addrs[index], 12)}
-                </span>
-              </Link>
-            ))}
-          </div>
-        );
-      case "task_status":
-        return (
-          <div className="flex items-center gap-2">
-            <span>{TaskStatus[item?.[columnKey]]}</span>
-          </div>
-        );
-      case "verifier_pass":
-        return (
-          <div className="flex items-center gap-2">
-            <span>{item?.[columnKey] ? "Success" : "Failure"}</span>
-          </div>
-        );
-      default:
-        return getKeyValue(item, columnKey);
-    }
-  };
-
+  const [activeTab, setActiveTab] = useState<any>(tabs?.[0]?.name);
   return (
     <>
-      <MainContainer title="My Task List">
-          <div className="shadow-[0px_4px_0px_0px_#000000] p-4 rounded-2xl border-[#FFFFFF33] border">
-            <Table
-              aria-label="TaskList"
-              classNames={{
-                wrapper:
-                  "p-0 bg-[transparent]",
-                th: "border-b border-solid border-[#FFFFFF33]",
-              }}
-            >
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn className="bg-[transparent] " key={column?.key}>
-                    {t(column?.label)}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody items={rows}>
-                {(item) => (
-                  <TableRow key={item?.ID}>
-                    {(columnKey) => (
-                      <TableCell>{renderCell(item, columnKey)}</TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-            <Pagination offset={1} className="mt-4 flex justify-center" total={totalPage} currentPage={currentPage} onChange={setCurrentPage} />
-          </div>
-      </MainContainer>
+      {/* <MainContainer noRoute title="My Task List"> */}
+      <div className="flex flex-col gap-6 shadow-[0px_4px_0px_0px_#000000] p-4 rounded-2xl border-[#FFFFFF33] border">
+        <div className="px-3 flex items-center gap-4">
+          <div className="text-lg font-[600]">My Task List</div>
+          <Tabs
+            classNames={{
+              tab: "group-data-[selected=true]:border-none",
+              cursor: "!bg-[transparent]",
+              tabContent:
+                "group-data-[selected=true]:text-[#fff] group-data-[selected=true]:font-semibold text-lg",
+            }}
+            variant={"light"}
+            aria-label="snapshot"
+            onSelectionChange={(tab)=>{
+              const disabled = tabs?.find(i=>i.name===tab)?.disabled
+              if(disabled)return;
+              setActiveTab(tab)
+            }}
+            selectedKey={activeTab}
+          >
+            {tabs.map((item) => (
+              <Tab className={clsx(item?.disabled ? 'cursor-not-allowed' :'')} disabled={item?.disabled} key={item.name} title={t(item.name)} />
+            ))}
+          </Tabs>
+        </div>
 
+        {tabs?.find((i) => i.name == activeTab)?.cmp?.()}
+      </div>
+      {/* </MainContainer> */}
     </>
   );
 };
 
-export default VerifierDetail;
+export default Detail;
