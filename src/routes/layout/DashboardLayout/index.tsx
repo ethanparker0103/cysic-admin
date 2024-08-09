@@ -120,7 +120,7 @@ const Provider = (props?: any) => (
     <rect x="4" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 4 14)" fill="currentColor" fillOpacity="1" />
     <rect x="4" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 17.5)" fill="currentColor" fillOpacity="1" />
     <rect x="6.75" y="6.75" width="12.5" height="12.5" rx="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
-    <mask id="path-18-inside-1_439_12346" fill="currentColor">
+    <mask id="path-18-inside-1_439_12346" fill="#fff">
       <rect x="10" y="10" width="6" height="6" rx="1" />
     </mask>
     <rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" strokeOpacity="1" strokeWidth="3" mask="url(#path-18-inside-1_439_12346)" />
