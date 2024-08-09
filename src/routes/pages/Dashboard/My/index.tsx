@@ -114,13 +114,13 @@ const Overview = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[#A3A3A3] text-base font-[500]">Verification</span>
-                <div className="text-[#A3A3A3] text-base font-[500]">{format(verifier_points_verification)}</div>
+                <span className="text-[#A3A3A3] text-sm font-[500]">Verification</span>
+                <div className="text-[#A3A3A3] text-sm font-[500]">{format(verifier_points_verification)}</div>
               </div>
 
               <div className="flex items-center justify-between">
-                <span className="text-[#A3A3A3] text-base font-[500]">Activity</span>
-                <div className="text-[#A3A3A3] text-base font-[500]">{format(verifier_points_activity)}</div>
+                <span className="text-[#A3A3A3] text-sm font-[500]">Activity</span>
+                <div className="text-[#A3A3A3] text-sm font-[500]">{format(verifier_points_activity)}</div>
               </div>
 
             </div>

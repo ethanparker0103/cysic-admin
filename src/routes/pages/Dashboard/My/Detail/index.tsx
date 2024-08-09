@@ -54,7 +54,7 @@ const mock = {
 
 const tabs = [
   {
-    name: "Verifier",
+    name: "My Task List-Verifier",
     cmp: () => (
       <VerifierTable
         key="verifier"
@@ -63,7 +63,7 @@ const tabs = [
     ),
   },
   {
-    name: "Prover",
+    name: "My Task List-Prover",
     cmp: null,
     disabled: true
   },
@@ -78,10 +78,11 @@ const Detail = () => {
     <>
       {/* <MainContainer noRoute title="My Task List"> */}
       <div className="flex flex-col gap-6 shadow-[0px_4px_0px_0px_#000000] p-4 rounded-2xl border-[#FFFFFF33] border">
-        <div className="px-3 flex items-center gap-4">
-          <div className="text-lg font-[600]">My Task List</div>
+        <div className="flex items-center gap-4">
+          {/* <div className="text-lg font-[600]">My Task List</div> */}
           <Tabs
             classNames={{
+              tabList: '!p-0',
               tab: "group-data-[selected=true]:border-none",
               cursor: "!bg-[transparent]",
               tabContent:

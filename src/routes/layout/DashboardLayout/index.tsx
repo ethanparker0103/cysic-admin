@@ -80,59 +80,60 @@ const Hero = (props?: any) => (
 );
 
 const Projector = (props?: any) => (
-  <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <circle cx="13" cy="5.5" r="3.75" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
-    <circle cx="5" cy="10.5" r="2.25" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
-    <circle cx="21" cy="10.5" r="2.25" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
-    <mask id="path-4-inside-1_439_10430" fill="currentColor">
-      <path d="M2 18C2 16.3431 3.34315 15 5 15H6C6.55228 15 7 15.4477 7 16V24C7 24.5523 6.55228 25 6 25H3C2.44772 25 2 24.5523 2 24V18Z" />
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <circle cx="12" cy="4.5" r="3.75" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
+    <circle cx="4" cy="9.5" r="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
+    <circle cx="20" cy="9.5" r="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
+    <mask id="path-4-inside-1_861_2525" fill="currentColor">
+      <path d="M1 17C1 15.3431 2.34315 14 4 14H5C5.55228 14 6 14.4477 6 15V23C6 23.5523 5.55228 24 5 24H2C1.44772 24 1 23.5523 1 23V17Z" />
     </mask>
-    <path d="M2 18C2 16.3431 3.34315 15 5 15H6C6.55228 15 7 15.4477 7 16V24C7 24.5523 6.55228 25 6 25H3C2.44772 25 2 24.5523 2 24V18Z" stroke="currentColor" stroke-opacity="1" stroke-width="3" mask="url(#path-4-inside-1_439_10430)" />
-    <mask id="path-5-inside-2_439_10430" fill="currentColor">
-      <path d="M8 15C8 13.3431 9.34315 12 11 12H15C16.6569 12 18 13.3431 18 15V24C18 24.5523 17.5523 25 17 25H9C8.44772 25 8 24.5523 8 24V15Z" />
+    <path d="M1 17C1 15.3431 2.34315 14 4 14H5C5.55228 14 6 14.4477 6 15V23C6 23.5523 5.55228 24 5 24H2C1.44772 24 1 23.5523 1 23V17Z" stroke="white" strokeOpacity="1" strokeWidth="3" mask="url(#path-4-inside-1_861_2525)" />
+    <mask id="path-5-inside-2_861_2525" fill="currentColor">
+      <path d="M7 14C7 12.3431 8.34315 11 10 11H14C15.6569 11 17 12.3431 17 14V23C17 23.5523 16.5523 24 16 24H8C7.44772 24 7 23.5523 7 23V14Z" />
     </mask>
-    <path d="M8 15C8 13.3431 9.34315 12 11 12H15C16.6569 12 18 13.3431 18 15V24C18 24.5523 17.5523 25 17 25H9C8.44772 25 8 24.5523 8 24V15Z" stroke="currentColor" stroke-opacity="1" stroke-width="3" mask="url(#path-5-inside-2_439_10430)" />
-    <mask id="path-6-inside-3_439_10430" fill="currentColor">
-      <path d="M24 18C24 16.3431 22.6569 15 21 15H20C19.4477 15 19 15.4477 19 16V24C19 24.5523 19.4477 25 20 25H23C23.5523 25 24 24.5523 24 24V18Z" />
+    <path d="M7 14C7 12.3431 8.34315 11 10 11H14C15.6569 11 17 12.3431 17 14V23C17 23.5523 16.5523 24 16 24H8C7.44772 24 7 23.5523 7 23V14Z" stroke="white" strokeOpacity="1" strokeWidth="3" mask="url(#path-5-inside-2_861_2525)" />
+    <mask id="path-6-inside-3_861_2525" fill="currentColor">
+      <path d="M23 17C23 15.3431 21.6569 14 20 14H19C18.4477 14 18 14.4477 18 15V23C18 23.5523 18.4477 24 19 24H22C22.5523 24 23 23.5523 23 23V17Z" />
     </mask>
-    <path d="M24 18C24 16.3431 22.6569 15 21 15H20C19.4477 15 19 15.4477 19 16V24C19 24.5523 19.4477 25 20 25H23C23.5523 25 24 24.5523 24 24V18Z" stroke="currentColor" stroke-opacity="1" stroke-width="3" mask="url(#path-6-inside-3_439_10430)" />
+    <path d="M23 17C23 15.3431 21.6569 14 20 14H19C18.4477 14 18 14.4477 18 15V23C18 23.5523 18.4477 24 19 24H22C22.5523 24 23 23.5523 23 23V17Z" stroke="white" strokeOpacity="1" strokeWidth="3" mask="url(#path-6-inside-3_861_2525)" />
   </svg>
+
 
 );
 
 const Provider = (props?: any) => (
   <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <rect x="7" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="10.5" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="14" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="17.5" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="7" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="10.5" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="14" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="17.5" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <rect x="25" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 25 7)" fill="currentColor" fill-opacity="1" />
-    <rect x="25" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 10.5)" fill="currentColor" fill-opacity="1" />
-    <rect x="25" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 25 14)" fill="currentColor" fill-opacity="1" />
-    <rect x="25" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 17.5)" fill="currentColor" fill-opacity="1" />
-    <rect x="4" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 4 7)" fill="currentColor" fill-opacity="1" />
-    <rect x="4" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 10.5)" fill="currentColor" fill-opacity="1" />
-    <rect x="4" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 4 14)" fill="currentColor" fill-opacity="1" />
-    <rect x="4" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 17.5)" fill="currentColor" fill-opacity="1" />
-    <rect x="6.75" y="6.75" width="12.5" height="12.5" rx="2.25" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
+    <rect x="7" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="10.5" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="14" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="17.5" y="1" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="7" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="10.5" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="14" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="17.5" y="22" width="1.5" height="3" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <rect x="25" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 25 7)" fill="currentColor" fillOpacity="1" />
+    <rect x="25" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 10.5)" fill="currentColor" fillOpacity="1" />
+    <rect x="25" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 25 14)" fill="currentColor" fillOpacity="1" />
+    <rect x="25" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 25 17.5)" fill="currentColor" fillOpacity="1" />
+    <rect x="4" y="7" width="1.5" height="3" rx="0.75" transform="rotate(90 4 7)" fill="currentColor" fillOpacity="1" />
+    <rect x="4" y="10.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 10.5)" fill="currentColor" fillOpacity="1" />
+    <rect x="4" y="14" width="1.5" height="3" rx="0.75" transform="rotate(90 4 14)" fill="currentColor" fillOpacity="1" />
+    <rect x="4" y="17.5" width="1.5" height="3" rx="0.75" transform="rotate(90 4 17.5)" fill="currentColor" fillOpacity="1" />
+    <rect x="6.75" y="6.75" width="12.5" height="12.5" rx="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
     <mask id="path-18-inside-1_439_12346" fill="currentColor">
       <rect x="10" y="10" width="6" height="6" rx="1" />
     </mask>
-    <rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" stroke-opacity="1" stroke-width="3" mask="url(#path-18-inside-1_439_12346)" />
+    <rect x="10" y="10" width="6" height="6" rx="1" stroke="currentColor" strokeOpacity="1" strokeWidth="3" mask="url(#path-18-inside-1_439_12346)" />
   </svg>
 
 );
 
 const Verifier = (props?: any) => (
   <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-    <rect x="2.75" y="2.75" width="20.5" height="20.5" rx="2.25" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
-    <rect x="6.5" y="19.5" width="13" height="1.5" rx="0.75" fill="currentColor" fill-opacity="1" />
-    <circle cx="13" cy="11.5" r="5.75" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" />
-    <path d="M10.5 11.5L12 13L16 9.5" stroke="currentColor" stroke-opacity="1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <rect x="2.75" y="2.75" width="20.5" height="20.5" rx="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
+    <rect x="6.5" y="19.5" width="13" height="1.5" rx="0.75" fill="currentColor" fillOpacity="1" />
+    <circle cx="13" cy="11.5" r="5.75" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
+    <path d="M10.5 11.5L12 13L16 9.5" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
   </svg>
 
 );
@@ -149,12 +150,12 @@ const TaskList = (props?: any) => {
 
 const MyPage = (props?: any) => {
   return <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 7.5C17.5 9.98528 15.4853 12 13 12C10.5147 12 8.5 9.98528 8.5 7.5C8.5 5.01472 10.5147 3 13 3C15.4853 3 17.5 5.01472 17.5 7.5ZM16 7.5C16 9.15685 14.6569 10.5 13 10.5C11.3431 10.5 10 9.15685 10 7.5C10 5.84315 11.3431 4.5 13 4.5C14.6569 4.5 16 5.84315 16 7.5Z" fill="currentColor" />
-  <path d="M9 13.25C6.37665 13.25 4.25 15.3766 4.25 18V21C4.25 21.9665 5.0335 22.75 6 22.75H10C10.4142 22.75 10.75 22.4142 10.75 22C10.75 21.5858 10.4142 21.25 10 21.25H6C5.86193 21.25 5.75 21.1381 5.75 21V18C5.75 16.2051 7.20507 14.75 9 14.75H12C12.4142 14.75 12.75 14.4142 12.75 14C12.75 13.5858 12.4142 13.25 12 13.25H9Z" fill="currentColor" />
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 20C20.5376 20 23 18.8807 23 17.5C23 16.1193 20.5376 15 17.5 15C14.4624 15 12 16.1193 12 17.5C12 18.8807 14.4624 20 17.5 20ZM21.4232 17.5C21.329 17.4094 21.1399 17.2667 20.7684 17.0978C20.0092 16.7527 18.8551 16.5 17.5 16.5C16.1449 16.5 14.9908 16.7527 14.2316 17.0978C13.8601 17.2667 13.671 17.4094 13.5768 17.5C13.671 17.5906 13.8601 17.7333 14.2316 17.9022C14.9908 18.2473 16.1449 18.5 17.5 18.5C18.8551 18.5 20.0092 18.2473 20.7684 17.9022C21.1399 17.7333 21.329 17.5906 21.4232 17.5Z" fill="currentColor" />
-  <path d="M13.305 19.5571C13.6045 19.7674 13.7033 20.157 13.5582 20.4787C13.6106 20.5306 13.6954 20.6022 13.8292 20.6874C14.1495 20.8913 14.6364 21.0971 15.2798 21.2517C15.9158 21.4045 16.6414 21.492 17.3946 21.4995C18.1475 21.507 18.8838 21.4341 19.5396 21.2928C20.2018 21.1501 20.7212 20.951 21.0785 20.7433C21.2763 20.6284 21.39 20.5315 21.4524 20.4676C21.3426 20.1405 21.4708 19.7699 21.7791 19.5857C22.1347 19.3732 22.5952 19.4893 22.8076 19.8448C22.9041 20.0063 22.9814 20.198 22.997 20.419C23.0129 20.6439 22.9607 20.8381 22.891 20.995C22.7219 21.3757 22.3597 21.7336 21.8322 22.0402C21.3053 22.3465 20.6284 22.5926 19.8555 22.7592C19.0825 22.9257 18.2348 23.0079 17.3797 22.9995C16.5245 22.991 15.6855 22.8919 14.9293 22.7102C14.1731 22.5285 13.5206 22.2691 13.0236 21.9527C12.5257 21.6357 12.1986 21.2708 12.0663 20.8874C12.0119 20.7296 11.9788 20.5342 12.0156 20.3113C12.0512 20.0959 12.1436 19.9062 12.2602 19.74C12.4982 19.401 12.966 19.3191 13.305 19.5571Z" fill="currentColor" />
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 7.5C17.5 9.98528 15.4853 12 13 12C10.5147 12 8.5 9.98528 8.5 7.5C8.5 5.01472 10.5147 3 13 3C15.4853 3 17.5 5.01472 17.5 7.5ZM16 7.5C16 9.15685 14.6569 10.5 13 10.5C11.3431 10.5 10 9.15685 10 7.5C10 5.84315 11.3431 4.5 13 4.5C14.6569 4.5 16 5.84315 16 7.5Z" fill="currentColor" />
+    <path d="M9 13.25C6.37665 13.25 4.25 15.3766 4.25 18V21C4.25 21.9665 5.0335 22.75 6 22.75H10C10.4142 22.75 10.75 22.4142 10.75 22C10.75 21.5858 10.4142 21.25 10 21.25H6C5.86193 21.25 5.75 21.1381 5.75 21V18C5.75 16.2051 7.20507 14.75 9 14.75H12C12.4142 14.75 12.75 14.4142 12.75 14C12.75 13.5858 12.4142 13.25 12 13.25H9Z" fill="currentColor" />
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 20C20.5376 20 23 18.8807 23 17.5C23 16.1193 20.5376 15 17.5 15C14.4624 15 12 16.1193 12 17.5C12 18.8807 14.4624 20 17.5 20ZM21.4232 17.5C21.329 17.4094 21.1399 17.2667 20.7684 17.0978C20.0092 16.7527 18.8551 16.5 17.5 16.5C16.1449 16.5 14.9908 16.7527 14.2316 17.0978C13.8601 17.2667 13.671 17.4094 13.5768 17.5C13.671 17.5906 13.8601 17.7333 14.2316 17.9022C14.9908 18.2473 16.1449 18.5 17.5 18.5C18.8551 18.5 20.0092 18.2473 20.7684 17.9022C21.1399 17.7333 21.329 17.5906 21.4232 17.5Z" fill="currentColor" />
+    <path d="M13.305 19.5571C13.6045 19.7674 13.7033 20.157 13.5582 20.4787C13.6106 20.5306 13.6954 20.6022 13.8292 20.6874C14.1495 20.8913 14.6364 21.0971 15.2798 21.2517C15.9158 21.4045 16.6414 21.492 17.3946 21.4995C18.1475 21.507 18.8838 21.4341 19.5396 21.2928C20.2018 21.1501 20.7212 20.951 21.0785 20.7433C21.2763 20.6284 21.39 20.5315 21.4524 20.4676C21.3426 20.1405 21.4708 19.7699 21.7791 19.5857C22.1347 19.3732 22.5952 19.4893 22.8076 19.8448C22.9041 20.0063 22.9814 20.198 22.997 20.419C23.0129 20.6439 22.9607 20.8381 22.891 20.995C22.7219 21.3757 22.3597 21.7336 21.8322 22.0402C21.3053 22.3465 20.6284 22.5926 19.8555 22.7592C19.0825 22.9257 18.2348 23.0079 17.3797 22.9995C16.5245 22.991 15.6855 22.8919 14.9293 22.7102C14.1731 22.5285 13.5206 22.2691 13.0236 21.9527C12.5257 21.6357 12.1986 21.2708 12.0663 20.8874C12.0119 20.7296 11.9788 20.5342 12.0156 20.3113C12.0512 20.0959 12.1436 19.9062 12.2602 19.74C12.4982 19.401 12.966 19.3191 13.305 19.5571Z" fill="currentColor" />
   </svg>
-  
+
 
 }
 
@@ -256,7 +257,7 @@ export default function App() {
               className="w-8"
               src={getImageUrl("@/assets/images/_global/logo.svg")}
             />
-              <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div>
+            <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div>
 
             <div className="flex items-center gap-2">
               <ConnectButton className="!py-0 !min-h-10 !h-10 [&>span]:!text-xs !px-4" />
