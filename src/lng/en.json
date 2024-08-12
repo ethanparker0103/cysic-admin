@@ -8,6 +8,7 @@
     "verifier": "verifier",
     "Verifier": "Verifier",
     "TaskList": "Task List",
+    "MyPage": "My Page",
     "taskAnalytics": "Analytics",
     "taskInProgress": "Task In Progress",
     "totalPoints": "Total Points",
@@ -90,5 +91,9 @@
     "registerSuccess": "Register Success",
     "verifier_running_applied": "(Running / Applied)",
     "Running": "Running",
-    "Applied": "Applied"
+    "Applied": "Applied",
+    "totalPointsForVerifiers": "Total Points for Verifiers",
+
+    "taskType": "Task Type",
+    "whiteList": "White List"
 }

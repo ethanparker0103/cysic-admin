@@ -16,6 +16,7 @@ import DashboardProject from "@/routes/pages/Dashboard/Project";
 import ProjectDetail from "@/routes/pages/Dashboard/Project/Detail";
 import Task from "@/routes/pages/Dashboard/Task";
 import TaskDetail from "@/routes/pages/Dashboard/Task/Detail";
+import My from "@/routes/pages/Dashboard/My";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
                     {
                         index: true,
                         element: <Dashboard />
+                    },
+                    {
+                        path: 'my',
+                        element: <My />,
                     },
                     {
                         path: 'verifier',
