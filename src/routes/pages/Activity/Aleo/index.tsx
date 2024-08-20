@@ -90,7 +90,7 @@ const Aleo = () => {
             </style>
 
             <div className="relative" style={{ height: "calc(100vh - 88px)" }}>
-                <div className="flex flex-col gap-[3.5rem] relative z-[2]">
+                <div className="flex flex-col gap-[3.5rem] relative z-[2] pt-14">
                     <div className="flex flex-col gap-3 items-center">
                         <div className="flex items-center gap-4 text-[64px] font-[400]">
                             <div className="linear-content uppercase Gemsbuck">Cysic</div>
