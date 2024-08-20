@@ -42,7 +42,7 @@ const Aleo = () => {
                 toast.error('Invalid Signature')
             }
             if (res == 2) {
-                toast.error('Invalid White List')
+                toast.error('Invalid Address')
             }
             if (res == 3) {
                 toast.error('Reject')
