@@ -26,7 +26,7 @@ const Aleo = () => {
         setFocus(false)
     }
 
-    const { run } = useRequest((params: any) => {
+    const { runAsync } = useRequest((params: any) => {
         // return mock1;
         return axios.post("/api/v1/check_aleo_whitelist", {
             ...params,
@@ -58,7 +58,7 @@ const Aleo = () => {
             setLoading(true)
             const signature = await signMessageAsync({ message: value })
 
-            run({
+            await runAsync({
                 cysic_address: address,
                 aleo_address: value,
                 signature
