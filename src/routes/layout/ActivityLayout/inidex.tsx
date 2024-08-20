@@ -14,7 +14,7 @@ const ActivityLayout = () => {
 
         <NextUIProvider>
             <Suspense>
-                <div className="sticky top-0 w-full bg-[#000] py-6 Gemsbuck">
+                <div className="sticky top-0 w-full bg-[#000] py-6 Gemsbuck z-[3]">
                     <div className="w-full max-w-[1240px] mx-auto">
                         <Header />
                     </div>
