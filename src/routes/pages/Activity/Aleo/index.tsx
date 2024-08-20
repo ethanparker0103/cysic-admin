@@ -6,6 +6,7 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import clsx from "clsx";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { toast } from "react-toastify";
 import { useAccount, useSignMessage } from "wagmi";
 
@@ -56,7 +57,7 @@ const Aleo = () => {
 
     const handleClick = async () => {
         try {
-            if(!address){
+            if (!address) {
                 open?.()
                 return;
             }
@@ -98,41 +99,68 @@ const Aleo = () => {
             <div className="relative" style={{ height: "calc(100vh - 88px)" }}>
                 <div className="flex flex-col gap-[3.5rem] relative z-[2] pt-14">
                     <div className="flex flex-col gap-3 items-center">
-                        <div className="flex items-center gap-4 text-[64px] font-[400]">
+                        <div className={clsx("flex items-center gap-4 font-[400]", isMobile ? "text-[40px]" : "text-[64px]")}>
                             <div className="linear-content uppercase Gemsbuck">Cysic</div>
                             <div className="uppercase Gemsbuck">bind</div>
                         </div>
-                        <div className="Gemsbuck text-[20px] font-[400] text-[#A1A1AA]">
+                        <div className={clsx("Gemsbuck font-[400] text-[#A1A1AA] text-center", isMobile ? "text-base" : "text-[20px]")}>
                             Claim Cysic Whitelist Exclusive Reduced Pool Rate
                         </div>
                     </div>
-                    <div className="flex flex-col gap-4 max-w-[800px] mx-auto w-full">
-                        <div className="text-lg font-[400] text-[#fff]">
+                    <div className={clsx("flex flex-col gap-4 max-w-[800px] mx-auto w-full", isMobile ? "items-center" : "")}>
+                        <div className={clsx("font-[400] text-[#fff]", isMobile ? "text-sm" : "text-lg")}>
                             Enter a Aleo address to bind
                         </div>
-                        <div className={clsx("flex border border-[transparent] rounded-[12px] overflow-hidden", focus ? 'border-[#00F0FF]' : '')}>
-                            <Input
-                                value={value}
-                                onValueChange={setValue}
-                                onFocus={handleFocus}
-                                onBlur={handleBlur}
-                                classNames={{
-                                    input: "flex-1 !pl-3 !pr-5 !py-[1.125rem]",
-                                    innerWrapper: "bg-transparent",
-                                    inputWrapper: ['!rounded-[12px] overflow-hidden !h-fit !p-0 focus:border-[#00F0FF] border border-[transparent]']
-                                }}
-                                placeholder="Enter Aleo address (aleo1... format)"
-                                endContent={<Button isLoading={loading} className=" cursor-pointer !h-fit gradient " onClick={handleClick}>
-                                    <div className="!px-5 !py-[1.125rem] text-[20px] font-[500] text-[#000] Gemsbuck">{address ? 'Sign With Wallet' : 'Connect Wallet'}</div>
-                                </Button>}
-                                startContent={
-                                    <div className="pl-5">
-                                        <SearchIcon className="text-[#FFFFFF73] mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
-                                    </div>
+                        <div className={clsx("flex border border-[transparent] rounded-[12px] overflow-hidden", isMobile ? "w-full px-4" : focus ? 'border-[#00F0FF]' : '')}>
+                            {
+                                isMobile ? (
+                                    <Input
+                                        value={value}
+                                        onValueChange={setValue}
+                                        onFocus={handleFocus}
+                                        onBlur={handleBlur}
+                                        classNames={{
+                                            input: "flex-1 !pl-3 !pr-5 !py-[1.125rem]",
+                                            innerWrapper: "bg-transparent",
+                                            inputWrapper: ['!bg-[transparent] !rounded-[12px] overflow-hidden !h-fit !p-0 border-[#00F0FF] border']
+                                        }}
+                                        placeholder="Enter Aleo address (aleo1... format)"
+                                        startContent={
+                                            <div className="pl-5">
+                                                <SearchIcon className="text-[#FFFFFF73] mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                                            </div>
 
-                                }
-                            />
+                                        }
+                                    />
+                                ) : (<Input
+                                    value={value}
+                                    onValueChange={setValue}
+                                    onFocus={handleFocus}
+                                    onBlur={handleBlur}
+                                    classNames={{
+                                        input: "flex-1 !pl-3 !pr-5 !py-[1.125rem]",
+                                        innerWrapper: "bg-transparent",
+                                        inputWrapper: ['!rounded-[12px] overflow-hidden !h-fit !p-0 focus:border-[#00F0FF] border border-[transparent]']
+                                    }}
+                                    placeholder="Enter Aleo address (aleo1... format)"
+                                    endContent={<Button isLoading={loading} className=" cursor-pointer !h-fit gradient " onClick={handleClick}>
+                                        <div className="!px-5 !py-[1.125rem] text-[20px] font-[500] text-[#000] Gemsbuck">{address ? 'Sign With Wallet' : 'Connect Wallet'}</div>
+                                    </Button>}
+                                    startContent={
+                                        <div className="pl-5">
+                                            <SearchIcon className="text-[#FFFFFF73] mb-0.5 dark:text-white/90 text-slate-400 pointer-events-none flex-shrink-0" />
+                                        </div>
+
+                                    }
+                                />)
+                            }
+
                         </div>
+                        {
+                            isMobile ? (<Button isLoading={loading} className="mt-4 cursor-pointer !h-fit gradient " onClick={handleClick}>
+                                <div className="!px-5 !py-3 text-base font-[500] text-[#000] Gemsbuck">{address ? 'Sign With Wallet' : 'Connect Wallet'}</div>
+                            </Button>) : null
+                        }
                     </div>
                 </div>
                 <div className="absolute bottom-0 z-[0]">

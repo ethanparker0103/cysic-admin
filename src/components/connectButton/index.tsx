@@ -125,7 +125,7 @@ export default function ConnectButton({className, content}: any) {
             src={connector?.icon || getImageUrl(`@/assets/images/wallet/${connector?.id}.svg`)}
           />
           <span className="text-sm font-[500]">
-            {shortStr(address as string, isMobile ? 4 : 10)}
+            {shortStr(address as string, isMobile ? 6 : 10)}
           </span>
         </div>
       </div>
