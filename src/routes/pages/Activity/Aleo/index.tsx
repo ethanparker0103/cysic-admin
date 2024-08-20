@@ -1,6 +1,7 @@
 import { SearchIcon } from "@/routes/components/Search";
 import { getImageUrl } from "@/utils/tools";
 import { Button, Input } from "@nextui-org/react";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import clsx from "clsx";
@@ -15,6 +16,7 @@ const mock = {
 }
 
 const Aleo = () => {
+    const { openConnectModal: open } = useConnectModal();
     const { signMessageAsync } = useSignMessage()
     const { address } = useAccount()
     const [value, setValue] = useState('')
@@ -54,6 +56,10 @@ const Aleo = () => {
 
     const handleClick = async () => {
         try {
+            if(!address){
+                open?.()
+                return;
+            }
             if (!value || !address) return;
             setLoading(true)
             const signature = await signMessageAsync({ message: value })
@@ -116,8 +122,8 @@ const Aleo = () => {
                                     inputWrapper: ['!rounded-[12px] overflow-hidden !h-fit !p-0 focus:border-[#00F0FF] border border-[transparent]']
                                 }}
                                 placeholder="Enter Aleo address (aleo1... format)"
-                                endContent={<Button isLoading={loading} className=" cursor-pointer !h-fit gradient " onClick={handleClick} disabled={!value || !address}>
-                                    <div className="!px-5 !py-[1.125rem] text-[20px] font-[500] text-[#000] Gemsbuck">Sign With Wallet</div>
+                                endContent={<Button isLoading={loading} className=" cursor-pointer !h-fit gradient " onClick={handleClick}>
+                                    <div className="!px-5 !py-[1.125rem] text-[20px] font-[500] text-[#000] Gemsbuck">{address ? 'Sign With Wallet' : 'Connect Wallet'}</div>
                                 </Button>}
                                 startContent={
                                     <div className="pl-5">
