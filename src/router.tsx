@@ -17,6 +17,8 @@ import ProjectDetail from "@/routes/pages/Dashboard/Project/Detail";
 import Task from "@/routes/pages/Dashboard/Task";
 import TaskDetail from "@/routes/pages/Dashboard/Task/Detail";
 import My from "@/routes/pages/Dashboard/My";
+import ActivityLayout from "@/routes/layout/ActivityLayout/inidex";
+import Aleo from "@/routes/pages/Activity/Aleo";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -98,6 +100,16 @@ export const router = createBrowserRouter([
                         path: 'test',
                         element: <Test />
                     }
+                ],
+            },
+            {
+                path: "/bind_aleo_whitelist",
+                element: <ActivityLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Aleo />
+                    },
                 ],
             },
         ],

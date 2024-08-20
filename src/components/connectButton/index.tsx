@@ -12,7 +12,7 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 
-export default function ConnectButton({className}: any) {
+export default function ConnectButton({className, content}: any) {
   const { t } = useTranslation();
 
   const { address, isConnected, isConnecting, chain, chainId, connector } = useAccount();
@@ -142,7 +142,10 @@ export default function ConnectButton({className}: any) {
       className={clsx("!min-h-10 !h-10 w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] py-[0.625rem] px-4", className)}
     >
       {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
-      <span className="text-sm font-[500]">{t('Connect Wallet')}</span>
+      {
+        content || <span className="text-sm font-[500]">{t('Connect Wallet')}</span>
+      }
+      
     </Button>
   );
 }
