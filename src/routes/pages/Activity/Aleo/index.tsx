@@ -54,7 +54,7 @@ const Aleo = () => {
 
     const handleClick = async () => {
         try {
-            if (!value) return;
+            if (!value || !address) return;
             setLoading(true)
             const signature = await signMessageAsync({ message: value })
 
