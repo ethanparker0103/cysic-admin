@@ -9,6 +9,7 @@ import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { toast } from "react-toastify";
 import { useAccount, useSignMessage } from "wagmi";
+import { Helmet } from "react-helmet";
 
 const mock = {
     "cysic_address": "0xf761f43501ebfb391cd9d8b8d798f7bf48468d73",
@@ -81,6 +82,9 @@ const Aleo = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Cysic Bind</title>
+            </Helmet>
             <style>
                 {`
             .linear-content {
