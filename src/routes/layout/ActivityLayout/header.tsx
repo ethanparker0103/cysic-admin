@@ -28,11 +28,11 @@ const Header = () => {
                 />
             </a>
             <div className={clsx("flex items-center", isMobile ? "gap-2" : "gap-6")}>
-                <a href="/" target="_blank" className={clsx("text-sm font-[500] rounded-[8px] gradient-border bg-[#000] px-3 flex items-center justify-center", isMobile ? "h-8" : "h-10")}>
-                    <div className={clsx("flex items-center gap-1", isMobile?"text-[#fff]":"text-[#00F0FF]")}>
+                <a href="/m/bind_aleo_whitelist" target="_blank" className={clsx("text-sm font-[500] rounded-[8px] gradient-border bg-[#000] flex items-center justify-center", isMobile ? "h-8 px-1" : "h-10 px-3")}>
+                    <div className={clsx("flex items-center", isMobile?"text-[#fff]":"text-[#00F0FF] gap-1")}>
                         <span className={clsx("font-[500]", isMobile ? "text-xs " : "text-sm ")}>Join Whitelist</span>
                         {/* <Image className="size-4" src={getImageUrl('@/assets/images/dashboard/share.svg')} /> */}
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" className={clsx(isMobile ? "size-4" : "")}>
                             <path fillRule="evenodd" clipRule="evenodd" d="M14.449 14.8842C14.7942 14.8842 15.074 14.6044 15.074 14.2592L15.0737 6.00941C15.0737 5.66669 14.7977 5.3879 14.455 5.38447L6.12191 5.3009C5.77675 5.29744 5.49413 5.57444 5.49067 5.9196C5.48721 6.26476 5.76421 6.54738 6.10937 6.55084L12.9548 6.61948L5.16798 14.4063C4.9239 14.6504 4.9239 15.0461 5.16798 15.2902C5.41205 15.5343 5.80778 15.5343 6.05186 15.2902L13.8238 7.51827L13.824 14.2592C13.824 14.6044 14.1038 14.8842 14.449 14.8842Z" fill="currentColor" />
                         </svg>
 
