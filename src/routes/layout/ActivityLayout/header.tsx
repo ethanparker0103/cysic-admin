@@ -28,7 +28,7 @@ const Header = () => {
                 />
             </a>
             <div className={clsx("flex items-center", isMobile ? "gap-2" : "gap-6")}>
-                <a href="/m/aleopool" target="_blank" className={clsx("text-sm font-[500] rounded-[8px] gradient-border bg-[#000] flex items-center justify-center", isMobile ? "h-8 px-1" : "h-10 px-3")}>
+                <a href="https://medium.com/@cysic/incentivized-testnet-phase-1-stage-2-cysic-aleo-mining-pool-launch-3ebe89e4573b" target="_blank" className={clsx("text-sm font-[500] rounded-[8px] gradient-border bg-[#000] flex items-center justify-center", isMobile ? "h-8 px-1" : "h-10 px-3")}>
                     <div className={clsx("flex items-center", isMobile?"text-[#fff]":"text-[#00F0FF] gap-1")}>
                         <span className={clsx("font-[500]", isMobile ? "text-xs " : "text-sm ")}>Join Whitelist</span>
                         {/* <Image className="size-4" src={getImageUrl('@/assets/images/dashboard/share.svg')} /> */}
