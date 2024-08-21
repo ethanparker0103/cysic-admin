@@ -103,7 +103,7 @@ export const router = createBrowserRouter([
                 ],
             },
             {
-                path: "/bind_aleo_whitelist",
+                path: "/aleopool",
                 element: <ActivityLayout />,
                 children: [
                     {
