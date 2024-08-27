@@ -181,9 +181,9 @@ const Search = () => {
                                             <span className="text-[#FF401A] scale-[0.83] origin-left">{ searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
                                         </div>
                                     </div>
-                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
+                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="scale-[0.83] origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
                                         <div className="relative z-[3] flex items-center gap-1">
-                                            <span className="scale-[0.83]">{searchInfo?.needRegister ? 'Register Now' : searchInfo?.notInWhitelist ? 'Join Discord' : ''}</span>
+                                            <span className="">{searchInfo?.needRegister ? 'Register Now' : searchInfo?.notInWhitelist ? 'Join Discord' : ''}</span>
                                             <svg className="size-[14px]" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fillRule="evenodd" clipRule="evenodd" d="M14.449 14.8842C14.7942 14.8842 15.074 14.6044 15.074 14.2592L15.0737 6.00941C15.0737 5.66669 14.7977 5.3879 14.455 5.38447L6.12191 5.3009C5.77675 5.29744 5.49413 5.57444 5.49067 5.9196C5.48721 6.26476 5.76421 6.54738 6.10937 6.55084L12.9548 6.61948L5.16798 14.4063C4.9239 14.6504 4.9239 15.0461 5.16798 15.2902C5.41205 15.5343 5.80778 15.5343 6.05186 15.2902L13.8238 7.51827L13.824 14.2592C13.824 14.6044 14.1038 14.8842 14.449 14.8842Z" fill="currentColor" />
                                             </svg>
