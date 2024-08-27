@@ -10,11 +10,12 @@ const MainDetail = ({ displayBonus, worker_cosmos, prover_cosmos, verifier_cosmo
   const { t } = useTranslation()
 
   const in_whitelist = props?.in_whitelist
+  const is_activated = props?.is_activated
 
   return (
     <div className={clsx(isMobile ? "px-4 py-6" : "p-8", "flex gap-8 rounded-[16px] border border-[#FFFFFF33] shadow-[0px_4px_0px_0px_#000000]")}>
       <BrowserView>
-        <Image text={name?.[0]} src={logo} className="size-16" />
+        <Image text={name?.[0]} src={logo} className="size-16 rounded-full" />
       </BrowserView>
       <div className="flex flex-col gap-2">
         <div className="flex items-start gap-10 py-2">
@@ -142,6 +143,15 @@ const MainDetail = ({ displayBonus, worker_cosmos, prover_cosmos, verifier_cosmo
             </div>
           </div>
         ) : null}
+
+        {
+          is_activated !== undefined ? (<div className="flex items-start gap-10 py-2">
+            <span className={clsx(isMobile ? "w-[25%]" : "min-w-40")}>{t('Activated')}</span>
+            <div className="flex items-center gap-2">
+              <span>{is_activated ? 'Accepted' : 'Pending'}</span>
+            </div>
+          </div>) : null
+        }
 
 
 

@@ -58,3 +58,30 @@ body {
     width: 100%;
     border-radius: 8px;
 }
+
+.basic-bg-gradient{
+    position: relative;
+}
+.basic-bg-gradient:after{
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    /* background: linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%); */
+    background: linear-gradient(106.25deg, rgba(154, 75, 254, 0.2) 0%, rgba(28, 214, 255, 0.2) 30.99%, rgba(27, 254, 223, 0.2) 97.85%);
+
+}
+
+
+.gradient-border {
+    overflow: hidden;
+    border: 1px solid transparent;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image: linear-gradient(to right, #000, #000), linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+}

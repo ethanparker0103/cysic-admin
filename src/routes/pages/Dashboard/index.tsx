@@ -327,7 +327,7 @@ const Dashboard = () => {
         <div
           className={clsx(
             isMobile ? "py-6 px-4 gap-4" : "p-8 gap-6",
-            "flex flex-col border border-[#FFFFFF33] rounded-[24px] shadow-[0px_4px_0px_0px_#000000]"
+            "flex flex-col border border-[#FFFFFF33] rounded-[24px] shadow-[0px_4px_0px_0px_#000000] [&>div]:!border-none [&>div]:!p-0"
           )}
         >
           <Tabs
