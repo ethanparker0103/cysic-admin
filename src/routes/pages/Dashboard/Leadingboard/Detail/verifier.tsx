@@ -99,8 +99,10 @@ const VerifierTable = () => {
     }
   );
 
-  const tableData = taskList?.data?.list;
-
+  const self = taskList?.data?.target
+  const list = taskList?.data?.list || []
+  const tableData = (self?.ID != 0) ? [self, ...list] : list;
+  
   const rows = tableData || [];
 
   const columns = [
