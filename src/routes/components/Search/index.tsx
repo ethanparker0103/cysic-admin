@@ -179,10 +179,10 @@ const Search = () => {
                                                 </g>
                                             </svg>
 
-                                            <span className="text-[#FF401A] scale-[0.83] origin-left">{searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
+                                            <span className="text-[#FF401A] origin-left">{searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
                                         </div>
                                     </div>
-                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="scale-[0.83] origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
+                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
                                         <div className="relative z-[3] flex items-center gap-1">
                                             <span className="">{searchInfo?.needRegister ? 'Register Now' : searchInfo?.notInWhitelist ? 'Join Discord' : ''}</span>
                                             <svg className="size-[14px]" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
