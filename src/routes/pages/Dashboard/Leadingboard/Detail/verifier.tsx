@@ -115,7 +115,7 @@ const VerifierTable = () => {
       label: "Profile",
     },
     {
-      key: "verifier",
+      key: "claim_reward_address",
       label: "Verifier Address",
     },
     {
