@@ -10,7 +10,10 @@ const MainDetail = ({ displayBonus, worker_cosmos, prover_cosmos, verifier_cosmo
   const { t } = useTranslation()
 
   const in_whitelist = props?.in_whitelist
-  const is_activated = props?.is_activated
+  // verifier.ID == 0 => 注册
+  // verifier.verifier_id == 0 => 已注册&链上待确认
+  // verifier.verifier_id != 0 => accepted
+  const is_activated = props?.ID == 0 ? undefined : props?.verifier_id !=0
 
   return (
     <div className={clsx(isMobile ? "px-4 py-6" : "p-8", "flex gap-8 rounded-[16px] border border-[#FFFFFF33] shadow-[0px_4px_0px_0px_#000000]")}>
