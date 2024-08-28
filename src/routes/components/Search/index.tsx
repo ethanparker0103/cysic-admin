@@ -72,11 +72,12 @@ const Search = () => {
             console.log('res', res?.data)
             const data = res?.data;
 
-            const project = formatArray(data?.project)?.filter(i => i?.worker)
-            const provider = formatArray(data?.provider)?.filter(i => i?.prover)
-            const verifier = formatArray(data?.verifier)?.filter(i => i?.verifier)
+            const project = formatArray(data?.project)?.filter(i => i?.ID)
+            const provider = formatArray(data?.provider)?.filter(i => i?.ID)
+            const verifier = formatArray(data?.verifier)?.filter(i => i?.ID)
 
             const registered = project?.find(i => i.ID != 0) || provider?.find(i => i.ID != 0) || verifier?.find(i => i.ID != 0)
+
             const needRegister = !registered
             const notInWhitelist = !data?.inWhitelist
 
@@ -163,7 +164,7 @@ const Search = () => {
                     searchContainerVisible ? <div className="overflow-auto p-4 absolute top-10 w-full h-[50vh] bg-[#10141A] rounded-b-[8px] flex flex-col gap-4">
                         <div className="flex flex-col gap-3">
                             {
-                                (searchInfo?.needRegister || searchInfo?.notInWhitelist) ? (<div className="text-xs flex items-center justify-between">
+                                (addr && (searchInfo?.needRegister || searchInfo?.notInWhitelist)) ? (<div className="text-xs flex items-center justify-between">
                                     <div className="flex flex-col ">
                                         <span className="">{addr}</span>
                                         <div className="flex items-center gap-1">
@@ -178,7 +179,7 @@ const Search = () => {
                                                 </g>
                                             </svg>
 
-                                            <span className="text-[#FF401A] scale-[0.83] origin-left">{ searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
+                                            <span className="text-[#FF401A] scale-[0.83] origin-left">{searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
                                         </div>
                                     </div>
                                     <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="scale-[0.83] origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
@@ -193,7 +194,7 @@ const Search = () => {
                                 </div>) : null
                             }
 
-                         
+
                             <div className="text-xs text-[#fff]">Prover</div>
                             <div>{searchInfo?.provider?.length ? (<div>
                                 {searchInfo?.provider?.map((i, index) => {

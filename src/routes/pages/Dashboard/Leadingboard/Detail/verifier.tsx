@@ -74,7 +74,7 @@ const defaultSortKey = sortKkey.sum
 const VerifierTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount()
-  // const address = "0x098acAbdfC81EDc954388022AF2284aFAacFd526";
+  // const address = "0x2036EbaC9982C10b93b247Dc9eeEFF66893B3309";
 
   const {
     data: taskList,
@@ -85,7 +85,7 @@ const VerifierTable = () => {
     (page: number) => {
       // return Promise.resolve(mock);
 
-      return axios.get(`/api/v1/verifier/taskList/byAddr/${address}`, {
+      return axios.get(`/api/v1/leaderboard/verifier/list`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
@@ -133,10 +133,10 @@ const VerifierTable = () => {
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
       case "rank":
-        const ifSelf = item?.verifier?.toLowerCase() == address?.toLowerCase()
-        const imgName = `@/assets/images/leadingboard/rank${item?.rank}.svg`
+        const ifSelf = item?.claim_reward_address?.toLowerCase() == address?.toLowerCase()
+        const imgName = `@/assets/images/leadingboard/rank${+item?.rank+1}.svg`
         return <div className="flex items-center">
-          <div>{[1, 2, 3].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank}`}</div>
+          <div>{[0, 1, 2].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank}`}</div>
           {ifSelf ? <GradientContainer className="scale-[0.83] px-1 rounded-[6px] basic-bg-gradient">
             <div className="text-xs italic">You</div>
           </GradientContainer> : null}
@@ -225,7 +225,7 @@ const VerifierTable = () => {
         </TableHeader>
         <TableBody items={rows}>
           {(item: any) => {
-            const ifSelf = item?.verifier?.toLowerCase() == address?.toLowerCase()
+            const ifSelf = item?.claim_reward_address?.toLowerCase() == address?.toLowerCase()
             return (
               <TableRow key={item?.ID} className={ifSelf ? 'self-addr-bg' : ''}>
                 {(columnKey) => (
