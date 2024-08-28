@@ -5,7 +5,7 @@ import { isMobile } from "react-device-detect";
 
 const Leadingboard = () => {
     return (
-        <MainContainer title="Leadingboard">
+        <MainContainer title="Leader board">
             <>
                 <div className={clsx(isMobile ? "" : "p-4", "shadow-[0px_4px_0px_0px_#000000] border-[#000] border rounded-[14px]")}>
                     <Detail />

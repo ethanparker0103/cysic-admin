@@ -199,7 +199,7 @@ export const dashboardNavs_ = [
   },
   {
     prefix: <LeadingBoard className="size-6 scale-[1.3]" />,
-    text: "Leadingboard",
+    text: "Leaderboard",
     link: "/dashboard/leadingboard",
   },
   
