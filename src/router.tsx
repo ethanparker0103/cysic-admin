@@ -19,6 +19,7 @@ import TaskDetail from "@/routes/pages/Dashboard/Task/Detail";
 import My from "@/routes/pages/Dashboard/My";
 import ActivityLayout from "@/routes/layout/ActivityLayout/inidex";
 import Aleo from "@/routes/pages/Activity/Aleo";
+import Leadingboard from "@/routes/pages/Dashboard/Leadingboard";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'task/:id',
                         element: <TaskDetail />,
+                    },
+                    {
+                        path: 'leadingboard',
+                        element: <Leadingboard />,
                     }
                 ]
             },

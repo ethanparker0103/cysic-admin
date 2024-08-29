@@ -119,6 +119,10 @@ const VerifierDetail = () => {
       label: "Result",
     },
     {
+      key: "reward_amount",
+      label: "Reward",
+    },
+    {
       key: "action",
       label: "Detail",
     },
@@ -126,6 +130,8 @@ const VerifierDetail = () => {
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
+      case "reward_amount":
+        return (item?.task_status?.toString() == '100' ? (getKeyValue(item, columnKey) || 0) : '-')
       case "action":
         return (
           <Link
