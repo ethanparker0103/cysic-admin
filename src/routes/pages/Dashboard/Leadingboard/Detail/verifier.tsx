@@ -74,7 +74,7 @@ const defaultSortKey = sortKkey.sum
 const VerifierTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount()
-  // const address = "0x2036EbaC9982C10b93b247Dc9eeEFF66893B3309";
+  // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
 
   const {
     data: taskList,
@@ -100,6 +100,8 @@ const VerifierTable = () => {
   );
 
   const self = taskList?.data?.target
+  const selfId = self?.ID+'_'+self?.verifier_id
+
   const list = taskList?.data?.list || []
   const tableData = (self?.ID != 0) ? [self, ...list] : list;
   
@@ -135,7 +137,7 @@ const VerifierTable = () => {
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
       case "rank":
-        const ifSelf = item?.claim_reward_address?.toLowerCase() == address?.toLowerCase()
+        const ifSelf = selfId == (item?.ID+'_'+item?.verifier_id)
         const imgName = `@/assets/images/leadingboard/rank${+item?.rank+1}.svg`
         return <div className="flex items-center">
           <div>{[0, 1, 2].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank}`}</div>
@@ -227,7 +229,7 @@ const VerifierTable = () => {
         </TableHeader>
         <TableBody items={rows}>
           {(item: any) => {
-            const ifSelf = item?.claim_reward_address?.toLowerCase() == address?.toLowerCase()
+            const ifSelf = selfId == (item?.ID+'_'+item?.verifier_id)
             return (
               <TableRow key={item?.ID} className={ifSelf ? 'self-addr-bg' : ''}>
                 {(columnKey) => (
