@@ -17,6 +17,7 @@ axios.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
+    console.log('response', response)
     if(response?.data?.code != 10000){
         throw {
             ...response?.data,
