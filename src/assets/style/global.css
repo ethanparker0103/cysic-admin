@@ -77,6 +77,9 @@ body {
 
 }
 
+.gradient-bg{
+    background: linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+}
 
 .gradient-border {
     overflow: hidden;
