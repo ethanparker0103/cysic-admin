@@ -20,6 +20,7 @@ import My from "@/routes/pages/Dashboard/My";
 import ActivityLayout from "@/routes/layout/ActivityLayout/inidex";
 import Aleo from "@/routes/pages/Activity/Aleo";
 import Leadingboard from "@/routes/pages/Dashboard/Leadingboard";
+import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -78,6 +79,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'leadingboard',
                         element: <Leadingboard />,
+                    },
+                    {
+                        path: 'socialTasks',
+                        element: <SocialTasks />,
                     }
                 ]
             },
