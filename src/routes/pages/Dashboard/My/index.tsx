@@ -24,7 +24,7 @@ const MainCard = (props: any) => {
   return (
     <div
       className={clsx(
-        isMobile ? "w-full px-5 py-4" : "min-h-[152px] flex-1 px-6 py-6",
+        isMobile ? "w-full px-5 py-4" : "self-stretch min-h-[152px] flex-1 px-6 py-6",
         " flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
       )}
       style={{
@@ -41,7 +41,7 @@ const MainCard = (props: any) => {
           {typeof props?.title == "string" ? t(props?.title) : props?.title}
         </span>
       </div>
-      <div className="text-[24px] text-[#fff] font-bold">{props?.children}</div>
+      <div className="text-[24px] text-[#fff] font-bold flex-1">{props?.children}</div>
     </div>
   );
 };
@@ -58,7 +58,7 @@ const Overview = () => {
   const { address } = useAccount();
   // const address = '0x098acAbdfC81EDc954388022AF2284aFAacFd526'
   const [userInfo, setUserInfo] = useState<any>({});
-
+  
   useRequest(
     async () => {
       if (!address) return;
@@ -91,6 +91,8 @@ const Overview = () => {
   const avg_point_activity = BigNumber(userInfo?.avg_point_activity || 0).toString()
 
   const avg_task_completion = BigNumber(userInfo?.avg_task_completion || 0).toString()
+
+  const social_task_points = BigNumber(userInfo?.social_task_points||0).toString()
   return (
     <div className={isMobile ? "flex flex-col gap-3" : "flex items-center gap-3"}>
       <MainCard>
@@ -124,23 +126,32 @@ const Overview = () => {
               </div>
 
             </div>
+
+            <div className="flex flex-col gap-1 bg-[#FFFFFF0D] p-3 rounded-[12px]">
+              <div className="flex items-center justify-between">
+                <span className="text-[#fff] text-base font-[500]">Social Task</span>
+                <div className="text-[#fff] text-base font-[500]">{format(social_task_points)}</div>
+              </div>
+
+            </div>
+            
           </div>
         </div>
       </MainCard>
       <MainCard>
-        <div className="flex flex-col gap-6 min-h-[250px]">
+        <div className="flex flex-col gap-6 min-h-[250px] h-full">
           <div className="flex flex-col gap-1 text-lg">
             <span className="font-[400]">My Task Completion</span>
             <span className="font-[600] text-[#00F0FF] text-[40px]">{format(totalTask)}</span>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-col gap-1 bg-[#FFFFFF0D] px-3 py-6 rounded-[12px]">
+          <div className="flex flex-col gap-2 flex-1">
+            <div className="flex-1 justify-center flex flex-col gap-1 bg-[#FFFFFF0D] px-3 py-6 rounded-[12px]">
               <div className="flex items-center justify-between">
                 <span className="text-[#fff] text-base font-[500]">Prover</span>
                 <div className="text-[#fff] text-base font-[500]">{format(proveTask)}</div>
               </div>
             </div>
-            <div className="flex flex-col gap-1 bg-[#FFFFFF0D] px-3 py-6 rounded-[12px]">
+            <div className="flex-1 justify-center flex flex-col gap-1 bg-[#FFFFFF0D] px-3 py-6 rounded-[12px]">
               <div className="flex items-center justify-between">
                 <span className="text-[#fff] text-base font-[500]">Verifier</span>
                 <div className="text-[#fff] text-base font-[500]">{format(verifierTask)}</div>
@@ -150,12 +161,12 @@ const Overview = () => {
         </div>
       </MainCard>
       <MainCard>
-        <div className="flex flex-col gap-4 min-h-[250px]">
+        <div className="flex flex-col gap-4 min-h-[250px] h-full">
           <div className="flex items-center gap-2 text-lg">
             <span className="font-[400]">Overview</span>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-2 bg-[#FFFFFF0D] p-3 rounded-[12px]">
+          <div className="flex flex-col gap-3 flex-1">
+            <div className="flex-1 flex flex-col gap-2 bg-[#FFFFFF0D] p-3 rounded-[12px]">
               <div className="text-base font-[500]">Average Completion Verifier</div>
               <div className="flex items-center justify-between">
                 <span className="text-[#A3A3A3] text-sm font-[500]">Verification</span>
@@ -163,7 +174,7 @@ const Overview = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 bg-[#FFFFFF0D] p-3 rounded-[12px]">
+            <div className="flex-1 flex flex-col gap-2 bg-[#FFFFFF0D] p-3 rounded-[12px]">
               <div className="text-base font-[500]">Average Rewards Verifier</div>
               <div className="flex items-center justify-between">
                 <span className="text-[#A3A3A3] text-sm font-[500]">Verification</span>
