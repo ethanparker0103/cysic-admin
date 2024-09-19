@@ -18,10 +18,6 @@ const TaskItem = ({ taskTypeId, finishedTaskIDs, row }: any) => {
     const handleClick = async (closeLoading?: any) => {
         try {
             const res: any = await axios.put(`/api/v1/socialTask/claim/${row?.ID}/${address}`)
-            if (res?.code != '10000') {
-                toast.error(res?.msg)
-                return
-            }
             if(!res?.data?.finish){
                 toast.error('Unfinished')
                 return
