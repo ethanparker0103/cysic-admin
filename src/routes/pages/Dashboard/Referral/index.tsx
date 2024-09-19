@@ -11,11 +11,12 @@ import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 
 const Referral = () => {
+    const [forceSubmit, setForceSubmit] = useState(false)
     const [searchParams] = useSearchParams()
     const codeFromUrl = searchParams.get('code')
 
-    useEffect(()=>{
-        if(codeFromUrl){
+    useEffect(() => {
+        if (codeFromUrl) {
             setBindCode(codeFromUrl)
         }
     }, [codeFromUrl])
@@ -39,10 +40,9 @@ const Referral = () => {
 
     const handleBindCode = async (closeLoading?: any) => {
         try {
-            if(!address) throw 'Invalid Address'
-            const res: any = await axios.get(`/api/v1/socialTask/referral/bind/${bindCode}/${address}`)
-            console.log('res', res)
-            if(res?.code != '10000'){
+            if (!address) throw 'Invalid Address'
+            const res: any = await axios.put(`/api/v1/socialTask/referral/bind/${bindCode}/${address}`)
+            if (res?.code != '10000') {
                 toast.error(res?.msg)
             }
 
@@ -62,7 +62,8 @@ const Referral = () => {
                         <div>Account: <span className="text-[#21E9FA]">{address}</span></div>
                         <div>Referral Code: <span className="text-[#21E9FA]">{referralCode}</span></div>
                         <div>Current Account Status: <span className="text-[#21E9FA]">{currentStatus ? 'Binded' : 'Not Binded'}</span></div>
-                        <Input placeholder="Input Referral Code" type="solid" value={bindCode} onChange={setBindCode} disabled={currentStatus} suffix={<Button className="min-h-fit h-8" needLoading onClick={handleBindCode} disabled={currentStatus || !bindCode} >Bind</Button>}></Input>
+                        <Input placeholder="Input Referral Code" type="solid" value={bindCode} onChange={setBindCode} disabled={forceSubmit ? false : currentStatus} suffix={<Button className="min-h-fit h-8" needLoading onClick={handleBindCode} disabled={forceSubmit ? false : (currentStatus || !bindCode)} >Bind</Button>}></Input>
+                        <Button onClick={()=>setForceSubmit(old=>!old)}>{ forceSubmit ? 'Normal' : 'Debug' }</Button>
                     </div>
                 </div>
             </>
