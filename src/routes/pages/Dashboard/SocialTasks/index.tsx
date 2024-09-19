@@ -10,7 +10,6 @@ const SocialTasks = () => {
     const { address } = useAccount()
     
     const {data} = useRequest(()=>{
-        return Promise.resolve(types)
         return axios.get(`/api/v1/socialTask/types`)
     })
 
