@@ -165,6 +165,13 @@ const LeadingBoard = (props?: any) => {
   
 }
 
+const Referral = (props?: any)=>{
+  return <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <path fillRule="evenodd" clipRule="evenodd" d="M5 4.00012C5.55228 4.00012 6 4.44784 6 5.00012V5.25012H13C14.2588 5.25012 15.32 6.09587 15.6465 7.25012H19.25C20.7688 7.25012 22 8.48134 22 10.0001V16.0001C22 17.5189 20.7688 18.7501 19.25 18.7501H12.5C11.2574 18.7501 10.25 17.7428 10.25 16.5001V15.7501H6V21.0001C6 21.5524 5.55228 22.0001 5 22.0001C4.44772 22.0001 4 21.5524 4 21.0001V5.00012C4 4.44784 4.44772 4.00012 5 4.00012ZM11.75 15.7501V16.5001C11.75 16.9143 12.0858 17.2501 12.5 17.2501H19.25C19.9404 17.2501 20.5 16.6905 20.5 16.0001V10.0001C20.5 9.30977 19.9404 8.75012 19.25 8.75012H15.75V13.5001C15.75 14.7428 14.7426 15.7501 13.5 15.7501H11.75ZM6 14.2501V6.75012H13C13.6904 6.75012 14.25 7.30977 14.25 8.00012V13.5001C14.25 13.9143 13.9142 14.2501 13.5 14.2501H6Z" fill="currentColor"/>
+  </svg>
+  
+}
+
 export const dashboardNavs_ = [
   {
     prefix: <Hero className="size-6" />,
@@ -201,6 +208,11 @@ export const dashboardNavs_ = [
     prefix: <LeadingBoard className="size-6 scale-[1.3]" />,
     text: "Leaderboard",
     link: "/dashboard/leadingboard",
+  },
+  {
+    prefix: <Referral className="size-6 scale-[1.3]" />,
+    text: "Invite",
+    link: "/dashboard/referral",
   },
   
 ];
