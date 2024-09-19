@@ -42,10 +42,13 @@ const Referral = () => {
         try {
             if (!address) throw 'Invalid Address'
             const res: any = await axios.put(`/api/v1/socialTask/referral/bind/${bindCode}/${address}`)
-            if (res?.code != '10000') {
-                toast.error(res?.msg)
+            
+            if(!res?.data?.bind){
+                toast.error('Failed')
+                return
             }
 
+            toast.success('Success')
             run?.()
 
         } catch (e: any) {
