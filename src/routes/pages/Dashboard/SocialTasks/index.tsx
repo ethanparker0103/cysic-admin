@@ -22,6 +22,10 @@ const TaskItem = ({ taskTypeId, finishedTaskIDs, row }: any) => {
                 toast.error(res?.msg)
                 return
             }
+            if(!res?.data?.finish){
+                toast.error('Unfinished')
+                return
+            }
             toast.success('finished')
             dispatchEvent(new CustomEvent('refreshSocialTaskList', {
                 detail: {
