@@ -2,9 +2,9 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dayjs from "dayjs";
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAccount, useSignMessage } from "wagmi";
 import axios from '@/service'
 // import queryString from 'qs'
 import { defaultChainId, mainUrl } from "@/config";
@@ -87,8 +87,24 @@ const Verify = () => {
     }
   }
 
+
+  const [ifInWL, setIfInWL] = useState<undefined | boolean>(undefined)
+  const { run } = useRequest(() => axios.get(`/api/v1/dashboard/queryByReward/${address}`), {
+    manual: true,
+    onSuccess(e) {
+      setIfInWL(e?.data?.inWhitelist)
+
+    }
+  })
+
+  const handleCheckWhitelist = async () => {
+    if (!address) return null
+    run()
+  }
+
   const handleSubmit = async () => {
     try {
+      setIfInWL(undefined)
       const timestamp = +dayjs().unix()
       const message = `${JSON.stringify(formValue)}${defaultChainId}${timestamp}`
       console.log('message', message)
@@ -100,21 +116,20 @@ const Verify = () => {
         ['X-cysis-timestamp']: timestamp,
         ['X-cysis-chain-id']: defaultChainId
       }
-      // todo axios
       await axios.post('/api/v1/verifier', {
         ...formValue,
       }, {
         headers: header
       })
-      // config.headers['X-cysis-wallet'] = address
-      // config.headers['X-cysis-signature'] = sig
-      // config.headers['X-cysis-timestamp'] = timestamp
+
+      // 检查白名单
+      await handleCheckWhitelist()
       console.log('formValue', formValue)
       toast.success(t('registerSuccess'), {
         autoClose: false
       })
-      setFormValue({})
-      dispatchEvent(new CustomEvent('resetVerifierUpload'))
+      // setFormValue({})
+      // dispatchEvent(new CustomEvent('resetVerifierUpload'))
       dispatchEvent(new CustomEvent('doubleConfirmModalClose'))
     } catch (e: any) {
       console.log('error', e)
@@ -127,7 +142,7 @@ const Verify = () => {
   const { data: claimRewardData } = useRequest(() => convertErc2Cosmos(debouncedClaimRewardAddr), {
     ready: !!debouncedClaimRewardAddr,
     refreshDeps: [debouncedClaimRewardAddr],
-    onError(e: any){
+    onError(e: any) {
       console.log('error', e)
       toast.error(e?.msg)
     }
@@ -138,7 +153,7 @@ const Verify = () => {
   const { data } = useRequest(() => convertErc2Cosmos(debouncedAddr), {
     ready: !!debouncedAddr,
     refreshDeps: [debouncedAddr],
-    onError(e: any){
+    onError(e: any) {
       console.log('error', e)
       toast.error(e?.message || e?.msg)
     }
@@ -181,7 +196,7 @@ const Verify = () => {
         <div className="h-px bg-[#2B2B2B] " />
         <div className="flex flex-col gap-6 mt-8">
           <FormItem title={t("logo") + "*"}>
-          <Upload
+            <Upload
               resetEventName="resetVerifierUpload"
               onChange={(v) => updateFromValue("logo", mainUrl + v)}
               className={
@@ -201,6 +216,13 @@ const Verify = () => {
           <FormItem title={t("rewardClaimAddress") + "*"}>
             <Input value={formValue?.claim_reward_address} onChange={(v) => updateFromValue('claim_reward_address', v)} className={clsx((errorShow && !formValue?.claim_reward_address) ? "border-[#da1a1a]" : "border-[#525252]", "rounded-[8px]")} placeholder="erc20" />
             {claimRewardData?.data?.cosmos_addr ? <Input disabled value={claimRewardData?.data?.cosmos_addr} className={clsx((errorShow && !formValue?.verifier) ? "border-[#da1a1a]" : "border-[#525252]", "rounded-[8px] opacity-40")} placeholder="cosmos" /> : null}
+            {ifInWL == undefined ? null : <span className="mt-4 ">
+              {
+                ifInWL
+                  ? <span>Congratulations, you're on Cysic Verifier Whiltelist. <br/>Please go to <Link to="/dashboard" className="!underline">Dashboard</Link> to connect your wallet and following our <a className="!underline" href="https://medium.com/@cysic/join-the-cysic-testnet-as-a-verifier-7b9f31674b41" target="_blank">tutorial</a> to become a Cysic Network verifier. </span>
+                  : <span>You're not on Whitelist.<br/> Connect with our community for upcoming opportunities: <a className="!underline" href="https://discord.gg/cysic" target="_blank"> Join our discord.</a></span>
+              }
+            </span>}
           </FormItem>
           {/* <FormItem title={t("address") + "*"}>
             <Input value={formValue?.verifier} onChange={(v) => updateFromValue('verifier', v)} className={clsx((errorShow && !formValue?.verifier) ? "border-[#da1a1a]" : "border-[#525252]", "rounded-[8px]")} placeholder="erc20" />
