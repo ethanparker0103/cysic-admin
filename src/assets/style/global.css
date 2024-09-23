@@ -85,3 +85,15 @@ body {
     background-origin: padding-box, border-box;
     background-image: linear-gradient(to right, #000, #000), linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
 }
+
+.gradient-bg{
+    background: linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+}
+
+.gradient-bg-20{
+    background: linear-gradient(83.04deg, rgba(157, 71, 255, 0.2) 5.44%, rgba(0, 240, 255, 0.2) 54.92%);
+}
+
+:root{
+   --brand-color : #00F0FF;
+}

@@ -11,6 +11,7 @@ import { dashboardNavs } from "@/routes/layout/DashboardLayout";
 import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NextUIProvider } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
+import Search from "@/routes/components/Search";
 
 export default function App() {
     const { t } = useTranslation();
@@ -73,7 +74,8 @@ export default function App() {
                     </MobileView>
 
                     <div className="flex-[6] overflow-auto flex flex-col">
-                        <BrowserView className="self-end py-2 px-2 pr-[5rem]">
+                        <BrowserView className="self-end py-2 px-2 pr-[5rem] flex items-center justify-end w-full gap-10">
+                            {/* <div className="flex-1 pl-4 w-full"><Search /></div> */}
                             <ConnectButton />
                         </BrowserView>
                         <Suspense>
