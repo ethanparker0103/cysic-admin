@@ -35,7 +35,12 @@ export const ProofBackend: any = {
     '1': 'Halo2'
 }
 
-export const mainUrl = 'https://api-testnet.prover.xyz'
+
+export const isQa = import.meta.env.VITE_APP_ENV == 'qa'
+export const isProd = import.meta.env.VITE_APP_ENV == 'prod'
+
+
+export const mainUrl = isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
 
 
