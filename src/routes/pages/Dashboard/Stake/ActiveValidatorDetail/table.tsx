@@ -109,20 +109,16 @@ const UserTable = () => {
 
   const columns = [
     {
-      key: "validator",
-      label: "Validator",
+      key: "coin",
+      label: "Coin",
     },
     {
-      key: "votingPower",
-      label: "Voting Power",
+      key: "date",
+      label: "Date",
     },
     {
-      key: "commissionRate",
-      label: "Commission Rate",
-    },
-    {
-      key: "expectedAPR",
-      label: "Expected APR",
+      key: "amount",
+      label: "Amount",
     },
     {
       key: "action",
