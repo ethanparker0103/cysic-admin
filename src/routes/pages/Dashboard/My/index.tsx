@@ -32,7 +32,7 @@ const Overview = () => {
   const { address } = useAccount();
   // const address = '0x098acAbdfC81EDc954388022AF2284aFAacFd526'
   const [userInfo, setUserInfo] = useState<any>({});
-
+  
   useRequest(
     async () => {
       if (!address) return;
@@ -65,6 +65,8 @@ const Overview = () => {
   const avg_point_activity = BigNumber(userInfo?.avg_point_activity || 0).toString()
 
   const avg_task_completion = BigNumber(userInfo?.avg_task_completion || 0).toString()
+
+  const social_task_points = BigNumber(userInfo?.social_task_points||0).toString()
   return (
     <div className={isMobile ? "flex flex-col gap-3" : "flex flex-col gap-3"}>
       <MainCard>
@@ -114,7 +116,7 @@ const Overview = () => {
             <div className="flex flex-col">
               <span className="text-[#A3A3A3] text-base font-[500]">Reward points</span>
               <div className="text-[#fff] text-base font-[500]">{format(verifier_points_verification)}</div>
-            </div>
+            </div>            
           </div>
         </div>
       </MainCard>

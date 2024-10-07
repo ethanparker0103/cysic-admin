@@ -25,6 +25,7 @@ import Faucet from "@/routes/pages/Dashboard/Faucet";
 import Assets from "@/routes/pages/Dashboard/Assets";
 import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
 import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
+import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -106,6 +107,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'faucet',
                         element: <Faucet />,
+                    },
+                    {
+                        path: 'socialTasks',
+                        element: <SocialTasks />,
                     }
                 ]
             },
