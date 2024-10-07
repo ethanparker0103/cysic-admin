@@ -2,10 +2,10 @@ import Button from "@/components/Button"
 import useModalState from "@/hooks/useModalState"
 import Stake from "@/routes/pages/Dashboard/Stake/Modal/stakeContent/stake"
 import Unstake from "@/routes/pages/Dashboard/Stake/Modal/stakeContent/unstake"
-import { Modal, ModalContent, ModalBody, ModalFooter, Tabs, Tab } from "@nextui-org/react"
+import { Modal, ModalContent, ModalBody, ModalFooter, Tabs, Tab, ModalHeader } from "@nextui-org/react"
 import { useState } from "react"
 
-enum StakeTab{
+enum StakeTab {
     stake,
     unstake
 }
@@ -19,8 +19,8 @@ const StakeModal = () => {
         <ModalContent>
             {(onClose) => (
                 <>
+                    <ModalHeader />
                     <ModalBody>
-
                         <Tabs
                             fullWidth
                             size="md"
@@ -33,10 +33,10 @@ const StakeModal = () => {
                             }}
                         >
                             <Tab key={StakeTab.stake} title="Stake">
-                                <Stake/>
+                                <Stake />
                             </Tab>
                             <Tab key={StakeTab.unstake} title="Unstake">
-                               <Unstake/>
+                                <Unstake />
                             </Tab>
                         </Tabs>
 
