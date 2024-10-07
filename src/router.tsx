@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Root from "./routes/root";
 import Home from "./routes/pages/Home/index";
 import BasicLayout from "@/routes/layout/BasicLayout/index";
@@ -21,6 +21,10 @@ import ActivityLayout from "@/routes/layout/ActivityLayout/inidex";
 import Aleo from "@/routes/pages/Activity/Aleo";
 import Leadingboard from "@/routes/pages/Dashboard/Leadingboard";
 import Referral from "@/routes/pages/Dashboard/Referral";
+import Faucet from "@/routes/pages/Dashboard/Faucet";
+import Assets from "@/routes/pages/Dashboard/Assets";
+import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
+import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -70,7 +74,6 @@ export const router = createBrowserRouter([
                     {
                         path: 'task',
                         element: <Task />,
-                      
                     },
                     {
                         path: 'task/:id',
@@ -83,6 +86,26 @@ export const router = createBrowserRouter([
                     {
                         path: 'referral',
                         element: <Referral />,
+                    },
+                    {
+                        path: 'assets',
+                        element: <Assets />,
+                    },
+                    {
+                        path: 'stake',
+                        loader: async ()=>redirect('/dashboard')
+                    },
+                    {
+                        path: 'stake/vecysic',
+                        element: <VeCysic />,
+                    },
+                    {
+                        path: 'stake/vecompute',
+                        element: <VeComputed />,
+                    },
+                    {
+                        path: 'faucet',
+                        element: <Faucet />,
                     }
                 ]
             },

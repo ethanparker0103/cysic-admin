@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { ReactNode, useMemo, useState } from 'react'
 
 export enum BtnType {
+    gradient = 'gradient',
     normal = 'normal',
     solid = 'solid',
     dark = 'dark',
@@ -30,6 +31,12 @@ const Button = ({
     const _loading = interalLoading || loading
     const classNameWithType = useMemo(() => {
         switch (type) {
+            case BtnType.gradient:
+                return 'bg-gradient border-none text-[#000]';
+            case BtnType.dark:
+                return 'bg-[#000] border-none text-[#fff]';
+            case BtnType.solid:
+                return '!bg-[transparent] !border-[#21E9FA] text-[#21E9FA]';
             default:
                 return 'bg-[#21E9FA] border-none hover:bg-[#21E9FA] text-[#000]';
         }
