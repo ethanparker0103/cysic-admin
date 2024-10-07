@@ -77,8 +77,6 @@ export default function ConnectButton({className, content}: any) {
     switchNetworkAsync?.({ chainId: +chains?.[0].id });
   };
 
-
-  console.log('connector', connector)
   if (isConnected) {
     return (
       <div className="flex flex-row items-center gap-[0.75rem]">

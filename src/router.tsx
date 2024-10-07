@@ -111,6 +111,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'socialTasks',
                         element: <SocialTasks />,
+                    },
+                    {
+                        path: 'test',
+                        element: <Test />
                     }
                 ]
             },
@@ -134,10 +138,6 @@ export const router = createBrowserRouter([
                         path: 'verifier',
                         element: <Verify />
                     },
-                    {
-                        path: 'test',
-                        element: <Test />
-                    }
                 ],
             },
             {
