@@ -20,6 +20,7 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import { useAccount } from "wagmi";
 import Search from "@/routes/components/Search";
+import ConnectCosmosButton from "@/components/connectCosmosButton";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -480,6 +481,7 @@ export default function App() {
                   </Tooltip>) : null
                 }
                 <ConnectButton />
+                <ConnectCosmosButton />
               </div>
             </BrowserView>
 
