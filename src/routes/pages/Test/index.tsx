@@ -16,10 +16,12 @@ const Test = () => {
         console.log(connector)
         return;
       case 'getKey':
+        // @ts-ignore
         res = await window?.keplr?.[i]?.(chainId)
         break;
       case 'getBalance':
         // 替换 token addr
+        // @ts-ignore
         res = await window?.keplr?.[i]?.(address, address)
         break
       case 'getAccount':
