@@ -3,6 +3,7 @@ import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { SigningStargateClient } from "@cosmjs/stargate";
 
+// @ts-ignore
 const provider = window?.keplr
 
 const set = useCosmos.getState().setState
