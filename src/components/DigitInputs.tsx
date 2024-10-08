@@ -1,11 +1,11 @@
 const base ='bg-[transparent] border border-[#00F0FF] text-[#00F0FF] rounded-[16px] w-[80px] h-[110px] text-[32px] font-bold text-center'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-function DigitInputs({ n, onValueChange }) {
+function DigitInputs({ n, onValueChange }: any) {
   const [digits, setDigits] = useState(new Array(n).fill(''));
   const inputsRef = useRef(new Array(n).fill(null));
 
-  const handleChange = useCallback((index, value) => {
+  const handleChange = useCallback((index: any, value: any) => {
     const newDigits = [...digits];
     newDigits[index] = value;
     setDigits(newDigits);
@@ -19,7 +19,7 @@ function DigitInputs({ n, onValueChange }) {
     }
   }, [digits, n]);
 
-  const handlePaste = useCallback((index, e) => {
+  const handlePaste = useCallback((index: any, e: any) => {
     e.preventDefault();
     const pastedText = e.clipboardData.getData('text');
     const newDigits = [...digits];
