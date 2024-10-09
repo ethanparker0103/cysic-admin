@@ -1,10 +1,10 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
+import useCosmos from "@/models/_global/cosmos"
 import { getImageUrl } from "@/utils/tools"
-import { useAccount } from "wagmi"
 
 const Faucet = () => {
-    const { address } = useAccount()
+    const { address } = useCosmos()
     const handleClaim = () => { }
     return <div className="flex flex-col items-center gap-8 py-8">
     
