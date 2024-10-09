@@ -8,7 +8,7 @@ const MainCard = (props: any) => {
         <div
             className={clsx(
                 isMobile ? "w-full px-5 py-4" : "min-h-[152px] flex-1 px-6 py-6",
-                " flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
+                "relative flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
             )}
             style={{
                 backgroundColor: "#10141a",

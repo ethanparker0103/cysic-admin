@@ -3,7 +3,6 @@ import {
   Tabs, Tab
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
-import VerifierTable from "@/routes/pages/Dashboard/Leadingboard/Detail/verifier";
 import { useState } from "react";
 import clsx from "clsx";
 import UserTable from "@/routes/pages/Dashboard/Referral/Detail/table";
