@@ -26,6 +26,7 @@ import Assets from "@/routes/pages/Dashboard/Assets";
 import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
 import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
+import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -87,6 +88,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'referral',
                         element: <Referral />,
+                    },
+                    {
+                        path: 'referral/invite',
+                        element: <FillReferralCode />,
                     },
                     {
                         path: 'assets',

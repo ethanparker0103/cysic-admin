@@ -1,75 +1,123 @@
-import DigitInputs from "@/components/DigitInputs";
-import { getImageUrl } from "@/utils/tools";
+import Button from "@/components/Button";
+import { bindTwitter, bindDiscord, bindTwitterCheck, bindDiscordCheck } from "@/mock/referral";
+import useReferral from "@/models/_global/referral";
+import { shortStr } from "@/utils/tools";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
+import { useRequest } from "ahooks";
+import axios from "axios";
+import { useAccount } from "wagmi";
+import { mock } from "wagmi/connectors";
 
-const investors = [
-    {
-        name: 'polycain',
-        img: getImageUrl('@/assets/images/investors/POLYCHAIN.png')
-    },
-    {
-        name: 'hashkey',
-        img: getImageUrl('@/assets/images/investors/HASHKEY.png')
-    },
-    {
-        name: 'OKX',
-        img: getImageUrl('@/assets/images/investors/OKX.png')
-    },
-    {
-        name: 'abcde',
-        img: getImageUrl('@/assets/images/investors/ABCDE.png')
-    },
-    {
-        name: 'matrix',
-        img: getImageUrl('@/assets/images/investors/MATRIX.png')
-    },
-    {
-        name: 'web3',
-        img: getImageUrl('@/assets/images/investors/WEB3.png')
-    },
-    {
-        name: 'snz',
-        img: getImageUrl('@/assets/images/investors/SNZ.png')
-    },
-    {
-        name: 'bitdigital',
-        img: getImageUrl('@/assets/images/investors/BITDIGITAL.png')
-    },
-    {
-        name: 'idg',
-        img: getImageUrl('@/assets/images/investors/IDG.png')
-    },
-    {
-        name: 'coinswitch',
-        img: getImageUrl('@/assets/images/investors/COINSWITCH.png')
-    },
-    {
-        name: 'a&t',
-        img: getImageUrl('@/assets/images/investors/A&T.png')
-    },
-]
+
 
 const Invalid = () => {
-    const handleValueChange = (v) => {
-        console.log("vvv", v);
-    };
+    const { setState, discordBinded, twitterBinded } = useReferral()
+    const { address } = useAccount()
+    const { openConnectModal: open } = useConnectModal();
+
+    // 10.7 社交媒体绑定 - 跳转 twitter oauth2 链接获取已经邀请人员列表
+    useRequest(() => axios.get(`/api/v1/referral/bind/twitter/${address}`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                twitterAuthConfig: e?.data
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                twitterAuthConfig: bindTwitter?.data
+            })
+        }
+    })
+    // 10.8 社交媒体绑定 - 跳转 discord oauth2 链接获取已经邀请人员列表
+    useRequest(() => axios.get(`/api/v1/referral/bind/discord/${address}`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                discordAuthConfig: e?.data
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                discordAuthConfig: bindDiscord?.data
+            })
+        }
+    })
+    // 10.9 社交媒体绑定 - 检查 twitter  
+    const { loading: twitterLoading, run: twitterCheckRun} = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                twitterBinded: e?.code == 10000
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                twitterBinded: bindTwitterCheck?.code == 10000
+            })
+        }
+    })
+    // 10.10 社交媒体绑定 - 检查 discord
+    const { loading: discordcheckLoading, run: discordCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/discord/check/${address}`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                discordBinded: e?.code == 10000
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                discordBinded: bindDiscordCheck?.code == 10000
+            })
+        }
+    })
+
+    const handleVerifyX = ()=>{
+        twitterCheckRun()
+    }
+    const handleVerifyDiscord = ()=>{
+        discordCheckRun()
+    }
+    const handleVerifyAll  = ()=>{
+        twitterCheckRun()
+        discordCheckRun()
+    }
     return (
-        <div className="flex flex-col gap-12 items-center">
-            <div className="flex flex-col gap-20">
-                <div className="text-[40px]">
-                    ENTER YOUR <span className="text-gradient">INVITE CODE</span> TO JOIN
+        <div className="flex flex-col gap-12 items-center w-full max-w-[560px] mx-auto">
+            <div className="flex flex-col gap-12 w-full">
+                <div className="text-[40px] font-[500] text-center">
+                    <span className="text-gradient">Join</span> CYSIC
                 </div>
-                <div className="flex flex-col gap-8 items-center text-base w-fit mx-auto">
-                    <DigitInputs n={5} onValueChange={handleValueChange} />
+                <div className="w-full flex flex-col gap-6 items-center text-base w-fit mx-auto">
 
+                    <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
+                        <span>Connect Wallet</span>
+                        {
+                            address ? (<div className="text-[#00F0FF]">Connected as {shortStr(address || '', 10)}</div>) : (<Button className="h-9 min-h-fit" onClick={open}>Connect Wallet</Button>)
+                        }
+                    </div>
+                    <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
+                        <span>Follow @cysic_xyz on X</span>
+                        {
+                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Verify X Account</Button>)
+                        }
+                    </div>
+                    <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
+                        <span>Follow @cysic_xyz on Discord</span>
+                        {
+                            discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Verify Discord Account</Button>)
+                        }
+                    </div>
+                    <Button onClick={handleVerifyAll} type="gradient" className="w-[320px]">Enter</Button>
                     <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
-                        <div className="text-sm flex items-center gap-2 w-full">
-                            <div className="h-px bg-[#FFFFFF1F] w-full"/>
-                            <span>OR</span>
-                            <div className="h-px bg-[#FFFFFF1F] w-full"/>
-                        </div>
-                        <div>Already Joined?</div>
-                        <div className="text-[#fff] cursor-pointer">Switch to another Address</div>
-
                         <div className="text-sm flex items-center cursor-pointer">
                             Read about cysic{" "}
                             <svg
@@ -89,41 +137,6 @@ const Invalid = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="flex flex-col gap-12 pt-6 items-center">
-                <div className="flex items-center gap-3">
-                    <svg width="121" height="1" viewBox="0 0 121 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0.5" y1="0.5" x2="120.5" y2="0.5" stroke="url(#paint0_linear_1495_24239)" />
-                        <defs>
-                            <linearGradient id="paint0_linear_1495_24239" x1="0.5" y1="1.5" x2="120.5" y2="1.5" gradientUnits="userSpaceOnUse">
-                                <stop stopColor="#00F0FF" stopOpacity="0" />
-                                <stop offset="1" stopColor="#00F0FF" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <div className="text-[40px] uppercase">Investors</div>
-                    <svg className="rotate-180" width="121" height="1" viewBox="0 0 121 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0.5" y1="0.5" x2="120.5" y2="0.5" stroke="url(#paint0_linear_1495_24239)" />
-                        <defs>
-                            <linearGradient id="paint0_linear_1495_24239" x1="0.5" y1="1.5" x2="120.5" y2="1.5" gradientUnits="userSpaceOnUse">
-                                <stop stopColor="#00F0FF" stopOpacity="0" />
-                                <stop offset="1" stopColor="#00F0FF" />
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-10 w-full max-w-[1200px] mx-auto">
-                    {
-                        investors.map((i,index)=>{
-                            return <div key={i.name} className="w-[140px]">
-                                <img className="w-full" src={i.img}/>
-                            </div>
-                        })
-                    }
-                </div>
-
             </div>
         </div>
     );
