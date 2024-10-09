@@ -122,13 +122,7 @@ const Referral = () => {
         }
     })
 
-    // 10.6 绑定邀请码
-    useRequest((code) => axios.put(`/api/v1/referral/bind/${code}/${address}`), {
-        manual: true,
-        onSuccess(e) {
-            console.log('checkBind', e)
-        },
-    })
+
     
     // useEventListener('refresh_mediaBind', ()=>{
     //     twitterCheckRun()
