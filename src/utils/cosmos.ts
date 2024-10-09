@@ -1,4 +1,5 @@
 import { cosmosHubTestnet } from "@/config/cosmos/cosmosHubTestnet";
+import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
 import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { SigningStargateClient } from "@cosmjs/stargate";
@@ -9,10 +10,11 @@ const provider = window?.keplr
 const set = useCosmos.getState().setState
 // const rpc = 'http://dev-node-1.prover.xyz'
 
-const chain = cosmosHubTestnet.chainId
+const chain = cysicTestnet.chainId
 const cosmosConfig = {
     [OsmosisTestnetChainInfo.chainId]: OsmosisTestnetChainInfo,
-    [cosmosHubTestnet.chainId]: cosmosHubTestnet
+    [cosmosHubTestnet.chainId]: cosmosHubTestnet,
+    [cysicTestnet.chainId]: cysicTestnet
 }
 
 async function connectWallet() {
