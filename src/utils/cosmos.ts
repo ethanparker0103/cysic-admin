@@ -38,11 +38,15 @@ async function connectWallet() {
         const offlineSigner = provider.getOfflineSigner(chainId);
         const accounts = await offlineSigner.getAccounts();
 
-        const client = await SigningStargateClient.connectWithSigner(
+        const client: any = await SigningStargateClient.connectWithSigner(
             rpc,
             offlineSigner
         );
 
+        client.disable = ()=>{
+            client?.signer?.keplr?.disable?.()
+            useCosmos.getState().init()
+        }
         useCosmos.getState().setState({
             address: accounts[0].address,
             client,

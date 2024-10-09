@@ -2,7 +2,7 @@ export const cysicTestnet = {
     "chainId": "cysicmint_9000-1",
     "chainName": "Cysic Network Testnet",  
     "chainSymbolImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/chain.png",
-    "rpc": "https://testnet-rpc.prover.xyz",
+    "rpc": "https://testnet-rpc.prover.xyz/",
     "rest": "https://testnet-api.prover.xyz",
     "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
     "bip44": {

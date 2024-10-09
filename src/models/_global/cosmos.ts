@@ -19,6 +19,7 @@ const useCosmos = create(
     (set: (arg0: (state: any) => any) => any) => ({
       ...defaultInitState,
       setState: (newValues: any) => set((state: any) => ({ ...state, ...newValues })),
+      init: () => set(() => (defaultInitState)),
     }),
     {
       name: "cosmos",
