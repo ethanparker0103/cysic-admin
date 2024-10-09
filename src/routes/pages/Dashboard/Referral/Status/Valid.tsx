@@ -86,7 +86,7 @@ const Valid = () => {
             </div>
             <MainCard title="Upgrade progress">
                 <>
-                    <span className="absolute right-6 top-6 text-sm text-[#A3A3A3]">Current Invited: {overview?.activateCnt}</span>
+                    <div className="absolute bg-[#FFFFFF1F] px-2 py-1 rounded-full right-6 top-6 text-sm text-[#A3A3A3] font-[500]">Next Level: <span className="text-[#00F0FF]">+{nextLevelConfig?.LevelUpRewardPoint} Points</span></div>
                     <div className="relative h-[10rem]">
                         <Progress
                             size="md"

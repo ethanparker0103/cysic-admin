@@ -1,5 +1,12 @@
+import ConnectButton from "@/components/connectButton";
 import DigitInputs from "@/components/DigitInputs";
 import { getImageUrl } from "@/utils/tools";
+import { useRequest } from "ahooks";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useAccount } from "wagmi";
 
 const investors = [
     {
@@ -49,17 +56,47 @@ const investors = [
 ]
 
 const FillReferralCode = () => {
+    const navigate = useNavigate()
+    const { address }= useAccount()
+    const [searchParams, setSearchhParams] = useSearchParams()
+    const [tempParams, setTempParams] = useState<any>()
+    const codeFromUrl = searchParams.get('code')
+    const [value, setValue] = useState<string>('')
+
     const handleValueChange = (v) => {
-        console.log("vvv", v);
+        setValue(v)
     };
+
+    useEffect(()=>{
+        if(codeFromUrl){
+            setTempParams(codeFromUrl)
+            handleValueChange(codeFromUrl)
+            setSearchhParams({})
+        }
+    }, [codeFromUrl])
+
+    // 10.6 绑定邀请码
+    useRequest(() => axios.put(`/api/v1/referral/bind/${value}/${address}`), {
+        ready: !!value && value?.length == 5 && !!address,
+        refreshDeps: [value, address],
+        debounceWait: 300,
+        onSuccess(e){
+            toast.success('Bind SuccessFully')
+            navigate('/dashboard/referral')
+        },
+        onError(e){
+            toast.error(e?.message)
+        }
+    })
+
     return (
-        <div className="flex flex-col gap-12 items-center">
+        <div className="flex flex-col gap-12 items-center pt-10">
             <div className="flex flex-col gap-20">
                 <div className="text-[40px] font-[500] text-center">
                     ENTER YOUR <span className="text-gradient">INVITE CODE</span> TO JOIN
                 </div>
                 <div className="flex flex-col gap-8 items-center text-base w-fit mx-auto">
-                    <DigitInputs n={5} onValueChange={handleValueChange} />
+                    {address ? <DigitInputs n={5} value={value} onValueChange={handleValueChange} /> : <ConnectButton />}
 
                     <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
                         <div className="text-sm flex items-center gap-2 w-full">
