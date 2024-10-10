@@ -1,17 +1,16 @@
-import usePagnation from "@/hooks/usePagnation";
-import { activatedUserList, bindDiscord, bindDiscordCheck, bindTwitter, bindTwitterCheck, checkBind, genCode, overview, referralLevel } from "@/mock/referral";
+import { referralLevel } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import Invalid from "@/routes/pages/Dashboard/Referral/Status/Invalid";
 import Valid from "@/routes/pages/Dashboard/Referral/Status/Valid";
-import { useEventListener, useRequest } from "ahooks";
+import { useRequest } from "ahooks";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAccount } from "wagmi";
 
-export const mock = true;
+export const mock = false;
 const Referral = () => {
     const [forceSubmit, setForceSubmit] = useState(false)
     const [searchParams] = useSearchParams()
@@ -73,69 +72,6 @@ const Referral = () => {
             })
         }
     })
-    // 10.2 查询地址是否绑定邀请码
-    const { run } = useRequest(() => axios.get(`/api/v1/referral/${address}/checkBind`), {
-        ready: !!address,
-        refreshDeps: [address],
-        onSuccess(e) {
-            setState({
-                checkBind: e?.data?.bind
-            })
-        },
-        onFinally(){
-            if(!mock) return;
-            setState({
-                checkBind: checkBind?.data?.bind
-            })
-        }
-    })
-    // 10.3 生成邀请码
-    useRequest(() => axios.post(`/api/v1/referral/genCode/${address}`), {
-        ready: !!address,
-        refreshDeps: [address],
-        onSuccess(e) {
-            setState({
-                code: e?.data?.code
-            })
-        },
-        onFinally(){
-            if(!mock) return;
-            setState({
-                code: genCode?.data?.code
-            })
-        }
-    })
-    // 10.4 获取当前地址基础信息
-    useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
-        ready: !!address,
-        refreshDeps: [address],
-        onSuccess(e) {
-            setState({
-                overview: e?.data
-            })
-        },
-        onFinally(){
-            if(!mock) return;
-            setState({
-                overview: overview?.data
-            })
-        }
-    })
-
-
-    
-    // useEventListener('refresh_mediaBind', ()=>{
-    //     twitterCheckRun()
-    //     discordCheckRun()
-    // })
-    // useEventListener('refresh_twitterBind', ()=>{
-    //     twitterCheckRun()
-    // })
-    // useEventListener('refresh_discordBind', ()=>{
-    //     discordCheckRun()
-    // })
-
-
     const [bindCode, setBindCode] = useState<string>()
 
     const handleBindCode = async (closeLoading?: any) => {

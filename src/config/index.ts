@@ -49,3 +49,5 @@ export const defaultRewardAmount = 100;
 export const commonPageSize = 10;
 
 export const explorerUrl = 'https://explorer-testnet.prover.xyz'
+
+export const cosmosReservedValue = '1'

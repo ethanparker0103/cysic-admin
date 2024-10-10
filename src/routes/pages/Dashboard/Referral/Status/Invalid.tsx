@@ -1,17 +1,22 @@
 import Button from "@/components/Button";
 import { bindTwitter, bindDiscord, bindTwitterCheck, bindDiscordCheck } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
+import { mock } from "@/routes/pages/Dashboard/Referral";
 import { shortStr } from "@/utils/tools";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { useAccount } from "wagmi";
-import { mock } from "wagmi/connectors";
 
-
+function checkIfWindowIsClosed(smallWindow: any, callback: any) {  
+    if (smallWindow && smallWindow.closed) {  
+        callback?.()
+    }
+}  
+  
 
 const Invalid = () => {
-    const { setState, discordBinded, twitterBinded } = useReferral()
+    const { setState, discordBinded, twitterBinded, discordAuthConfig, twitteAuthConfig } = useReferral()
     const { address } = useAccount()
     const { openConnectModal: open } = useConnectModal();
 
@@ -81,14 +86,26 @@ const Invalid = () => {
     })
 
     const handleVerifyX = ()=>{
-        twitterCheckRun()
+        if(twitteAuthConfig.authURL){
+            const discordWindow = window.open(twitteAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
+        }
     }
-    const handleVerifyDiscord = ()=>{
-        discordCheckRun()
+    const handleVerifyDiscord = async ()=>{
+        if(discordAuthConfig.authURL){
+            const discordWindow = window.open(discordAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
+        }
     }
+
     const handleVerifyAll  = ()=>{
         twitterCheckRun()
         discordCheckRun()
+    }
+
+    const handleAbout = ()=>{
+        setState({
+            twitterBinded: true,
+            discordBinded: true
+        })
     }
     return (
         <div className="flex flex-col gap-12 items-center w-full max-w-[560px] mx-auto">
@@ -107,17 +124,17 @@ const Invalid = () => {
                     <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
                         <span>Follow @cysic_xyz on X</span>
                         {
-                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Verify X Account</Button>)
+                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
                         }
                     </div>
                     <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
                         <span>Follow @cysic_xyz on Discord</span>
                         {
-                            discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Verify Discord Account</Button>)
+                            discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Open Discord</Button>)
                         }
                     </div>
-                    <Button onClick={handleVerifyAll} type="gradient" className="w-[320px]">Enter</Button>
-                    <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
+                    <Button onClick={handleVerifyAll} type="gradient" className="w-[320px]">Verify All</Button>
+                    <div onClick={handleAbout} className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
                         <div className="text-sm flex items-center cursor-pointer">
                             Read about cysic{" "}
                             <svg
