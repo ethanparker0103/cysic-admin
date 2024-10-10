@@ -4,10 +4,18 @@ import useCosmos from "@/models/_global/cosmos"
 import { getImageUrl } from "@/utils/tools"
 import { useRequest } from "ahooks"
 import axios from "axios"
+import { toast } from "react-toastify"
 
 const Faucet = () => {
     const { address } = useCosmos()
-    const { run: handleClaim, loading } = useRequest(() => address ? axios.get(`/api/v1/myPage/faucet/${address}`) : Promise.reject(null), { manual: true })
+    const { run: handleClaim, loading } = useRequest(() => address ? axios.get(`/api/v1/myPage/faucet/${address}`) : Promise.reject(null), { manual: true, 
+        onSuccess(){
+            toast.success('Success!')
+        },
+        onError(e: any){
+            toast.error(e?.msg || e?.message || 'Failed!')
+        }
+     })
     return <div className="flex flex-col items-center gap-8 py-8">
 
         <img src={getImageUrl('@/assets/images/_global/logo_content.svg')} />

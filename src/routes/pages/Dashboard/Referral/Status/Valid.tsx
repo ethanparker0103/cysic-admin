@@ -2,13 +2,68 @@ import Button from "@/components/Button";
 import MainCard from "@/components/MainCard";
 import ProgressIcon, { ENUM_ProgressStatus } from "@/components/Progess/icon";
 import ProgressLabel from "@/components/Progess/label";
+import { checkBind, genCode } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
+import { mock } from "@/routes/pages/Dashboard/Referral";
 import Detail from "@/routes/pages/Dashboard/Referral/Detail";
 import { Progress, Snippet, Tooltip } from "@nextui-org/react";
+import { useRequest } from "ahooks";
+import axios from "axios";
 import BigNumber from "bignumber.js";
+import clsx from "clsx";
+import { useAccount } from "wagmi";
 
 const Valid = () => {
-    const { levelListMap, levelList, code, overview, activatedUserList } = useReferral()
+    const { address } = useAccount()
+    const { levelListMap, levelList, code, overview, setState } = useReferral()
+    // 10.2 查询地址是否绑定邀请码
+    const { run } = useRequest(() => axios.get(`/api/v1/referral/${address}/checkBind`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                checkBind: e?.data?.bind
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                checkBind: checkBind?.data?.bind
+            })
+        }
+    })
+    // 10.3 生成邀请码
+    useRequest(() => axios.post(`/api/v1/referral/${address}/genCode`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                code: e?.data?.code
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                code: genCode?.data?.code
+            })
+        }
+    })
+    // 10.4 获取当前地址基础信息
+    useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(e) {
+            setState({
+                overview: e?.data
+            })
+        },
+        onFinally(){
+            if(!mock) return;
+            setState({
+                overview: overview?.data
+            })
+        }
+    })
 
     const currentLevel = overview?.currentLevel
     const currentLevelConfig = levelListMap?.[currentLevel]
@@ -70,7 +125,7 @@ const Valid = () => {
                             <span className="text-[#A3A3A3] text-base font-[500] leading-none">Your referral code:</span>
                             <Snippet classNames={{
                                 base: 'bg-[#000]'
-                            }} symbol="" variant="bordered">{code}</Snippet>
+                            }} symbol="" codeString={`${window.location.origin}/m/dashboard/referral/invite?code=${code}`} variant="bordered">{code}</Snippet>
                         </div>
                         <Button type="gradient" className="!py-2 !min-h-fit !h-fit rounded-full">
                             <div className="flex items-center gap-2">
@@ -103,10 +158,10 @@ const Valid = () => {
 
                         <div className="w-full absolute flex items-center top-1/4 -translate-y-1/2">
                             {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                return <div key={index} className="flex-1"><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
+                                return <div key={index} className={clsx("flex-1", index != 0 ? '[&>div]:-translate-x-[calc(50%-24px)]' : '')}><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
                             })}
                             {levelList?.slice(-1)?.map((i: any, index: any) => {
-                                return <div key={index} className=""><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
+                                return <div key={index} className="w-12 -translate-x-[3rem]"><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
                             })}
                         </div>
 
@@ -115,16 +170,20 @@ const Valid = () => {
                                 return <div key={index} className="flex-1"><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
                             })}
                             {levelList?.slice(-1)?.map((i: any, index: any) => {
-                                return <div key={index} className=""><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
+                                return <div key={index} className="w-12"><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
                             })}
                         </div>
 
                         <div className="w-full absolute flex items-center top-1/2 -translate-y-3/4">
                             {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                return <div key={index} className="flex-1 text-sm text-[#A3A3A3] font-[500]">{i?.Require} Referrals</div>
+                                return <div key={index} className={clsx("flex-1 text-sm text-[#A3A3A3] font-[500]", index != 0 ? ' [&>div]:-translate-x-[16px]' : '')}>
+                                    <div>{i?.Require} Referrals</div>
+                                </div>
                             })}
                             {levelList?.slice(-1)?.map((i: any, index: any) => {
-                                return <div key={index} className="text-sm text-[#A3A3A3] font-[500]">{i?.Require} Referrals</div>
+                                return <div key={index} className="whitespace-nowrap w-12 -translate-x-[2rem] text-sm text-[#A3A3A3] font-[500]">
+                                    <div>{i?.Require} Referrals</div>
+                                </div>
                             })}
                         </div>
                     </div>
