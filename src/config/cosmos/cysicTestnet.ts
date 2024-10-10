@@ -9,12 +9,12 @@ export const cysicTestnet = {
       "coinType": 118
     },
     "bech32Config": {
-      "bech32PrefixAccAddr": "cysic8",
-      "bech32PrefixAccPub": "cysic8pub",
-      "bech32PrefixValAddr": "cysic8valoper",
-      "bech32PrefixValPub": "cysic8valoperpub",
-      "bech32PrefixConsAddr": "cysic8valcons",
-      "bech32PrefixConsPub": "cysic8valconspub"
+      "bech32PrefixAccAddr": "cysic",
+      "bech32PrefixAccPub": "cysicpub",
+      "bech32PrefixValAddr": "cysicvaloper",
+      "bech32PrefixValPub": "cysicvaloperpub",
+      "bech32PrefixConsAddr": "cysicvalcons",
+      "bech32PrefixConsPub": "cysicvalconspub"
     },
     "currencies": [
       {
