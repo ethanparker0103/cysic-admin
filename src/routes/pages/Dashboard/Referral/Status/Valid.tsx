@@ -73,6 +73,7 @@ const Valid = () => {
         return BigNumber(prev).plus(next?.Require).toString()
     }, '0')
     const currentInviteValue = BigNumber(overview?.activateCnt).div(totalInviteValue).multipliedBy(100).toFixed(0, BigNumber.ROUND_DOWN)
+    console.log('currentInviteValue', overview?.activateCnt, levelList, totalInviteValue, currentInviteValue)
 
     return <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
@@ -158,7 +159,9 @@ const Valid = () => {
 
                         <div className="w-full absolute flex items-center top-1/4 -translate-y-1/2">
                             {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                return <div key={index} className={clsx("flex-1", index != 0 ? '[&>div]:-translate-x-[calc(50%-24px)]' : '')}><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
+                                const v = BigNumber(i?.Require).div(totalInviteValue).multipliedBy(100).toFixed(0, BigNumber.ROUND_DOWN)
+                                const flex = 'flex-['+ v +'] '
+                                return <div key={index} style={{flex: v}} className={clsx(flex, index != 0 ? '[&>div]:-translate-x-[calc(50%-24px)]' : '')}><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
                             })}
                             {levelList?.slice(-1)?.map((i: any, index: any) => {
                                 return <div key={index} className="w-12 -translate-x-[3rem]"><ProgressLabel status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} >{i?.Name}</ProgressLabel></div>
@@ -167,7 +170,9 @@ const Valid = () => {
 
                         <div className="w-full absolute flex items-center top-3/4 -translate-y-1/2">
                             {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                return <div key={index} className="flex-1"><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
+                                const v = BigNumber(i?.Require).div(totalInviteValue).multipliedBy(100).toFixed(0, BigNumber.ROUND_DOWN)
+                                const flex = 'flex-['+ v +'] '
+                                return <div key={index} style={{flex: v}} className={flex}><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
                             })}
                             {levelList?.slice(-1)?.map((i: any, index: any) => {
                                 return <div key={index} className="w-12"><ProgressIcon status={currentLevel > i?.Level ? ENUM_ProgressStatus.finish : currentLevel == i?.Level ? ENUM_ProgressStatus.ongoing : ENUM_ProgressStatus.pending} /></div>
@@ -176,7 +181,9 @@ const Valid = () => {
 
                         <div className="w-full absolute flex items-center top-1/2 -translate-y-3/4">
                             {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                return <div key={index} className={clsx("flex-1 text-sm text-[#A3A3A3] font-[500]", index != 0 ? ' [&>div]:-translate-x-[16px]' : '')}>
+                                const v = BigNumber(i?.Require).div(totalInviteValue).multipliedBy(100).toFixed(0, BigNumber.ROUND_DOWN)
+                                const flex = 'flex-['+ v +'] '
+                                return <div key={index} style={{flex: v}} className={clsx(flex, "text-sm text-[#A3A3A3] font-[500]", index != 0 ? ' [&>div]:-translate-x-[16px]' : '')}>
                                     <div>{i?.Require} Referrals</div>
                                 </div>
                             })}
