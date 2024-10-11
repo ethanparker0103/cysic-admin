@@ -54,7 +54,7 @@ const Invalid = () => {
         }
     })
     // 10.9 社交媒体绑定 - 检查 twitter  
-    const { loading: twitterLoading, run: twitterCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
+    const { loading: twittercheckLoading, run: twitterCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
         ready: !!address && twitterAuthConfig?.needOauth == false,
         refreshDeps: [address, twitterAuthConfig?.needOauth],
         onSuccess(e) {
@@ -125,7 +125,7 @@ const Invalid = () => {
                     <div className={clsx(twitterAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on X</span>
                         {
-                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
+                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twittercheckLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
                         }
                     </div>
                     <div className={clsx(discordAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
@@ -134,7 +134,7 @@ const Invalid = () => {
                             discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Open Discord</Button>)
                         }
                     </div>
-                    <Button onClick={handleVerifyAll} type="gradient" className="w-[320px]">Verify All</Button>
+                    <Button loading={discordcheckLoading || twittercheckLoading} onClick={handleVerifyAll} type="gradient" className="w-[320px]">Verify All</Button>
                     <div onClick={handleAbout} className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
                         <div className="text-sm flex items-center cursor-pointer">
                             Read about cysic{" "}
