@@ -6,14 +6,15 @@ import { shortStr } from "@/utils/tools";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRequest } from "ahooks";
 import axios from "axios";
+import clsx from "clsx";
 import { useAccount } from "wagmi";
 
-function checkIfWindowIsClosed(smallWindow: any, callback: any) {  
-    if (smallWindow && smallWindow.closed) {  
+function checkIfWindowIsClosed(smallWindow: any, callback: any) {
+    if (smallWindow && smallWindow.closed) {
         callback?.()
     }
-}  
-  
+}
+
 
 const Invalid = () => {
     const { setState, discordBinded, twitterBinded, discordAuthConfig, twitteAuthConfig } = useReferral()
@@ -29,8 +30,8 @@ const Invalid = () => {
                 twitterAuthConfig: e?.data
             })
         },
-        onFinally(){
-            if(!mock) return;
+        onFinally() {
+            if (!mock) return;
             setState({
                 twitterAuthConfig: bindTwitter?.data
             })
@@ -45,24 +46,24 @@ const Invalid = () => {
                 discordAuthConfig: e?.data
             })
         },
-        onFinally(){
-            if(!mock) return;
+        onFinally() {
+            if (!mock) return;
             setState({
                 discordAuthConfig: bindDiscord?.data
             })
         }
     })
     // 10.9 社交媒体绑定 - 检查 twitter  
-    const { loading: twitterLoading, run: twitterCheckRun} = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
-        ready: !!address,
-        refreshDeps: [address],
+    const { loading: twitterLoading, run: twitterCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
+        ready: !!address && twitteAuthConfig?.needOauth == false,
+        refreshDeps: [address, twitteAuthConfig?.needOauth],
         onSuccess(e) {
             setState({
                 twitterBinded: e?.code == 10000
             })
         },
-        onFinally(){
-            if(!mock) return;
+        onFinally() {
+            if (!mock) return;
             setState({
                 twitterBinded: bindTwitterCheck?.code == 10000
             })
@@ -70,38 +71,38 @@ const Invalid = () => {
     })
     // 10.10 社交媒体绑定 - 检查 discord
     const { loading: discordcheckLoading, run: discordCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/discord/check/${address}`), {
-        ready: !!address,
-        refreshDeps: [address],
+        ready: !!address && discordAuthConfig?.needOauth == false,
+        refreshDeps: [address, discordAuthConfig?.needOauth],
         onSuccess(e) {
             setState({
                 discordBinded: e?.code == 10000
             })
         },
-        onFinally(){
-            if(!mock) return;
+        onFinally() {
+            if (!mock) return;
             setState({
                 discordBinded: bindDiscordCheck?.code == 10000
             })
         }
     })
 
-    const handleVerifyX = ()=>{
-        if(twitteAuthConfig.authURL){
+    const handleVerifyX = () => {
+        if (twitteAuthConfig.authURL) {
             const discordWindow = window.open(twitteAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
         }
     }
-    const handleVerifyDiscord = async ()=>{
-        if(discordAuthConfig.authURL){
+    const handleVerifyDiscord = async () => {
+        if (discordAuthConfig.authURL) {
             const discordWindow = window.open(discordAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
         }
     }
 
-    const handleVerifyAll  = ()=>{
+    const handleVerifyAll = () => {
         twitterCheckRun()
         discordCheckRun()
     }
 
-    const handleAbout = ()=>{
+    const handleAbout = () => {
         setState({
             twitterBinded: true,
             discordBinded: true
@@ -121,13 +122,13 @@ const Invalid = () => {
                             address ? (<div className="text-[#00F0FF]">Connected as {shortStr(address || '', 10)}</div>) : (<Button className="h-9 min-h-fit" onClick={open}>Connect Wallet</Button>)
                         }
                     </div>
-                    <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
+                    <div className={clsx(twitteAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on X</span>
                         {
                             twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
                         }
                     </div>
-                    <div className="w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between">
+                    <div className={clsx(discordAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on Discord</span>
                         {
                             discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Open Discord</Button>)
