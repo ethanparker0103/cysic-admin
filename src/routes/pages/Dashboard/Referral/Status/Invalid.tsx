@@ -17,7 +17,7 @@ function checkIfWindowIsClosed(smallWindow: any, callback: any) {
 
 
 const Invalid = () => {
-    const { setState, discordBinded, twitterBinded, discordAuthConfig, twitteAuthConfig } = useReferral()
+    const { setState, discordBinded, twitterBinded, discordAuthConfig, twitterAuthConfig } = useReferral()
     const { address } = useAccount()
     const { openConnectModal: open } = useConnectModal();
 
@@ -55,8 +55,8 @@ const Invalid = () => {
     })
     // 10.9 社交媒体绑定 - 检查 twitter  
     const { loading: twitterLoading, run: twitterCheckRun } = useRequest(() => axios.get(`/api/v1/referral/bind/twitter/check/${address}`), {
-        ready: !!address && twitteAuthConfig?.needOauth == false,
-        refreshDeps: [address, twitteAuthConfig?.needOauth],
+        ready: !!address && twitterAuthConfig?.needOauth == false,
+        refreshDeps: [address, twitterAuthConfig?.needOauth],
         onSuccess(e) {
             setState({
                 twitterBinded: e?.code == 10000
@@ -87,8 +87,8 @@ const Invalid = () => {
     })
 
     const handleVerifyX = () => {
-        if (twitteAuthConfig.authURL) {
-            const discordWindow = window.open(twitteAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
+        if (twitterAuthConfig.authURL) {
+            const discordWindow = window.open(twitterAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
         }
     }
     const handleVerifyDiscord = async () => {
@@ -122,7 +122,7 @@ const Invalid = () => {
                             address ? (<div className="text-[#00F0FF]">Connected as {shortStr(address || '', 10)}</div>) : (<Button className="h-9 min-h-fit" onClick={open}>Connect Wallet</Button>)
                         }
                     </div>
-                    <div className={clsx(twitteAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
+                    <div className={clsx(twitterAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on X</span>
                         {
                             twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twitterLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
