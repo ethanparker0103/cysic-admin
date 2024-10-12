@@ -24,8 +24,26 @@ const Referral = () => {
 
     const { address } = useAccount()
 
-    const { setState, discordBinded, twitterBinded } = useReferral()
-    const valid = discordBinded && twitterBinded && address
+    const { setState, discordBinded, twitterBinded, twitterAuthConfig, discordAuthConfig } = useReferral()
+
+
+    const allVerifiedNeeded = [
+        {
+            needOauth: twitterAuthConfig?.needOauth,
+            type: 'twitter',
+            status: twitterBinded,
+        },
+        {
+            needOauth: discordAuthConfig?.needOauth,
+            type: 'discord',
+            status: discordBinded
+        }
+    ].filter(i=>i.needOauth)
+
+    const remainToBeChecked = allVerifiedNeeded.filter(i=>!i.status)
+
+
+    const valid = address && remainToBeChecked.length == 0
     // 10.1 获取等级列表
     useRequest(() => axios.get(`/api/v1/referral/level`), {
         onSuccess(e) {

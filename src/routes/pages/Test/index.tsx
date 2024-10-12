@@ -9,30 +9,35 @@ const Test = () => {
   const fns = ['connector', 'getKey', 'getAccount', 'getAllBalances', 'getBalance', 'getBlock', 'getChainId', 'getHeight', 'disconnect']
 
   const handleClick = async (i: any) => {
-    let res;
-    switch (i) {
-      case 'connector':
-        res = connector
-        console.log(connector)
-        return;
-      case 'getKey':
-        // @ts-ignore
-        res = await window?.keplr?.[i]?.(chainId)
-        break;
-      case 'getBalance':
-        // 替换 token addr
-        // @ts-ignore
-        res = await window?.keplr?.[i]?.(address, address)
-        break
-      case 'getAccount':
-      case 'getAllBalances':
-        res = await connector?.[i]?.(address)
-        break;
-      default:
-        res = await connector?.[i]?.()
+    try{
+      let res;
+      switch (i) {
+        case 'connector':
+          res = connector
+          console.log(connector)
+          return;
+        case 'getKey':
+          // @ts-ignore
+          res = await window?.keplr?.[i]?.(chainId)
+          break;
+        case 'getBalance':
+          // 替换 token addr
+          // @ts-ignore
+          res = await window?.keplr?.[i]?.(address, address)
+          break
+        case 'getAccount':
+        case 'getAllBalances':
+          res = await connector?.[i]?.(address)
+          break;
+        default:
+          res = await connector?.[i]?.()
+      }
+  
+      console.log(i + ': ' + JSON.stringify(res))
+    }catch(e){
+      console.error(e)
     }
 
-    console.log(i + ': ' + JSON.stringify(res))
   }
 
   return (
