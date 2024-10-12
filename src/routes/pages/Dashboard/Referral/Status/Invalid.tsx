@@ -9,13 +9,6 @@ import axios from "axios";
 import clsx from "clsx";
 import { useAccount } from "wagmi";
 
-function checkIfWindowIsClosed(smallWindow: any, callback: any) {
-    if (smallWindow && smallWindow.closed) {
-        callback?.()
-    }
-}
-
-
 const Invalid = () => {
     const { setState, discordBinded, twitterBinded, discordAuthConfig, twitterAuthConfig } = useReferral()
     const { address } = useAccount()
@@ -108,6 +101,7 @@ const Invalid = () => {
             discordBinded: true
         })
     }
+
     return (
         <div className="flex flex-col gap-12 items-center w-full max-w-[560px] mx-auto">
             <div className="flex flex-col gap-12 w-full">
