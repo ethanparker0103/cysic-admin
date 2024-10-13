@@ -541,3 +541,13 @@ export const convertErc2Cosmos = async (addr: string)=>{
         }
     })
 }
+
+
+export function generateQueryString(params: any) {  
+    const searchParams = new URLSearchParams();  
+    for (const [key, value] of Object.entries(params || {})) {  
+        searchParams.append(key, value as string); // 编码URI组件，以便处理特殊字符  
+    }  
+    console.log('searchParams', searchParams)
+    return searchParams.toString();  
+}  

@@ -19,6 +19,7 @@ export const defaultInitState = {
 }
 
 const persistFields: any = [];
+const sessionStorageFields: any = [];
 
 const useReferral = create(
   persist(
