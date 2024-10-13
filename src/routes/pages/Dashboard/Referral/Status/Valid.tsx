@@ -15,11 +15,12 @@ import clsx from "clsx";
 import { useAccount } from "wagmi";
 
 
+
+     
 const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
-    hashtags: "demo",    
-    text: "Hello world",
-    url: "https://cysic.xyz/",
-    via: "cysic",
+    // hashtags: "demo",    
+    text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r 👇 Get started now: \n",
+    // url: "https://personalreferrallink",
 })}`
 
 const Valid = () => {
@@ -88,6 +89,8 @@ const Valid = () => {
         .div(totalInviteValue)
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
+
+    const referralUrl = `${window.location.origin}/m/dashboard/referral/invite?code=${code}`
 
     return (
         <div className="flex flex-col gap-6">
@@ -181,7 +184,7 @@ const Valid = () => {
                                         base: "bg-[#000]",
                                     }}
                                     symbol=""
-                                    codeString={`${window.location.origin}/m/dashboard/referral/invite?code=${code}`}
+                                    codeString={referralUrl}
                                     variant="bordered"
                                 >
                                     {code}
@@ -190,7 +193,7 @@ const Valid = () => {
                             <a
                                 className="w-full"
                                 target="_blank"
-                                href={twitterLink}
+                                href={twitterLink + `&url=${referralUrl}`}
                             >
                                 <Button
                                     type="gradient"

@@ -43,7 +43,9 @@ const Referral = () => {
     const remainToBeChecked = allVerifiedNeeded.filter(i=>!i.status)
 
 
-    const valid = twitterAuthConfig != undefined && discordAuthConfig != undefined && address && remainToBeChecked.length == 0
+    const valid = twitterAuthConfig != undefined && discordAuthConfig != undefined && address && remainToBeChecked?.length == 0
+
+
     // 10.1 获取等级列表
     useRequest(() => axios.get(`/api/v1/referral/level`), {
         onSuccess(e) {

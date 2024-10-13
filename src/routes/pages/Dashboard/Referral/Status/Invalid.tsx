@@ -117,13 +117,13 @@ const Invalid = () => {
                             address ? (<div className="text-[#00F0FF]">Connected as {shortStr(address || '', 10)}</div>) : (<Button className="h-9 min-h-fit" onClick={open}>Connect Wallet</Button>)
                         }
                     </div>
-                    <div className={clsx(twitterAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
+                    <div className={clsx("w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on X</span>
                         {
                             twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twittercheckLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Follow On X</Button>)
                         }
                     </div>
-                    <div className={clsx(discordAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
+                    <div className={clsx("w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on Discord</span>
                         {
                             discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Join Discord</Button>)
