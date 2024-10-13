@@ -81,6 +81,7 @@ const Invalid = () => {
 
     const handleVerifyX = () => {
         if (twitterAuthConfig.authURL) {
+            // const followUrl = 'https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fdeveloper.x.com%2F&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Efollow%7Ctwgr%5ETwitterDev&region=follow_link&screen_name=TwitterDev'   
             const discordWindow = window.open(twitterAuthConfig.authURL, 'Discord', 'width=500,height=400,left=250,top=100,resizable=no,scrollbars=no');
         }
     }
@@ -119,13 +120,13 @@ const Invalid = () => {
                     <div className={clsx(twitterAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on X</span>
                         {
-                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twittercheckLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Open X</Button>)
+                            twitterBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={twittercheckLoading} className="h-9 min-h-fit" onClick={handleVerifyX}>Follow On X</Button>)
                         }
                     </div>
                     <div className={clsx(discordAuthConfig?.needOauth == false ? '' : 'opacity-30', "w-full font-[500] rounded-[12px] border border-[#FFFFFF99] py-5 px-4 flex items-center justify-between")}>
                         <span>Follow @cysic_xyz on Discord</span>
                         {
-                            discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Open Discord</Button>)
+                            discordBinded ? (<div className="text-[#00F0FF]">Verified</div>) : (<Button loading={discordcheckLoading} className="h-9 min-h-fit" onClick={handleVerifyDiscord}>Join Discord</Button>)
                         }
                     </div>
                     <Button loading={discordcheckLoading || twittercheckLoading} onClick={handleVerifyAll} type="gradient" className="w-[320px]">Verify All</Button>
