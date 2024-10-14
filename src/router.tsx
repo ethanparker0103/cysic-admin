@@ -22,11 +22,11 @@ import Aleo from "@/routes/pages/Activity/Aleo";
 import Leadingboard from "@/routes/pages/Dashboard/Leadingboard";
 import Referral from "@/routes/pages/Dashboard/Referral";
 import Faucet from "@/routes/pages/Dashboard/Faucet";
-import Assets from "@/routes/pages/Dashboard/Assets";
 import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
 import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
+import Phase1 from "@/routes/pages/Dashboard/My/page/phase1";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -47,6 +47,10 @@ export const router = createBrowserRouter([
                     {
                         path: 'my',
                         element: <My />,
+                    },
+                    {
+                        path: 'my/phase1',
+                        element: <Phase1 />,
                     },
                     {
                         path: 'verifier',
@@ -92,10 +96,6 @@ export const router = createBrowserRouter([
                     {
                         path: 'referral/invite',
                         element: <FillReferralCode />,
-                    },
-                    {
-                        path: 'assets',
-                        element: <Assets />,
                     },
                     {
                         path: 'stake',

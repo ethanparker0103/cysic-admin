@@ -55,10 +55,10 @@ const mock = {
 
 const tabs = [
   {
-    name: "Exchange",
+    name: "Exchange History",
     cmp: () => (
       <UserTable
-        key="userTable"
+        key="exchangeHistory"
       // classNames={{ wrapper: "!border-0 !p-0" }}
       />
     ),
