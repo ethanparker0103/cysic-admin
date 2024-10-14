@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Verticle from "@/components/Verticle";
-import { cosmosBaseCoin, cosmosStCoin } from "@/config";
+import { cysicBaseCoin, cysicStCoin } from "@/config";
 import useModalState from "@/hooks/useModalState";
 import useCosmos from "@/models/_global/cosmos";
 import { getImageUrl } from "@/utils/tools";
@@ -82,11 +82,11 @@ const Assets = () => {
                   </defs>
                 </svg>
                 <span className="text-2xl text-[#A3A3A3]">
-                  {cosmosBaseCoin}
+                  {cysicBaseCoin}
                 </span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#00F0FF]">
-                {balanceMap?.[cosmosBaseCoin]?.hm_amount}
+                {balanceMap?.[cysicBaseCoin]?.hm_amount}
               </div>
             </div>
             <Button
@@ -183,7 +183,7 @@ const Assets = () => {
                 <span className="text-2xl text-[#A3A3A3]">stCYS</span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#fff]">
-                {balanceMap?.[cosmosStCoin]?.hm_amount || "-"}
+                {balanceMap?.[cysicStCoin]?.hm_amount || "-"}
               </div>
             </div>
             <Button
