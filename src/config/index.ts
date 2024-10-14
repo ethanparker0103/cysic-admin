@@ -1,3 +1,5 @@
+import { getImageUrl } from "@/utils/tools";
+
 export const defaultChainId = '9527';
 
 export const baseStatus: any = {
@@ -52,5 +54,16 @@ export const explorerUrl = 'https://explorer-testnet.prover.xyz'
 
 export const cosmosReservedValue = '1'
 
-export const cosmosBaseCoin = 'CYS'
-export const cosmosStCoin = 'stCYS'
+export const cysicBaseCoin = 'CYS'
+export const cysicStCoin = 'stCYS'
+
+export const supTokens: any = {
+    [cysicBaseCoin]: {
+        name: cysicBaseCoin,
+        icon: getImageUrl('@/assets/images/tokens/cysic.svg')
+    },
+    [cysicStCoin]: {
+        name: cysicStCoin,
+        icon: getImageUrl('@/assets/images/tokens/cysic-light.svg')
+    }
+} 
