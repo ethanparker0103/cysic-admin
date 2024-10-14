@@ -21,6 +21,7 @@ img {
 /* 全局样式 */
 * {
     box-sizing: border-box;
+    line-height: 1;
 }
 
 /* 隐藏横向滚动条 */
