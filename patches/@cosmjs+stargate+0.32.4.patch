@@ -1,0 +1,176 @@
+diff --git a/node_modules/@cosmjs/stargate/.DS_Store b/node_modules/@cosmjs/stargate/.DS_Store
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/@cosmjs/stargate/build/.DS_Store b/node_modules/@cosmjs/stargate/build/.DS_Store
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/@cosmjs/stargate/build/accounts.js b/node_modules/@cosmjs/stargate/build/accounts.js
+index de42c94..c68631c 100644
+--- a/node_modules/@cosmjs/stargate/build/accounts.js
++++ b/node_modules/@cosmjs/stargate/build/accounts.js
+@@ -7,17 +7,17 @@ const utils_1 = require("@cosmjs/utils");
+ const auth_1 = require("cosmjs-types/cosmos/auth/v1beta1/auth");
+ const vesting_1 = require("cosmjs-types/cosmos/vesting/v1beta1/vesting");
+ function uint64FromProto(input) {
+-    return math_1.Uint64.fromString(input.toString());
++  return math_1.Uint64.fromString(input.toString());
+ }
+ function accountFromBaseAccount(input) {
+-    const { address, pubKey, accountNumber, sequence } = input;
+-    const pubkey = (0, proto_signing_1.decodeOptionalPubkey)(pubKey);
+-    return {
+-        address: address,
+-        pubkey: pubkey,
+-        accountNumber: uint64FromProto(accountNumber).toNumber(),
+-        sequence: uint64FromProto(sequence).toNumber(),
+-    };
++  const { address, pubKey, accountNumber, sequence } = input;
++  const pubkey = (0, proto_signing_1.decodeOptionalPubkey)(pubKey);
++  return {
++    address: address,
++    pubkey: pubkey,
++    accountNumber: uint64FromProto(accountNumber).toNumber(),
++    sequence: uint64FromProto(sequence).toNumber(),
++  };
+ }
+ /**
+  * Basic implementation of AccountParser. This is supposed to support the most relevant
+@@ -25,40 +25,59 @@ function accountFromBaseAccount(input) {
+  * you'll need to write your own account decoder.
+  */
+ function accountFromAny(input) {
+-    const { typeUrl, value } = input;
+-    switch (typeUrl) {
+-        // auth
+-        case "/cosmos.auth.v1beta1.BaseAccount":
+-            return accountFromBaseAccount(auth_1.BaseAccount.decode(value));
+-        case "/cosmos.auth.v1beta1.ModuleAccount": {
+-            const baseAccount = auth_1.ModuleAccount.decode(value).baseAccount;
+-            (0, utils_1.assert)(baseAccount);
+-            return accountFromBaseAccount(baseAccount);
+-        }
+-        // vesting
+-        case "/cosmos.vesting.v1beta1.BaseVestingAccount": {
+-            const baseAccount = vesting_1.BaseVestingAccount.decode(value)?.baseAccount;
+-            (0, utils_1.assert)(baseAccount);
+-            return accountFromBaseAccount(baseAccount);
+-        }
+-        case "/cosmos.vesting.v1beta1.ContinuousVestingAccount": {
+-            const baseAccount = vesting_1.ContinuousVestingAccount.decode(value)?.baseVestingAccount?.baseAccount;
+-            (0, utils_1.assert)(baseAccount);
+-            return accountFromBaseAccount(baseAccount);
+-        }
+-        case "/cosmos.vesting.v1beta1.DelayedVestingAccount": {
+-            const baseAccount = vesting_1.DelayedVestingAccount.decode(value)?.baseVestingAccount?.baseAccount;
+-            (0, utils_1.assert)(baseAccount);
+-            return accountFromBaseAccount(baseAccount);
+-        }
+-        case "/cosmos.vesting.v1beta1.PeriodicVestingAccount": {
+-            const baseAccount = vesting_1.PeriodicVestingAccount.decode(value)?.baseVestingAccount?.baseAccount;
+-            (0, utils_1.assert)(baseAccount);
+-            return accountFromBaseAccount(baseAccount);
+-        }
+-        default:
+-            throw new Error(`Unsupported type: '${typeUrl}'`);
++  const { typeUrl, value } = input;
++
++  console.log("--accountFromAny--", typeUrl, ",", value, ",", vesting_1);
++  switch (typeUrl) {
++    // auth
++    case "/cosmos.auth.v1beta1.BaseAccount":
++      return accountFromBaseAccount(auth_1.BaseAccount.decode(value));
++    case "/cosmos.auth.v1beta1.ModuleAccount": {
++      const baseAccount = auth_1.ModuleAccount.decode(value).baseAccount;
++      (0, utils_1.assert)(baseAccount);
++      return accountFromBaseAccount(baseAccount);
+     }
++    // vesting
++    case "/cosmos.vesting.v1beta1.BaseVestingAccount": {
++      const baseAccount =
++        vesting_1.BaseVestingAccount.decode(value)?.baseAccount;
++      (0, utils_1.assert)(baseAccount);
++      return accountFromBaseAccount(baseAccount);
++    }
++    case "/cosmos.vesting.v1beta1.ContinuousVestingAccount": {
++      const baseAccount =
++        vesting_1.ContinuousVestingAccount.decode(value)?.baseVestingAccount
++          ?.baseAccount;
++      (0, utils_1.assert)(baseAccount);
++      return accountFromBaseAccount(baseAccount);
++    }
++    case "/cosmos.vesting.v1beta1.DelayedVestingAccount": {
++      const baseAccount =
++        vesting_1.DelayedVestingAccount.decode(value)?.baseVestingAccount
++          ?.baseAccount;
++      (0, utils_1.assert)(baseAccount);
++      return accountFromBaseAccount(baseAccount);
++    }
++    case "/cosmos.vesting.v1beta1.PeriodicVestingAccount": {
++      const baseAccount =
++        vesting_1.PeriodicVestingAccount.decode(value)?.baseVestingAccount
++          ?.baseAccount;
++      (0, utils_1.assert)(baseAccount);
++      return accountFromBaseAccount(baseAccount);
++    }
++    // cysic
++    case "/cysicmint.types.v1.EthAccount": {
++      const base = vesting_1.EthAccount.decode(value);
++      console.log("base", base);
++      const baseAccount = base?.baseAccount;
++      (0, utils_1.assert)(baseAccount);
++
++      console.log("baseAccount", baseAccount);
++      return accountFromBaseAccount(baseAccount);
++    }
++    default:
++      throw new Error(`Unsupported type: '${typeUrl}'`);
++  }
+ }
+ exports.accountFromAny = accountFromAny;
+ //# sourceMappingURL=accounts.js.map
+diff --git a/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts b/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts
+index f3368ae..099de89 100644
+--- a/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts
++++ b/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts
+@@ -63,6 +63,10 @@ export declare class SigningStargateClient extends StargateClient {
+     protected constructor(cometClient: CometClient | undefined, signer: OfflineSigner, options: SigningStargateClientOptions);
+     simulate(signerAddress: string, messages: readonly EncodeObject[], memo: string | undefined): Promise<number>;
+     sendTokens(senderAddress: string, recipientAddress: string, amount: readonly Coin[], fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
++    
++    exchangeToPlatformToken(senderAddress: string, amount: Coin, fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
++    exchangeToGovToken(senderAddress: string, amount: Coin, fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
++    
+     delegateTokens(delegatorAddress: string, validatorAddress: string, amount: Coin, fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
+     undelegateTokens(delegatorAddress: string, validatorAddress: string, amount: Coin, fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
+     withdrawRewards(delegatorAddress: string, validatorAddress: string, fee: StdFee | "auto" | number, memo?: string): Promise<DeliverTxResponse>;
+diff --git a/node_modules/@cosmjs/stargate/build/signingstargateclient.js b/node_modules/@cosmjs/stargate/build/signingstargateclient.js
+index 0e74813..84fc366 100644
+--- a/node_modules/@cosmjs/stargate/build/signingstargateclient.js
++++ b/node_modules/@cosmjs/stargate/build/signingstargateclient.js
+@@ -109,6 +109,26 @@ class SigningStargateClient extends stargateclient_1.StargateClient {
+         };
+         return this.signAndBroadcast(senderAddress, [sendMsg], fee, memo);
+     }
++    // ./cysicmintd tx govtoken exchange-to-platformtoken [amount]
++    async exchangeToPlatformToken(senderAddress, amount, fee = "auto", memo = ""){
++        const msg = {
++            typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToPlatformToken",
++            value: {
++                amount,
++            },
++        };
++        return this.signAndBroadcast(senderAddress, [msg], fee, memo);
++    }
++    // ./cysicmintd tx govtoken exchange-to-govtoken [amount]
++    async exchangeToGovToken(senderAddress, amount, fee = "auto", memo = ""){
++        const msg = {
++            typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToGovToken",
++            value: {
++                amount,
++            },
++        };
++        return this.signAndBroadcast(senderAddress, [msg], fee, memo);
++    }
+     async delegateTokens(delegatorAddress, validatorAddress, amount, fee, memo = "") {
+         const delegateMsg = {
+             typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",

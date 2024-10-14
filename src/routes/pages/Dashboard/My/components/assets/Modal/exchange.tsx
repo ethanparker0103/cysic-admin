@@ -7,18 +7,29 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextu
 import { useEventListener } from "ahooks"
 import { useState } from "react"
 
+async function checkModule() {
+    const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
+    const client = await StargateClient.connect(rpcEndpoint);
+
+    // 检查某个模块是否存在，例如治理模块
+    const governance = await client.getGovernanceParams();
+    console.log("Governance Module:", governance);
+}
+
 const ExchangeModal = () => {
-    const { balanceMap } = useCosmos()
+    const { balanceMap, connector, address } = useCosmos()
+
+    console.log('connector', connector)
     const { visible, setVisible }: any = useModalState({ eventName: 'modal_exchange_visible' })
     const { dispatch }: any = useModalState({ eventName: 'modal_slippage_visible' })
 
-    useEventListener('modal_exchange_visible', (e: any)=>{
+    useEventListener('modal_exchange_visible', (e: any) => {
         const fromToken = e?.detail?.fromToken
         const toToken = e?.detail?.toToken
-        if(fromToken){
+        if (fromToken) {
             setFromToken(fromToken)
         }
-        if(toToken){
+        if (toToken) {
             setToToken(toToken)
         }
     })
@@ -28,11 +39,39 @@ const ExchangeModal = () => {
     const [fromToken, setFromToken] = useState(cysicBaseCoin)
     const [toToken, setToToken] = useState(cysicStCoin)
 
-    const handleExchange = (closeLoading?: any) => {
+
+    const exchangeToGovToken = async (client: any, address: string) => {
+        // 1. 构建交易参数
+        const amount = {
+            denom: "CYS", // 代币的denom
+            amount: "100000000000000000", // 要交换的数量
+        };
+
+
+        const stdFee = {
+            amount,
+            fee: 200000
+        }
+        console.log('params', {
+            address,
+            amount,
+            fee: stdFee
+        } )
+        // 2. 执行交易
+        const result = await client.exchangeToGovToken(address, amount, stdFee, '');
+
+        // 3. 处理交易结果
+        // assertIsBroadcastTxSuccess(result);
+        console.log('Transaction successful:', result.transactionHash);
+    }
+
+
+    const handleExchange = async (closeLoading?: any) => {
         try {
+            await exchangeToGovToken(connector, address)
             setVisible(false)
         } catch (e) {
-
+            console.log('error', e)
         } finally {
             closeLoading?.()
         }
@@ -50,6 +89,9 @@ const ExchangeModal = () => {
         setToToken(tempDataList?.fromToken)
         setToAmount(tempDataList?.fromAmount)
     }
+
+
+
 
     return <Modal isOpen={visible} onOpenChange={setVisible}>
         <ModalContent>
