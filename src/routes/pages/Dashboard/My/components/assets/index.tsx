@@ -17,7 +17,7 @@ const Assets = () => {
       <div className="flex items-center gap-4 flex-wrap">
         <div className="min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
           <div className="flex items-center justify-between relative">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <svg
                   width="32"
@@ -76,8 +76,8 @@ const Assets = () => {
                       y2="24.3976"
                       gradientUnits="userSpaceOnUse"
                     >
-                      <stop offset="0.103627" stop-color="#19FFE0" />
-                      <stop offset="1" stop-color="#9D47FF" />
+                      <stop offset="0.103627" stopColor="#19FFE0" />
+                      <stop offset="1" stopColor="#9D47FF" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -86,7 +86,7 @@ const Assets = () => {
                 </span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#00F0FF]">
-                {balanceMap?.[cysicBaseCoin]?.hm_amount}
+                {balanceMap?.[cysicBaseCoin]?.hm_amount || '-'}
               </div>
             </div>
             <Button
@@ -119,7 +119,7 @@ const Assets = () => {
               </div>
             </Button>
             <img
-              className="opacity-30 z-0 absolute top-1/2 -translate-y-[calc(50%-0.5rem)] right-2 size-[7.625rem]"
+              className="opacity-30 z-0 absolute top-1/2 -translate-y-1/2 right-2 size-[7.625rem]"
               src={getImageUrl("@/assets/images/assets/token.png")}
             />
           </div>
@@ -150,7 +150,7 @@ const Assets = () => {
 
         <div className="min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
           <div className="flex items-center justify-between relative">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <svg
                   width="32"
@@ -216,7 +216,7 @@ const Assets = () => {
               </div>
             </Button>
             <img
-              className="opacity-30 z-0 absolute top-1/2 -translate-y-[calc(50%-0.5rem)] right-2 size-[7.625rem]"
+              className="opacity-30 z-0 absolute top-1/2 -translate-y-1/2 right-2 size-[7.625rem]"
               src={getImageUrl("@/assets/images/assets/token.png")}
             />
           </div>
