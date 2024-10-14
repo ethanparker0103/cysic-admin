@@ -22,10 +22,11 @@ import { useAccount } from "wagmi";
 import Search from "@/routes/components/Search";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import BasicDoubleconfirmModal from "@/components/BasicDoubleconfirmModal";
-import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance";
 import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
 import SlippageModal from "@/routes/pages/Dashboard/My/components/assets/Modal/slippage";
 import ExchangeModal from "@/routes/pages/Dashboard/My/components/assets/Modal/exchange";
+import BigNumber from "bignumber.js";
+import useRewardPoints from "@/models/_global/useRewardPoints";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -301,6 +302,7 @@ export const dashboardNavs_ = [
 ];
 
 export default function App() {
+  const { setState: setRewawrdPoints, phase1 } = useRewardPoints()
   const { t } = useTranslation();
   useCosmosUpdate()
   const matches = useMatches();
@@ -310,20 +312,27 @@ export default function App() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleNav = () => { };
-
   const { address } = useAccount();
 
   const dashboardNavs = dashboardNavs_?.filter(i => i?.needAccount ? !!address : true)
 
-
-  const { data: myPoints } = useRequest(
-    () => axios.get(`/api/v1/dashboard/myPoint/${address}`),
+  useRequest(
+    () => axios.get(`/api/v1/myPage/${address}/v1/overview`),
     {
       refreshDeps: [address],
       ready: !!address,
+      onSuccess(e){
+        const data = e?.data?.data || {}
+        setRewawrdPoints({
+          phase1: {
+            ...data,
+            total: BigNumber(data?.activity_points).plus(data?.verifier_points).plus(data?.prover_points).plus(data?.reward_points).toString()
+          }
+        })
+      }
     }
   );
+
   return (
     <>
 
@@ -476,7 +485,7 @@ export default function App() {
                     <div className="text-[#A3A3A3]">My Points Desc</div>
 
                     <div className="flex flex-col gap-1 text-[#fff]">
-                      <div className="flex items-center justify-between gap-2"><span className="text-[#A3A3A3]">Phase 1</span>&nbsp;<span>0</span></div>
+                      <div className="flex items-center justify-between gap-2"><span className="text-[#A3A3A3]">Phase 1</span>&nbsp;<span>{phase1?.total || '-'}</span></div>
                       <div className="flex items-center justify-between gap-2"><span className="text-[#A3A3A3]">Phase 2</span>&nbsp;<span>0</span></div>
                     </div>
                   </div>}>
@@ -491,7 +500,7 @@ export default function App() {
 
                         <span className="whitespace-nowrap">{t('myPoints')}</span>
                       </div>
-                      <span className="text-[#00F0FF]">{myPoints?.data || "0.00"}&nbsp;{t('Points')}</span>
+                      <span className="text-[#00F0FF]">{phase1?.total || "0.00"}&nbsp;{t('Points')}</span>
                     </div>
                   </Tooltip>) : null
                 }

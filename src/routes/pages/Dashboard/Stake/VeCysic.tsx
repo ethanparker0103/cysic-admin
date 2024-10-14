@@ -1,6 +1,8 @@
 import Button from "@/components/Button"
+import { commonPageSize, cysicStCoin } from "@/config"
 import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance"
 import useModalState from "@/hooks/useModalState"
+import usePagnation from "@/hooks/usePagnation"
 import useCosmos from "@/models/_global/cosmos"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidatorDetail"
@@ -8,8 +10,10 @@ import StakeModal from "@/routes/pages/Dashboard/Stake/Modal/stake"
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail"
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
 import { getImageUrl } from "@/utils/tools"
+import { useRequest } from "ahooks"
+import axios from "axios"
 
-const token = 'veCysic'
+const token = cysicStCoin
 
 const VeCysic = () => {
     const { balanceMap } = useCosmos()
@@ -62,7 +66,7 @@ const VeCysic = () => {
                             <span className="">Claim Rewards</span>
                             <div className="flex gap-1">
                                 <span className="text-[#fff] text-[24px]">0</span>
-                                <span>{token}</span>
+                                <span className="self-end">{token}</span>
                             </div>
                         </div>
                         <Button type="dark" className="h-[1.75rem] min-h-fit"><span className="text-sm text-[#00F0FF]">Claim All</span></Button>

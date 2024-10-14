@@ -1,81 +1,70 @@
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
-import GradientContainer from "@/routes/components/GradientContainer";
-import { shortStr, getImageUrl } from "@/utils/tools";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
+import { activatedUserList } from "@/mock/referral";
+import { getImageUrl, shortStr } from "@/utils/tools";
+import {
+  Table,
+  TableHeader,
+  TableColumn,
+  TableBody,
+  TableRow,
+  TableCell,
+  getKeyValue,
+} from "@nextui-org/react";
 import axios from "axios";
-import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
-import toast from "react-simple-toasts";
 import { useAccount } from "wagmi";
 
 const mock = {
-  "msg": "success",
-  "code": 10000,
-  "data": {
-    "index": 194, // 目标地址积分排名
-    "list": [
+  msg: "success",
+  code: 10000,
+  data: {
+    index: 194, // 目标地址积分排名
+    list: [
       {
-        "ID": 2354,
-        "CreatedAt": "2024-07-30T04:00:22.302Z",
-        "UpdatedAt": "2024-08-27T14:02:44.282Z",
+        "ID": 3,
+        "CreatedAt": "2024-10-14T16:37:38.474Z",
+        "UpdatedAt": "2024-10-14T16:37:38.474Z",
         "DeletedAt": null,
-        "verifier_id": 10078,
-        "name": "dayao377",
-        "logo": "https://api-testnet.prover.xyz/images/1.02.png",
-        "description": "臭鱼烂虾队",
-        "verifier": "0xF3063e8BeFcb9c2588BEB786d306a66c9fac5d27",
-        "verifier_cosmos": "cysic81yx95tl3syhc76yz3e407az53xer54vdpmw35td",
-        "claim_reward_address": "0xF3063e8BeFcb9c2588BEB786d306a66c9fac5d27",
-        "approve_hash": "2D1FA2F54DCCEF78E3308D62C579A2106D423F990353E00A243BC02A89B9213C",
-        "send_gas_hash": "",
-        "status": 1,
-        "last_heartbeat": "2024-08-27T14:02:44Z",
-        "rank": 12,
-        "verifier_point": "133.00",  // 验证积分
-        "activity_score": "116.66", // 活动积分
-        "sum": "249.66"  // 总积分
-      },
-      {
-        "ID": 2353,
-        "CreatedAt": "2024-07-30T04:00:22.302Z",
-        "UpdatedAt": "2024-08-27T14:02:44.282Z",
+        "Height": 918,
+        "TxHash": "4639901cc3653b05a1c53b3a2c237ff6d333765497f8f2583e721f28cb038aa5",
+        "Address": "0x378ea1b8a4679964F585126E8578e231B4cf360a",
+        "FromToken": "stCYS",
+        "FromAmount": "0.000000000000000666",
+        "ToToken": "CYS",
+        "ToAmount": "0.000000000000000666"
+      }, {
+        "ID": 4,
+        "CreatedAt": "2024-10-14T16:37:38.474Z",
+        "UpdatedAt": "2024-10-14T16:37:38.474Z",
         "DeletedAt": null,
-        "verifier_id": 10078,
-        "name": "dayao377",
-        "logo": "https://api-testnet.prover.xyz/images/1.02.png",
-        "description": "臭鱼烂虾队",
-        "verifier": "0x218B45fE3025f1ED1051cD5fee8a9136474aB1a1",
-        "verifier_cosmos": "cysic81yx95tl3syhc76yz3e407az53xer54vdpmw35td",
-        "claim_reward_address": "0x697CA2210429b2BBb26A221f339509Cc2109b377",
-        "approve_hash": "2D1FA2F54DCCEF78E3308D62C579A2106D423F990353E00A243BC02A89B9213C",
-        "send_gas_hash": "",
-        "status": 1,
-        "last_heartbeat": "2024-08-27T14:02:44Z",
-        "rank": 1,
-        "verifier_point": "133.00",  // 验证积分
-        "activity_score": "116.66", // 活动积分
-        "sum": "249.66"  // 总积分
+        "Height": 918,
+        "TxHash": "4639901cc3653b05a1c53b3a2c237ff6d333765497f8f2583e721f28cb038aa5",
+        "Address": "0x378ea1b8a4679964F585126E8578e231B4cf360a",
+        "FromToken": "CYS",
+        "FromAmount": "0.000000000000000666",
+        "ToToken": "stCYS",
+        "ToAmount": "0.000000000000000666"
       }
     ],
-    "total": 632 // 总数量
-  }
-}
+    total: 632, // 总数量
+  },
+};
 
 enum sortKkey {
-  sum = 'sum',
-  aPoint = 'aPoint',
-  vPoint = 'vPoint',
+  sum = "sum",
+  aPoint = "aPoint",
+  vPoint = "vPoint",
 }
 
-const defaultSortKey = sortKkey.sum
+const defaultSortKey = sortKkey.sum;
 
 const UserTable = () => {
   const { t } = useTranslation();
-  const { address } = useAccount()
-  // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
+  const { address } = useAccount();
 
+  // 10.5 获取已经邀请人员列表
   const {
     data: taskList,
     totalPage,
@@ -83,109 +72,100 @@ const UserTable = () => {
     setCurrentPage,
   } = usePagnation(
     (page: number) => {
-      // return Promise.resolve(mock);
-
-      return axios.get(`/api/v1/leaderboard/verifier/list`, {
+      return Promise.resolve(mock);
+      return axios.get(`/api/v1/myPage/${address}/exchangeHistory`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
           by: defaultSortKey,
-          target: address
+          target: address,
         },
       });
     },
     {
+      ready: !!address,
       refreshDeps: [address],
     }
   );
-
-  const self = taskList?.data?.target
-  const selfId = self?.ID+'_'+self?.verifier_id
-
-  const list = taskList?.data?.list || []
-  const tableData = (self?.ID != 0) ? [self, ...list] : list;
-  
+  const tableData = taskList?.data?.list || [];
   const rows = tableData || [];
 
   const columns = [
     {
-      key: "coin",
+      key: "ToToken",
       label: "Coin",
     },
     {
-      key: "date",
-      label: "Date",
+      key: "UpdatedAt",
+      label: "Time",
     },
     {
-      key: "amount",
+      key: "ToAmount",
       label: "Amount",
-    },
-    {
-      key: "action",
-      label: "Action",
     }
   ];
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
-      case "rank":
-        const ifSelf = selfId == (item?.ID+'_'+item?.verifier_id)
-        const imgName = `@/assets/images/leadingboard/rank${+item?.rank+1}.svg`
-        return <div className="flex items-center">
-          <div>{[0, 1, 2].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank}`}</div>
-          {ifSelf ? <GradientContainer className="ml-1 px-1 rounded-[6px] basic-bg-gradient">
-            <div className="text-xs italic">You</div>
-          </GradientContainer> : null}
-
+      case "ToToken":
+        const token = getKeyValue(item, columnKey)
+        const imgUrl = `@/assets/images/tokens/${token.toUpperCase()}.svg`
+        return  <div className="flex items-center gap-2">
+          <img className="size-6" src={getImageUrl(imgUrl)}/>
+          <span>{token}</span>
         </div>
-
-
-      case "sum":
-        return <div className="text-[#00F0FF]">{getKeyValue(item, columnKey)}</div>
-      case "verifier":
-        const value = getKeyValue(item, columnKey);
+      case "Status":
         return (
-          <div
-            className="cursor-pointer flex items-center gap-1"
-            onClick={() => {
-              copy(value);
-              toast("Copied");
-            }}
-          >
-            <span>{shortStr(value, 12)}</span>
-            <svg
-              width="19"
-              height="18"
-              viewBox="0 0 19 18"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4.875 5.0625C4.875 4.54473 5.29473 4.125 5.8125 4.125H10.875C11.2892 4.125 11.625 4.46079 11.625 4.875C11.625 5.18566 11.8768 5.4375 12.1875 5.4375C12.4982 5.4375 12.75 5.18566 12.75 4.875C12.75 3.83946 11.9105 3 10.875 3H5.8125C4.67341 3 3.75 3.92341 3.75 5.0625V10.125C3.75 11.1605 4.58946 12 5.625 12C5.93566 12 6.1875 11.7482 6.1875 11.4375C6.1875 11.1268 5.93566 10.875 5.625 10.875C5.21079 10.875 4.875 10.5392 4.875 10.125V5.0625Z"
-                fill="white"
-                fillOpacity="0.45"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M8.8125 6C7.67341 6 6.75 6.92341 6.75 8.0625V12.9375C6.75 14.0766 7.67341 15 8.8125 15H13.6875C14.8266 15 15.75 14.0766 15.75 12.9375V8.0625C15.75 6.92341 14.8266 6 13.6875 6H8.8125ZM7.875 8.0625C7.875 7.54473 8.29473 7.125 8.8125 7.125H13.6875C14.2053 7.125 14.625 7.54473 14.625 8.0625V12.9375C14.625 13.4553 14.2053 13.875 13.6875 13.875H8.8125C8.29473 13.875 7.875 13.4553 7.875 12.9375V8.0625Z"
-                fill="white"
-                fillOpacity="0.45"
-              />
-            </svg>
+          <div className="flex items-center gap-1">
+            {item?.ActivateAt ? (
+              <>
+                <svg
+                  width="17"
+                  height="16"
+                  viewBox="0 0 17 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7.28498 10.9154L12.0986 6.84227L11.2374 5.82442L7.38435 9.08467L5.48452 7.08614L4.51815 8.00479L7.28498 10.9154Z"
+                    fill="#11D473"
+                  />
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M15.0013 8.00004C15.0013 11.6819 12.0165 14.6667 8.33464 14.6667C4.65274 14.6667 1.66797 11.6819 1.66797 8.00004C1.66797 4.31814 4.65274 1.33337 8.33464 1.33337C12.0165 1.33337 15.0013 4.31814 15.0013 8.00004ZM13.668 8.00004C13.668 10.9456 11.2802 13.3334 8.33464 13.3334C5.38912 13.3334 3.0013 10.9456 3.0013 8.00004C3.0013 5.05452 5.38912 2.66671 8.33464 2.66671C11.2802 2.66671 13.668 5.05452 13.668 8.00004Z"
+                    fill="#11D473"
+                  />
+                </svg>
+                <span className="text-[#A3A3A3]">Activated</span>
+              </>
+            ) : (
+              <>
+                <span className="text-[#A3A3A3]">Not Activated</span>
+              </>
+            )}
           </div>
         );
-      case "name":
+      case "RebatePoint":
         return (
-          <div className="flex items-center gap-2">
-            <img src={item?.logo} className="w-8 h-8 rounded-full object-cover" />
-            <div>{shortStr(item?.name, 12)}</div>
+          <div className="flex items-center gap-1">
+            <div>{getKeyValue(item, columnKey) || "-"}</div>
+            <span className="text-[#A3A3A3]">Points</span>
+          </div>
+        );
+      case "Address":
+        const data = getKeyValue(item, columnKey);
+        return (
+          <div className="flex items-center gap-1">
+            <div className="size-5 rounded-full bg-gradient" />
+            <div>{shortStr(data, 12)}</div>
           </div>
         );
       default:
         return getKeyValue(item, columnKey);
     }
   };
+
   return (
     <>
       <style>
@@ -206,7 +186,7 @@ const UserTable = () => {
       </style>
 
       <Table
-        aria-label="TaskList"
+        aria-label="user list"
         classNames={{
           wrapper: "p-0 bg-[transparent]",
           th: "border-b border-solid border-[#FFFFFF33]",
@@ -221,14 +201,13 @@ const UserTable = () => {
         </TableHeader>
         <TableBody items={rows}>
           {(item: any) => {
-            const ifSelf = selfId == (item?.ID+'_'+item?.verifier_id)
             return (
-              <TableRow key={item?.ID} className={ifSelf ? 'self-addr-bg' : ''}>
+              <TableRow key={item?.Address}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}
               </TableRow>
-            )
+            );
           }}
         </TableBody>
       </Table>
@@ -239,8 +218,7 @@ const UserTable = () => {
         currentPage={currentPage}
         onChange={setCurrentPage}
       />
-
     </>
-  )
-}
-export default UserTable
+  );
+};
+export default UserTable;

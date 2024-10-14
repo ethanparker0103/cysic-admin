@@ -1,17 +1,51 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
+import { cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
+import useCosmos from "@/models/_global/cosmos"
 import { getImageUrl } from "@/utils/tools"
 import { Slider } from "@nextui-org/react"
 import { useState } from "react"
 
 const Stake = () => {
-    const maxAmount = 1000
+    const { address, balanceMap, connector } = useCosmos()
+    const maxAmount = balanceMap?.[cysicStCoin]?.hm_amount || 0
     const [stakeAmount, setStakeAmount] = useState()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
     const onClose = () => {
         dispatch({ visible: false })
+    }
+
+    const handleStake = async (closeLoading?:any)=>{
+        const fee = {
+            amount: [{
+              denom: "CYS", // 代币的denom
+              amount: "2000000000", // 手续费
+            }],
+            gas: "200000", // gas limit
+          };
+
+          const params = {
+              delegatorAddress: address,
+              validatorAddress: 'cysic14nlq2u8cgfnmqh26lyffq90axrtyp4cnwppx99',
+              amount: {
+                denom: "CYS", // 代币的denom
+                amount: 1e16, // 委托的数量
+              },
+          };
+
+
+        try{
+            const res = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, fee)
+            console.log('res', res)
+            // onClose?.()
+        }catch(e){
+            console.log('error', e)
+
+        }finally{
+            closeLoading?.()
+        }
     }
     return <div className="flex flex-col gap-8">
 
@@ -101,7 +135,7 @@ const Stake = () => {
         </div>
 
 
-        <Button className="w-full" type="gradient" onClick={onClose}>
+        <Button className="w-full" type="gradient" needLoading onClick={handleStake}>
             Stake
         </Button>
     </div>

@@ -10,13 +10,15 @@
     "build:qa": "vite build --mode qa",
     "build": "vite build --mode qa",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "patch-package"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.6.1"
   },
   "dependencies": {
     "@arco-design/web-react": "^2.62.0",
+    "@cosmjs/crypto": "^0.32.4",
     "@cosmjs/proto-signing": "^0.32.4",
     "@cosmjs/stargate": "^0.32.4",
     "@eth-optimism/sdk": "^3.2.0",
