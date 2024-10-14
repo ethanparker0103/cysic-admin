@@ -24,6 +24,8 @@ import ConnectCosmosButton from "@/components/connectCosmosButton";
 import BasicDoubleconfirmModal from "@/components/BasicDoubleconfirmModal";
 import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance";
 import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
+import SlippageModal from "@/routes/pages/Dashboard/My/components/assets/Modal/slippage";
+import ExchangeModal from "@/routes/pages/Dashboard/My/components/assets/Modal/exchange";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -236,11 +238,6 @@ export const dashboardNavs_ = [
   },
   {
     prefix: <Flag className="size-6 scale-[1.3]" />,
-    text: "My Assets",
-    link: "/dashboard/assets",
-  },
-  {
-    prefix: <Flag className="size-6 scale-[1.3]" />,
     text: "Stake",
     // link: "/dashboard/stake",
     children: [
@@ -321,6 +318,8 @@ export default function App() {
 
       <ToastContainer theme="dark" />
       <BasicDoubleconfirmModal />
+      <ExchangeModal />
+      <SlippageModal />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
