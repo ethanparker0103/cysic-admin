@@ -1,5 +1,7 @@
 import Button from "@/components/Button"
+import { cosmosBaseCoin, cosmosStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
+import useCosmos from "@/models/_global/cosmos"
 import Detail from "@/routes/pages/Dashboard/Assets/Detail"
 import ExchangeModal from "@/routes/pages/Dashboard/Assets/Modal/exchange"
 import SlippageModal from "@/routes/pages/Dashboard/Assets/Modal/slippage"
@@ -7,6 +9,8 @@ import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import { getImageUrl } from "@/utils/tools"
 
 const Assets = () => {
+    const { balanceMap, connector } = useCosmos()
+    console.log('connector', connector)
     const {dispatch}: any = useModalState({eventName: 'modal_exchange_visible'})
 
     return <MainContainer title="My Assets">
@@ -35,9 +39,9 @@ const Assets = () => {
                                     </linearGradient>
                                 </defs>
                             </svg>
-                            <span className="text-2xl text-[#A3A3A3]">Cysic</span>
+                            <span className="text-2xl text-[#A3A3A3]">{cosmosBaseCoin}</span>
                         </div>
-                        <div className="flex-1 text-[40px] font-bold text-[#00F0FF]">24,000.00</div>
+                        <div className="flex-1 text-[40px] font-bold text-[#00F0FF]">{balanceMap?.[cosmosBaseCoin]?.hm_amount}</div>
                     </div>
                     <Button className="relative z-[2]" type="dark" onClick={()=>dispatch({visible: true})}>
                         <div className="flex items-center gap-1">
@@ -61,9 +65,9 @@ const Assets = () => {
                                 <path fillRule="evenodd" clipRule="evenodd" d="M18.9095 22.3138L15.2833 22.3135C12.1176 22.3135 9.42287 19.9501 9.01485 16.8151C8.98557 16.5913 9.14348 16.3864 9.36705 16.3569C9.59077 16.3265 9.79674 16.4865 9.82592 16.7097C10.1809 19.4378 12.5273 21.4957 15.2833 21.4957L22.5349 21.4955C22.6962 21.1061 23.0796 20.8319 23.5279 20.8319C24.1209 20.8319 24.6017 21.3126 24.6017 21.9056C24.6017 22.4987 24.1209 22.9797 23.5279 22.9797C23.0789 22.9797 22.6949 22.7044 22.5341 22.3138H18.9095ZM23.9612 21.9079C23.9612 22.1472 23.7671 22.3412 23.5279 22.3412C23.2884 22.3412 23.0944 22.1472 23.0944 21.9079C23.0944 21.6684 23.2884 21.4744 23.5279 21.4744C23.7671 21.4744 23.9612 21.6684 23.9612 21.9079Z" fill="black" />
                             </svg>
 
-                            <span className="text-2xl text-[#A3A3A3]">GCysic</span>
+                            <span className="text-2xl text-[#A3A3A3]">stCYS</span>
                         </div>
-                        <div className="flex-1 text-[40px] font-bold text-[#fff]">24,000.00</div>
+                        <div className="flex-1 text-[40px] font-bold text-[#fff]">{balanceMap?.[cosmosStCoin]?.hm_amount || '-'}</div>
                     </div>
                     <Button className="relative z-[2]" type="dark" onClick={()=>dispatch({visible: true})}>
                         <div className="flex items-center gap-1">

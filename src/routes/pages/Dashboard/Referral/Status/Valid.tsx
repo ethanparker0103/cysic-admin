@@ -90,6 +90,8 @@ const Valid = () => {
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
 
+    console.log('currentInviteValue', currentInviteValue, overview?.activateCnt, totalInviteValue)
+
     const referralUrl = `${window.location.origin}/m/dashboard/referral/invite?code=${code}`
 
     return (
@@ -176,7 +178,7 @@ const Valid = () => {
                                 &nbsp;your friends make.
                             </span>
                             <div className="flex flex-col gap-2">
-                                <span className="text-[#3a2929] text-base font-[500] leading-none">
+                                <span className="text-[#A3A3A3] text-base font-[500] leading-none">
                                     Your referral code:
                                 </span>
                                 <Snippet
