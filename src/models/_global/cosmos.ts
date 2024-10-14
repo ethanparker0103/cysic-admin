@@ -9,7 +9,8 @@ export const defaultInitState = {
   connector: undefined,
   isConnected: false,
   isConnecting: false,
-  hasConnectedWithKeplr: false
+  hasConnectedWithKeplr: false,
+  balanceMap: undefined
 }
 
 const persistFields: any = ['hasConnectedWithKeplr'];

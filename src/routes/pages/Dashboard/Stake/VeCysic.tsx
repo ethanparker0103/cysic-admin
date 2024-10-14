@@ -1,5 +1,7 @@
 import Button from "@/components/Button"
+import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance"
 import useModalState from "@/hooks/useModalState"
+import useCosmos from "@/models/_global/cosmos"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidatorDetail"
 import StakeModal from "@/routes/pages/Dashboard/Stake/Modal/stake"
@@ -10,6 +12,7 @@ import { getImageUrl } from "@/utils/tools"
 const token = 'veCysic'
 
 const VeCysic = () => {
+    const { balanceMap } = useCosmos()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
     return <MainContainer title="Stake veCYSIC">

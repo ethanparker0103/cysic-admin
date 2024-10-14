@@ -21,6 +21,9 @@ import axios from "axios";
 import { useAccount } from "wagmi";
 import Search from "@/routes/components/Search";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
+import BasicDoubleconfirmModal from "@/components/BasicDoubleconfirmModal";
+import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance";
+import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -291,6 +294,7 @@ export const dashboardNavs_ = [
 
 export default function App() {
   const { t } = useTranslation();
+  useCosmosUpdate()
   const matches = useMatches();
   const navigate = useNavigate();
   const lastPathname = JSON.parse(JSON.stringify(matches))?.reverse()?.[0]
@@ -316,6 +320,7 @@ export default function App() {
     <>
 
       <ToastContainer theme="dark" />
+      <BasicDoubleconfirmModal />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
