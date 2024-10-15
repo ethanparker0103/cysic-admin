@@ -1,6 +1,7 @@
 import Button from "@/components/Button"
 import MainCard from "@/components/MainCard"
 import Verticle from "@/components/Verticle"
+import { cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 
@@ -21,7 +22,7 @@ const Phase1 = () => {
                         onClick={() => dispatch({ visible: true })}
                     >
                         <div className="flex items-center gap-1">
-                            <span>换取 stCYS</span>
+                            <span>换取 {cysicStCoin}</span>
                             <svg
                                 width="20"
                                 height="20"
