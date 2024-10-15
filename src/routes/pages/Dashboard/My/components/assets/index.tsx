@@ -92,7 +92,7 @@ const Assets = () => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <img src={getImageUrl('@/assets/images/tokens/STCYS.svg')}/>
-                <span className="text-2xl text-[#A3A3A3]">stCYS</span>
+                <span className="text-2xl text-[#A3A3A3]">{cysicStCoin}</span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#fff]">
                 {balanceMap?.[cysicStCoin]?.hm_amount || "-"}

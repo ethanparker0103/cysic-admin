@@ -55,7 +55,7 @@ export const explorerUrl = 'https://explorer-testnet.prover.xyz'
 export const cosmosReservedValue = '1'
 
 export const cysicBaseCoin = 'CYS'
-export const cysicStCoin = 'stCYS'
+export const cysicStCoin = 'CGT'
 
 export const supTokens: any = {
     [cysicBaseCoin]: {
