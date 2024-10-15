@@ -24,10 +24,10 @@ export const cysicTestnet = {
       "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/ucys.png"
     },
     {
-      "coinDenom": "stCYS",
-      "coinMinimalDenom": "ustcys",
+      "coinDenom": "CGT",
+      "coinMinimalDenom": "uCGT",
       "coinDecimals": 18,
-      "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/ustcys.png"
+      "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/uCGT.png"
     }
   ],
   "feeCurrencies": [
@@ -44,10 +44,10 @@ export const cysicTestnet = {
     }
   ],
   "stakeCurrency": {
-    "coinDenom": "stCYS",
-    "coinMinimalDenom": "ustcys",
+    "coinDenom": "CGT",
+    "coinMinimalDenom": "uCGT",
     "coinDecimals": 18,
-    "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/ustcys.png"
+    "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/uCGT.png"
   },
   "features": []
 }

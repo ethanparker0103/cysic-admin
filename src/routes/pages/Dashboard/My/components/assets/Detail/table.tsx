@@ -30,7 +30,7 @@ const mock = {
         "Height": 918,
         "TxHash": "4639901cc3653b05a1c53b3a2c237ff6d333765497f8f2583e721f28cb038aa5",
         "Address": "0x378ea1b8a4679964F585126E8578e231B4cf360a",
-        "FromToken": "stCYS",
+        "FromToken": "CGT",
         "FromAmount": "0.000000000000000666",
         "ToToken": "CYS",
         "ToAmount": "0.000000000000000666"
@@ -44,7 +44,7 @@ const mock = {
         "Address": "0x378ea1b8a4679964F585126E8578e231B4cf360a",
         "FromToken": "CYS",
         "FromAmount": "0.000000000000000666",
-        "ToToken": "stCYS",
+        "ToToken": "CGT",
         "ToAmount": "0.000000000000000666"
       }
     ],
