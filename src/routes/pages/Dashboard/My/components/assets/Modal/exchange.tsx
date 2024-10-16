@@ -6,6 +6,7 @@ import useCosmos from "@/models/_global/cosmos"
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react"
 import { useEventListener } from "ahooks"
 import { useState } from "react"
+import { MsgExchangeToGovToken } from "@/utils/cysic-msg"
 
 async function checkModule() {
     const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
@@ -44,21 +45,35 @@ const ExchangeModal = () => {
         // 1. 构建交易参数
         const amount = {
             denom: "CYS", // 代币的denom
-            amount: "100000000000000000", // 要交换的数量
+            amount: (0.01*1e18).toString(), // 要交换的数量
         };
 
+        const msg = {
+            typeUrl: MsgExchangeToGovToken.typeUrl,
+            value: MsgExchangeToGovToken.encode({
+                sender: address,
+                amount: amount.amount,
+            }),
+        };
 
-        const stdFee = {
-            amount,
-            fee: 200000
-        }
+        const fee = {
+            amount: [
+                {
+                    denom: "CYS",  // 代币单位（可以替换为你使用的代币单位）
+                    amount: "200000",   // 费用数量
+                },
+            ],
+            gas: "200000", // Gas 限制
+        };
         console.log('params', {
             address,
             amount,
-            fee: stdFee
-        } )
+            msg,
+            fee
+        })
         // 2. 执行交易
-        const result = await client.exchangeToGovToken(address, amount, stdFee, '');
+        // const result = await client.exchangeToGovToken(address, amount, stdFee, '');
+        const result = await client.signAndBroadcast(address, [msg], fee, 'Exchange to gov token');
 
         // 3. 处理交易结果
         // assertIsBroadcastTxSuccess(result);

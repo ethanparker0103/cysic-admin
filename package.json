@@ -37,6 +37,7 @@
     "dayjs": "^1.11.10",
     "ethers": "v5",
     "framer-motion": "^11.2.10",
+    "google-protobuf": "^3.21.4",
     "i18next": "^23.11.5",
     "lodash-es": "^4.17.21",
     "merkletreejs": "^0.3.11",

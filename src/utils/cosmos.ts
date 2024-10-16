@@ -2,7 +2,9 @@ import { cosmosHubTestnet } from "@/config/cosmos/cosmosHubTestnet";
 import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
 import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
+import { Registry } from "@cosmjs/proto-signing";
 import { SigningStargateClient } from "@cosmjs/stargate";
+import { MsgExchangeToPlatformToken, MsgExchangeToGovToken } from "./cysic-msg";
 
 // @ts-ignore
 const provider = window?.keplr
@@ -38,9 +40,16 @@ async function connectWallet() {
         const offlineSigner = provider.getOfflineSigner(chainId);
         const accounts = await offlineSigner.getAccounts();
 
+        // register cysic msgs
+        const registry = new Registry([
+            ["/cysicmint.govtoken.v1.MsgExchangeToGovToken", MsgExchangeToGovToken],
+            ["/cysicmint.govtoken.v1.MsgExchangeToPlatformToken", MsgExchangeToPlatformToken],
+        ]);
+
         const client: any = await SigningStargateClient.connectWithSigner(
             rpc,
-            offlineSigner
+            offlineSigner,
+            { registry }
         );
 
         client.disable = ()=>{
