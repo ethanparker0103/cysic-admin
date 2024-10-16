@@ -12,6 +12,8 @@ const Assets = () => {
     eventName: "modal_exchange_visible",
   });
 
+  console.log('balanceMap', balanceMap)
+
   return (
     <>
       <div className="flex items-center gap-4 flex-wrap">
