@@ -6,7 +6,7 @@ export const cysicTestnet = {
   "rest": "https://dev-api.prover.xyz",
   "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
   "bip44": {
-    "coinType": 60
+    "coinType": 118 // use cosmos coinType
   },
   "bech32Config": {
     "bech32PrefixAccAddr": "cysic",
@@ -19,13 +19,13 @@ export const cysicTestnet = {
   "currencies": [
     {
       "coinDenom": "CYS",
-      "coinMinimalDenom": "ucys",
+      "coinMinimalDenom": "CYS",
       "coinDecimals": 18,
       "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/ucys.png"
     },
     {
       "coinDenom": "CGT",
-      "coinMinimalDenom": "uCGT",
+      "coinMinimalDenom": "CGT",
       "coinDecimals": 18,
       "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/uCGT.png"
     }
@@ -33,7 +33,7 @@ export const cysicTestnet = {
   "feeCurrencies": [
     {
       "coinDenom": "CYS",
-      "coinMinimalDenom": "ucys",
+      "coinMinimalDenom": "CYS",
       "coinDecimals": 18,
       "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/ucys.png",
       "gasPriceStep": {
@@ -45,7 +45,7 @@ export const cysicTestnet = {
   ],
   "stakeCurrency": {
     "coinDenom": "CGT",
-    "coinMinimalDenom": "uCGT",
+    "coinMinimalDenom": "CGT",
     "coinDecimals": 18,
     "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/uCGT.png"
   },

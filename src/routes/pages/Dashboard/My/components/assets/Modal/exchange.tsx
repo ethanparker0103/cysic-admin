@@ -8,14 +8,14 @@ import { useEventListener } from "ahooks"
 import { useState } from "react"
 import { MsgExchangeToGovToken } from "@/utils/cysic-msg"
 
-async function checkModule() {
-    const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
-    const client = await StargateClient.connect(rpcEndpoint);
+// async function checkModule() {
+//     const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
+//     const client = await StargateClient.connect(rpcEndpoint);
 
-    // 检查某个模块是否存在，例如治理模块
-    const governance = await client.getGovernanceParams();
-    console.log("Governance Module:", governance);
-}
+//     // 检查某个模块是否存在，例如治理模块
+//     const governance = await client.getGovernanceParams();
+//     console.log("Governance Module:", governance);
+// }
 
 const ExchangeModal = () => {
     const { balanceMap, connector, address } = useCosmos()
@@ -44,36 +44,29 @@ const ExchangeModal = () => {
     const exchangeToGovToken = async (client: any, address: string) => {
         // 1. 构建交易参数
         const amount = {
-            denom: "CYS", // 代币的denom
-            amount: (0.01*1e18).toString(), // 要交换的数量
+            denom: "CYS",
+            amount: (0.01 * 1e18).toString(),
         };
-
         const msg = {
             typeUrl: MsgExchangeToGovToken.typeUrl,
-            value: MsgExchangeToGovToken.encode({
+            value: MsgExchangeToGovToken.fromPartial({
                 sender: address,
                 amount: amount.amount,
             }),
         };
-
         const fee = {
             amount: [
                 {
-                    denom: "CYS",  // 代币单位（可以替换为你使用的代币单位）
-                    amount: "200000",   // 费用数量
+                    denom: "CYS",
+                    amount: "200000",
                 },
             ],
-            gas: "200000", // Gas 限制
+            gas: "200000",
         };
-        console.log('params', {
-            address,
-            amount,
-            msg,
-            fee
-        })
+        console.log('msg, ', msg)
         // 2. 执行交易
         // const result = await client.exchangeToGovToken(address, amount, stdFee, '');
-        const result = await client.signAndBroadcast(address, [msg], fee, 'Exchange to gov token');
+        const result = await client.signAndBroadcast(address, [msg], fee, `Exchange to gov token: ${msg.value.amount}`);
 
         // 3. 处理交易结果
         // assertIsBroadcastTxSuccess(result);
