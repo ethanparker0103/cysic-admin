@@ -87,7 +87,7 @@ const UserTable = () => {
       refreshDeps: [cosmosAddress],
     }
   );
-  const tableData = taskList?.data?.total || [];
+  const tableData = taskList?.data?.list || [];
   const rows = tableData || [];
 
   const columns = [
