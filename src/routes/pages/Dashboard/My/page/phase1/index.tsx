@@ -1,12 +1,15 @@
 import Button from "@/components/Button"
 import MainCard from "@/components/MainCard"
 import Verticle from "@/components/Verticle"
-import { cysicStCoin } from "@/config"
+import { cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
+import useRewardPoints from "@/models/_global/useRewardPoints"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 
 const Phase1 = () => {
     const { dispatch }: any = useModalState({ eventName: 'modal_exchange_visible' })
+
+    const { phase1 } = useRewardPoints()
 
     return <MainContainer title="Phase 1 POINTS">
         <MainCard>
@@ -14,12 +17,12 @@ const Phase1 = () => {
                 <div className="flex justify-between">
                     <div className="flex flex-col gap-1">
                         <span className="tex-[20px] font-[400]">Total Points</span>
-                        <div className="text-[40px] leading-none">4,000</div>
+                        <div className="text-[40px] leading-none">{phase1?.total || '-'}</div>
                     </div>
                     <Button
                         className="relative z-[2]"
                         type="dark"
-                        onClick={() => dispatch({ visible: true })}
+                        onClick={() => dispatch({ visible: true, fromToken: cysicBaseCoin, toToken: cysicStCoin })}
                     >
                         <div className="flex items-center gap-1">
                             <span>换取 {cysicStCoin}</span>
@@ -47,10 +50,10 @@ const Phase1 = () => {
                     </Button>
                 </div>
                 <div className="flex items-center justify-between">
-                    <Verticle title={'Activity Points'} desc={'1,000'}/>
-                    <Verticle title={'Verifier Points'} desc={'1,000'}/>
-                    <Verticle title={'Prover Points'} desc={'1,000'}/>
-                    <Verticle title={'Reward points'} desc={'500'}/>
+                    <Verticle title={'Activity Points'} desc={phase1?.activity_points || '-'}/>
+                    <Verticle title={'Verifier Points'} desc={phase1?.verifier_points || '-'}/>
+                    <Verticle title={'Prover Points'} desc={phase1?.prover_points || '-'}/>
+                    <Verticle title={'Reward points'} desc={phase1?.reward_points || '-'}/>
                 </div>
             </div>
         </MainCard>
