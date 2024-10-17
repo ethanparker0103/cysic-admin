@@ -1,10 +1,11 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
+import { cysicBaseCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import { Slider } from "@nextui-org/react"
 import { useState } from "react"
 
-const Unstake = () => {
+const Unstake = ({items, item}: any) => {
     const maxAmount = 1000
     const [unstakeAmount, setUnstakeAmount] = useState()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
@@ -59,7 +60,7 @@ const Unstake = () => {
                     <span className="text-[#A3A3A3]">赎回金额</span>
                     <div className="flex items-center gap-1">
                         <span>1.2345</span>
-                        <span className="text-[#A3A3A3]">CYSIC</span>
+                        <span className="text-[#A3A3A3]">{cysicBaseCoin}</span>
                     </div>
                 </div>
 
@@ -67,7 +68,7 @@ const Unstake = () => {
                     <span className="text-[#A3A3A3]">累计收益</span>
                     <div className="flex items-center gap-1">
                         <span>1.2345</span>
-                        <span className="text-[#A3A3A3]">CYSIC</span>
+                        <span className="text-[#A3A3A3]">{cysicBaseCoin}</span>
                     </div>
                 </div>
 

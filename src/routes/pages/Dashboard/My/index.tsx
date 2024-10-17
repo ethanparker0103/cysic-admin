@@ -32,44 +32,28 @@ const format = (value: string | number, defaultValue = undefined) => {
 //     "verifier_task_cnt": 0
 // }
 const Overview = () => {
-  const { address } = useAccount();
+  // const { address } = useAccount();
   // const address = '0x098acAbdfC81EDc954388022AF2284aFAacFd526'
-  const [userInfo, setUserInfo] = useState<any>({});
-
-  useRequest(
-    async () => {
-      if (!address) return;
-      const res = await axios(`/api/v1/myPage/${address}/overview`);
-      return res;
-    },
-    {
-      ready: !!address,
-      refreshDeps: [address],
-      onSuccess(e) {
-        console.log("eee", e?.data);
-        setUserInfo(e?.data);
-      },
-    }
-  );
+  // const [userInfo, setUserInfo] = useState<any>({});
 
 
-  const verifier_points_activity = BigNumber(userInfo?.verifier_points_activity || 0).toString()
-  const verifier_points_verification = BigNumber(userInfo?.verifier_points_verification || 0).toString()
-  const verifierPoints = BigNumber(verifier_points_activity || 0).plus(verifier_points_verification || 0).toString()
-  const provePoints = BigNumber(userInfo?.provider_points || 0).toString()
-  const totalPoints = BigNumber(verifierPoints).plus(provePoints).toString()
+  // const verifier_points_activity = BigNumber(userInfo?.verifier_points_activity || 0).toString()
+  // const verifier_points_verification = BigNumber(userInfo?.verifier_points_verification || 0).toString()
+  // const verifierPoints = BigNumber(verifier_points_activity || 0).plus(verifier_points_verification || 0).toString()
+  // const provePoints = BigNumber(userInfo?.provider_points || 0).toString()
+  // const totalPoints = BigNumber(verifierPoints).plus(provePoints).toString()
 
 
-  const verifierTask = BigNumber(userInfo?.verifier_task_cnt || 0).toString()
-  const proveTask = BigNumber(userInfo?.provider_task_cnt || 0).toString()
-  const totalTask = BigNumber(verifierTask).plus(proveTask).toString()
+  // const verifierTask = BigNumber(userInfo?.verifier_task_cnt || 0).toString()
+  // const proveTask = BigNumber(userInfo?.provider_task_cnt || 0).toString()
+  // const totalTask = BigNumber(verifierTask).plus(proveTask).toString()
 
-  const avg_point_verification = BigNumber(userInfo?.avg_point_verification || 0).toString()
-  const avg_point_activity = BigNumber(userInfo?.avg_point_activity || 0).toString()
+  // const avg_point_verification = BigNumber(userInfo?.avg_point_verification || 0).toString()
+  // const avg_point_activity = BigNumber(userInfo?.avg_point_activity || 0).toString()
 
-  const avg_task_completion = BigNumber(userInfo?.avg_task_completion || 0).toString()
+  // const avg_task_completion = BigNumber(userInfo?.avg_task_completion || 0).toString()
 
-  const social_task_points = BigNumber(userInfo?.social_task_points || 0).toString()
+  // const social_task_points = BigNumber(userInfo?.social_task_points || 0).toString()
   return (
     <div className={isMobile ? "flex flex-col gap-3" : "flex flex-col gap-3"}>
 
@@ -78,7 +62,7 @@ const Overview = () => {
       </div>
 
 
-      <div className="flex items-center gap-3">
+      {/* <div className="flex items-stretch gap-3">
         <MainCard>
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-1 text-lg">
@@ -133,7 +117,7 @@ const Overview = () => {
             </div>
           </div>
         </MainCard>
-      </div>
+      </div> */}
     </div>
   );
 };

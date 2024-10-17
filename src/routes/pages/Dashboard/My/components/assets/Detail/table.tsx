@@ -2,6 +2,7 @@ import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import { activatedUserList } from "@/mock/referral";
+import useCosmos from "@/models/_global/cosmos";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import {
   Table,
@@ -63,6 +64,7 @@ const defaultSortKey = sortKkey.sum;
 const UserTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount();
+  const { address: cosmosAddress } = useCosmos()
 
   // 10.5 获取已经邀请人员列表
   const {
@@ -72,22 +74,20 @@ const UserTable = () => {
     setCurrentPage,
   } = usePagnation(
     (page: number) => {
-      return Promise.resolve(mock);
-      return axios.get(`/api/v1/myPage/${address}/exchangeHistory`, {
+      // return Promise.resolve(mock);  
+      return axios.get(`/api/v1/myPage/${cosmosAddress}/exchangeHistory`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
-          by: defaultSortKey,
-          target: address,
         },
       });
     },
     {
-      ready: !!address,
-      refreshDeps: [address],
+      ready: !!cosmosAddress,
+      refreshDeps: [cosmosAddress],
     }
   );
-  const tableData = taskList?.data?.list || [];
+  const tableData = taskList?.data?.total || [];
   const rows = tableData || [];
 
   const columns = [

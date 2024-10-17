@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
+import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -44,21 +45,26 @@ const UserTable = () => {
     setCurrentPage,
   } = usePagnation(
     (page: number) => {
-      return Promise.resolve(mock);
-      return axios.get(`/api/v1/validator/my/${address}`, {
+      // return Promise.resolve(mock);
+
+      return axios.get(`/api/v1/validator`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
-          by: defaultSortKey,
-          target: address
         },
       });
     },
     {
       refreshDeps: [address],
+      onSuccess(res) {
+        dispatchEvent(new CustomEvent('data_activeValidator', {
+          detail: {
+            list: res?.data?.list
+          }
+        }))
+      }
     }
   );
-
   const rows = taskList?.data?.list || [];
 
   const columns = [
@@ -94,12 +100,12 @@ const UserTable = () => {
         return <div className="flex items-center gap-2">
           <Button onClick={() => {
             dispatchEvent(new CustomEvent('modal_stake_visible', {
-              detail: { visible: true, item }
+              detail: { visible: true, tab: StakeTab.stake, item, items: rows }
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Stake</Button>
           <Button onClick={() => {
             dispatchEvent(new CustomEvent('modal_stake_visible', {
-              detail: { visible: true, item }
+              detail: { visible: true, tab: StakeTab.unstake, item, items: rows }
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Unstake</Button>
         </div>

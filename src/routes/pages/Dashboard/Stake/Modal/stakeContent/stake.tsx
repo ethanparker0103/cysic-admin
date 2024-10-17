@@ -1,59 +1,87 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import { cysicStCoin } from "@/config"
+import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
-import { getImageUrl } from "@/utils/tools"
-import { Slider } from "@nextui-org/react"
-import { useState } from "react"
+import { Select, SelectItem, Slider } from "@nextui-org/react"
+import { useEventListener } from "ahooks"
+import BigNumber from "bignumber.js"
+import { useEffect, useState } from "react"
 
-const Stake = () => {
+const Stake = ({ items = [], item }: any) => {
     const { address, balanceMap, connector } = useCosmos()
     const maxAmount = balanceMap?.[cysicStCoin]?.hm_amount || 0
-    const [stakeAmount, setStakeAmount] = useState()
+    const [stakeAmount, setStakeAmount] = useState<any>()
+    const [slider, setSlider] = useState<any>()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
+
+
+    const [validator, setValidator] = useState<any>()
+    const current = items?.find(i => i?.operator_address == validator)
+
+    console.log('connector', connector, item)
 
     const onClose = () => {
         dispatch({ visible: false })
     }
 
-    const handleStake = async (closeLoading?:any)=>{
-        const fee = {
-            amount: [{
-              denom: "CYS", // 代币的denom
-              amount: "2000000000", // 手续费
-            }],
-            gas: "200000", // gas limit
-          };
+    const handleStake = async (closeLoading?: any) => {
+        const params = {
+            delegatorAddress: address,
+            validatorAddress: current?.operator_address,
+            amount: {
+                denom: "CGT", // 代币的denom
+                amount: BigNumber(stakeAmount).div(1e18).toString(), // 委托的数量
+            },
+        };
 
-          const params = {
-              delegatorAddress: address,
-              validatorAddress: 'cysic14nlq2u8cgfnmqh26lyffq90axrtyp4cnwppx99',
-              amount: {
-                denom: "CYS", // 代币的denom
-                amount: 1e16, // 委托的数量
-              },
-          };
-
-
-        try{
-            const res = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, fee)
+        try {
+            const res = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
             console.log('res', res)
             // onClose?.()
-        }catch(e){
+        } catch (e) {
             console.log('error', e)
 
-        }finally{
+        } finally {
             closeLoading?.()
         }
     }
+
+    
+    useEffect(() => {
+        if (!validator) {
+            if (item?.operator_address) {
+                setValidator(item?.operator_address)
+                return
+            }
+            setValidator(items?.[0]?.operator_address)
+
+        }
+    }, [item?.operator_address, validator, items])
+
+    
+
     return <div className="flex flex-col gap-8">
 
         <div className="flex flex-col gap-4">
 
             <div className="flex flex-col gap-2">
                 <div className="text-[#A3A3A3]">Validator</div>
-                <Input className="!bg-[#000] [&>div]:gap-2 " disabled value="ABCDE" type="solid" prefix={<img className="size-7 rounded-full" src={getImageUrl('@/assets/images/tokens/cysic.svg')} />} />
+                <Select
+                    selectedKeys={[validator]}
+                    onChange={(e) => setValidator(e?.target?.value)}
+                    // className="bg-[#000]"
+                    classNames={{
+                        trigger: '!bg-[#000] h-12 rounded-[6px]'
+                    }}
+                >
+                    {items?.map((i) => (
+                        <SelectItem key={i?.operator_address}>
+                            {i?.name}
+                        </SelectItem>
+                    ))}
+                </Select>
+                {/* <Input className="!bg-[#000] [&>div]:gap-2 " disabled value="ABCDE" type="solid" prefix={<img className="size-7 rounded-full" src={getImageUrl('@/assets/images/tokens/cysic.svg')} />} /> */}
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
@@ -70,10 +98,12 @@ const Stake = () => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Input suffix={<Button type="solid" className="min-h-fit h-fit py-1 rounded-full ">
+                    <Input suffix={<Button onClick={() => setStakeAmount(maxAmount)} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
                     </Button>} className="!bg-[#000]" value={stakeAmount} onChange={setStakeAmount} type="solid" />
                     <Slider
+                        value={slider}
+                        onChange={(v) => { setSlider(v); setStakeAmount(BigNumber(v).multipliedBy(maxAmount).toString()) }}
                         classNames={{
                             track: "!border-s-[#00F0FF]",
                             filler: "bg-[#00F0FF]",
@@ -81,12 +111,12 @@ const Stake = () => {
                         }}
                         showTooltip
                         step={0.01}
-                        formatOptions={{style: "percent"}}
+                        formatOptions={{ style: "percent" }}
                         maxValue={1}
                         minValue={0}
-                        marks={[0, 0.25, 0.5, 0.75, 1].map(i=>({
+                        marks={[0, 0.25, 0.5, 0.75, 1].map(i => ({
                             value: i,
-                            label: i*100+'%'
+                            label: i * 100 + '%'
                         }))}
                         defaultValue={0}
                         className="max-w-md"
@@ -98,22 +128,22 @@ const Stake = () => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">APR</span>
                     <div className="flex items-center gap-1 cursor-pointer" onClick={() => dispatch({ visible: true })}>
-                        <span>12.34%</span>
+                        <span>{current?.expected_apr || '-'}%</span>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Voting Power</span>
                     <div className="flex items-center gap-1">
-                        <span>5%</span>
+                        <span>{current?.voting_power || '-'}%</span>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Estimated rewards</span>
                     <div className="flex items-center gap-1">
-                        <span>1.2345</span>
-                        <span className="text-[#A3A3A3]">CYSIC</span>
+                        <span>-</span>
+                        <span className="text-[#A3A3A3]">{cysicBaseCoin}</span>
                     </div>
                 </div>
 
@@ -121,13 +151,6 @@ const Stake = () => {
                     <span className="text-[#A3A3A3]">Unbonding period</span>
                     <div className="flex items-center gap-1">
                         <span>21 Days</span>
-                    </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                    <span className="text-[#A3A3A3]">Unlock on</span>
-                    <div className="flex items-center gap-1">
-                        <span>Nov 12 2024 08:00</span>
                     </div>
                 </div>
 

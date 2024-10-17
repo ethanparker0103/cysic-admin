@@ -1,12 +1,27 @@
-import Button from "@/components/Button"
-import Input from "@/components/Input"
-import { cysicBaseCoin, cysicStCoin, supTokens } from "@/config"
-import useModalState from "@/hooks/useModalState"
-import useCosmos from "@/models/_global/cosmos"
-import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@nextui-org/react"
-import { useEventListener } from "ahooks"
-import { useState } from "react"
-import { MsgExchangeToGovToken } from "@/utils/cysic-msg"
+import Button from "@/components/Button";
+import Input from "@/components/Input";
+import {
+    cosmosFee,
+    cosmosReservedValue,
+    cysicBaseCoin,
+    cysicStCoin,
+    supTokens,
+} from "@/config";
+import useModalState from "@/hooks/useModalState";
+import useCosmos from "@/models/_global/cosmos";
+import {
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+} from "@nextui-org/react";
+import { useEventListener } from "ahooks";
+import { useState } from "react";
+import { MsgExchangeToGovToken, MsgExchangeToPlatformToken } from "@/utils/cysic-msg";
+import BigNumber from "bignumber.js";
+import { toast } from "react-toastify";
+import { sleep } from "@/utils/tools";
 
 // async function checkModule() {
 //     const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
@@ -18,159 +33,259 @@ import { MsgExchangeToGovToken } from "@/utils/cysic-msg"
 // }
 
 const ExchangeModal = () => {
-    const { balanceMap, connector, address } = useCosmos()
+    const { balanceMap, connector, address } = useCosmos();
+    const { visible, setVisible }: any = useModalState({
+        eventName: "modal_exchange_visible",
+    });
+    const { dispatch }: any = useModalState({
+        eventName: "modal_slippage_visible",
+    });
 
-    console.log('connector', connector)
-    const { visible, setVisible }: any = useModalState({ eventName: 'modal_exchange_visible' })
-    const { dispatch }: any = useModalState({ eventName: 'modal_slippage_visible' })
-
-    useEventListener('modal_exchange_visible', (e: any) => {
-        const fromToken = e?.detail?.fromToken
-        const toToken = e?.detail?.toToken
+    useEventListener("modal_exchange_visible", (e: any) => {
+        const fromToken = e?.detail?.fromToken;
+        const toToken = e?.detail?.toToken;
         if (fromToken) {
-            setFromToken(fromToken)
+            setFromToken(fromToken);
         }
         if (toToken) {
-            setToToken(toToken)
+            setToToken(toToken);
         }
-    })
+    });
 
-    const [fromAmount, setFromAmount] = useState('')
-    const [toAmount, setToAmount] = useState('')
-    const [fromToken, setFromToken] = useState(cysicBaseCoin)
-    const [toToken, setToToken] = useState(cysicStCoin)
+    const [fromAmount, setFromAmount] = useState("");
+    // const [toAmount, setToAmount] = useState('')
+    const toAmount = fromAmount;
+    const setToAmount = setFromAmount;
+    const [fromToken, setFromToken] = useState(cysicBaseCoin);
+    const [toToken, setToToken] = useState(cysicStCoin);
 
+    const exchangeToPlatformToken = async (client: any, address: string) => {
+        const amount = {
+            denom: "CGT",
+            amount: BigNumber(toAmount).multipliedBy(1e18).toString(),
+        };
+        const msg = {
+            typeUrl: MsgExchangeToPlatformToken.typeUrl,
+            value: MsgExchangeToPlatformToken.fromPartial({
+                sender: address,
+                amount: amount.amount,
+            }),
+        };
+
+        const result = await client.signAndBroadcast(
+            address,
+            [msg],
+            cosmosFee,
+            `Exchange to platform token: ${msg.value.amount}`
+        );
+
+        toast.success(`Submit Success at ${result?.transactionHash}`)
+    };
 
     const exchangeToGovToken = async (client: any, address: string) => {
+        if (
+            BigNumber(balanceMap?.[cysicBaseCoin]?.hm_amount)
+                .minus(fromAmount)
+                .lt(cosmosReservedValue)
+        ) {
+            throw { message: "Reserved Balance < 1" };
+        }
         // 1. 构建交易参数
         const amount = {
             denom: "CYS",
-            amount: (0.01 * 1e18).toString(),
+            amount: BigNumber(fromAmount).multipliedBy(1e18).toString(),
         };
         const msg = {
+            // typeUrl: MsgExchangeToGovToken.typeUrl,
             typeUrl: MsgExchangeToGovToken.typeUrl,
             value: MsgExchangeToGovToken.fromPartial({
                 sender: address,
                 amount: amount.amount,
             }),
         };
-        const fee = {
-            amount: [
-                {
-                    denom: "CYS",
-                    amount: "200000",
-                },
-            ],
-            gas: "200000",
-        };
-        console.log('msg, ', msg)
-        // 2. 执行交易
-        // const result = await client.exchangeToGovToken(address, amount, stdFee, '');
-        const result = await client.signAndBroadcast(address, [msg], fee, `Exchange to gov token: ${msg.value.amount}`);
 
-        // 3. 处理交易结果
-        // assertIsBroadcastTxSuccess(result);
-        console.log('Transaction successful:', result.transactionHash);
-    }
+        console.log("msg, ", msg);
+        const result = await client.signAndBroadcast(
+            address,
+            [msg],
+            cosmosFee,
+            `Exchange to gov token: ${msg.value.amount}`
+        );
 
+        toast.success(`Submit Success at ${result?.transactionHash}`)
+    };
 
     const handleExchange = async (closeLoading?: any) => {
         try {
-            await exchangeToGovToken(connector, address)
-            setVisible(false)
-        } catch (e) {
-            console.log('error', e)
+            if (fromToken == cysicBaseCoin) {
+                await exchangeToGovToken(connector, address);
+            } else {
+                await exchangeToPlatformToken(connector, address);
+            }
+            //   setVisible(false);
+            setFromAmount('')
+        } catch (e: any) {
+            console.log("error", e);
+            toast.error(e?.message || e?.msg || e);
         } finally {
-            closeLoading?.()
+            await sleep(1000)
+            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+            closeLoading?.();
         }
-    }
+    };
 
     const toggle = () => {
         const tempDataList: any = {
             fromAmount,
             fromToken,
             toAmount,
-            toToken
-        }
-        setFromToken(tempDataList?.toToken)
-        setFromAmount(tempDataList?.toAmount)
-        setToToken(tempDataList?.fromToken)
-        setToAmount(tempDataList?.fromAmount)
-    }
+            toToken,
+        };
+        setFromToken(tempDataList?.toToken);
+        setFromAmount(tempDataList?.toAmount);
+        setToToken(tempDataList?.fromToken);
+        setToAmount(tempDataList?.fromAmount);
+    };
 
+    return (
+        <Modal isOpen={visible} onOpenChange={setVisible}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader className="flex flex-col gap-1">Exchange</ModalHeader>
+                        <ModalBody>
+                            <div className="flex flex-col gap-4">
+                                <div className="flex flex-col gap-1 relative">
+                                    {/* from */}
+                                    <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
+                                        <span className="text-[#A3A3A3]">Sell</span>
+                                        <Input
+                                            value={fromAmount}
+                                            onChange={setFromAmount}
+                                            type="text"
+                                            placeholder="0.00"
+                                            className="[&_input]:flex-1 !px-0 text-2xl font-bold"
+                                            suffix={
+                                                <div className="text-base font-[500] flex items-center gap-2 p-2 bg-[#FFFFFF1F] rounded-full">
+                                                    <img
+                                                        className="size-6"
+                                                        src={supTokens?.[fromToken]?.icon}
+                                                    />
+                                                    <div>{fromToken}</div>
+                                                </div>
+                                            }
+                                        />
+                                        <div className="flex items-center gap-1 text-[#A3A3A3] hover:text-[#00F0FF] self-end">
+                                            <svg
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    d="M13 11C13 11.2652 13.1054 11.5196 13.2929 11.7071C13.4804 11.8946 13.7348 12 14 12C14.2652 12 14.5196 11.8946 14.7071 11.7071C14.8946 11.5196 15 11.2652 15 11C15 10.7348 14.8946 10.4804 14.7071 10.2929C14.5196 10.1054 14.2652 10 14 10C13.7348 10 13.4804 10.1054 13.2929 10.2929C13.1054 10.4804 13 10.7348 13 11Z"
+                                                    fill="#00F0FF"
+                                                />
+                                                <path
+                                                    fillRule="evenodd"
+                                                    clipRule="evenodd"
+                                                    d="M12.5 3C12.8978 3 13.2794 3.15804 13.5607 3.43934C13.842 3.72064 14 4.10218 14 4.5H5.5V5H16C16.5304 5 17.0391 5.21071 17.4142 5.58579C17.7893 5.96086 18 6.46957 18 7V15C18 15.5304 17.7893 16.0391 17.4142 16.4142C17.0391 16.7893 16.5304 17 16 17H4.182C3.89546 17 3.61172 16.9436 3.34698 16.8339C3.08225 16.7242 2.84171 16.5635 2.63909 16.3609C2.22989 15.9517 2 15.3967 2 14.818V4.5C2 4.66 2.026 4.776 2.074 4.86C2.02594 4.74602 2.00079 4.62369 2 4.5C2 3.671 3.171 3 4 3H12.5ZM14 9C13.4696 9 12.9609 9.21071 12.5858 9.58579C12.2107 9.96086 12 10.4696 12 11C12 11.5304 12.2107 12.0391 12.5858 12.4142C12.9609 12.7893 13.4696 13 14 13C14.5304 13 15.0391 12.7893 15.4142 12.4142C15.7893 12.0391 16 11.5304 16 11C16 10.4696 15.7893 9.96086 15.4142 9.58579C15.0391 9.21071 14.5304 9 14 9Z"
+                                                    fill="currentColor"
+                                                />
+                                            </svg>
+                                            <span onClick={()=>setFromAmount(balanceMap?.[fromToken]?.hm_amount)}>{balanceMap?.[fromToken]?.hm_amount || "-"}</span>
+                                        </div>
+                                    </div>
 
-
-
-    return <Modal isOpen={visible} onOpenChange={setVisible}>
-        <ModalContent>
-            {(onClose) => (
-                <>
-                    <ModalHeader className="flex flex-col gap-1">Exchange</ModalHeader>
-                    <ModalBody>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-1 relative">
-                                {/* from */}
-                                <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
-                                    <span className="text-[#A3A3A3]">Sell</span>
-                                    <Input
-                                        value={fromAmount}
-                                        onChange={setFromAmount}
-                                        type="text"
-                                        placeholder="0.00"
-                                        className="[&_input]:flex-1 !px-0 text-2xl font-bold"
-                                        suffix={<div className="text-base font-[500] flex items-center gap-2 p-2 bg-[#FFFFFF1F] rounded-full">
-                                            <img className="size-6" src={supTokens?.[fromToken]?.icon} />
-                                            <div>{fromToken}</div>
-                                        </div>} />
-                                    <div className="flex items-center gap-1 text-[#A3A3A3] hover:text-[#00F0FF] self-end">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13 11C13 11.2652 13.1054 11.5196 13.2929 11.7071C13.4804 11.8946 13.7348 12 14 12C14.2652 12 14.5196 11.8946 14.7071 11.7071C14.8946 11.5196 15 11.2652 15 11C15 10.7348 14.8946 10.4804 14.7071 10.2929C14.5196 10.1054 14.2652 10 14 10C13.7348 10 13.4804 10.1054 13.2929 10.2929C13.1054 10.4804 13 10.7348 13 11Z" fill="#00F0FF" />
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.5 3C12.8978 3 13.2794 3.15804 13.5607 3.43934C13.842 3.72064 14 4.10218 14 4.5H5.5V5H16C16.5304 5 17.0391 5.21071 17.4142 5.58579C17.7893 5.96086 18 6.46957 18 7V15C18 15.5304 17.7893 16.0391 17.4142 16.4142C17.0391 16.7893 16.5304 17 16 17H4.182C3.89546 17 3.61172 16.9436 3.34698 16.8339C3.08225 16.7242 2.84171 16.5635 2.63909 16.3609C2.22989 15.9517 2 15.3967 2 14.818V4.5C2 4.66 2.026 4.776 2.074 4.86C2.02594 4.74602 2.00079 4.62369 2 4.5C2 3.671 3.171 3 4 3H12.5ZM14 9C13.4696 9 12.9609 9.21071 12.5858 9.58579C12.2107 9.96086 12 10.4696 12 11C12 11.5304 12.2107 12.0391 12.5858 12.4142C12.9609 12.7893 13.4696 13 14 13C14.5304 13 15.0391 12.7893 15.4142 12.4142C15.7893 12.0391 16 11.5304 16 11C16 10.4696 15.7893 9.96086 15.4142 9.58579C15.0391 9.21071 14.5304 9 14 9Z" fill="currentColor" />
+                                    {/* exchange */}
+                                    <div
+                                        onClick={toggle}
+                                        className="cursor-pointer absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2"
+                                    >
+                                        <svg
+                                            width="40"
+                                            height="40"
+                                            viewBox="0 0 40 40"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <rect
+                                                x="0.5"
+                                                y="0.5"
+                                                width="39"
+                                                height="39"
+                                                rx="11.5"
+                                                fill="black"
+                                            />
+                                            <rect
+                                                x="0.5"
+                                                y="0.5"
+                                                width="39"
+                                                height="39"
+                                                rx="11.5"
+                                                stroke="#2B2B2B"
+                                            />
+                                            <path
+                                                d="M16.6011 13.399C16.4417 13.2396 16.2255 13.1501 16 13.1501C15.7746 13.1501 15.5584 13.2396 15.399 13.399L11.399 17.399C11.067 17.731 11.067 18.2692 11.399 18.6011C11.7309 18.9331 12.2691 18.9331 12.6011 18.6011L15.15 16.0522V26.0002C15.15 26.4696 15.5305 26.8502 16 26.8502C16.4694 26.8502 16.85 26.4696 16.85 26.0002V16.0521L19.399 18.6011C19.7309 18.9331 20.2691 18.9331 20.6011 18.6011C20.933 18.2692 20.933 17.731 20.6011 17.399L16.6011 13.399Z"
+                                                fill="white"
+                                            />
+                                            <path
+                                                d="M23.15 23.948L20.601 21.399C20.2691 21.067 19.7309 21.067 19.3989 21.399C19.067 21.7309 19.067 22.2691 19.3989 22.6011L23.3989 26.6011C23.7309 26.933 24.2691 26.933 24.601 26.6011L28.601 22.6011C28.933 22.2691 28.933 21.7309 28.601 21.399C28.2691 21.0671 27.7309 21.0671 27.3989 21.399L24.85 23.9479L24.85 14.0002C24.85 13.5307 24.4695 13.1502 24 13.1502C23.5306 13.1502 23.15 13.5307 23.15 14.0002L23.15 23.948Z"
+                                                fill="white"
+                                            />
                                         </svg>
-                                        <span >{balanceMap?.[fromToken]?.hm_amount || '-'}</span>
+                                    </div>
 
+                                    {/* to */}
+                                    <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
+                                        <span className="text-[#A3A3A3]">Buy</span>
+                                        <Input
+                                            value={toAmount}
+                                            onChange={setToAmount}
+                                            type="text"
+                                            placeholder="0.00"
+                                            className="[&_input]:flex-1 !px-0 text-2xl font-bold"
+                                            suffix={
+                                                <div className="text-base font-[500] flex items-center gap-2 p-2 bg-[#FFFFFF1F] rounded-full">
+                                                    <img
+                                                        className="size-6"
+                                                        src={supTokens?.[toToken]?.icon}
+                                                    />
+                                                    <div>{toToken}</div>
+                                                </div>
+                                            }
+                                        />
+                                        <div className="flex items-center gap-1 text-[#A3A3A3] hover:text-[#00F0FF] self-end">
+                                            <svg
+                                                width="20"
+                                                height="20"
+                                                viewBox="0 0 20 20"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path
+                                                    d="M13 11C13 11.2652 13.1054 11.5196 13.2929 11.7071C13.4804 11.8946 13.7348 12 14 12C14.2652 12 14.5196 11.8946 14.7071 11.7071C14.8946 11.5196 15 11.2652 15 11C15 10.7348 14.8946 10.4804 14.7071 10.2929C14.5196 10.1054 14.2652 10 14 10C13.7348 10 13.4804 10.1054 13.2929 10.2929C13.1054 10.4804 13 10.7348 13 11Z"
+                                                    fill="currentColor"
+                                                />
+                                                <path
+                                                    fillRule="evenodd"
+                                                    clipRule="evenodd"
+                                                    d="M12.5 3C12.8978 3 13.2794 3.15804 13.5607 3.43934C13.842 3.72064 14 4.10218 14 4.5H5.5V5H16C16.5304 5 17.0391 5.21071 17.4142 5.58579C17.7893 5.96086 18 6.46957 18 7V15C18 15.5304 17.7893 16.0391 17.4142 16.4142C17.0391 16.7893 16.5304 17 16 17H4.182C3.89546 17 3.61172 16.9436 3.34698 16.8339C3.08225 16.7242 2.84171 16.5635 2.63909 16.3609C2.22989 15.9517 2 15.3967 2 14.818V4.5C2 4.66 2.026 4.776 2.074 4.86C2.02594 4.74602 2.00079 4.62369 2 4.5C2 3.671 3.171 3 4 3H12.5ZM14 9C13.4696 9 12.9609 9.21071 12.5858 9.58579C12.2107 9.96086 12 10.4696 12 11C12 11.5304 12.2107 12.0391 12.5858 12.4142C12.9609 12.7893 13.4696 13 14 13C14.5304 13 15.0391 12.7893 15.4142 12.4142C15.7893 12.0391 16 11.5304 16 11C16 10.4696 15.7893 9.96086 15.4142 9.58579C15.0391 9.21071 14.5304 9 14 9Z"
+                                                    fill="currentColor"
+                                                />
+                                            </svg>
+                                            <span onClick={()=>setFromAmount(balanceMap?.[toToken]?.hm_amount)}>{balanceMap?.[toToken]?.hm_amount || "-"}</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* exchange */}
-                                <div onClick={toggle} className="cursor-pointer absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2">
-                                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="0.5" y="0.5" width="39" height="39" rx="11.5" fill="black" />
-                                        <rect x="0.5" y="0.5" width="39" height="39" rx="11.5" stroke="#2B2B2B" />
-                                        <path d="M16.6011 13.399C16.4417 13.2396 16.2255 13.1501 16 13.1501C15.7746 13.1501 15.5584 13.2396 15.399 13.399L11.399 17.399C11.067 17.731 11.067 18.2692 11.399 18.6011C11.7309 18.9331 12.2691 18.9331 12.6011 18.6011L15.15 16.0522V26.0002C15.15 26.4696 15.5305 26.8502 16 26.8502C16.4694 26.8502 16.85 26.4696 16.85 26.0002V16.0521L19.399 18.6011C19.7309 18.9331 20.2691 18.9331 20.6011 18.6011C20.933 18.2692 20.933 17.731 20.6011 17.399L16.6011 13.399Z" fill="white" />
-                                        <path d="M23.15 23.948L20.601 21.399C20.2691 21.067 19.7309 21.067 19.3989 21.399C19.067 21.7309 19.067 22.2691 19.3989 22.6011L23.3989 26.6011C23.7309 26.933 24.2691 26.933 24.601 26.6011L28.601 22.6011C28.933 22.2691 28.933 21.7309 28.601 21.399C28.2691 21.0671 27.7309 21.0671 27.3989 21.399L24.85 23.9479L24.85 14.0002C24.85 13.5307 24.4695 13.1502 24 13.1502C23.5306 13.1502 23.15 13.5307 23.15 14.0002L23.15 23.948Z" fill="white" />
-                                    </svg>
+                                <div className="text-[#A3A3A3]">
+                                    1 {cysicBaseCoin} = 1 {cysicStCoin}
                                 </div>
 
-                                {/* to */}
-                                <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
-                                    <span className="text-[#A3A3A3]">Buy</span>
-                                    <Input
-                                        value={toAmount}
-                                        onChange={setToAmount}
-                                        type="text"
-                                        placeholder="0.00"
-                                        className="[&_input]:flex-1 !px-0 text-2xl font-bold"
-                                        suffix={<div className="text-base font-[500] flex items-center gap-2 p-2 bg-[#FFFFFF1F] rounded-full">
-                                            <img className="size-6" src={supTokens?.[toToken]?.icon} />
-                                            <div>{toToken}</div>
-                                        </div>} />
-                                    <div className="flex items-center gap-1 text-[#A3A3A3] hover:text-[#00F0FF] self-end">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M13 11C13 11.2652 13.1054 11.5196 13.2929 11.7071C13.4804 11.8946 13.7348 12 14 12C14.2652 12 14.5196 11.8946 14.7071 11.7071C14.8946 11.5196 15 11.2652 15 11C15 10.7348 14.8946 10.4804 14.7071 10.2929C14.5196 10.1054 14.2652 10 14 10C13.7348 10 13.4804 10.1054 13.2929 10.2929C13.1054 10.4804 13 10.7348 13 11Z" fill="currentColor" />
-                                            <path fillRule="evenodd" clipRule="evenodd" d="M12.5 3C12.8978 3 13.2794 3.15804 13.5607 3.43934C13.842 3.72064 14 4.10218 14 4.5H5.5V5H16C16.5304 5 17.0391 5.21071 17.4142 5.58579C17.7893 5.96086 18 6.46957 18 7V15C18 15.5304 17.7893 16.0391 17.4142 16.4142C17.0391 16.7893 16.5304 17 16 17H4.182C3.89546 17 3.61172 16.9436 3.34698 16.8339C3.08225 16.7242 2.84171 16.5635 2.63909 16.3609C2.22989 15.9517 2 15.3967 2 14.818V4.5C2 4.66 2.026 4.776 2.074 4.86C2.02594 4.74602 2.00079 4.62369 2 4.5C2 3.671 3.171 3 4 3H12.5ZM14 9C13.4696 9 12.9609 9.21071 12.5858 9.58579C12.2107 9.96086 12 10.4696 12 11C12 11.5304 12.2107 12.0391 12.5858 12.4142C12.9609 12.7893 13.4696 13 14 13C14.5304 13 15.0391 12.7893 15.4142 12.4142C15.7893 12.0391 16 11.5304 16 11C16 10.4696 15.7893 9.96086 15.4142 9.58579C15.0391 9.21071 14.5304 9 14 9Z" fill="currentColor" />
-                                        </svg>
-                                        <span >{balanceMap?.[toToken]?.hm_amount || '-'}</span>
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div className="text-[#A3A3A3]">1 {cysicBaseCoin} = 1 {cysicStCoin}</div>
-
-                            <div className="flex flex-col gap-2">
-                                {/* <div className="flex items-center justify-between">
+                                <div className="flex flex-col gap-2">
+                                    {/* <div className="flex items-center justify-between">
                                     <span className="text-[#A3A3A3]">Max. slippage:</span>
                                     <div className="flex items-center gap-1 cursor-pointer" onClick={()=>dispatch({visible: true})}>
                                         <span>0.5%</span>
@@ -180,14 +295,14 @@ const ExchangeModal = () => {
                                     </div>
                                 </div> */}
 
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[#A3A3A3]">Receive at least</span>
-                                    <div className="flex items-center gap-1">
-                                        <span>1.2345</span>
-                                        <span className="text-[#A3A3A3]">CYSIC</span>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[#A3A3A3]">Receive at least</span>
+                                        <div className="flex items-center gap-1">
+                                            <span>{fromAmount || "-"}</span>
+                                            <span className="text-[#A3A3A3]">{toToken}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                {/* 
+                                    {/* 
                                 <div className="flex items-center justify-between">
                                     <span className="text-[#A3A3A3]">Fee(0.25%):</span>
                                     <div className="flex items-center gap-1">
@@ -195,42 +310,61 @@ const ExchangeModal = () => {
                                     </div>
                                 </div> */}
 
-                                <div className="flex items-center justify-between">
-                                    <span className="text-[#A3A3A3]">Network cost:</span>
-                                    <div className="flex items-center gap-1">
-                                        <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <g clipPath="url(#clip0_1568_156223)">
-                                                <path d="M9.97131 6.19803C9.91798 6.07737 9.79866 6.00003 9.66666 6.00003H6.66666V1.00003C6.66666 0.862034 6.58201 0.738037 6.45267 0.688704C6.32267 0.638704 6.17799 0.674696 6.08532 0.776696L0.0853237 7.44336C-0.00267633 7.54136 -0.0253169 7.68137 0.0286831 7.80204C0.0820164 7.9227 0.20133 8.00003 0.33333 8.00003H3.33333V13C3.33333 13.138 3.41799 13.262 3.54732 13.3114C3.58665 13.326 3.62666 13.3334 3.66666 13.3334C3.75933 13.3334 3.85 13.2947 3.91467 13.2227L9.91467 6.55603C10.0027 6.4587 10.0246 6.31803 9.97131 6.19803Z" fill="url(#paint0_linear_1568_156223)" />
-                                            </g>
-                                            <defs>
-                                                <linearGradient id="paint0_linear_1568_156223" x1="1.49963" y1="-11.6017" x2="10.6573" y2="-11.6017" gradientUnits="userSpaceOnUse">
-                                                    <stop stopColor="#01F0FF" />
-                                                    <stop offset="1" stopColor="#9D48FF" />
-                                                </linearGradient>
-                                                <clipPath id="clip0_1568_156223">
-                                                    <rect width="10" height="14" fill="white" />
-                                                </clipPath>
-                                            </defs>
-                                        </svg>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[#A3A3A3]">Network cost:</span>
+                                        <div className="flex items-center gap-1">
+                                            <svg
+                                                width="10"
+                                                height="14"
+                                                viewBox="0 0 10 14"
+                                                fill="none"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <g clipPath="url(#clip0_1568_156223)">
+                                                    <path
+                                                        d="M9.97131 6.19803C9.91798 6.07737 9.79866 6.00003 9.66666 6.00003H6.66666V1.00003C6.66666 0.862034 6.58201 0.738037 6.45267 0.688704C6.32267 0.638704 6.17799 0.674696 6.08532 0.776696L0.0853237 7.44336C-0.00267633 7.54136 -0.0253169 7.68137 0.0286831 7.80204C0.0820164 7.9227 0.20133 8.00003 0.33333 8.00003H3.33333V13C3.33333 13.138 3.41799 13.262 3.54732 13.3114C3.58665 13.326 3.62666 13.3334 3.66666 13.3334C3.75933 13.3334 3.85 13.2947 3.91467 13.2227L9.91467 6.55603C10.0027 6.4587 10.0246 6.31803 9.97131 6.19803Z"
+                                                        fill="url(#paint0_linear_1568_156223)"
+                                                    />
+                                                </g>
+                                                <defs>
+                                                    <linearGradient
+                                                        id="paint0_linear_1568_156223"
+                                                        x1="1.49963"
+                                                        y1="-11.6017"
+                                                        x2="10.6573"
+                                                        y2="-11.6017"
+                                                        gradientUnits="userSpaceOnUse"
+                                                    >
+                                                        <stop stopColor="#01F0FF" />
+                                                        <stop offset="1" stopColor="#9D48FF" />
+                                                    </linearGradient>
+                                                    <clipPath id="clip0_1568_156223">
+                                                        <rect width="10" height="14" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
 
-                                        <span>$1.23</span>
+                                            <span>0.005{cysicBaseCoin}</span>
+                                        </div>
                                     </div>
                                 </div>
-
                             </div>
-                        </div>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                needLoading
+                                className="w-full !text-[#000]"
+                                type="gradient"
+                                onClick={handleExchange}
+                            >
+                                Exchange
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
+    );
+};
 
-
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button needLoading className="w-full" type="gradient" onClick={handleExchange}>
-                            Exchange
-                        </Button>
-                    </ModalFooter>
-                </>
-            )}
-        </ModalContent>
-    </Modal>
-}
-
-export default ExchangeModal
+export default ExchangeModal;

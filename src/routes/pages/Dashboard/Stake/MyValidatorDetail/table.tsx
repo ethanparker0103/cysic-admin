@@ -55,14 +55,11 @@ const UserTable = () => {
     setCurrentPage,
   } = usePagnation(
     (page: number) => {
-      return Promise.resolve(mock);
-
-      return axios.get(`/api/v1/validator`, {
+      // return Promise.resolve(mock);
+      return axios.get(`/api/v1/validator/my/${address}`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
-          by: defaultSortKey,
-          target: address
         },
       });
     },
