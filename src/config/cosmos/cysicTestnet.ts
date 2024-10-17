@@ -6,7 +6,7 @@ export const cysicTestnet = {
   "rest": "https://dev-api.prover.xyz",
   "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
   "bip44": {
-    "coinType": 118 // use cosmos coinType
+    "coinType": 118
   },
   "bech32Config": {
     "bech32PrefixAccAddr": "cysic",

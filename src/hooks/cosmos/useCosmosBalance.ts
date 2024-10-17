@@ -1,12 +1,12 @@
 import useCosmos from "@/models/_global/cosmos"
-import { useRequest } from "ahooks"
+import { useEventListener, useRequest } from "ahooks"
 import BigNumber from "bignumber.js"
 
 const basicDecimaal = 18
 
 const useCosmosBalance = ()=>{
     const { address, connector, setState } = useCosmos()
-    useRequest(()=>{
+    const { run } = useRequest(()=>{
         return connector?.['getAllBalances']?.(address)
     }, {
         ready: !!connector && !!address,
@@ -30,6 +30,11 @@ const useCosmosBalance = ()=>{
             })
 
         }
+    })
+
+
+    useEventListener('refresh_cosmosBalance' as string, ()=>{
+        run()
     })
 }
 export default useCosmosBalance

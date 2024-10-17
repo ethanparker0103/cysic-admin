@@ -4,15 +4,41 @@ import { cysicBaseCoin, cysicStCoin } from "@/config";
 import useModalState from "@/hooks/useModalState";
 import useCosmos from "@/models/_global/cosmos";
 import { getImageUrl } from "@/utils/tools";
+import { useRequest } from "ahooks";
+import axios from "axios";
+import { useState } from "react";
+import { useAccount } from "wagmi";
 
 
 const Assets = () => {
+  const { address } = useAccount()
   const { balanceMap, connector } = useCosmos();
   const { dispatch }: any = useModalState({
     eventName: "modal_exchange_visible",
   });
 
-  console.log('balanceMap', balanceMap)
+  // const [userInfo, setUserInfo] = useState<any>({});
+
+  const [cysList, setCysList] = useState<any>()
+  const [cgtList, setCgtList] = useState<any>()
+
+  useRequest(
+    async () => {
+      if (!address) return;
+      const res = await axios(`/api/v1/myPage/${address}/overview`);
+      return res;
+    },
+    {
+      ready: !!address,
+      refreshDeps: [address],
+      onSuccess(e) {
+        // setUserInfo(e?.data);
+
+        setCysList(e?.data?.find(i=>i?.name == 'CYS'))
+        setCgtList(e?.data?.find(i=>i?.name == 'CGT'))
+      },
+    }
+  );
 
   return (
     <>
@@ -33,7 +59,7 @@ const Assets = () => {
             <Button
               className="relative z-[2]"
               type="dark"
-              onClick={() => dispatch({ visible: true })}
+              onClick={() => dispatch({ visible: true, fromToken: cysicBaseCoin, toToken: cysicStCoin })}
             >
               <div className="flex items-center gap-1">
                 <span>Exchange</span>
@@ -69,22 +95,22 @@ const Assets = () => {
             <Verticle
               className="w-[calc(50%-0.5rem)]"
               title="Activity CYS"
-              desc={"1,000"}
+              desc={cysList?.activity || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
               title="Prover CYS"
-              desc={"1,000"}
+              desc={cysList?.prover || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
               title="Verifier CYS"
-              desc={"1,000"}
+              desc={cysList?.verifier || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
               title="Reward CYS"
-              desc={"1,000"}
+              desc={cysList?.reward || '-'}
             />
           </div>
         </div>
@@ -103,7 +129,7 @@ const Assets = () => {
             <Button
               className="relative z-[2]"
               type="dark"
-              onClick={() => dispatch({ visible: true })}
+              onClick={() => dispatch({ visible: true, fromToken: cysicStCoin, toToken: cysicBaseCoin })}
             >
               <div className="flex items-center gap-1">
                 <span>Exchange</span>
@@ -138,23 +164,23 @@ const Assets = () => {
           <div className="flex flex-wrap gap-2">
             <Verticle
               className="w-[calc(50%-0.5rem)]"
-              title="Activity CYS"
-              desc={"1,000"}
+              title="Activity CGT"
+              desc={cgtList?.activity || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
-              title="Prover CYS"
-              desc={"1,000"}
+              title="Prover CGT"
+              desc={cgtList?.prover || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
-              title="Verifier CYS"
-              desc={"1,000"}
+              title="Verifier CGT"
+              desc={cgtList?.verifier || '-'}
             />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
-              title="Reward CYS"
-              desc={"1,000"}
+              title="Reward CGT"
+              desc={cgtList?.reward || '-'}
             />
           </div>
         </div>

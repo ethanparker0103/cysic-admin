@@ -67,3 +67,14 @@ export const supTokens: any = {
         icon: getImageUrl('@/assets/images/tokens/cysic-light.svg')
     }
 } 
+
+
+export const cosmosFee = {
+    amount: [
+        {
+            denom: cysicBaseCoin,
+            amount: "200000",
+        },
+    ],
+    gas: "200000",
+};

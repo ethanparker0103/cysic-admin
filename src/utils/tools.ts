@@ -551,3 +551,7 @@ export function generateQueryString(params: any) {
     console.log('searchParams', searchParams)
     return searchParams.toString();  
 }  
+
+export function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

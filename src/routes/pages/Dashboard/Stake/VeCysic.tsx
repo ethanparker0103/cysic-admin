@@ -6,18 +6,24 @@ import usePagnation from "@/hooks/usePagnation"
 import useCosmos from "@/models/_global/cosmos"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidatorDetail"
-import StakeModal from "@/routes/pages/Dashboard/Stake/Modal/stake"
+import StakeModal, { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake"
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail"
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
 import { getImageUrl } from "@/utils/tools"
-import { useRequest } from "ahooks"
+import { useEventListener, useRequest } from "ahooks"
 import axios from "axios"
+import { useState } from "react"
 
 const token = cysicStCoin
 
 const VeCysic = () => {
     const { balanceMap } = useCosmos()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
+
+    const [list, setList] = useState()
+    useEventListener('data_activeValidator', (e: any)=>{
+        setList(e?.detail?.list)  
+    })
 
     return <MainContainer title="Stake veCYSIC">
         <>
@@ -52,8 +58,8 @@ const VeCysic = () => {
                         <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
                             <span className="">APR</span>
                             <div className="flex gap-2 items-center">
-                                <span className="text-[24px] text-[#fff] font-[600]">12.34%</span>
-                                <Button type="dark" className="h-[1.75rem] min-h-fit" onClick={()=>dispatch({visible: true})}>
+                                <span className="text-[24px] text-[#fff] font-[600]">-%</span>
+                                <Button type="dark" className="h-[1.75rem] min-h-fit" onClick={()=>dispatch({visible: true, tab: StakeTab.stake, items: list})}>
                                     <span className="text-sm text-[#00F0FF]">Stake</span>
                                 </Button>
                             </div>

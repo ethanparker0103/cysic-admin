@@ -1,7 +1,7 @@
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 
 const VeComputed = ()=>{
-    return <MainContainer title="Stake veCompute">
+    return <MainContainer title="Delegate veCompute">
     <>
 
     </>
