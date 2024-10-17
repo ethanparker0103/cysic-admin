@@ -326,7 +326,7 @@ export default function App() {
         setRewawrdPoints({
           phase1: {
             ...data,
-            total: BigNumber(data?.activity_points).plus(data?.verifier_points).plus(data?.prover_points).plus(data?.reward_points).toString()
+            total: BigNumber(data?.activity_points || 0).plus(data?.verifier_points || 0).plus(data?.prover_points || 0).plus(data?.reward_points || 0).toString()
           }
         })
       }
