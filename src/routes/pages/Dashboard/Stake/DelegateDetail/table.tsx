@@ -1,14 +1,14 @@
 import Button from "@/components/Button";
+import Image from "@/components/Image";
 import Pagination from "@/components/Pagination";
 import { commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
+import useCosmos from "@/models/_global/cosmos";
 import useDelegate from "@/models/_global/delegate";
-import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import { getImageUrl } from "@/utils/tools";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useAccount } from "wagmi";
 
 const mock = {
   "msg": "success",
@@ -37,7 +37,7 @@ const defaultSortKey = sortKkey.sum
 
 const UserTable = () => {
   const { t } = useTranslation();
-  const { address } = useAccount()
+  const { address } = useCosmos()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
   const { setState } = useDelegate()
 
@@ -49,7 +49,6 @@ const UserTable = () => {
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);
-
       return axios.get(`/api/v1/myPage/${address}/balance`, {
         params: {
           pageNum: page,
@@ -96,7 +95,7 @@ const UserTable = () => {
         const v = getKeyValue(item, columnKey)
         const imgUrl = `@/assets/images/tokens/${v}.svg`
         return <div className="flex items-center gap-1">
-          <img src={getImageUrl(imgUrl)}/>
+          <Image className="size-6" src={getImageUrl(imgUrl)}/>
           <span>{v}</span>
         </div>
       case 'amount':
@@ -119,7 +118,7 @@ const UserTable = () => {
           <Button onClick={() => {
 
             dispatchEvent(new CustomEvent('modal_delegate_visible', {
-              detail: { visible: true }
+              detail: { visible: true, item }
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Delegate</Button>
 
@@ -164,7 +163,7 @@ const UserTable = () => {
         <TableBody items={rows}>
           {(item: any) => {
             return (
-              <TableRow key={item?.name}>
+              <TableRow key={item?.token}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}
