@@ -44,11 +44,11 @@ const defaultSortKey = sortKkey.sum
 
 const UserTable = () => {
   const { t } = useTranslation();
-  const { address,  } = useCosmos()
+  const { address, } = useCosmos()
   const { setState } = useValidator()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
 
-  useEventListener('refresh_validatorList' as string, (e)=>{
+  useEventListener('refresh_validatorList' as string, (e) => {
     run()
   })
 
@@ -71,8 +71,8 @@ const UserTable = () => {
     {
       ready: !!address,
       refreshDeps: [address],
-      onSuccess(res){
-        setState({myValidators: res?.data?.list, stake_amount: res?.data?.stake_amount, un_stake_amount: res?.data?.un_stake_amount})
+      onSuccess(res) {
+        setState({ myValidators: res?.data?.list, stake_amount: res?.data?.stake_amount, un_stake_amount: res?.data?.un_stake_amount })
       }
     }
   );
@@ -105,7 +105,7 @@ const UserTable = () => {
       label: "Action",
     }
   ];
-  
+
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
@@ -122,6 +122,8 @@ const UserTable = () => {
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Unstake</Button>
         </div>
+      case 'commission_rate':
+        return +getKeyValue(item, columnKey) + '%';
       default:
         return getKeyValue(item, columnKey);
     }

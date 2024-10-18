@@ -22,10 +22,12 @@ import useCosmos from "@/models/_global/cosmos";
 import useValidator from "@/models/_global/validator";
 import usePagnation from "@/hooks/usePagnation";
 import axios from "axios";
+import { useAccount } from "wagmi";
 
 const DelegateModal = () => {
     const { setState, activeValidator } = useValidator()
     const { address, connector } = useCosmos()
+    const { address: evmAddress } = useAccount()
     const [delegate, setDelegate] = useState<any>();
     const [delegateAmount, setDelegateAmount] = useState<any>();
     const [slider, setSlider] = useState<any>();
@@ -65,8 +67,8 @@ const DelegateModal = () => {
                 // typeUrl: MsgExchangeToGovToken.typeUrl,
                 typeUrl: MsgDelegate.typeUrl,
                 value: MsgDelegate.fromPartial({
-                    worker: currentValidator?.operator_address,
-                    validator: address,
+                    worker: evmAddress as string,
+                    validator: currentValidator?.operator_address,
                     token: current?.token,
                     amount: amount.amount,
                 }),
