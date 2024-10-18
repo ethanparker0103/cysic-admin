@@ -75,7 +75,7 @@ const Verify = () => {
       }
 
 
-      dispatchEvent(new CustomEvent('doubleConfirmModalVisible', {
+      dispatchEvent(new CustomEvent('basicDoubleconfirmModalVisible', {
         detail: {
           callback: handleSubmit,
           renderCallback: confirmRender

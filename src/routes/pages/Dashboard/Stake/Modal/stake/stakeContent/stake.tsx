@@ -4,6 +4,7 @@ import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
+import { sleep } from "@/utils/tools"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
 import BigNumber from "bignumber.js"
 import { useEffect, useState } from "react"
@@ -49,6 +50,7 @@ const Stake = ({ item }: any) => {
             toast.error(e?.message || e?.msg || e);
 
         } finally {
+            await sleep(2000)
             dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
             dispatchEvent(new CustomEvent('refresh_validatorList'))
             closeLoading?.()

@@ -8,7 +8,7 @@ import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidato
 import StakeModal, { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake"
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail"
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
-import { getImageUrl } from "@/utils/tools"
+import { getImageUrl, sleep } from "@/utils/tools"
 import BigNumber from "bignumber.js"
 import { toast } from "react-toastify"
 
@@ -17,7 +17,7 @@ const token = cysicStCoin
 const VeCysic = () => {
   const { address, connector, stakeMap } = useCosmos()
   const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
-  const { myValidators } = useValidator()
+  const { myValidators, un_stake_amount } = useValidator()
 
 
   // withdrawRewards
@@ -39,13 +39,14 @@ const VeCysic = () => {
       toast.error(e?.shortMessage || e?.message || e?.msg || e);
 
     } finally {
+      await sleep(2000)
       dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
       dispatchEvent(new CustomEvent('refresh_validatorList'))
       closeLoading?.()
     }
   }
 
-  return <MainContainer title="Stake veCYSIC">
+  return <MainContainer title="Stake CGT">
     <>
       <div className="flex items-stretch gap-4 flex-wrap">
         <div className="flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative">
@@ -66,7 +67,7 @@ const VeCysic = () => {
             <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
               <span className="">Unstaking Amount</span>
               <div className="flex gap-1 items-end">
-                <span className="text-[24px] text-[#fff]">0</span>
+                <span className="text-[24px] text-[#fff]">{un_stake_amount || 0}</span>
                 <span className="">{token}</span>
               </div>
             </div>

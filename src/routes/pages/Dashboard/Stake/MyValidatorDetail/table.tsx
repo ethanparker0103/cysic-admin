@@ -72,7 +72,7 @@ const UserTable = () => {
       ready: !!address,
       refreshDeps: [address],
       onSuccess(res){
-        setState({myValidators: res?.data?.list})
+        setState({myValidators: res?.data?.list, stake_amount: res?.data?.stake_amount, un_stake_amount: res?.data?.un_stake_amount})
       }
     }
   );

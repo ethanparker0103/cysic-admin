@@ -4,7 +4,9 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 export const defaultInitState = {
   activeValidator: undefined,
-  myValidators: undefined
+  myValidators: undefined,
+  stake_amount: undefined, 
+  un_stake_amount: undefined
 }
 
 const persistFields: any = [];
