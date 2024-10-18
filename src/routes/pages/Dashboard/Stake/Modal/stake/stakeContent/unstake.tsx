@@ -48,7 +48,7 @@ const Unstake = ({ item }: any) => {
             toast.error(e?.message || e?.msg || e);
 
         } finally {
-            await sleep(2000)
+            await sleep(5000)
             dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
             dispatchEvent(new CustomEvent('refresh_validatorList'))
             closeLoading?.()
