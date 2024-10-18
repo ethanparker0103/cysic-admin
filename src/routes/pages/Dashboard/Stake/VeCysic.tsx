@@ -11,37 +11,75 @@ import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
 import { getImageUrl } from "@/utils/tools"
 import BigNumber from "bignumber.js"
 import { toast } from "react-toastify"
+import { QueryClient, setupDistributionExtension } from "@cosmjs/stargate"
+import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 
 const token = cysicStCoin
 
 const VeCysic = () => {
-  const { address, connector, stakeMap } = useCosmos()
-  const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
-  const { myValidators } = useValidator()
+    const { address, connector, stakeMap } = useCosmos()
+    const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
 
-  // withdrawRewards
-  const handleClaim = async (closeLoading?: any) => {
-    const params = {
-      delegatorAddress: address,
-      validatorAddress: '',
-    };
+    const queryRewards = async () => {
+        const queryClient = QueryClient.withExtensions(
+            connector.getQueryClient(),
+            setupDistributionExtension,
+        );
+        const result = await queryClient.distribution.delegationTotalRewards(address);
+        console.log('delegationTotalRewards result', address, result)
+    }
 
-    // NOTE: local test 
-    // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
-    try {
-      const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
-      toast.success(`Submit Success at ${result?.transactionHash}`)
+    // withdrawRewards
+    const handleClaim = async (closeLoading?: any) => {
+        const params = {
+            delegatorAddress: address,
+            validatorAddress: '',
+        };
 
-      // onClose?.()
-    } catch (e: any) {
-      console.log('error', e)
-      toast.error(e?.shortMessage || e?.message || e?.msg || e);
+        // NOTE: local test 
+        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
+        try {
+            // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
+            // toast.success(`Submit Success at ${result?.transactionHash}`)
 
-    } finally {
-      dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
-      dispatchEvent(new CustomEvent('refresh_validatorList'))
-      closeLoading?.()
+            const queryClient = QueryClient.withExtensions(
+                connector.getQueryClient(),
+                setupDistributionExtension,
+            );
+            const result = await queryClient.distribution.delegatorValidators(address);
+            console.log("Delegator's Validators:", result);
+            const withdrawMsgs = []
+            for (const validator of result.validators) {
+                const withdrawMsg = {
+                    typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+                    value: tx_1.MsgWithdrawDelegatorReward.fromPartial({
+                        delegatorAddress: address,
+                        validatorAddress: validator,
+                    }),
+                };
+                withdrawMsgs.push(withdrawMsg)
+            }
+
+            const result2 = await connector?.signAndBroadcast(
+                address,
+                withdrawMsgs,
+                cosmosFee,
+                `Withdraw rewards: ${address}`
+            );
+    
+            toast.success(`Submit Success at ${result2?.transactionHash}`)
+
+            // onClose?.()
+        } catch (e: any) {
+            console.log('error', e)
+            toast.error(e?.shortMessage || e?.message || e?.msg || e);
+
+        } finally {
+            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+            dispatchEvent(new CustomEvent('refresh_validatorList'))
+            closeLoading?.()
+        }
     }
   }
 
