@@ -8,7 +8,7 @@ import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidato
 import StakeModal, { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake"
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail"
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
-import { getImageUrl } from "@/utils/tools"
+import { getImageUrl, sleep } from "@/utils/tools"
 import BigNumber from "bignumber.js"
 import { toast } from "react-toastify"
 import { QueryClient, setupDistributionExtension } from "@cosmjs/stargate"
@@ -17,73 +17,38 @@ import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 const token = cysicStCoin
 
 const VeCysic = () => {
-    const { address, connector, stakeMap } = useCosmos()
-    const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
+  const { address, connector, stakeMap } = useCosmos()
+  const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
+  const { myValidators, un_stake_amount } = useValidator()
 
 
-    const queryRewards = async () => {
-        const queryClient = QueryClient.withExtensions(
-            connector.getQueryClient(),
-            setupDistributionExtension,
-        );
-        const result = await queryClient.distribution.delegationTotalRewards(address);
-        console.log('delegationTotalRewards result', address, result)
-    }
+  // withdrawRewards
+  const handleClaim = async (closeLoading?: any) => {
+    const params = {
+      delegatorAddress: address,
+      validatorAddress: '',
+    };
 
-    // withdrawRewards
-    const handleClaim = async (closeLoading?: any) => {
-        const params = {
-            delegatorAddress: address,
-            validatorAddress: '',
-        };
+    // NOTE: local test 
+    // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
+    try {
+      const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
+      toast.success(`Submit Success at ${result?.transactionHash}`)
 
-        // NOTE: local test 
-        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
-        try {
-            // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
-            // toast.success(`Submit Success at ${result?.transactionHash}`)
+      // onClose?.()
+    } catch (e: any) {
+      console.log('error', e)
+      toast.error(e?.shortMessage || e?.message || e?.msg || e);
 
-            const queryClient = QueryClient.withExtensions(
-                connector.getQueryClient(),
-                setupDistributionExtension,
-            );
-            const result = await queryClient.distribution.delegatorValidators(address);
-            console.log("Delegator's Validators:", result);
-            const withdrawMsgs = []
-            for (const validator of result.validators) {
-                const withdrawMsg = {
-                    typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
-                    value: tx_1.MsgWithdrawDelegatorReward.fromPartial({
-                        delegatorAddress: address,
-                        validatorAddress: validator,
-                    }),
-                };
-                withdrawMsgs.push(withdrawMsg)
-            }
-
-            const result2 = await connector?.signAndBroadcast(
-                address,
-                withdrawMsgs,
-                cosmosFee,
-                `Withdraw rewards: ${address}`
-            );
-    
-            toast.success(`Submit Success at ${result2?.transactionHash}`)
-
-            // onClose?.()
-        } catch (e: any) {
-            console.log('error', e)
-            toast.error(e?.shortMessage || e?.message || e?.msg || e);
-
-        } finally {
-            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
-            dispatchEvent(new CustomEvent('refresh_validatorList'))
-            closeLoading?.()
-        }
+    } finally {
+      await sleep(2000)
+      dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+      dispatchEvent(new CustomEvent('refresh_validatorList'))
+      closeLoading?.()
     }
   }
 
-  return <MainContainer title="Stake veCYSIC">
+  return <MainContainer title="Stake CGT">
     <>
       <div className="flex items-stretch gap-4 flex-wrap">
         <div className="flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative">
@@ -104,7 +69,7 @@ const VeCysic = () => {
             <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
               <span className="">Unstaking Amount</span>
               <div className="flex gap-1 items-end">
-                <span className="text-[24px] text-[#fff]">0</span>
+                <span className="text-[24px] text-[#fff]">{un_stake_amount || 0}</span>
                 <span className="">{token}</span>
               </div>
             </div>

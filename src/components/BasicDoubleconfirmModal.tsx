@@ -17,6 +17,7 @@ const BasicDoubleconfirmModal = () => {
 
     const [title, setTitle] = useState()
     const [desc, setDesc] = useState()
+    const [btnText, setBtnText] = useState()
 
     useEventListener("basicDoubleconfirmModalVisible" as any, (e: any) => {
         setVisible(true);
@@ -26,6 +27,7 @@ const BasicDoubleconfirmModal = () => {
         setRenderElement(e?.detail?.renderElement);
         setTitle(e?.detail?.title)
         setDesc(e?.detail?.desc)
+        setBtnText(e?.detail?.btnText)
     });
 
 
@@ -58,7 +60,7 @@ const BasicDoubleconfirmModal = () => {
                         style={{
                             background: 'linear-gradient(83.04deg, #8624D3 5.44%, #54F2FF 54.92%)'
                         }}
-                        needLoading onClick={(close: any) => callback?.current?.(close)}>{t('Confirm')}</Button>
+                        needLoading onClick={(close: any) => callback?.current?.(close)}>{t(btnText || 'Confirm')}</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>

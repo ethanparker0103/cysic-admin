@@ -78,3 +78,5 @@ export const cosmosFee = {
     ],
     gas: "200000",
 };
+
+export const keplrDownloadLink = 'https://chromewebstore.google.com/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap'

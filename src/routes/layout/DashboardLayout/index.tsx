@@ -243,8 +243,8 @@ export const dashboardNavs_ = [
     // link: "/dashboard/stake",
     children: [
       {
-        text: "Stake veCYSIC",
-        link: "/dashboard/stake/veCysic",
+        text: "Stake CGT",
+        link: "/dashboard/stake/cgt",
       },
       {
         text: "Stake veCompute",

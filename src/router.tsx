@@ -102,7 +102,7 @@ export const router = createBrowserRouter([
                         loader: async ()=>redirect('/dashboard')
                     },
                     {
-                        path: 'stake/vecysic',
+                        path: 'stake/cgt',
                         element: <VeCysic />,
                     },
                     {

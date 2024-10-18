@@ -5,6 +5,7 @@ import useCosmos from "@/models/_global/cosmos";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
 import { SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate";
 import { MsgExchangeToPlatformToken, MsgExchangeToGovToken, MsgDelegate } from "./cysic-msg";
+import { keplrDownloadLink } from "@/config";
 
 // @ts-ignore
 const provider = window?.keplr
@@ -25,6 +26,18 @@ async function connectWallet() {
 
     // 检查是否安装了 Keplr
     if (!provider) {
+        console.log('dispatch')
+        dispatchEvent(new CustomEvent('basicDoubleconfirmModalVisible', {
+            detail: {
+                callback: (closeLoading?: any) => {
+                    window.open(keplrDownloadLink, '_blank'); c
+                    closeLoading?.()
+                },
+                title: 'Download Keplr',
+                desc: 'Keplr is not available, Please download first.',
+                btnText: 'Go'
+            }
+        }))
         throw { message: 'Keplr is not available' }
         return;
     }
@@ -53,7 +66,7 @@ async function connectWallet() {
             { registry }
         );
 
-        client.disable = ()=>{
+        client.disable = () => {
             client?.signer?.keplr?.disable?.()
             useCosmos.getState().init()
         }
