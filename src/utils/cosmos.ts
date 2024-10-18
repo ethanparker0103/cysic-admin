@@ -4,7 +4,7 @@ import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
 import { SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate";
-import { MsgExchangeToPlatformToken, MsgExchangeToGovToken } from "./cysic-msg";
+import { MsgExchangeToPlatformToken, MsgExchangeToGovToken, MsgDelegate } from "./cysic-msg";
 
 // @ts-ignore
 const provider = window?.keplr
@@ -44,6 +44,7 @@ async function connectWallet() {
         const cysicRegistryTypes = [
             ["/cysicmint.govtoken.v1.MsgExchangeToGovToken", MsgExchangeToGovToken] as [string, GeneratedType],
             ["/cysicmint.govtoken.v1.MsgExchangeToPlatformToken", MsgExchangeToPlatformToken] as [string, GeneratedType],
+            ["/cysicmint.delegate.v1.MsgDelegate", MsgDelegate] as [string, GeneratedType],
         ];
         const registry = new Registry(defaultRegistryTypes.concat(cysicRegistryTypes));
         const client: any = await SigningStargateClient.connectWithSigner(
