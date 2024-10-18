@@ -1,8 +1,10 @@
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { commonPageSize } from "@/config";
+import { commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
+import useDelegate from "@/models/_global/delegate";
 import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
+import { getImageUrl } from "@/utils/tools";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
 import axios from "axios";
 import { useTranslation } from "react-i18next";
@@ -37,6 +39,7 @@ const UserTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
+  const { setState } = useDelegate()
 
   const {
     data: taskList,
@@ -47,7 +50,7 @@ const UserTable = () => {
     (page: number) => {
       // return Promise.resolve(mock);
 
-      return axios.get(`/api/v1/validator`, {
+      return axios.get(`/api/v1/myPage/${address}/balance`, {
         params: {
           pageNum: page,
           pageSize: commonPageSize,
@@ -55,13 +58,10 @@ const UserTable = () => {
       });
     },
     {
+      ready: !!address,
       refreshDeps: [address],
       onSuccess(res) {
-        dispatchEvent(new CustomEvent('data_activeValidator', {
-          detail: {
-            list: res?.data?.list
-          }
-        }))
+        setState({ activeDelegate: res?.data?.list })
       }
     }
   );
@@ -69,24 +69,20 @@ const UserTable = () => {
 
   const columns = [
     {
-      key: "name",
-      label: "Validator",
+      key: "token",
+      label: "Coin",
     },
     {
-      key: "my_stakes",
-      label: "My Stakes",
+      key: "amount",
+      label: "Amount",
     },
     {
-      key: "voting_power",
-      label: "Voting Power",
+      key: "price",
+      label: "Price",
     },
     {
-      key: "commission_rate",
-      label: "Commission Rate",
-    },
-    {
-      key: "expected_apr",
-      label: "Expected APR",
+      key: "cc_valued",
+      label: "Computing Governance Value",
     },
     {
       key: "action",
@@ -96,10 +92,32 @@ const UserTable = () => {
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
+      case 'token':
+        const v = getKeyValue(item, columnKey)
+        const imgUrl = `@/assets/images/tokens/${v}.svg`
+        return <div className="flex items-center gap-1">
+          <img src={getImageUrl(imgUrl)}/>
+          <span>{v}</span>
+        </div>
+      case 'amount':
+        return <div className="flex items-center gap-1">
+          <span>{getKeyValue(item, columnKey)}</span>
+          <span>{item?.token}</span>
+        </div>
+      case 'price':
+        return <div className="flex items-center gap-1">
+          <span>{getKeyValue(item, columnKey)}</span>
+          <span>USDT</span>
+        </div>
+      case 'cc_valued':
+        return <div className="flex items-center gap-1">
+          <span>{getKeyValue(item, columnKey)}</span>
+          <span>{cysicStCoin}</span>
+        </div>
       case 'action':
         return <div className="flex items-center gap-2">
           <Button onClick={() => {
-            
+
             dispatchEvent(new CustomEvent('modal_delegate_visible', {
               detail: { visible: true }
             }))

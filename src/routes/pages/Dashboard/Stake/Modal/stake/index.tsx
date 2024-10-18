@@ -1,4 +1,3 @@
-import Button from "@/components/Button"
 import useModalState from "@/hooks/useModalState"
 import Stake from "./stakeContent/stake"
 import Unstake from "./stakeContent/unstake"
@@ -16,15 +15,13 @@ const StakeModal = () => {
     const [selected, setSelected] = useState<any>(StakeTab.stake);
 
     const [item, setItem] = useState()
-    const [items, setItems] = useState()
-    console.log('selected', selected)
+
     useEventListener('modal_stake_visible' as any, (e: any) => {
 
         if (e?.detail?.tab != undefined) {
             setSelected(e?.detail?.tab)
         }
         setItem(e?.detail?.item)
-        setItems(e?.detail?.items || [])
     })
 
 
@@ -46,10 +43,10 @@ const StakeModal = () => {
                             }}
                         >
                             <Tab key={StakeTab.stake} title="Stake">
-                                <Stake item={item} items={items}/>
+                                <Stake item={item} />
                             </Tab>
                             <Tab key={StakeTab.unstake} title="Unstake">
-                                <Unstake item={item} items={items}/>
+                                <Unstake item={item} />
                             </Tab>
                         </Tabs>
 

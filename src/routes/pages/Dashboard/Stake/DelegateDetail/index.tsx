@@ -54,10 +54,10 @@ const mock = {
 
 const tabs = [
   {
-    name: "Active Validators",
+    name: "Delegate veCompute",
     cmp: () => (
       <UserTable
-        key="activeValidators"
+        key="delegateVeCompute"
       // classNames={{ wrapper: "!border-0 !p-0" }}
       />
     ),

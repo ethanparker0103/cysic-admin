@@ -32,7 +32,7 @@ const Button = ({
     const classNameWithType = useMemo(() => {
         switch (type) {
             case BtnType.gradient:
-                return 'bg-gradient border-none text-[#000]';
+                return 'bg-gradient border-none !text-[#000]';
             case BtnType.dark:
                 return 'bg-[#000] border-none text-[#fff]';
             case BtnType.solid:

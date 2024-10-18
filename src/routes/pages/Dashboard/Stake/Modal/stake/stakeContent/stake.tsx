@@ -3,12 +3,14 @@ import Input from "@/components/Input"
 import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
+import useValidator from "@/models/_global/validator"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
-import { useEventListener } from "ahooks"
 import BigNumber from "bignumber.js"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
-const Stake = ({ items = [], item }: any) => {
+const Stake = ({ item }: any) => {
+    const { activeValidator: items } = useValidator()
     const { address, balanceMap, connector } = useCosmos()
     const maxAmount = balanceMap?.[cysicStCoin]?.hm_amount || 0
     const [stakeAmount, setStakeAmount] = useState<any>()
@@ -38,13 +40,17 @@ const Stake = ({ items = [], item }: any) => {
         // NOTE: local test 
         // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
         try {
-            const res = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
-            console.log('res', res)
+            const result = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
+            toast.success(`Submit Success at ${result?.transactionHash}`)
+
             // onClose?.()
-        } catch (e) {
+        } catch (e: any) {
             console.log('error', e)
+            toast.error(e?.message || e?.msg || e);
 
         } finally {
+            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+            dispatchEvent(new CustomEvent('refresh_validatorList'))
             closeLoading?.()
         }
     }
@@ -102,7 +108,10 @@ const Stake = ({ items = [], item }: any) => {
                 <div className="flex flex-col gap-1">
                     <Input suffix={<Button onClick={() => setStakeAmount(maxAmount)} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
-                    </Button>} className="!bg-[#000]" value={stakeAmount} onChange={setStakeAmount} type="solid" />
+                    </Button>} className="!bg-[#000]" value={stakeAmount} onChange={(v)=>{
+                        setStakeAmount(v);
+                        setSlider(BigNumber(v).div(maxAmount).toString())
+                    }} type="solid" />
                     <Slider
                         value={slider}
                         onChange={(v) => { setSlider(v); setStakeAmount(BigNumber(v).multipliedBy(maxAmount).toString()) }}
