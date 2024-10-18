@@ -10,6 +10,8 @@ import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
 import { getImageUrl } from "@/utils/tools"
 import BigNumber from "bignumber.js"
 import { toast } from "react-toastify"
+import { QueryClient, setupDistributionExtension } from "@cosmjs/stargate"
+import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 
 const token = cysicStCoin
 
@@ -18,6 +20,14 @@ const VeCysic = () => {
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
 
+    const queryRewards = async () => {
+        const queryClient = QueryClient.withExtensions(
+            connector.getQueryClient(),
+            setupDistributionExtension,
+        );
+        const result = await queryClient.distribution.delegationTotalRewards(address);
+        console.log('delegationTotalRewards result', address, result)
+    }
 
     // withdrawRewards
     const handleClaim = async (closeLoading?: any) => {
@@ -29,8 +39,35 @@ const VeCysic = () => {
         // NOTE: local test 
         // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
         try {
-            const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
-            toast.success(`Submit Success at ${result?.transactionHash}`)
+            // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
+            // toast.success(`Submit Success at ${result?.transactionHash}`)
+
+            const queryClient = QueryClient.withExtensions(
+                connector.getQueryClient(),
+                setupDistributionExtension,
+            );
+            const result = await queryClient.distribution.delegatorValidators(address);
+            console.log("Delegator's Validators:", result);
+            const withdrawMsgs = []
+            for (const validator of result.validators) {
+                const withdrawMsg = {
+                    typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+                    value: tx_1.MsgWithdrawDelegatorReward.fromPartial({
+                        delegatorAddress: address,
+                        validatorAddress: validator,
+                    }),
+                };
+                withdrawMsgs.push(withdrawMsg)
+            }
+
+            const result2 = await connector?.signAndBroadcast(
+                address,
+                withdrawMsgs,
+                cosmosFee,
+                `Withdraw rewards: ${address}`
+            );
+    
+            toast.success(`Submit Success at ${result2?.transactionHash}`)
 
             // onClose?.()
         } catch (e: any) {
