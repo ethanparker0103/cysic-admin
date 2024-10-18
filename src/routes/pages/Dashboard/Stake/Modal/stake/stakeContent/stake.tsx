@@ -31,10 +31,12 @@ const Stake = ({ items = [], item }: any) => {
             validatorAddress: current?.operator_address,
             amount: {
                 denom: "CGT", // 代币的denom
-                amount: BigNumber(stakeAmount).div(1e18).toString(), // 委托的数量
+                amount: BigNumber(stakeAmount).multipliedBy(1e18).toString(), // 委托的数量
             },
         };
 
+        // NOTE: local test 
+        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
         try {
             const res = await connector?.delegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
             console.log('res', res)
