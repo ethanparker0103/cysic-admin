@@ -8,6 +8,7 @@ import useDelegate from "@/models/_global/delegate";
 import { getImageUrl } from "@/utils/tools";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
 import axios from "axios";
+import BigNumber from "bignumber.js";
 import { useTranslation } from "react-i18next";
 
 const mock = {
@@ -39,7 +40,7 @@ const UserTable = () => {
   const { t } = useTranslation();
   const { address } = useCosmos()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
-  const { setState } = useDelegate()
+  const { setState, activeDelegate } = useDelegate()
 
   const {
     data: taskList,
@@ -60,11 +61,17 @@ const UserTable = () => {
       ready: !!address,
       refreshDeps: [address],
       onSuccess(res) {
-        setState({ activeDelegate: res?.data?.list })
+        const list = res?.data?.list?.map(i=>{
+          return ({
+            ...i,
+            hm_amount: BigNumber(i?.amount).div(1e18).toString()
+          })
+        })
+        setState({ activeDelegate: list })
       }
     }
   );
-  const rows = taskList?.data?.list || [];
+  const rows = activeDelegate || [];
 
   const columns = [
     {
@@ -80,7 +87,7 @@ const UserTable = () => {
       label: "Price",
     },
     {
-      key: "cc_valued",
+      key: "cc_valued", 
       label: "Computing Governance Value",
     },
     {
@@ -100,7 +107,7 @@ const UserTable = () => {
         </div>
       case 'amount':
         return <div className="flex items-center gap-1">
-          <span>{getKeyValue(item, columnKey)}</span>
+          <span>{item?.hm_amount}</span>
           <span>{item?.token}</span>
         </div>
       case 'price':
