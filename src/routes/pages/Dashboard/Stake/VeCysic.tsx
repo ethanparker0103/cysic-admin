@@ -1,5 +1,5 @@
 import Button from "@/components/Button"
-import { cosmosFee, cysicStCoin } from "@/config"
+import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
@@ -136,7 +136,7 @@ const VeCysic = () => {
               <span className="">Claim Rewards</span>
               <div className="flex gap-1">
                 <span className="text-[#fff] text-[24px]">0</span>
-                <span className="self-end">{token}</span>
+                <span className="self-end">{cysicBaseCoin}</span>
               </div>
             </div>
             <Button type="dark" className="h-[1.75rem] min-h-fit" needLoading onClick={handleClaim}><span className="text-sm text-[#00F0FF]">Claim All</span></Button>

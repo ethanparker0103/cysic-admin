@@ -81,16 +81,19 @@ const Valid = () => {
     const currentLevel = overview?.currentLevel;
     const currentLevelConfig = levelListMap?.[currentLevel];
     const nextLevelConfig = levelListMap?.[currentLevel + 1];
+    let totalPastActivateCnt = 0;
 
     const totalInviteValue = levelList?.reduce((prev: any, next: any) => {
+        if(+next?.ID < currentLevel){
+            totalPastActivateCnt = totalPastActivateCnt + next?.Require
+        }
         return BigNumber(prev).plus(next?.Require).toString();
     }, "0");
-    const currentInviteValue = BigNumber(overview?.activateCnt)
+
+    const currentInviteValue = BigNumber(totalPastActivateCnt)
         .div(totalInviteValue)
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
-
-    console.log('currentInviteValue', currentInviteValue, overview?.activateCnt, totalInviteValue)
 
     const referralUrl = `${window.location.origin}/m/dashboard/referral/invite?code=${code}`
 
