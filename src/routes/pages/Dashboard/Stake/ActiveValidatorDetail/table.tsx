@@ -41,7 +41,7 @@ const UserTable = () => {
   const { setState } = useValidator()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
 
-  useEventListener('refresh_validatorList' as string, (e)=>{
+  useEventListener('refresh_validatorList' as string, (e) => {
     run()
   })
 
@@ -65,7 +65,7 @@ const UserTable = () => {
     {
       refreshDeps: [address],
       onSuccess(res) {
-        setState({activeValidator: res?.data?.list})
+        setState({ activeValidator: res?.data?.list })
       }
     }
   );
@@ -104,6 +104,8 @@ const UserTable = () => {
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Stake</Button>
         </div>
+      case 'commission_rate':
+        return +getKeyValue(item, columnKey) + '%';
       default:
         return getKeyValue(item, columnKey);
     }
