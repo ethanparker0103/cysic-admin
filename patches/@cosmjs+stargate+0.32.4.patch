@@ -129,6 +129,33 @@ index de42c94..8051d5b 100644
  exports.accountFromAny = accountFromAny;
  //# sourceMappingURL=accounts.js.map
 \ No newline at end of file
+diff --git a/node_modules/@cosmjs/stargate/build/queryclient/queryclient.js b/node_modules/@cosmjs/stargate/build/queryclient/queryclient.js
+index 634b2e5..19319a4 100644
+--- a/node_modules/@cosmjs/stargate/build/queryclient/queryclient.js
++++ b/node_modules/@cosmjs/stargate/build/queryclient/queryclient.js
+@@ -33,6 +33,22 @@ class QueryClient {
+         return client;
+     }
+     constructor(cometClient) {
++        // patch bugs
++        if (!cometClient.abciQuery && cometClient.cometClient.abciQuery) {
++            cometClient.abciQuery = (obj) => {
++                return cometClient.cometClient.abciQuery.apply(cometClient.cometClient, [obj])
++            }
++        }
++        if (!cometClient.subscribeNewBlockHeader && cometClient.cometClient.subscribeNewBlockHeader) {
++            cometClient.subscribeNewBlockHeader = () =>{
++                return cometClient.cometClient.subscribeNewBlockHeader.apply(cometClient.cometClient)
++            } 
++        }
++        if (!cometClient.blockchain && cometClient.cometClient.blockchain){
++            cometClient.blockchain = (height, searchHeight) => {
++                return cometClient.cometClient.blockchain.apply(cometClient.cometClient,[height, searchHeight])
++            }
++        }
+         this.cometClient = cometClient;
+     }
+     /**
 diff --git a/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts b/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts
 index f3368ae..099de89 100644
 --- a/node_modules/@cosmjs/stargate/build/signingstargateclient.d.ts
