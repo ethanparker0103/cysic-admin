@@ -88,7 +88,7 @@ const ExchangeModal = () => {
                 .minus(fromAmount)
                 .lt(cosmosReservedValue)
         ) {
-            throw { message: "Reserved Balance < 1" };
+            throw { message: `Reserved Balance < ${cosmosReservedValue}` };
         }
         // 1. 构建交易参数
         const amount = {
