@@ -1,21 +1,92 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import { cysicBaseCoin } from "@/config"
+import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
-import { Slider } from "@nextui-org/react"
-import { useState } from "react"
+import useCosmos from "@/models/_global/cosmos"
+import useValidator from "@/models/_global/validator"
+import { Select, SelectItem, Slider } from "@nextui-org/react"
+import BigNumber from "bignumber.js"
+import dayjs from "dayjs"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
-const Unstake = ({items, item}: any) => {
-    const maxAmount = 1000
-    const [unstakeAmount, setUnstakeAmount] = useState()
+const Unstake = ({ item }: any) => {
+    const { myValidators: items } = useValidator()
+    const { address, connector, stakeMap } = useCosmos()
+    const [unstakeAmount, setUnstakeAmount] = useState<any>()
+    const [slider, setSlider] = useState<any>()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
     const onClose = () => {
         dispatch({ visible: false })
     }
+
+    const [validator, setValidator] = useState<any>()
+    const current = items?.find(i => i?.operator_address == validator)
+    const maxAmount = current?.stake_amount || 0
+
+    const handleUnstake = async (closeLoading?: any) => {
+        const params = {
+            delegatorAddress: address,
+            validatorAddress: current?.operator_address,
+            amount: {
+                denom: cysicStCoin, // 代币的denom
+                amount: BigNumber(unstakeAmount).multipliedBy(1e18).toString(), // 委托的数量
+            },
+        };
+
+        // NOTE: local test 
+        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
+        try {
+            const result = await connector?.undelegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
+            toast.success(`Submit Success at ${result?.transactionHash}`)
+
+            // onClose?.()
+        } catch (e: any) {
+            console.log('error', e)
+            toast.error(e?.message || e?.msg || e);
+
+        } finally {
+            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+            dispatchEvent(new CustomEvent('refresh_validatorList'))
+            closeLoading?.()
+        }
+    }
+
+    useEffect(() => {
+        if (!validator) {
+            if (item?.operator_address) {
+                setValidator(item?.operator_address)
+                return
+            }
+            setValidator(items?.[0]?.operator_address)
+
+        }
+    }, [item?.operator_address, validator, items])
+
+
     return <div className="flex flex-col gap-8">
 
         <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+                <div className="text-[#A3A3A3]">Validator</div>
+                <Select
+                    selectedKeys={[validator]}
+                    onChange={(e) => setValidator(e?.target?.value)}
+                    // className="bg-[#000]"
+                    classNames={{
+                        trigger: '!bg-[#000] h-12 rounded-[6px]'
+                    }}
+                >
+                    {items?.map((i) => (
+                        <SelectItem key={i?.operator_address}>
+                            {i?.name}
+                        </SelectItem>
+                    ))}
+                </Select>
+                {/* <Input className="!bg-[#000] [&>div]:gap-2 " disabled value="ABCDE" type="solid" prefix={<img className="size-7 rounded-full" src={getImageUrl('@/assets/images/tokens/cysic.svg')} />} /> */}
+            </div>
+
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
                     <div className="text-[#A3A3A3]">数量</div>
@@ -33,8 +104,13 @@ const Unstake = ({items, item}: any) => {
                 <div className="flex flex-col gap-1">
                     <Input suffix={<Button type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
-                    </Button>} className="!bg-[#000]" value={unstakeAmount} onChange={setUnstakeAmount} type="solid" />
+                    </Button>} className="!bg-[#000]" value={unstakeAmount} onChange={(v) => {
+                        setUnstakeAmount(v)
+                        setSlider(BigNumber(v).div(maxAmount).toString())
+                    }} type="solid" />
                     <Slider
+                        value={slider}
+                        onChange={(v) => { setSlider(v); setUnstakeAmount(BigNumber(v).multipliedBy(maxAmount).toString()) }}
                         classNames={{
                             track: "!border-s-[#00F0FF]",
                             filler: "bg-[#00F0FF]",
@@ -59,23 +135,23 @@ const Unstake = ({items, item}: any) => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">赎回金额</span>
                     <div className="flex items-center gap-1">
-                        <span>1.2345</span>
-                        <span className="text-[#A3A3A3]">{cysicBaseCoin}</span>
+                        <span>{unstakeAmount || '-'}</span>
+                        <span className="text-[#A3A3A3]">{cysicStCoin}</span>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">累计收益</span>
                     <div className="flex items-center gap-1">
-                        <span>1.2345</span>
-                        <span className="text-[#A3A3A3]">{cysicBaseCoin}</span>
+                        <span>-</span>
+                        <span className="text-[#A3A3A3]">{cysicStCoin}</span>
                     </div>
                 </div>
 
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">预计到账时间</span>
                     <div className="flex items-center gap-1">
-                        <span>Nov 12 2024 08:00</span>
+                        <span>{dayjs().add(21, 'D').format('YYYY/MM/DD HH:mm')}</span>
                     </div>
                 </div>
 
@@ -83,7 +159,7 @@ const Unstake = ({items, item}: any) => {
         </div>
 
 
-        <Button className="w-full" type="gradient" onClick={onClose}>
+        <Button needLoading className="w-full" type="gradient" onClick={handleUnstake}>
             Unstake
         </Button>
     </div>

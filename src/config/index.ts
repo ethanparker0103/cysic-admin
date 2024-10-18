@@ -52,7 +52,7 @@ export const commonPageSize = 10;
 
 export const explorerUrl = 'https://explorer-testnet.prover.xyz'
 
-export const cosmosReservedValue = '1'
+export const cosmosReservedValue = '0.1'
 
 export const cysicBaseCoin = 'CYS'
 export const cysicStCoin = 'CGT'

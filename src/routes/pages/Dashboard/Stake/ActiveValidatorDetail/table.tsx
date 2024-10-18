@@ -2,8 +2,10 @@ import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
+import useValidator from "@/models/_global/validator";
 import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
+import { useEventListener } from "ahooks";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useAccount } from "wagmi";
@@ -36,13 +38,19 @@ const defaultSortKey = sortKkey.sum
 const UserTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount()
+  const { setState } = useValidator()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
+
+  useEventListener('refresh_validatorList' as string, (e)=>{
+    run()
+  })
 
   const {
     data: taskList,
     totalPage,
     currentPage,
     setCurrentPage,
+    run
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);
@@ -57,11 +65,7 @@ const UserTable = () => {
     {
       refreshDeps: [address],
       onSuccess(res) {
-        dispatchEvent(new CustomEvent('data_activeValidator', {
-          detail: {
-            list: res?.data?.list
-          }
-        }))
+        setState({activeValidator: res?.data?.list})
       }
     }
   );
@@ -71,10 +75,6 @@ const UserTable = () => {
     {
       key: "name",
       label: "Validator",
-    },
-    {
-      key: "my_stakes",
-      label: "My Stakes",
     },
     {
       key: "voting_power",
@@ -100,14 +100,9 @@ const UserTable = () => {
         return <div className="flex items-center gap-2">
           <Button onClick={() => {
             dispatchEvent(new CustomEvent('modal_stake_visible', {
-              detail: { visible: true, tab: StakeTab.stake, item, items: rows }
+              detail: { visible: true, tab: StakeTab.stake, item, validators: rows }
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Stake</Button>
-          <Button onClick={() => {
-            dispatchEvent(new CustomEvent('modal_stake_visible', {
-              detail: { visible: true, tab: StakeTab.unstake, item, items: rows }
-            }))
-          }} className="min-h-fit h-fit py-2" type="solid">Unstake</Button>
         </div>
       default:
         return getKeyValue(item, columnKey);

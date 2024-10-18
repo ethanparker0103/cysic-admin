@@ -1,8 +1,6 @@
 import Button from "@/components/Button"
-import { commonPageSize, cysicStCoin } from "@/config"
-import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance"
+import { cosmosFee, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
-import usePagnation from "@/hooks/usePagnation"
 import useCosmos from "@/models/_global/cosmos"
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import ActiveValidatorDetail from "@/routes/pages/Dashboard/Stake/ActiveValidatorDetail"
@@ -10,20 +8,41 @@ import StakeModal, { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail"
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc"
 import { getImageUrl } from "@/utils/tools"
-import { useEventListener, useRequest } from "ahooks"
-import axios from "axios"
-import { useState } from "react"
+import BigNumber from "bignumber.js"
+import { toast } from "react-toastify"
 
 const token = cysicStCoin
 
 const VeCysic = () => {
-    const { balanceMap } = useCosmos()
+    const { address, connector, stakeMap } = useCosmos()
     const { dispatch }: any = useModalState({ eventName: 'modal_stake_visible' })
 
-    const [list, setList] = useState()
-    useEventListener('data_activeValidator', (e: any)=>{
-        setList(e?.detail?.list)  
-    })
+
+
+    // withdrawRewards
+    const handleClaim = async (closeLoading?: any) => {
+        const params = {
+            delegatorAddress: address,
+            validatorAddress: '',
+        };
+
+        // NOTE: local test 
+        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
+        try {
+            const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
+            toast.success(`Submit Success at ${result?.transactionHash}`)
+
+            // onClose?.()
+        } catch (e: any) {
+            console.log('error', e)
+            toast.error(e?.shortMessage || e?.message || e?.msg || e);
+
+        } finally {
+            dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
+            dispatchEvent(new CustomEvent('refresh_validatorList'))
+            closeLoading?.()
+        }
+    }
 
     return <MainContainer title="Stake veCYSIC">
         <>
@@ -33,8 +52,8 @@ const VeCysic = () => {
                         <img className="size-10" src={getImageUrl('@/assets/images/stake/lock.svg')}/>
                         <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
                             <span className="">Staking Amount</span>
-                            <div className="flex gap-1 items-center">
-                                <span className="text-[24px] text-[#fff]">0</span>
+                            <div className="flex gap-1 items-end">
+                                <span className="text-[24px] text-[#fff]">{stakeMap?.[cysicStCoin]?.hm_amount || 0}</span>
                                 <span className="">{token}</span>
                             </div>
                         </div>
@@ -45,7 +64,7 @@ const VeCysic = () => {
                         <img className="size-10" src={getImageUrl('@/assets/images/stake/wallet.svg')}/>
                         <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
                             <span className="">Unstaking Amount</span>
-                            <div className="flex gap-1 items-center">
+                            <div className="flex gap-1 items-end">
                                 <span className="text-[24px] text-[#fff]">0</span>
                                 <span className="">{token}</span>
                             </div>
@@ -59,7 +78,7 @@ const VeCysic = () => {
                             <span className="">APR</span>
                             <div className="flex gap-2 items-center">
                                 <span className="text-[24px] text-[#fff] font-[600]">-%</span>
-                                <Button type="dark" className="h-[1.75rem] min-h-fit" onClick={()=>dispatch({visible: true, tab: StakeTab.stake, items: list})}>
+                                <Button type="dark" className="h-[1.75rem] min-h-fit" onClick={()=>dispatch({ visible: true, tab: StakeTab.stake })}>
                                     <span className="text-sm text-[#00F0FF]">Stake</span>
                                 </Button>
                             </div>
@@ -75,7 +94,7 @@ const VeCysic = () => {
                                 <span className="self-end">{token}</span>
                             </div>
                         </div>
-                        <Button type="dark" className="h-[1.75rem] min-h-fit"><span className="text-sm text-[#00F0FF]">Claim All</span></Button>
+                        <Button type="dark" className="h-[1.75rem] min-h-fit" needLoading onClick={handleClaim}><span className="text-sm text-[#00F0FF]">Claim All</span></Button>
                     </div>
 
                     <div className="size-[7.75rem]">

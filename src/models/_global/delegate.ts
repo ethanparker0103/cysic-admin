@@ -3,28 +3,20 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export const defaultInitState = {
-  address: undefined,
-  client: undefined,
-  chainId: undefined,
-  connector: undefined,
-  isConnected: false,
-  isConnecting: false,
-  hasConnectedWithKeplr: false,
-  balanceMap: undefined,
-  stakeMap: undefined
+  activeDelegate: undefined,
+  myDelegate: undefined
 }
 
-const persistFields: any = ['hasConnectedWithKeplr'];
+const persistFields: any = [];
 
-const useCosmos = create(
+const useDelegate = create(
   persist(
     (set: (arg0: (state: any) => any) => any) => ({
-      ...defaultInitState,
+        ...defaultInitState,
       setState: (newValues: any) => set((state: any) => ({ ...state, ...newValues })),
-      init: () => set(() => (defaultInitState)),
     }),
     {
-      name: "cosmos",
+      name: "validator",
       storage: createJSONStorage(() => localStorage),
       partialize: (state: { [x: string]: any; }) => {
         const keys = Object.keys(state);
@@ -39,4 +31,4 @@ const useCosmos = create(
   ),
 );
 
-export default useCosmos;
+export default useDelegate;

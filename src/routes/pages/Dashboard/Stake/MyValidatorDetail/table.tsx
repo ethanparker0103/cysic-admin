@@ -2,14 +2,13 @@ import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
-import GradientContainer from "@/routes/components/GradientContainer";
-import { shortStr, getImageUrl } from "@/utils/tools";
+import useCosmos from "@/models/_global/cosmos";
+import useValidator from "@/models/_global/validator";
+import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
+import { useEventListener } from "ahooks";
 import axios from "axios";
-import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
-import toast from "react-simple-toasts";
-import { useAccount } from "wagmi";
 
 const mock = {
   "msg": "success",
@@ -45,14 +44,20 @@ const defaultSortKey = sortKkey.sum
 
 const UserTable = () => {
   const { t } = useTranslation();
-  const { address } = useAccount()
+  const { address,  } = useCosmos()
+  const { setState } = useValidator()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
+
+  useEventListener('refresh_validatorList' as string, (e)=>{
+    run()
+  })
 
   const {
     data: taskList,
     totalPage,
     currentPage,
     setCurrentPage,
+    run
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);
@@ -64,7 +69,11 @@ const UserTable = () => {
       });
     },
     {
+      ready: !!address,
       refreshDeps: [address],
+      onSuccess(res){
+        setState({myValidators: res?.data?.list})
+      }
     }
   );
 
@@ -76,7 +85,7 @@ const UserTable = () => {
       label: "Validator",
     },
     {
-      key: "my_stakes",
+      key: "stake_amount",
       label: "My Stakes",
     },
     {
@@ -96,6 +105,7 @@ const UserTable = () => {
       label: "Action",
     }
   ];
+  
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
@@ -108,7 +118,7 @@ const UserTable = () => {
           }} className="min-h-fit h-fit py-2" type="solid">Stake</Button>
           <Button onClick={() => {
             dispatchEvent(new CustomEvent('modal_stake_visible', {
-              detail: { visible: true, item }
+              detail: { visible: true, tab: StakeTab.unstake, item }
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Unstake</Button>
         </div>
