@@ -2,8 +2,8 @@ import { cosmosHubTestnet } from "@/config/cosmos/cosmosHubTestnet";
 import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
 import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
-import { Registry } from "@cosmjs/proto-signing";
-import { SigningStargateClient } from "@cosmjs/stargate";
+import { Registry, GeneratedType } from "@cosmjs/proto-signing";
+import { SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate";
 import { MsgExchangeToPlatformToken, MsgExchangeToGovToken } from "./cysic-msg";
 
 // @ts-ignore
@@ -41,11 +41,11 @@ async function connectWallet() {
         const accounts = await offlineSigner.getAccounts();
 
         // register cysic msgs
-        const registry = new Registry([
-            ["/cysicmint.govtoken.v1.MsgExchangeToGovToken", MsgExchangeToGovToken],
-            ["/cysicmint.govtoken.v1.MsgExchangeToPlatformToken", MsgExchangeToPlatformToken],
-        ]);
-
+        const cysicRegistryTypes = [
+            ["/cysicmint.govtoken.v1.MsgExchangeToGovToken", MsgExchangeToGovToken] as [string, GeneratedType],
+            ["/cysicmint.govtoken.v1.MsgExchangeToPlatformToken", MsgExchangeToPlatformToken] as [string, GeneratedType],
+        ];
+        const registry = new Registry(defaultRegistryTypes.concat(cysicRegistryTypes));
         const client: any = await SigningStargateClient.connectWithSigner(
             rpc,
             offlineSigner,
