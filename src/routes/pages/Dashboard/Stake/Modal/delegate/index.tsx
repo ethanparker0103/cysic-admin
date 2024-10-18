@@ -283,7 +283,7 @@ const DelegateModal = () => {
                                                 Approximate Computing Governance Value
                                             </span>
                                             <div className="flex items-center gap-1">
-                                                <span>{delegateAmount} {cysicStCoin}</span>
+                                                <span>{BigNumber(delegateAmount || 0).multipliedBy(current?.price || 0).toString()} {cysicStCoin}</span>
                                             </div>
                                         </div>
                                     </div>
