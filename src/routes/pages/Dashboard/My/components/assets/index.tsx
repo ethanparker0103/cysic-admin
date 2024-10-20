@@ -3,7 +3,7 @@ import Verticle from "@/components/Verticle";
 import { cysicBaseCoin, cysicStCoin } from "@/config";
 import useModalState from "@/hooks/useModalState";
 import useCosmos from "@/models/_global/cosmos";
-import { getImageUrl } from "@/utils/tools";
+import { format, getImageUrl } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { useState } from "react";
@@ -53,7 +53,7 @@ const Assets = () => {
                 </span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#00F0FF]">
-                {balanceMap?.[cysicBaseCoin]?.hm_amount || '-'}
+                {format(balanceMap?.[cysicBaseCoin]?.hm_amount, 3) || '-'}
               </div>
             </div>
             <Button
@@ -123,7 +123,7 @@ const Assets = () => {
                 <span className="text-2xl text-[#A3A3A3]">{cysicStCoin}</span>
               </div>
               <div className="flex-1 text-[40px] font-bold text-[#fff]">
-                {balanceMap?.[cysicStCoin]?.hm_amount || "-"}
+                {format(balanceMap?.[cysicStCoin]?.hm_amount, 3) || "-"}
               </div>
             </div>
             <Button

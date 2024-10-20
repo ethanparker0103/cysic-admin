@@ -1,0 +1,140 @@
+diff --git a/node_modules/@cosmjs/amino/.DS_Store b/node_modules/@cosmjs/amino/.DS_Store
+new file mode 100644
+index 0000000..e69de29
+diff --git a/node_modules/@cosmjs/amino/build/encoding.d.ts b/node_modules/@cosmjs/amino/build/encoding.d.ts
+index fc8b504..dfdba11 100644
+--- a/node_modules/@cosmjs/amino/build/encoding.d.ts
++++ b/node_modules/@cosmjs/amino/build/encoding.d.ts
+@@ -1,9 +1,11 @@
+-import { Ed25519Pubkey, Pubkey, Secp256k1Pubkey } from "./pubkeys";
++import { Ed25519Pubkey, Pubkey, Secp256k1Pubkey, EthSecp256k1Pubkey } from "./pubkeys";
+ /**
+  * Takes a Secp256k1 public key as raw bytes and returns the Amino JSON
+  * representation of it (the type/value wrapper object).
+  */
+ export declare function encodeSecp256k1Pubkey(pubkey: Uint8Array): Secp256k1Pubkey;
++
++export declare function encodeEthSecp256k1Pubkey(pubkey: Uint8Array): EthSecp256k1Pubkey;
+ /**
+  * Takes an Edd25519 public key as raw bytes and returns the Amino JSON
+  * representation of it (the type/value wrapper object).
+diff --git a/node_modules/@cosmjs/amino/build/encoding.js b/node_modules/@cosmjs/amino/build/encoding.js
+index 477c250..413428d 100644
+--- a/node_modules/@cosmjs/amino/build/encoding.js
++++ b/node_modules/@cosmjs/amino/build/encoding.js
+@@ -1,6 +1,6 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.encodeBech32Pubkey = exports.encodeAminoPubkey = exports.decodeBech32Pubkey = exports.decodeAminoPubkey = exports.encodeEd25519Pubkey = exports.encodeSecp256k1Pubkey = void 0;
++exports.encodeBech32Pubkey = exports.encodeAminoPubkey = exports.decodeBech32Pubkey = exports.decodeAminoPubkey = exports.encodeEd25519Pubkey = exports.encodeSecp256k1Pubkey = exports.encodeEthSecp256k1Pubkey = void 0;
+ const encoding_1 = require("@cosmjs/encoding");
+ const math_1 = require("@cosmjs/math");
+ const utils_1 = require("@cosmjs/utils");
+@@ -19,6 +19,17 @@ function encodeSecp256k1Pubkey(pubkey) {
+     };
+ }
+ exports.encodeSecp256k1Pubkey = encodeSecp256k1Pubkey;
++
++function encodeEthSecp256k1Pubkey(pubkey) {
++    if (pubkey.length !== 33 || (pubkey[0] !== 0x02 && pubkey[0] !== 0x03)) {
++        throw new Error("Public key must be compressed ethsecp256k1, i.e. 33 bytes starting with 0x02 or 0x03");
++    }
++    return {
++        type: pubkeys_1.pubkeyType.ethsecp256k1,
++        value: (0, encoding_1.toBase64)(pubkey),
++    };
++}
++exports.encodeEthSecp256k1Pubkey = encodeEthSecp256k1Pubkey;
+ /**
+  * Takes an Edd25519 public key as raw bytes and returns the Amino JSON
+  * representation of it (the type/value wrapper object).
+diff --git a/node_modules/@cosmjs/amino/build/index.d.ts b/node_modules/@cosmjs/amino/build/index.d.ts
+index d714122..717cafb 100644
+--- a/node_modules/@cosmjs/amino/build/index.d.ts
++++ b/node_modules/@cosmjs/amino/build/index.d.ts
+@@ -1,10 +1,10 @@
+ export { pubkeyToAddress, pubkeyToRawAddress, rawEd25519PubkeyToRawAddress, rawSecp256k1PubkeyToRawAddress, } from "./addresses";
+ export { addCoins, Coin, coin, coins, parseCoins } from "./coins";
+-export { decodeAminoPubkey, decodeBech32Pubkey, encodeAminoPubkey, encodeBech32Pubkey, encodeEd25519Pubkey, encodeSecp256k1Pubkey, } from "./encoding";
++export { decodeAminoPubkey, decodeBech32Pubkey, encodeAminoPubkey, encodeBech32Pubkey, encodeEd25519Pubkey, encodeSecp256k1Pubkey, encodeEthSecp256k1Pubkey } from "./encoding";
+ export { createMultisigThresholdPubkey } from "./multisig";
+ export { omitDefault } from "./omitdefault";
+ export { makeCosmoshubPath } from "./paths";
+-export { Ed25519Pubkey, isEd25519Pubkey, isMultisigThresholdPubkey, isSecp256k1Pubkey, isSinglePubkey, MultisigThresholdPubkey, Pubkey, pubkeyType, Secp256k1Pubkey, SinglePubkey, } from "./pubkeys";
++export { Ed25519Pubkey, isEd25519Pubkey, isMultisigThresholdPubkey, isSecp256k1Pubkey, isEthSecp256k1Pubkey, isSinglePubkey, MultisigThresholdPubkey, Pubkey, pubkeyType, Secp256k1Pubkey, SinglePubkey, } from "./pubkeys";
+ export { extractKdfConfiguration, Secp256k1HdWallet, Secp256k1HdWalletOptions } from "./secp256k1hdwallet";
+ export { Secp256k1Wallet } from "./secp256k1wallet";
+ export { decodeSignature, encodeSecp256k1Signature, StdSignature } from "./signature";
+diff --git a/node_modules/@cosmjs/amino/build/index.js b/node_modules/@cosmjs/amino/build/index.js
+index e952a9d..8560aa1 100644
+--- a/node_modules/@cosmjs/amino/build/index.js
++++ b/node_modules/@cosmjs/amino/build/index.js
+@@ -1,6 +1,6 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.executeKdf = exports.makeStdTx = exports.isStdTx = exports.serializeSignDoc = exports.makeSignDoc = exports.encodeSecp256k1Signature = exports.decodeSignature = exports.Secp256k1Wallet = exports.Secp256k1HdWallet = exports.extractKdfConfiguration = exports.pubkeyType = exports.isSinglePubkey = exports.isSecp256k1Pubkey = exports.isMultisigThresholdPubkey = exports.isEd25519Pubkey = exports.makeCosmoshubPath = exports.omitDefault = exports.createMultisigThresholdPubkey = exports.encodeSecp256k1Pubkey = exports.encodeEd25519Pubkey = exports.encodeBech32Pubkey = exports.encodeAminoPubkey = exports.decodeBech32Pubkey = exports.decodeAminoPubkey = exports.parseCoins = exports.coins = exports.coin = exports.addCoins = exports.rawSecp256k1PubkeyToRawAddress = exports.rawEd25519PubkeyToRawAddress = exports.pubkeyToRawAddress = exports.pubkeyToAddress = void 0;
++exports.executeKdf = exports.makeStdTx = exports.isStdTx = exports.serializeSignDoc = exports.makeSignDoc = exports.encodeSecp256k1Signature = exports.decodeSignature = exports.Secp256k1Wallet = exports.Secp256k1HdWallet = exports.extractKdfConfiguration = exports.pubkeyType = exports.isSinglePubkey = exports.isSecp256k1Pubkey = exports.isMultisigThresholdPubkey = exports.isEd25519Pubkey = exports.makeCosmoshubPath = exports.omitDefault = exports.createMultisigThresholdPubkey = exports.encodeEthSecp256k1Pubkey = exports.encodeSecp256k1Pubkey = exports.encodeEd25519Pubkey = exports.encodeBech32Pubkey = exports.encodeAminoPubkey = exports.decodeBech32Pubkey = exports.decodeAminoPubkey = exports.parseCoins = exports.coins = exports.coin = exports.addCoins = exports.rawSecp256k1PubkeyToRawAddress = exports.rawEd25519PubkeyToRawAddress = exports.pubkeyToRawAddress = exports.pubkeyToAddress = void 0;
+ var addresses_1 = require("./addresses");
+ Object.defineProperty(exports, "pubkeyToAddress", { enumerable: true, get: function () { return addresses_1.pubkeyToAddress; } });
+ Object.defineProperty(exports, "pubkeyToRawAddress", { enumerable: true, get: function () { return addresses_1.pubkeyToRawAddress; } });
+@@ -18,6 +18,7 @@ Object.defineProperty(exports, "encodeAminoPubkey", { enumerable: true, get: fun
+ Object.defineProperty(exports, "encodeBech32Pubkey", { enumerable: true, get: function () { return encoding_1.encodeBech32Pubkey; } });
+ Object.defineProperty(exports, "encodeEd25519Pubkey", { enumerable: true, get: function () { return encoding_1.encodeEd25519Pubkey; } });
+ Object.defineProperty(exports, "encodeSecp256k1Pubkey", { enumerable: true, get: function () { return encoding_1.encodeSecp256k1Pubkey; } });
++Object.defineProperty(exports, "encodeEthSecp256k1Pubkey", { enumerable: true, get: function () { return encoding_1.encodeEthSecp256k1Pubkey; } });
+ var multisig_1 = require("./multisig");
+ Object.defineProperty(exports, "createMultisigThresholdPubkey", { enumerable: true, get: function () { return multisig_1.createMultisigThresholdPubkey; } });
+ var omitdefault_1 = require("./omitdefault");
+@@ -28,6 +29,7 @@ var pubkeys_1 = require("./pubkeys");
+ Object.defineProperty(exports, "isEd25519Pubkey", { enumerable: true, get: function () { return pubkeys_1.isEd25519Pubkey; } });
+ Object.defineProperty(exports, "isMultisigThresholdPubkey", { enumerable: true, get: function () { return pubkeys_1.isMultisigThresholdPubkey; } });
+ Object.defineProperty(exports, "isSecp256k1Pubkey", { enumerable: true, get: function () { return pubkeys_1.isSecp256k1Pubkey; } });
++Object.defineProperty(exports, "isEthSecp256k1Pubkey", { enumerable: true, get: function () { return pubkeys_1.isEthSecp256k1Pubkey; } });
+ Object.defineProperty(exports, "isSinglePubkey", { enumerable: true, get: function () { return pubkeys_1.isSinglePubkey; } });
+ Object.defineProperty(exports, "pubkeyType", { enumerable: true, get: function () { return pubkeys_1.pubkeyType; } });
+ var secp256k1hdwallet_1 = require("./secp256k1hdwallet");
+diff --git a/node_modules/@cosmjs/amino/build/pubkeys.d.ts b/node_modules/@cosmjs/amino/build/pubkeys.d.ts
+index 8fa8fa5..93ae680 100644
+--- a/node_modules/@cosmjs/amino/build/pubkeys.d.ts
++++ b/node_modules/@cosmjs/amino/build/pubkeys.d.ts
+@@ -12,9 +12,15 @@ export interface Secp256k1Pubkey extends SinglePubkey {
+     readonly value: string;
+ }
+ export declare function isSecp256k1Pubkey(pubkey: Pubkey): pubkey is Secp256k1Pubkey;
++export interface EthSecp256k1Pubkey extends SinglePubkey {
++    readonly type: "cysicmint/crypto/v1/ethsecp256k1/PubKey";
++    readonly value: string;
++}
++export declare function isEthSecp256k1Pubkey(pubkey: Pubkey): pubkey is EthSecp256k1Pubkey;
+ export declare const pubkeyType: {
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/ed25519/ed25519.go#L22 */
+     secp256k1: "tendermint/PubKeySecp256k1";
++    ethsecp256k1: "cysicmint/crypto/v1/ethsecp256k1/PubKey";
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/secp256k1/secp256k1.go#L23 */
+     ed25519: "tendermint/PubKeyEd25519";
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/sr25519/codec.go#L12 */
+diff --git a/node_modules/@cosmjs/amino/build/pubkeys.js b/node_modules/@cosmjs/amino/build/pubkeys.js
+index e9844ef..d05bcb7 100644
+--- a/node_modules/@cosmjs/amino/build/pubkeys.js
++++ b/node_modules/@cosmjs/amino/build/pubkeys.js
+@@ -9,14 +9,20 @@ function isSecp256k1Pubkey(pubkey) {
+     return pubkey.type === "tendermint/PubKeySecp256k1";
+ }
+ exports.isSecp256k1Pubkey = isSecp256k1Pubkey;
++function isEthSecp256k1Pubkey(pubkey) {
++    return pubkey.type === "cysicmint/crypto/v1/ethsecp256k1/PubKey";
++}
++exports.isEthSecp256k1Pubkey = isEthSecp256k1Pubkey;
+ exports.pubkeyType = {
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/ed25519/ed25519.go#L22 */
+     secp256k1: "tendermint/PubKeySecp256k1",
++    ethsecp256k1: "cysicmint/crypto/v1/ethsecp256k1/PubKey",
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/secp256k1/secp256k1.go#L23 */
+     ed25519: "tendermint/PubKeyEd25519",
+     /** @see https://github.com/tendermint/tendermint/blob/v0.33.0/crypto/sr25519/codec.go#L12 */
+     sr25519: "tendermint/PubKeySr25519",
+     multisigThreshold: "tendermint/PubKeyMultisigThreshold",
++    
+ };
+ function isSinglePubkey(pubkey) {
+     const singPubkeyTypes = [exports.pubkeyType.ed25519, exports.pubkeyType.secp256k1, exports.pubkeyType.sr25519];

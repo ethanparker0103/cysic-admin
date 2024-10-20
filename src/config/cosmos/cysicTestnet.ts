@@ -9,7 +9,7 @@ export const cysicTestnet = {
   "rest": "https://dev-api.prover.xyz",
   "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
   "bip44": {
-    "coinType": 118
+    "coinType": 60
   },
   "bech32Config": {
     "bech32PrefixAccAddr": "cysic",
@@ -52,5 +52,6 @@ export const cysicTestnet = {
     "coinDecimals": 18,
     "coinImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/uCGT.png"
   },
-  "features": []
+  "features": ["eth-address-gen"]
+  // "features": []
 }

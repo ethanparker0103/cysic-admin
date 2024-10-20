@@ -33,6 +33,7 @@
     "aws-sdk": "^2.1621.0",
     "axios": "^1.6.8",
     "bignumber.js": "^9.1.2",
+    "buffer": "^6.0.3",
     "copy-to-clipboard": "^3.3.3",
     "dayjs": "^1.11.10",
     "ethers": "v5",
@@ -83,6 +84,7 @@
     "postcss-plugin-px2rem": "^0.8.1",
     "postcss-pxtorem": "^6.1.0",
     "postinstall-postinstall": "^2.1.0",
+    "react-json-view": "^1.21.3",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"

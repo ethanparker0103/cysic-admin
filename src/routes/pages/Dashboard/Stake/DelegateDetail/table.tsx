@@ -7,6 +7,7 @@ import useCosmos from "@/models/_global/cosmos";
 import useDelegate from "@/models/_global/delegate";
 import { getImageUrl } from "@/utils/tools";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
+import { useEventListener } from "ahooks";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import { useTranslation } from "react-i18next";
@@ -47,6 +48,7 @@ const UserTable = () => {
     totalPage,
     currentPage,
     setCurrentPage,
+    run
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);
@@ -134,6 +136,11 @@ const UserTable = () => {
         return getKeyValue(item, columnKey);
     }
   };
+
+
+  useEventListener('refresh_veComputeList' as string, ()=>{
+    run()
+  })
   return (
     <>
       <style>

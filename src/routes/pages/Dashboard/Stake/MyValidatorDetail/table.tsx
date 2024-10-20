@@ -8,6 +8,7 @@ import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
 import { useEventListener } from "ahooks";
 import axios from "axios";
+import BigNumber from "bignumber.js";
 import { useTranslation } from "react-i18next";
 
 const mock = {
@@ -72,12 +73,24 @@ const UserTable = () => {
       ready: !!address,
       refreshDeps: [address],
       onSuccess(res) {
-        setState({ myValidators: res?.data?.list, stake_amount: res?.data?.stake_amount, un_stake_amount: res?.data?.un_stake_amount })
+        const list = res?.data?.list?.map(i=>{
+          return ({
+            ...i,
+            voting_power_hm: BigNumber(i?.voting_power).div(1e18).toString()
+          })
+        })
+
+        setState({ myValidators: list, total_apr: res?.data?.total_apr, stake_amount: res?.data?.stake_amount, un_stake_amount: res?.data?.un_stake_amount })
       }
     }
   );
 
-  const rows = taskList?.data?.list || [];
+  const rows = taskList?.data?.list?.map(i=>{
+    return ({
+      ...i,
+      voting_power_hm: BigNumber(i?.voting_power).div(1e18).toString()
+    })
+  }) || [];
 
   const columns = [
     {
@@ -89,7 +102,7 @@ const UserTable = () => {
       label: "My Stakes",
     },
     {
-      key: "voting_power",
+      key: "voting_power_hm",
       label: "Voting Power",
     },
     {
@@ -109,6 +122,9 @@ const UserTable = () => {
 
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
+      case 'voting_power':
+        return getKeyValue(item, columnKey)
+        // return BigNumber(getKeyValue(item, columnKey)).div(1e18).toString()
       case 'action':
         return <div className="flex items-center gap-2">
           <Button onClick={() => {

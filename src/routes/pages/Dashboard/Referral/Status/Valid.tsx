@@ -360,6 +360,7 @@ const Valid = () => {
                                     );
                                 })}
                                 {levelList?.slice(-1)?.map((i: any, index: any) => {
+                                    return <div className="whitespace-nowrap w-12 -translate-x-[2rem] text-sm text-[#A3A3A3] font-[500] text-right">-</div>
                                     return (
                                         <div
                                             key={index}

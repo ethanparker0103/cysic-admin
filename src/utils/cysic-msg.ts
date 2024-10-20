@@ -7,12 +7,12 @@ export interface IMsgExchangeToGovToken {
 
 export const MsgExchangeToGovToken = {
     typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToGovToken",
-    encode(message: IMsgExchangeToGovToken, writer: Writer = Writer.create()): Writer {
+    encode(message: any, writer: Writer = Writer.create()): Writer {
         writer.uint32(10).string(message.sender);
         writer.uint32(18).string(message.amount);
         return writer;
     },
-    decode(input: Uint8Array | Reader, length?: number): IMsgExchangeToGovToken {
+    decode(input: Uint8Array | Reader, length?: number) {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { sender: "", amount: "" } as IMsgExchangeToGovToken;
@@ -32,8 +32,8 @@ export const MsgExchangeToGovToken = {
         }
         return message;
     },
-    fromPartial(object: IMsgExchangeToGovToken): IMsgExchangeToGovToken {
-        const message = { sender: "", amount: "" } as IMsgExchangeToGovToken;
+    fromPartial(object: any) {
+        const message = { sender: "", amount: "" };
         message.sender = object.sender ?? "";
         message.amount = object.amount ?? "";
         return message;
@@ -47,7 +47,7 @@ export interface IMsgExchangeToPlatformToken {
 
 export const MsgExchangeToPlatformToken = {
     typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToPlatformToken",
-    encode(message: IMsgExchangeToPlatformToken, writer: Writer = Writer.create()): Writer {
+    encode(message: any, writer: Writer = Writer.create()): Writer {
         writer.uint32(10).string(message.sender);
         writer.uint32(18).string(message.amount);
         return writer;
