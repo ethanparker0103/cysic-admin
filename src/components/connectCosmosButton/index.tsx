@@ -33,6 +33,7 @@ export default function ConnectCosmosButton({ className, content }: any) {
         console.log(
           "Key store in Keplr is changed. You may need to refetch the account info."
         );
+        connectWallet()
       });
     }
   }, [isConnected]);

@@ -253,7 +253,7 @@ export const dashboardNavs_ = [
         link: "/dashboard/stake/cgt",
       },
       {
-        text: "Stake veCompute",
+        text: "Delegate veCompute",
         link: "/dashboard/stake/veCompute",
       },
     ]

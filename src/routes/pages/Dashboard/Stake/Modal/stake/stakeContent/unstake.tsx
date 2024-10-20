@@ -1,15 +1,17 @@
 import Button from "@/components/Button"
 import Input from "@/components/Input"
-import { cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
+import { blockTime, cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
+import { checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
 import { sleep } from "@/utils/tools"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
 import BigNumber from "bignumber.js"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 
 const Unstake = ({ item }: any) => {
     const { myValidators: items } = useValidator()
@@ -27,20 +29,23 @@ const Unstake = ({ item }: any) => {
     const maxAmount = current?.stake_amount || 0
 
     const handleUnstake = async (closeLoading?: any) => {
-        const params = {
-            delegatorAddress: address,
-            validatorAddress: current?.operator_address,
-            amount: {
-                denom: cysicStCoin, // 代币的denom
-                amount: BigNumber(unstakeAmount).multipliedBy(1e18).toString(), // 委托的数量
-            },
+        const msg = {
+            typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
+            value: MsgUndelegate.encode(MsgUndelegate.fromPartial({
+                delegatorAddress: address,
+                validatorAddress: current?.operator_address,
+                amount: {
+                    denom: "CGT", // 代币的denom
+                    amount: BigNumber(unstakeAmount).multipliedBy(1e18).toString(), // 委托的数量
+                },
+            })).finish(),
         };
 
-        // NOTE: local test 
-        // params.validatorAddress = 'cysicvaloper1zq390htmlluryyv29fn2fagy8a2lnayumemvfz'
         try {
-            const result = await connector?.undelegateTokens(params.delegatorAddress, params.validatorAddress, params.amount, cosmosFee)
-            toast.success(`Submit Success at ${result?.transactionHash}`)
+            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
+            await checkkTx(connector, result?.transactionHash)
+            setUnstakeAmount('')
+            setSlider('')
 
             // onClose?.()
         } catch (e: any) {
@@ -48,7 +53,7 @@ const Unstake = ({ item }: any) => {
             toast.error(e?.message || e?.msg || e);
 
         } finally {
-            await sleep(5000)
+            await sleep(blockTime.short)
             dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
             dispatchEvent(new CustomEvent('refresh_validatorList'))
             closeLoading?.()
@@ -104,7 +109,7 @@ const Unstake = ({ item }: any) => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Input suffix={<Button type="solid" className="min-h-fit h-fit py-1 rounded-full ">
+                    <Input suffix={<Button onClick={() => {setUnstakeAmount(maxAmount); setSlider(1)}} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
                     </Button>} className="!bg-[#000]" value={unstakeAmount} onChange={(v) => {
                         setUnstakeAmount(v)

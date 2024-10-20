@@ -21,7 +21,11 @@ import { useState } from "react";
 import { MsgExchangeToGovToken, MsgExchangeToPlatformToken } from "@/utils/cysic-msg";
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
-import { sleep } from "@/utils/tools";
+import { calculateTransactionFee, format, sleep } from "@/utils/tools";
+import { signAndBroadcastDirect } from "@/utils/cosmos";
+
+
+
 
 // async function checkModule() {
 //     const rpcEndpoint = "https://rpc.your-cosmos-chain.com"; // 替换为你的RPC端点
@@ -66,21 +70,18 @@ const ExchangeModal = () => {
         };
         const msg = {
             typeUrl: MsgExchangeToPlatformToken.typeUrl,
-            value: MsgExchangeToPlatformToken.fromPartial({
+            value: MsgExchangeToPlatformToken.encode(MsgExchangeToPlatformToken.fromPartial({
                 sender: address,
                 amount: amount.amount,
-            }),
+            })).finish(),
         };
 
-        const result = await client.signAndBroadcast(
-            address,
-            [msg],
-            cosmosFee,
-            `Exchange to platform token: ${msg.value.amount}`
-        );
+        const result = await signAndBroadcastDirect(address, msg, cosmosFee, client)
 
         toast.success(`Submit Success at ${result?.transactionHash}`)
     };
+
+    
 
     const exchangeToGovToken = async (client: any, address: string) => {
         if (
@@ -95,22 +96,16 @@ const ExchangeModal = () => {
             denom: "CYS",
             amount: BigNumber(fromAmount).multipliedBy(1e18).toString(),
         };
-        const msg = {
-            // typeUrl: MsgExchangeToGovToken.typeUrl,
+
+        const msg: any = {
             typeUrl: MsgExchangeToGovToken.typeUrl,
-            value: MsgExchangeToGovToken.fromPartial({
+            value: MsgExchangeToGovToken.encode(MsgExchangeToGovToken.fromPartial({
                 sender: address,
                 amount: amount.amount,
-            }),
+            })).finish(),
         };
 
-        console.log("msg, ", msg);
-        const result = await client.signAndBroadcast(
-            address,
-            [msg],
-            cosmosFee,
-            `Exchange to gov token: ${msg.value.amount}`
-        );
+        const result = await signAndBroadcastDirect(address, msg, cosmosFee, client)
 
         toast.success(`Submit Success at ${result?.transactionHash}`)
     };
@@ -194,7 +189,7 @@ const ExchangeModal = () => {
                                                     fill="currentColor"
                                                 />
                                             </svg>
-                                            <span onClick={()=>setFromAmount(balanceMap?.[fromToken]?.hm_amount)}>{balanceMap?.[fromToken]?.hm_amount || "-"}</span>
+                                            <span onClick={()=>setFromAmount(format(balanceMap?.[fromToken]?.hm_amount, 3))}>{format(balanceMap?.[fromToken]?.hm_amount, 3) || "-"}</span>
                                         </div>
                                     </div>
 
@@ -275,7 +270,7 @@ const ExchangeModal = () => {
                                                     fill="currentColor"
                                                 />
                                             </svg>
-                                            <span onClick={()=>setFromAmount(balanceMap?.[toToken]?.hm_amount)}>{balanceMap?.[toToken]?.hm_amount || "-"}</span>
+                                            <span onClick={()=>setFromAmount(format(balanceMap?.[toToken]?.hm_amount, 3))}>{format(balanceMap?.[toToken]?.hm_amount, 3) || "-"}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -344,7 +339,7 @@ const ExchangeModal = () => {
                                                 </defs>
                                             </svg>
 
-                                            <span>0.005{cysicBaseCoin}</span>
+                                            <span>{calculateTransactionFee()}{cysicBaseCoin}</span>
                                         </div>
                                     </div>
                                 </div>

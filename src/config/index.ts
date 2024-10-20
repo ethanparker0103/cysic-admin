@@ -66,7 +66,7 @@ export const supTokens: any = {
         name: cysicStCoin,
         icon: getImageUrl('@/assets/images/tokens/cysic-light.svg')
     }
-} 
+}
 
 
 export const cosmosFee = {
@@ -76,7 +76,13 @@ export const cosmosFee = {
             amount: "200000",
         },
     ],
-    gas: "200000",
+    gas: "2000000", // gas amount
 };
 
 export const keplrDownloadLink = 'https://chromewebstore.google.com/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap'
+
+export const blockTime = {
+    short: 5_000,
+    average: 10_000,
+    long: 15_000
+}

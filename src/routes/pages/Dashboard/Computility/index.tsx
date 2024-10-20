@@ -11,6 +11,26 @@ const Status = ({ className }: any) => <svg width="12" height="12" viewBox="0 0 
     <circle cx="6" cy="6" r="3" fill="currentColor" />
 </svg>
 
+const StatusWithText = ({ status }: { status: undefined | boolean }) => {
+    switch (status?.toString?.()) {
+        case 'true':
+            return <div className="flex items-center gap-1 text-[#11D473]">
+                <Status className="" />
+                <span>Prover Active</span>
+            </div>
+        case 'false':
+            return <div className="flex items-center gap-1 text-[#FF401A]">
+                <Status className="" />
+                <span>Prover Inactive</span>
+            </div>
+        default:
+            return <div className="flex items-center gap-1 text-[#A3A3A3]">
+            <Status className="" />
+            <span>-</span>
+        </div>
+    }
+}
+
 
 const Computility = () => {
     return (
@@ -30,7 +50,7 @@ const Computility = () => {
 
                                 </div>
 
-                                <div className="text-sm flex justify-end items-center gap-1 font-[400]"><span>Become a Scroll Prover</span> <IconArrowDown className="-rotate-90" /></div>
+                                <a href="/"><div className="text-sm flex justify-end items-center gap-1 font-[400]"><span>Become a Scroll Prover</span> <IconArrowDown className="-rotate-90" /></div></a>
                             </div>
 
                             <div className="text-sm font-[400] flex items-center gap-4 absolute top-0 right-0">
@@ -39,14 +59,11 @@ const Computility = () => {
                                     <span>已注册</span>
                                 </div>
 
-                                <div className="flex items-center gap-1 text-[#11D473]">
-                                    <Status className="" />
-                                    <span>Prover Active</span>
-                                </div>
+                                <StatusWithText status/>
                             </div>
                         </div>
                     </MainCard>
-                    
+
 
                     <MainCard >
                         <div className="relative h-full">
@@ -60,7 +77,7 @@ const Computility = () => {
 
                                 </div>
 
-                                <div className="text-sm flex justify-end items-center gap-1 font-[400]"><span>Become a Scroll Prover</span> <IconArrowDown className="-rotate-90" /></div>
+                                <a href="/"><div className="text-sm flex justify-end items-center gap-1 font-[400]"><span>Become a Aleo Prover</span> <IconArrowDown className="-rotate-90" /></div></a>
                             </div>
 
                             <div className="text-sm font-[400] flex items-center gap-4 absolute top-0 right-0">
@@ -69,10 +86,7 @@ const Computility = () => {
                                     <span>已注册</span>
                                 </div>
 
-                                <div className="flex items-center gap-1 text-[#FF401A]">
-                                    <Status className="" />
-                                    <span>Prover Inactive</span>
-                                </div>
+                                <StatusWithText status={false}/>
                             </div>
                         </div>
                     </MainCard>

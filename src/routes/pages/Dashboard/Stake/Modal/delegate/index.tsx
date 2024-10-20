@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { getImageUrl, sleep } from "@/utils/tools";
 import Input from "@/components/Input";
-import { commonPageSize, cosmosFee, cysicStCoin } from "@/config";
+import { blockTime, commonPageSize, cosmosFee, cysicStCoin } from "@/config";
 import BigNumber from "bignumber.js";
 import useDelegate from "@/models/_global/delegate";
 import { useEventListener } from "ahooks";
@@ -22,12 +22,11 @@ import useCosmos from "@/models/_global/cosmos";
 import useValidator from "@/models/_global/validator";
 import usePagnation from "@/hooks/usePagnation";
 import axios from "axios";
-import { useAccount } from "wagmi";
+import { checkkTx, cosmosToEthAddress, signAndBroadcastDirect } from "@/utils/cosmos";
 
 const DelegateModal = () => {
     const { setState, activeValidator } = useValidator()
     const { address, connector } = useCosmos()
-    const { address: evmAddress } = useAccount()
     const [delegate, setDelegate] = useState<any>();
     const [delegateAmount, setDelegateAmount] = useState<any>();
     const [slider, setSlider] = useState<any>();
@@ -41,7 +40,7 @@ const DelegateModal = () => {
     });
 
     const selections =
-        activeDelegate?.map((i) => {
+        activeDelegate?.map((i: { token: any; }) => {
             const v = i?.token;
             const imgUrl = `@/assets/images/tokens/${v}.svg`;
 
@@ -52,7 +51,7 @@ const DelegateModal = () => {
             };
         }) || [];
 
-    const current = activeDelegate?.find((i) => i?.token == delegate);
+    const current = activeDelegate?.find((i: { token: any; }) => i?.token == delegate);
     const maxAmount = current?.hm_amount || 0;
 
 
@@ -62,34 +61,32 @@ const DelegateModal = () => {
             const amount = {
                 denom: "CGT",
                 amount: BigNumber(delegateAmount).multipliedBy(1e18).toString(),
-            };
+            }
+            
+            const worker = cosmosToEthAddress(address)
+
             const msg = {
-                // typeUrl: MsgExchangeToGovToken.typeUrl,
                 typeUrl: MsgDelegate.typeUrl,
-                value: MsgDelegate.fromPartial({
-                    worker: evmAddress as string,
+                value: MsgDelegate.encode(MsgDelegate.fromPartial({
+                    worker: worker as string,
                     validator: currentValidator?.operator_address,
                     token: current?.token,
                     amount: amount.amount,
-                }),
+                })).finish(),
             };
 
-            console.log("msg, ", msg);
-            const result = await connector.signAndBroadcast(
-                address,
-                [msg],
-                cosmosFee,
-                `Delegate Vecompute: ${msg.value.amount}`
-            );
+            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
 
-            toast.success(`Submit Success at ${result?.transactionHash}`)
+            await checkkTx(connector, result?.transactionHash)
+            setDelegateAmount('')
 
         } catch (e: any) {
             console.log('error', e)
             toast.error(e?.message || e?.msg || e);
 
         } finally {
-            await sleep(5000)
+            await sleep(blockTime.short)
+            dispatchEvent(new CustomEvent('refresh_veComputeList'))
             dispatchEvent(new CustomEvent('refresh_cosmosBalance'))
             dispatchEvent(new CustomEvent('refresh_validatorList'))
             closeLoading?.()
@@ -101,15 +98,11 @@ const DelegateModal = () => {
 
 
     // validators
-    useEventListener('refresh_validatorList' as string, (e) => {
+    useEventListener('refresh_validatorList' as string, () => {
         run()
     })
 
     const {
-        data: taskList,
-        totalPage,
-        currentPage,
-        setCurrentPage,
         run
     } = usePagnation(
         (page: number) => {
@@ -124,14 +117,14 @@ const DelegateModal = () => {
         },
         {
             refreshDeps: [address],
-            onSuccess(res) {
+            onSuccess(res: { data: { list: any; }; }) {
                 setState({ activeValidator: res?.data?.list })
             }
         }
     );
 
     const [validator, setValidator] = useState<any>()
-    const currentValidator = activeValidator?.find(i => i?.operator_address == validator)
+    const currentValidator = activeValidator?.find((i: { operator_address: any; }) => i?.operator_address == validator)
 
     useEffect(() => {
         if (!validator) {
@@ -140,12 +133,10 @@ const DelegateModal = () => {
     }, [validator, activeValidator])
 
 
-    console.log('currentValidator', currentValidator)
-
     return (
         <Modal isOpen={visible} onOpenChange={setVisible}>
             <ModalContent>
-                {(onClose) => (
+                {() => (
                     <>
                         <ModalHeader />
                         <ModalBody>
@@ -164,7 +155,7 @@ const DelegateModal = () => {
                                                 trigger: '!bg-[#000] h-12 rounded-[6px]'
                                             }}
                                         >
-                                            {activeValidator?.map((i) => (
+                                            {activeValidator?.map((i: { operator_address: string | number; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }) => (
                                                 <SelectItem key={i?.operator_address}>
                                                     {i?.name}
                                                 </SelectItem>
@@ -189,7 +180,7 @@ const DelegateModal = () => {
                                                 );
                                             }}
                                         >
-                                            {selections?.map((i) => (
+                                            {selections?.map((i: { value: string | number; icon: string | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }) => (
                                                 <SelectItem key={i?.value}>
                                                     <div className="flex items-center gap-1">
                                                         <img src={i?.icon} />
@@ -244,7 +235,7 @@ const DelegateModal = () => {
                                                 }
                                                 className="!bg-[#000]"
                                                 value={delegateAmount}
-                                                onChange={(v) => {
+                                                onChange={(v: BigNumber.Value) => {
                                                     setDelegateAmount(v);
                                                     setSlider(BigNumber(v).div(maxAmount).toString());
                                                 }}
@@ -255,6 +246,7 @@ const DelegateModal = () => {
                                                 onChange={(v) => {
                                                     setSlider(v);
                                                     setDelegateAmount(
+                                                        // @ts-ignore
                                                         BigNumber(v).multipliedBy(maxAmount).toString()
                                                     );
                                                 }}

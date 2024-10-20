@@ -13,6 +13,8 @@ import {
     getWalletClient,
 } from "@wagmi/core";
 import axios from "axios";
+import { cosmosFee } from "@/config";
+import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
 
 dayjs.extend(UTC);
 
@@ -450,7 +452,7 @@ export const txAwait = async (hash: string | `0x${string}`, chain: any) => {
         return transaction;
     } catch (e) {
         console.log('txAwait error', e)
-        if(e instanceof TransactionNotFoundError){
+        if (e instanceof TransactionNotFoundError) {
             const res: any = await txAwait(hash, chain)
             return res
         }
@@ -534,7 +536,7 @@ export const uniqArr = (arr: any[]) => {
     return [...map.values()]
 }
 
-export const convertErc2Cosmos = async (addr: string)=>{
+export const convertErc2Cosmos = async (addr: string) => {
     return await axios.get('/api/v1/convertAddr', {
         params: {
             addr
@@ -543,15 +545,23 @@ export const convertErc2Cosmos = async (addr: string)=>{
 }
 
 
-export function generateQueryString(params: any) {  
-    const searchParams = new URLSearchParams();  
-    for (const [key, value] of Object.entries(params || {})) {  
+export function generateQueryString(params: any) {
+    const searchParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(params || {})) {
         searchParams.append(key, value as string); // 编码URI组件，以便处理特殊字符  
-    }  
+    }
     console.log('searchParams', searchParams)
-    return searchParams.toString();  
-}  
+    return searchParams.toString();
+}
 
 export function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function calculateTransactionFee() {
+    // 计算 gas 费用
+    const gasFee = BigNumber(cysicTestnet.feeCurrencies?.[0].gasPriceStep.average).multipliedBy(cosmosFee.gas);
+    const feeInCYS = gasFee.div(1e18);
+
+    return feeInCYS.toString()
 }
