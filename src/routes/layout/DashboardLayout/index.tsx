@@ -27,6 +27,8 @@ import SlippageModal from "@/routes/pages/Dashboard/My/components/assets/Modal/s
 import ExchangeModal from "@/routes/pages/Dashboard/My/components/assets/Modal/exchange";
 import BigNumber from "bignumber.js";
 import useRewardPoints from "@/models/_global/useRewardPoints";
+import CosmosTransferModal from "@/routes/components/modal/cosmosTransferModal";
+import useModalState from "@/hooks/useModalState";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -333,6 +335,7 @@ export default function App() {
     }
   );
 
+  const {dispatch} = useModalState('modal_cosmos_transfer_visible')
   return (
     <>
 
@@ -340,6 +343,7 @@ export default function App() {
       <BasicDoubleconfirmModal />
       <ExchangeModal />
       <SlippageModal />
+      <CosmosTransferModal />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
@@ -480,6 +484,11 @@ export default function App() {
             <BrowserView className="px-10 pt-4 pb-8 sticky top-0 right-0 left-0 w-full backdrop-blur bg-[#00000065] z-[1] flex items-center justify-between gap-1">
               <Search />
               <div className="flex items-center gap-1">
+                <div className="cursor-pointer gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]" onClick={()=>{
+                  dispatch({visible: true})
+                }}>
+                <svg stroke="#fff" fill="#fff" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M19.924 10.383a1 1 0 0 0-.217-1.09l-5-5-1.414 1.414L16.586 9H4v2h15a1 1 0 0 0 .924-.617zM4.076 13.617a1 1 0 0 0 .217 1.09l5 5 1.414-1.414L7.414 15H20v-2H5a.999.999 0 0 0-.924.617z"></path></svg>
+                </div>
                 <Link to={'/dashboard/faucet'}>
                 <div className="gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]">
                   <svg stroke="#fff" fill="#fff" strokeWidth="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M352,256H313.39c-15.71-13.44-35.46-23.07-57.39-28V180.44l-32-3.38-32,3.38V228c-21.93,5-41.68,14.6-57.39,28H16A16,16,0,0,0,0,272v96a16,16,0,0,0,16,16h92.79C129.38,421.73,173,448,224,448s94.62-26.27,115.21-64H352a32,32,0,0,1,32,32,32,32,0,0,0,32,32h64a32,32,0,0,0,32-32A160,160,0,0,0,352,256ZM81.59,159.91l142.41-15,142.41,15c9.42,1,17.59-6.81,17.59-16.8V112.89c0-10-8.17-17.8-17.59-16.81L256,107.74V80a16,16,0,0,0-16-16H208a16,16,0,0,0-16,16v27.74L81.59,96.08C72.17,95.09,64,102.9,64,112.89v30.22C64,153.1,72.17,160.91,81.59,159.91Z"></path></svg>

@@ -46,10 +46,18 @@ const CosmosTransferToken = () => {
         }
     }
 
-    return <div className="flex flex-col gap-4 border p-4">
-        <Input type="solid" prefix={<div className="mr-3 text-[#A3A3A3]">Recipient</div>} value={recipientAddress} onChange={setRecipientAddress} />
-        <Input type="solid" prefix={<div className="mr-3 text-[#A3A3A3]">Amount</div>} value={value} onChange={setValue} />
-        <Button needLoading onClick={handleTransfer}>Transfer</Button>
+    return <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1">
+            <div className="mr-3 text-[#A3A3A3]">Recipient</div>
+            <Input type="solid" value={recipientAddress} onChange={setRecipientAddress} />
+        </div>
+
+        <div className="flex flex-col gap-1">
+            <div className="mr-3 text-[#A3A3A3]">Amount</div>
+            <Input type="solid" value={value} onChange={setValue} />
+        </div>
+
+        <Button className="mt-6" needLoading onClick={handleTransfer}>Transfer</Button>
     </div>
 }
 
