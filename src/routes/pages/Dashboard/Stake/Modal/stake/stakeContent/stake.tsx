@@ -62,7 +62,7 @@ const Stake = ({ item }: any) => {
         }
     }
 
-    
+
     useEffect(() => {
         if (!validator) {
             if (item?.operator_address) {
@@ -74,7 +74,7 @@ const Stake = ({ item }: any) => {
         }
     }, [item?.operator_address, validator, items])
 
-    
+
 
     return <div className="flex flex-col gap-8">
 
@@ -113,9 +113,9 @@ const Stake = ({ item }: any) => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Input suffix={<Button onClick={() => {setStakeAmount(maxAmount); setSlider(1)}} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
+                    <Input suffix={<Button onClick={() => { setStakeAmount(maxAmount); setSlider(1) }} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
-                    </Button>} className="!bg-[#000]" value={stakeAmount} onChange={(v)=>{
+                    </Button>} className="!bg-[#000]" value={stakeAmount} onChange={(v) => {
                         setStakeAmount(v);
                         setSlider(BigNumber(v).div(maxAmount).toString())
                     }} type="solid" />
@@ -153,7 +153,7 @@ const Stake = ({ item }: any) => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Voting Power</span>
                     <div className="flex items-center gap-1">
-                        <span>{current?.voting_power || '-'}{cysicStCoin}</span>
+                        <span>{current?.voting_power || '-'}</span> <span className="text-[#A3A3A3]">{cysicStCoin}</span>   
                     </div>
                 </div>
 
