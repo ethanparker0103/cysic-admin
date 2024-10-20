@@ -123,7 +123,9 @@ const UserTable = () => {
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
       case 'voting_power':
-        return getKeyValue(item, columnKey) + cysicStCoin
+        return <div className="flex items-center gap-1">
+          <span>{getKeyValue(item, columnKey)}</span> <span className="text-[#A3A3A3]">{cysicStCoin}</span>
+        </div>
         // return BigNumber(getKeyValue(item, columnKey)).div(1e18).toString()
       case 'action':
         return <div className="flex items-center gap-2">
