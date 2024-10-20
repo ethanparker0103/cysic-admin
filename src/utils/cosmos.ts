@@ -124,7 +124,7 @@ export const checkkTx = async (client: any, txHash: string) => {
     if (result && result.code === 0) {
         toast.success(`Tx Success at ${result?.hash}`);
     } else {
-        toast.success(`Tx Failed at ${result?.hash}`)
+        toast.error(`Tx Failed at ${result?.hash}`)
     }
 
     return result
