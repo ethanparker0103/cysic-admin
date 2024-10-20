@@ -1,3 +1,4 @@
+import { Coin } from "@cosmjs/proto-signing";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export interface IMsgExchangeToGovToken {
