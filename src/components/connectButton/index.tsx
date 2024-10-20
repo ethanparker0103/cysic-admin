@@ -1,5 +1,5 @@
 import { getImageUrl, shortStr } from "@/utils/tools";
-import { useAccount, useConfig, useSwitchChain } from "wagmi";
+import { useConfig, useSwitchChain } from "wagmi";
 import Spinner from "../spinner";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -11,6 +11,7 @@ import Button from "@/components/Button";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
+import useAccount from "@/hooks/useAccount";
 
 export default function ConnectButton({className, content}: any) {
   const { t } = useTranslation();

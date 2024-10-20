@@ -4,7 +4,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useConnect, useSignMessage } from "wagmi";
 import axios from '@/service'
 // import queryString from 'qs'
 import { defaultChainId, mainUrl } from "@/config";
@@ -14,6 +14,7 @@ import { convertErc2Cosmos } from "@/utils/tools";
 import { useDebounce, useRequest } from "ahooks";
 import { useTranslation } from "react-i18next";
 import Upload from "@/components/Upload";
+import useAccount from "@/hooks/useAccount";
 
 const FormItem = ({ title, children }: any) => {
   return <div className="flex flex-col gap-3">

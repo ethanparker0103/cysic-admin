@@ -66,7 +66,6 @@ const tabs = [
 
 const Detail = () => {
   const { t } = useTranslation();
-  // const { address } = useAccount()
 
   const [activeTab, setActiveTab] = useState<any>(tabs?.[0]?.name);
   return (

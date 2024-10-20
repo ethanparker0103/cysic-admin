@@ -15,7 +15,7 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 const mock = {
   msg: "success",

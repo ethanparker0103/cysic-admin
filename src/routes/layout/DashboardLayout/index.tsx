@@ -18,7 +18,7 @@ import {
 } from "@nextui-org/navbar";
 import { useRequest } from "ahooks";
 import axios from "axios";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 import Search from "@/routes/components/Search";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import BasicDoubleconfirmModal from "@/components/BasicDoubleconfirmModal";
@@ -470,7 +470,7 @@ export default function App() {
               <Search />
               <div className="flex items-center gap-1">
                 {
-                  address ? (<Tooltip closeDelay={0} disableAnimation content={<div className="flex flex-col gap-2 text-sm">
+                  false && address ? (<Tooltip closeDelay={0} disableAnimation content={<div className="flex flex-col gap-2 text-sm">
                     <div className="text-[#A3A3A3]">My Points Desc</div>
 
                     <div className="flex flex-col gap-1 text-[#fff]">

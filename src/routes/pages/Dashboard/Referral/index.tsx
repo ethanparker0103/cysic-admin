@@ -1,3 +1,4 @@
+import useAccount from "@/hooks/useAccount";
 import { referralLevel } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
@@ -8,7 +9,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useAccount } from "wagmi";
 
 export const mock = false;
 const Referral = () => {

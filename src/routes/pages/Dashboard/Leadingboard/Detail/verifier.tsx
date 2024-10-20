@@ -8,7 +8,7 @@ import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
 import toast from "react-simple-toasts";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 const mock = {
   "msg": "success",

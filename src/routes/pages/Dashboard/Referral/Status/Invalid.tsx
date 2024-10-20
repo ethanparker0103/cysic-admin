@@ -12,7 +12,8 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import clsx from "clsx";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
+
 
 const Invalid = () => {
     const {
