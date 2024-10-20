@@ -153,7 +153,7 @@ const Stake = ({ item }: any) => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Voting Power</span>
                     <div className="flex items-center gap-1">
-                        <span>{current?.voting_power_hm || '-'}%</span>
+                        <span>{current?.voting_power || '-'}%</span>
                     </div>
                 </div>
 
