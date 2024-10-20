@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { commonPageSize } from "@/config";
+import { commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import useValidator from "@/models/_global/validator";
 import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
