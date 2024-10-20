@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { commonPageSize, cysicStCoin } from "@/config";
+import { blockTime, commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import useCosmos from "@/models/_global/cosmos";
 import useValidator from "@/models/_global/validator";
@@ -70,6 +70,7 @@ const UserTable = () => {
       });
     },
     {
+      pollingInterval: blockTime.long,
       ready: !!address,
       refreshDeps: [address],
       onSuccess(res) {
