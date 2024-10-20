@@ -5,7 +5,6 @@ import useCosmos from "@/models/_global/cosmos";
 import { checkkTx } from "@/utils/cosmos";
 import { useRequest } from "ahooks";
 import { useState } from "react";
-import ReactJson from "react-json-view";
 
 const Test = () => {
   const {
@@ -107,7 +106,6 @@ const Test = () => {
           <Input value={txValue} onChange={setTxValue}></Input>
           <Button onClick={checkTxRun}>Search</Button>
         </div>
-        <ReactJson src={checkTxData} />
       </div>
     </div>
   );
