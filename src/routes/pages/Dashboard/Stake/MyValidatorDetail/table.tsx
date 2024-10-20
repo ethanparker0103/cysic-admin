@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { commonPageSize } from "@/config";
+import { commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import useCosmos from "@/models/_global/cosmos";
 import useValidator from "@/models/_global/validator";
@@ -123,7 +123,7 @@ const UserTable = () => {
   const renderCell = (item: any, columnKey: any) => {
     switch (columnKey) {
       case 'voting_power':
-        return getKeyValue(item, columnKey)
+        return getKeyValue(item, columnKey) + cysicStCoin
         // return BigNumber(getKeyValue(item, columnKey)).div(1e18).toString()
       case 'action':
         return <div className="flex items-center gap-2">
