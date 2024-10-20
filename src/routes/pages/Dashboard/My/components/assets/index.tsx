@@ -7,7 +7,7 @@ import { format, getImageUrl } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 
 const Assets = () => {

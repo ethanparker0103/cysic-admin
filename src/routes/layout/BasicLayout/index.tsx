@@ -1,31 +1,16 @@
 import { getImageUrl } from "@/utils/tools";
-import { Suspense, useEffect, useState } from "react";
-import { Link, Outlet, useMatches, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { Suspense } from "react";
+import { Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
 import ConnectButton from "@/components/connectButton";
 import DoubleconfirmModal from "@/components/DoubleconfirmModal";
 import { BrowserView, isMobile, MobileView } from "react-device-detect";
-import { dashboardNavs } from "@/routes/layout/DashboardLayout";
-import { Navbar, NavbarContent, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NextUIProvider } from "@nextui-org/react";
-import { useTranslation } from "react-i18next";
+import { NextUIProvider } from "@nextui-org/react";
 import clsx from "clsx";
 
 export default function App() {
-    const { t } = useTranslation();
-    const matches = useMatches();
-    const navigate = useNavigate();
-    const lastPathname = JSON.parse(JSON.stringify(matches))?.reverse()?.[0]
-        ?.pathname;
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const { setState } = useStatic()
-    // const { address } = useAccount()
-
-    // useEffect(()=>{
-    //     setState(address)
-    // }, [address])
     return (
         <>
             <ToastContainer theme="dark" />

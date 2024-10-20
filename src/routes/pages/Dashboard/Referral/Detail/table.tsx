@@ -1,7 +1,7 @@
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
+import useAccount from "@/hooks/useAccount";
 import usePagnation from "@/hooks/usePagnation";
-import { activatedUserList } from "@/mock/referral";
 import { shortStr } from "@/utils/tools";
 import {
   Table,
@@ -14,7 +14,6 @@ import {
 } from "@nextui-org/react";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { useAccount } from "wagmi";
 
 const mock = {
   msg: "success",

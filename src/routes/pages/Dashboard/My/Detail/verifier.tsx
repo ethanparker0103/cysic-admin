@@ -9,7 +9,7 @@ import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import toast from "react-simple-toasts";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 
 const VerifierTable = () => {

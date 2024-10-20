@@ -1,17 +1,11 @@
-import MainCard from "@/components/MainCard";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import Assets from "@/routes/pages/Dashboard/My/components/assets";
 import Detail from "@/routes/pages/Dashboard/My/Detail";
 import AssetsDetail from "@/routes/pages/Dashboard/My/components/assets/Detail";
-import { Tab, Tabs } from "@nextui-org/react";
 
-import { useRequest } from "ahooks";
-import axios from "axios";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import { useState } from "react";
 import { isMobile } from "react-device-detect";
-import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 
 const removeNegativeZero = (str: string) => {

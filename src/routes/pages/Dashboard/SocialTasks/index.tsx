@@ -11,7 +11,7 @@ import clsx from "clsx";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { toast } from "react-toastify";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 const TaskItem = ({ taskTypeId, finishedTaskIDs, row }: any) => {
     const { address } = useAccount()
