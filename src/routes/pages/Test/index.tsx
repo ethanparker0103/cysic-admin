@@ -90,7 +90,9 @@ const Test = () => {
         </div>
 
       </div>
+      <div className="p-6 border">
       <CosmosTransferToken />
+      </div>
     </div>
   );
 };
