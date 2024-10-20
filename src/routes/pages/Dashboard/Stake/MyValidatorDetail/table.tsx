@@ -102,7 +102,7 @@ const UserTable = () => {
       label: "My Stakes",
     },
     {
-      key: "voting_power_hm",
+      key: "voting_power",
       label: "Voting Power",
     },
     {
