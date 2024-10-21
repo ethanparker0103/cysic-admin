@@ -136,7 +136,7 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
         throw new Error("Keplr is not installed");
     }
 
-    const chainId = "cysicmint_9001-1"; // 替换为实际的 chainId
+    const chainId = cysicTestnet.chainId; // 替换为实际的 chainId
 
     // 启用 Keplr 与链的交互
     await window?.keplr.enable(chainId);
