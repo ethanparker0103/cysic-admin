@@ -1,5 +1,5 @@
 export const cysicTestnet = {
-  "chainId": "cysicmint_9000-1",
+  "chainId": "cysicmint_9001-1",
   "chainName": "Cysic Network Testnet",  
   "chainSymbolImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/chain.png",
   // NOTE: local test connects to node 1
