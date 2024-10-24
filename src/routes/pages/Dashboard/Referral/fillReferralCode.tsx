@@ -96,8 +96,12 @@ const FillReferralCode = () => {
                     ENTER YOUR <span className="text-gradient">INVITE CODE</span> TO JOIN
                 </div>
                 <div className="flex flex-col gap-8 items-center text-base w-fit mx-auto">
-                    {address ? <DigitInputs n={5} value={value} onValueChange={handleValueChange} /> : <ConnectButton />}
-
+                    <DigitInputs n={5} value={value} onValueChange={handleValueChange} />
+                    {
+                        address ? null : <ConnectButton />
+                    }
+                    {/* {address ? <DigitInputs n={5} value={value} onValueChange={handleValueChange} /> : <ConnectButton />} */}
+                    
                     <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
                         <div className="text-sm flex items-center gap-2 w-full">
                             <div className="h-px bg-[#FFFFFF1F] w-full"/>
