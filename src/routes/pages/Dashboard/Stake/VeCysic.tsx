@@ -17,6 +17,7 @@ import { GasPrice, QueryClient, setupDistributionExtension } from "@cosmjs/starg
 import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 import { useRequest } from "ahooks";
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
+import { useEffect } from "react";
 
 const sliceFormat = (value: string, decimal: number = 18) => {
   if (value.length <= decimal) return value
@@ -77,6 +78,10 @@ const VeCysic = () => {
       console.log("error", e);
     },
   });
+
+  useEffect(()=>{
+    console.log('totalRewards refresh', totalRewards)
+  }, [totalRewards])
 
   // withdrawRewards
   const handleClaim = async (closeLoading?: any) => {
