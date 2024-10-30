@@ -1,6 +1,7 @@
 import ConnectButton from "@/components/connectButton";
 import DigitInputs from "@/components/DigitInputs";
 import useAccount from "@/hooks/useAccount";
+import useAuth from "@/models/_global/auth";
 import { getImageUrl } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
@@ -58,6 +59,7 @@ const investors = [
 ]
 
 const FillReferralCode = () => {
+    const { authMap } = useAuth()
     const navigate = useNavigate()
     const { address: rawAddress }= useWagmiAccount()
     const { address } = useAccount()
@@ -65,6 +67,7 @@ const FillReferralCode = () => {
     const [tempParams, setTempParams] = useState<any>()
     const codeFromUrl = searchParams.get('code')
     const [value, setValue] = useState<string>('')
+    const auth = authMap?.[rawAddress as string]?.auth
 
     const handleValueChange = (v: any) => {
         setValue(v)
@@ -80,8 +83,8 @@ const FillReferralCode = () => {
 
     // 10.6 绑定邀请码
     useRequest(() => axios.put(`/api/v1/referral/bind/${value}/${rawAddress}`), {
-        ready: !!value && value?.length == 5 && !!rawAddress,
-        refreshDeps: [value, rawAddress],
+        ready: !!value && value?.length == 5 && !!auth,
+        refreshDeps: [value, auth],
         debounceWait: 300,
         onSuccess(e){
             toast.success('Bind SuccessFully')

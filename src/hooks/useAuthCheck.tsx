@@ -3,7 +3,7 @@ import useAuth from "@/models/_global/auth";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAccount } from "wagmi";
+import { useAccount, useAccountEffect } from "wagmi";
 
 const whiteList = ['about', 'faq', 'aleopool', 'register']?.map(i => [i, '/' + i]).flat(Infinity)
 
@@ -14,8 +14,14 @@ const useAuthCheck = () => {
     // const setFrom = v => from.current = v
     const { pathname } = useLocation()
     const navigate = useNavigate();
-    const { authMap, currentAddr, setState, createAddress, updateAddress } = useAuth();
+    const { reset, authMap, setState, createAddress, updateAddress } = useAuth();
     const { address } = useAccount()
+    useAccountEffect({
+        onDisconnect(){
+            dispatchEvent(new CustomEvent('modal_new_to_visible', {detail: {visible: false}}))
+            reset()
+        }
+    })
 
     const auth = authMap?.[address || '']?.auth
     const valid = authMap?.[address || '']?.valid

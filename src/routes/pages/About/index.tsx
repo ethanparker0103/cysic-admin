@@ -1,6 +1,5 @@
 import Button from "@/components/Button"
 import { getReferralUrl, twitterLink } from "@/config";
-import useModalState from "@/hooks/useModalState";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import { getImageUrl } from "@/utils/tools"
 import clsx from "clsx"
@@ -14,7 +13,6 @@ const Card = ({ className, children }: any) => {
 
 const About = () => {
     const navigate = useNavigate()
-    const { dispatch } = useModalState({ eventName: 'modal_new_to_visible' })
 
     return <>
         <MainContainer className="gap-8" title={<div className="uppercase">Start <span className="text-gradient">earning</span> in 3 steps</div>}>

@@ -18,9 +18,9 @@ const useMetadata = () => {
 
 
     const handleSearch = async () => {
-        if (!address) return;
+        if (!auth) return;
         
-        const res: any = await Promise.allSettled([axios.get(`/api/v1/dashboard/queryByReward/${address}`), axios.post   (`/api/v1/referral/${address}/genCode`)])  
+        const res: any = await Promise.allSettled([axios.get(`/api/v1/dashboard/queryByReward/${address}`), axios.post(`/api/v1/referral/${address}/genCode`)])  
         const queryData = res?.[0]?.value?.data
         const bindCodeData = res?.[1]?.value?.data
         setReferralState({code: bindCodeData?.code})
@@ -62,8 +62,8 @@ const useMetadata = () => {
 
     const { runAsync } = useRequest(handleSearch, {
         manual: true,
-        ready: !!address,
-        refreshDeps: [address],
+        // ready: !!address,
+        // refreshDeps: [address],
         onError(e: any){
             if(e?.code){
                 dispatchEvent(new CustomEvent('modal_new_to_visible', {
