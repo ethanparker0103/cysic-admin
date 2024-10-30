@@ -129,9 +129,9 @@ const VerifierTable = () => {
         const ids = getKeyValue(item, columnKey)?.split(",");
         return (
           <div className="flex items-center gap-2">
-            {ids?.map((i, index) => (
+            {ids?.map((i: any, index: number) => (
               <div className="flex items-center gap-1" key={index}>
-                <Link to={`/dashboard/provider/${i}`}>
+                <Link to={`/dashboard/prover/${i}`}>
                   <span className="underline">
                     {shortStr(addrs[index], 12)}
                   </span>
@@ -199,7 +199,7 @@ const VerifierTable = () => {
           )}
         </TableHeader>
         <TableBody items={rows}>
-          {(item) => (
+          {(item: any) => (
             <TableRow key={item?.ID}>
               {(columnKey) => (
                 <TableCell>{renderCell(item, columnKey)}</TableCell>

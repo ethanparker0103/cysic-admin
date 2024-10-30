@@ -4,7 +4,7 @@ import { blockTime, cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
-import { checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
+import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
 import { sleep } from "@/utils/tools"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
 import BigNumber from "bignumber.js"
@@ -29,19 +29,20 @@ const Unstake = ({ item }: any) => {
     const maxAmount = current?.stake_amount || 0
 
     const handleUnstake = async (closeLoading?: any) => {
-        const msg = {
-            typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
-            value: MsgUndelegate.encode(MsgUndelegate.fromPartial({
-                delegatorAddress: address,
-                validatorAddress: current?.operator_address,
-                amount: {
-                    denom: "CGT", // 代币的denom
-                    amount: BigNumber(unstakeAmount).multipliedBy(1e18).toString(), // 委托的数量
-                },
-            })).finish(),
-        };
-
         try {
+            checkKeplrWallet()
+            const msg = {
+                typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
+                value: MsgUndelegate.encode(MsgUndelegate.fromPartial({
+                    delegatorAddress: address,
+                    validatorAddress: current?.operator_address,
+                    amount: {
+                        denom: "CGT", // 代币的denom
+                        amount: BigNumber(unstakeAmount).multipliedBy(1e18).toString(), // 委托的数量
+                    },
+                })).finish(),
+            };
+
             const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
             await checkkTx(connector, result?.transactionHash)
             setUnstakeAmount('')
@@ -109,7 +110,7 @@ const Unstake = ({ item }: any) => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Input suffix={<Button onClick={() => {setUnstakeAmount(maxAmount); setSlider(1)}} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
+                    <Input suffix={<Button onClick={() => { setUnstakeAmount(maxAmount); setSlider(1) }} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
                     </Button>} className="!bg-[#000]" value={unstakeAmount} onChange={(v) => {
                         setUnstakeAmount(v)

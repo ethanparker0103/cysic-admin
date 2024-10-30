@@ -56,10 +56,8 @@ const BasicDoubleconfirmModal = () => {
                 </ModalBody>
                 <ModalFooter>
                     <Button
+                        type="gradient"
                         className="w-full"
-                        style={{
-                            background: 'linear-gradient(83.04deg, #8624D3 5.44%, #54F2FF 54.92%)'
-                        }}
                         needLoading onClick={(close: any) => callback?.current?.(close)}>{t(btnText || 'Confirm')}</Button>
                 </ModalFooter>
             </ModalContent>

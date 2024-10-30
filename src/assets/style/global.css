@@ -79,7 +79,11 @@ body {
 }
 
 .gradient-bg{
-    background: linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+    background: linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+}
+
+.gradient-sub-bg{
+    background: linear-gradient(83.04deg, rgba(157, 71, 255, 0.2) 5.44%, rgba(0, 240, 255, 0.2) 54.92%);
 }
 
 .gradient-border {
@@ -87,7 +91,7 @@ body {
     border: 1px solid transparent;
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
-    background-image: linear-gradient(to right, #000, #000), linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+    background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
 }
 
 .gradient-sub-border {
@@ -95,5 +99,5 @@ body {
     border: 1px solid transparent;
     background-clip: padding-box, border-box;
     background-origin: padding-box, border-box;
-    background-image: linear-gradient(to right, #10141a, #10141a), linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
+    background-image: linear-gradient(to right, #10141a, #10141a), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
 }

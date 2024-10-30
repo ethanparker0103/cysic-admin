@@ -1,126 +1,126 @@
+import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
+import useModalState from "@/hooks/useModalState";
 import { referralLevel } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
+import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
-import Invalid from "@/routes/pages/Dashboard/Referral/Status/Invalid";
 import Valid from "@/routes/pages/Dashboard/Referral/Status/Valid";
 import { useRequest } from "ahooks";
 import axios from "axios";
+import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
 
 export const mock = false;
 const Referral = () => {
-    const [forceSubmit, setForceSubmit] = useState(false)
-    const [searchParams] = useSearchParams()
-    const codeFromUrl = searchParams.get('code')
+    const [searchParams] = useSearchParams();
+    const codeFromUrl = searchParams.get("code");
 
     useEffect(() => {
         if (codeFromUrl) {
-            setBindCode(codeFromUrl)
+            setBindCode(codeFromUrl);
         }
-    }, [codeFromUrl])
+    }, [codeFromUrl]);
 
-    const { address } = useAccount()
+    const { address } = useAccount();
 
-    const { setState, discordBinded, twitterBinded, twitterAuthConfig, discordAuthConfig } = useReferral()
-
+    const {
+        setState,
+        discordBinded,
+        twitterBinded,
+        twitterAuthConfig,
+        discordAuthConfig,
+    } = useReferral();
 
     const allVerifiedNeeded = [
         {
             needOauth: twitterAuthConfig?.needOauth,
-            type: 'twitter',
+            type: "twitter",
             status: twitterBinded,
         },
         {
             needOauth: discordAuthConfig?.needOauth,
-            type: 'discord',
-            status: discordBinded
-        }
-    ].filter(i=>i.needOauth)
+            type: "discord",
+            status: discordBinded,
+        },
+    ].filter((i) => i.needOauth);
 
-    const remainToBeChecked = allVerifiedNeeded.filter(i=>!i.status)
+    const remainToBeChecked = allVerifiedNeeded.filter((i) => !i.status);
 
-
-    const valid = twitterAuthConfig != undefined && discordAuthConfig != undefined && address && remainToBeChecked?.length == 0
-
+    const valid =
+        twitterAuthConfig != undefined &&
+        discordAuthConfig != undefined &&
+        address &&
+        remainToBeChecked?.length == 0;
 
     // 10.1 获取等级列表
     useRequest(() => axios.get(`/api/v1/referral/level`), {
         onSuccess(e) {
-            const data = e?.data?.list
-            let termRequire = 0
+            const data = e?.data?.list;
+            let termRequire = 0;
 
-            for(let i = 0; i < e?.data?.list?.length; i++){
-                termRequire += (+data?.[i]?.Require || 0)
-                data[i].termRequire = termRequire
+            for (let i = 0; i < e?.data?.list?.length; i++) {
+                termRequire += +data?.[i]?.Require || 0;
+                data[i].termRequire = termRequire;
             }
 
             setState({
                 levelList: data,
-                levelListMap: data?.reduce((prev: any,next: any)=>{ 
-                    if(!prev?.[next?.Level]){
-                        prev[next?.Level] = {}
+                levelListMap: data?.reduce((prev: any, next: any) => {
+                    if (!prev?.[next?.Level]) {
+                        prev[next?.Level] = {};
                     }
 
-                    prev[next?.Level] = next
-                    return prev
-                 }, {})
-            })
+                    prev[next?.Level] = next;
+                    return prev;
+                }, {}),
+            });
         },
-        onFinally(){
-            if(!mock) return;
-            const data: any = referralLevel?.data?.list
-            let termRequire = 0
+        onFinally() {
+            if (!mock) return;
+            const data: any = referralLevel?.data?.list;
+            let termRequire = 0;
 
-            for(let i = 0; i < referralLevel?.data?.list?.length; i++){
-                termRequire += (+data?.[i]?.Require || 0)
-                data[i].termRequire = termRequire
+            for (let i = 0; i < referralLevel?.data?.list?.length; i++) {
+                termRequire += +data?.[i]?.Require || 0;
+                data[i].termRequire = termRequire;
             }
 
-            setState({                
+            setState({
                 levelList: data,
-                levelListMap: data?.reduce((prev: any,next: any)=>{
-                    if(!prev?.[next?.Level]){
-                        prev[next?.Level] = {}
+                levelListMap: data?.reduce((prev: any, next: any) => {
+                    if (!prev?.[next?.Level]) {
+                        prev[next?.Level] = {};
                     }
 
-                    prev[next?.Level] = next
-                    return prev
-                }, {})
-            })
-        }
-    })
-    const [bindCode, setBindCode] = useState<string>()
+                    prev[next?.Level] = next;
+                    return prev;
+                }, {}),
+            });
+        },
+    });
+    const [bindCode, setBindCode] = useState<string>();
 
-    const handleBindCode = async (closeLoading?: any) => {
-        try {
-            if (!address) throw 'Invalid Address'
-            const res: any = await axios.put(`/api/v1/socialTask/referral/bind/${bindCode}/${address}`)
-
-            if (!res?.data?.bind) {
-                toast.error('Failed')
-                return
-            }
-
-            toast.success('Success')
-            run?.()
-
-        } catch (e: any) {
-            toast.error(e?.msg || e?.message || e?.toString())
-        } finally {
-            closeLoading?.()
-        }
-    }
+    const { dispatch } = useModalState({eventName: "modal_how_invite_work_visible"});
     return (
-        <MainContainer title="Invite">
-            <>
-                {
-                    valid ? <Valid /> : <Invalid />
+        <>
+            <MainContainer
+                title={
+                    <div className="flex items-center gap-2">
+                        <div>Invite</div>
+                        <Button onClick={()=>dispatch({visible: true})} className="text-[#fff] p-0 rounded-full h-fit min-h-fit" type="solidGradient">
+                            <div className="flex items-center gap-1 gradient-sub-bg text-xs px-2 py-1">
+                                How invite work <ArrowUpRight size={12} />
+                            </div>
+                        </Button>
+                    </div>
                 }
-            </>
-        </MainContainer>
+            >
+                <Valid />
+            </MainContainer>
+            <HowInviteWorkModal />
+        </>
     );
 };
 

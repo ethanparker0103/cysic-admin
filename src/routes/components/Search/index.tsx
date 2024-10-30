@@ -5,9 +5,7 @@ import { getImageUrl } from "@/utils/tools";
 import { Input } from "@nextui-org/input";
 import { useDebounce, useDebounceEffect } from "ahooks";
 import axios from "axios";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import toast, { toastConfig } from 'react-simple-toasts';
 import 'react-simple-toasts/dist/theme/dark.css';
@@ -197,9 +195,9 @@ const Search = () => {
 
                             <div className="text-xs text-[#fff]">Prover</div>
                             <div>{searchInfo?.provider?.length ? (<div>
-                                {searchInfo?.provider?.map((i, index) => {
+                                {searchInfo?.provider?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {
-                                        navigate(`/dashboard/provider/${i?.ID}`)
+                                        navigate(`/dashboard/prover/${i?.ID}`)
                                         setAddr('')
                                     }}>
                                         <div className="flex items-center gap-2" >
@@ -223,7 +221,7 @@ const Search = () => {
                         <div className="flex flex-col gap-3">
                             <div className="text-xs text-[#fff]">Verifier</div>
                             <div>{searchInfo?.verifier?.length ? (<div>
-                                {searchInfo?.verifier?.map((i, index) => {
+                                {searchInfo?.verifier?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {
                                         navigate(`/dashboard/verifier/${i?.ID}`)
                                         setAddr('')

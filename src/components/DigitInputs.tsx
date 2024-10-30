@@ -1,7 +1,7 @@
-const base ='bg-[transparent] border border-[#00F0FF] text-[#00F0FF] rounded-[16px] w-[80px] h-[110px] text-[32px] font-bold text-center'
+const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] w-[80px] h-[110px] text-[32px] font-bold text-center'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-function ensureArrayLength(value, n) {
+function ensureArrayLength(value: any, n: any) {
     const splitArray = value.split('');
     // 如果数组长度小于n，用空字符串填充数组直到长度为n
     while (splitArray.length < n) {
@@ -57,7 +57,7 @@ function DigitInputs({ n, value, onValueChange }: any) {
   
     return (
       <div className='flex items-center gap-4'>
-        {digits.map((digit, index) => (
+        {digits.map((digit: any, index: number) => (
           <input
             className={base}
             key={index}

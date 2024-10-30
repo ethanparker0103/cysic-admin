@@ -24,14 +24,19 @@
 
 @layer components {
     .bg-gradient {
-      @apply bg-gradient-to-r from-[#9D47FF] to-[#00F0FF];
+      @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF];
     }
     .text-gradient{
-      @apply bg-gradient bg-clip-text	text-[transparent];
+      @apply bg-gradient bg-clip-text	text-[transparent] w-fit;
     }
     .border-gradient{
-      background-image: linear-gradient(to right, #000, #000), linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%);
-      @apply bg-gradient bg-clip-padding bg-origin-padding overflow-hidden border border-[transparent];
+      /* background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%); */
+      /* @apply bg-gradient bg-clip-padding bg-origin-padding overflow-hidden border border-[transparent]; */
+      overflow: hidden;
+      border: 1px solid transparent;
+      background-clip: padding-box, border-box;
+      background-origin: padding-box, border-box;
+      background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
     }
 
     .bg-sub-gradient{

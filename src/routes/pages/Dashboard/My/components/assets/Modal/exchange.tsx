@@ -22,7 +22,7 @@ import { MsgExchangeToGovToken, MsgExchangeToPlatformToken } from "@/utils/cysic
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import { calculateTransactionFee, format, sleep } from "@/utils/tools";
-import { signAndBroadcastDirect } from "@/utils/cosmos";
+import { checkKeplrWallet, signAndBroadcastDirect } from "@/utils/cosmos";
 
 
 
@@ -112,6 +112,7 @@ const ExchangeModal = () => {
 
     const handleExchange = async (closeLoading?: any) => {
         try {
+            checkKeplrWallet()
             if (fromToken == cysicBaseCoin) {
                 await exchangeToGovToken(connector, address);
             } else {

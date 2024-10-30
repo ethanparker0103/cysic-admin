@@ -90,7 +90,7 @@ const Hero = (props?: any) => (
   </svg>
 );
 
-const getKey = (key, t) => {
+const getKey = (key: any, t: any) => {
   switch (key) {
     case "project_num":
       return "Project";
@@ -98,8 +98,6 @@ const getKey = (key, t) => {
       return "Prover";
     case "verifier_num":
       return "Verifier";
-    case "project_num":
-      return "Project";
     case "total_task":
       return "taskCount";
     case "running_task":

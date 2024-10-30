@@ -86,7 +86,7 @@ const ComputilityTable = ({ classNames }: any) => {
                 return t(providerStatus[item?.status?.toString()])
             case "action":
                 return (
-                    <Link to={'/dashboard/provider/' + item?.ID?.toString()} className="flex items-center gap-1">
+                    <Link to={'/dashboard/prover/' + item?.ID?.toString()} className="flex items-center gap-1">
                         <span className="text-[#21E9FA]">{t('detail')}</span>
                         <Image className="size-3" src={getImageUrl('@/assets/images/dashboard/share.svg')} />
                     </Link>
@@ -108,7 +108,7 @@ const ComputilityTable = ({ classNames }: any) => {
                     )}
                 </TableHeader>
                 <TableBody items={rows}>
-                    {(item) => (
+                    {(item: any) => (
                         <TableRow key={item?.ID}>
                             {(columnKey) => (
                                 <TableCell>{renderCell(item, columnKey)}</TableCell>

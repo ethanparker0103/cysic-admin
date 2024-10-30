@@ -4,7 +4,7 @@ import { blockTime, cosmosFee, cysicBaseCoin, cysicStCoin } from "@/config"
 import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
-import { checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
+import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
 import { sleep } from "@/utils/tools"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
 import BigNumber from "bignumber.js"
@@ -31,19 +31,20 @@ const Stake = ({ item }: any) => {
     }
 
     const handleStake = async (closeLoading?: any) => {
-        const msg = {
-            typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",
-            value: MsgDelegate.encode(MsgDelegate.fromPartial({
-                delegatorAddress: address,
-                validatorAddress: current?.operator_address,
-                amount: {
-                    denom: "CGT", // 代币的denom
-                    amount: BigNumber(stakeAmount).multipliedBy(1e18).toString(), // 委托的数量
-                },
-            })).finish(),
-        };
-
         try {
+            checkKeplrWallet()
+            const msg = {
+                typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",
+                value: MsgDelegate.encode(MsgDelegate.fromPartial({
+                    delegatorAddress: address,
+                    validatorAddress: current?.operator_address,
+                    amount: {
+                        denom: "CGT", // 代币的denom
+                        amount: BigNumber(stakeAmount).multipliedBy(1e18).toString(), // 委托的数量
+                    },
+                })).finish(),
+            };
+
             const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
             await checkkTx(connector, result?.transactionHash)
             setStakeAmount('')
@@ -153,7 +154,7 @@ const Stake = ({ item }: any) => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Voting Power</span>
                     <div className="flex items-center gap-1">
-                        <span>{current?.voting_power || '-'}</span> <span className="text-[#A3A3A3]">{cysicStCoin}</span>   
+                        <span>{current?.voting_power || '-'}</span> <span className="text-[#A3A3A3]">{cysicStCoin}</span>
                     </div>
                 </div>
 

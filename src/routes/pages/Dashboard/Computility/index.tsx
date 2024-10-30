@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { isMobile } from "react-device-detect";
 
 const Status = ({ className }: any) => <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" {...className}>
-    <circle cx="6" cy="6" r="6" fill="currentColor" fill-opacity="0.2" />
+    <circle cx="6" cy="6" r="6" fill="currentColor" fillOpacity="0.2" />
     <circle cx="6" cy="6" r="3" fill="currentColor" />
 </svg>
 
@@ -36,7 +36,7 @@ const Computility = () => {
     return (
         <MainContainer title="Prover">
             <>
-                <div className="flex gap-4">
+                {/* <div className="flex gap-4">
 
                     <MainCard >
                         <div className="relative h-full">
@@ -90,7 +90,7 @@ const Computility = () => {
                             </div>
                         </div>
                     </MainCard>
-                </div>
+                </div> */}
                 <div className={clsx(isMobile ? "" : "p-4", "shadow-[0px_4px_0px_0px_#000000] border-[#000] border rounded-[14px]")}>
                     <ComputilityTable />
                 </div>

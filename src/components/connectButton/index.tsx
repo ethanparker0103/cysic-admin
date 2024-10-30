@@ -1,5 +1,5 @@
 import { getImageUrl, shortStr } from "@/utils/tools";
-import { useConfig, useSwitchChain } from "wagmi";
+import { useAccount, useConfig, useSwitchChain } from "wagmi";
 import Spinner from "../spinner";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -11,7 +11,7 @@ import Button from "@/components/Button";
 import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
-import useAccount from "@/hooks/useAccount";
+// import useAccount from "@/hooks/useAccount";
 
 export default function ConnectButton({className, content}: any) {
   const { t } = useTranslation();
@@ -120,7 +120,7 @@ export default function ConnectButton({className, content}: any) {
           style={{
             wordBreak: 'break-word'
           }}
-          className={clsx("w-fit break-words rounded-[6px] bg-[#FFFFFF1F] cursor-pointer flex flex-row items-center gap-3 flex", isMobile ? "px-2 h-8" : "px-3 py-1 h-10")}
+          className={clsx("w-fit break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex", isMobile ? "px-2 h-8" : "px-3 py-1 h-10")}
         >
           <img
             className="size-5"
@@ -139,10 +139,7 @@ export default function ConnectButton({className, content}: any) {
   return (
     <Button
       onClick={handleOpen}
-      type="normal"
-      style={{
-        background: 'linear-gradient(83.04deg, #8624D3 5.44%, #54F2FF 54.92%)'
-      }}
+      type="gradient"
       className={clsx("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] ", isMobile ? "!min-h-8 !h-8 !px-2" : "px-4 !min-h-10 !h-10 py-[0.625rem]", className)}
     >
       {isConnecting ? <Spinner className="stroke-[#000] " /> : null}

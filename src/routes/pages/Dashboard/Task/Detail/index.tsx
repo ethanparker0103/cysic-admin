@@ -192,7 +192,7 @@ const TaskDetail = () => {
       case "proverName":
         return (
           <Link
-            to={"/dashboard/provider/" + item?.id?.toString()}
+            to={"/dashboard/prover/" + item?.id?.toString()}
             className="flex items-center gap-1"
           >
             <span >{item?.name}</span>

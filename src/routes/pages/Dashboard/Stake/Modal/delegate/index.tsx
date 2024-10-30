@@ -22,7 +22,7 @@ import useCosmos from "@/models/_global/cosmos";
 import useValidator from "@/models/_global/validator";
 import usePagnation from "@/hooks/usePagnation";
 import axios from "axios";
-import { checkkTx, cosmosToEthAddress, signAndBroadcastDirect } from "@/utils/cosmos";
+import { checkKeplrWallet, checkkTx, cosmosToEthAddress, signAndBroadcastDirect } from "@/utils/cosmos";
 
 const DelegateModal = () => {
     const { setState, activeValidator } = useValidator()
@@ -57,6 +57,7 @@ const DelegateModal = () => {
 
     const handleDelegate = async (closeLoading?: any) => {
         try {
+            checkKeplrWallet()
             // 1. 构建交易参数
             const amount = {
                 denom: "CGT",
