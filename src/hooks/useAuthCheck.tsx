@@ -67,9 +67,6 @@ const useAuthCheck = () => {
             })
         }
     }, [auth, from])
-
-    console.log('from', from, pathname)
-
 };
 
 export default useAuthCheck

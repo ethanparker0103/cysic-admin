@@ -92,7 +92,6 @@ const Verify = () => {
     try {
       const timestamp = +dayjs().unix()
       const message = `${JSON.stringify(formValue)}${defaultChainId}${timestamp}`
-      console.log('message', message)
       const sig = await signMessageAsync({ message: message })
 
       const header = {
@@ -110,7 +109,6 @@ const Verify = () => {
       // config.headers['X-cysis-wallet'] = address
       // config.headers['X-cysis-signature'] = sig
       // config.headers['X-cysis-timestamp'] = timestamp
-      console.log('formValue', formValue)
       toast.success(t('registerSuccess'), {
         autoClose: false
       })

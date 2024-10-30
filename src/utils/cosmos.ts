@@ -148,9 +148,6 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
     // 获取账户信息
     const accounts = await offlineSigner.getAccounts();
 
-
-    console.log('accounts', accounts)
-
     // 构建消息
     // const msg: any = {
     //     typeUrl: '/cysicmint.govtoken.v1.MsgExchangeToGovToken',
@@ -164,7 +161,6 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
     const account = await client.getAccount(address);
 
     const { pubKey } = await window?.keplr.getKey(chainId);
-    console.log('pubKey', pubKey)
     const signDoc = {
         bodyBytes: TxBody.encode(
             TxBody.fromPartial({
@@ -187,7 +183,7 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
                         },
                         multi: undefined,
                     },
-                    sequence: account.sequence,
+                    sequence: account?.sequence,
                 },
             ],
             fee: Fee.fromPartial({

@@ -48,8 +48,6 @@ const VerifierTable = ({ classNames }: any) => {
     });
 
     const tableData = data?.data?.list
-    console.log("tableData", tableData);
-
 
     const rows = tableData || []
 

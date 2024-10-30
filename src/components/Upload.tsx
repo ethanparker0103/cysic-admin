@@ -20,7 +20,6 @@ const Upload = ({onChange, className, resetEventName}: any) => {
       };
 
     const _onChange = (files) => {
-        console.log('_onChange', files)
         setFileList(files);
     };
 
@@ -41,7 +40,6 @@ const Upload = ({onChange, className, resetEventName}: any) => {
     //   }
     // ]
     const handleImgChange = async (option: any) => {
-        console.log('option', option)
         const { onProgress, onError, onSuccess, file } = option;
         const xhr = new XMLHttpRequest();
 

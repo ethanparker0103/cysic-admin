@@ -481,7 +481,6 @@ export default function App() {
                         className="w-full flex items-center justify-between"
                         to={item?.link || '/'}
                         onClick={() => {
-                          console.log(111)
                           setIsMenuOpen(false)
                         }}
                       >
