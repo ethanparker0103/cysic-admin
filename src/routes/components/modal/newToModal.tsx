@@ -76,7 +76,7 @@ const NewToModal = () => {
         }
       }
 
-    return <Modal isOpen={visible} onClose={() => {}} className="[&_button]:z-[2] max-w-[820px] border border-[#FFFFFF33]">
+    return <Modal isOpen={visible} onClose={() => {}} className="[&_button]:none max-w-[820px] border border-[#FFFFFF33]">
             {/* <ModalBody> */}
             <div className="flex justify-between bg-[url(@/assets/images/_global/new_to_bg.png)] bg-cover">
                 <div className="w-[380px]" />

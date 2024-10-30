@@ -24,6 +24,7 @@ const useAuth = create(
   persist(
     (set: (arg0: (state: any) => any) => any) => ({
       ...defaultInitState,
+      reset: (newValues: any) => set((state: any) => (defaultInitState)),
       createAddress: (addr: any) => set((state: any) => {
 
         const params = {
