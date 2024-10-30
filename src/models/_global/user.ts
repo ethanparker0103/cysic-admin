@@ -21,8 +21,6 @@ const useUser = create(
           }
         }
 
-
-        console.log('params,', params)
         return params
       }),
 

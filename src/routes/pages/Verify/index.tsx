@@ -108,7 +108,6 @@ const Verify = () => {
       setIfInWL(undefined)
       const timestamp = +dayjs().unix()
       const message = `${JSON.stringify(formValue)}${defaultChainId}${timestamp}`
-      console.log('message', message)
       const sig = await signMessageAsync({ message: message })
 
       const header = {
@@ -122,10 +121,9 @@ const Verify = () => {
       }, {
         headers: header
       })
-
-      // 检查白名单
-      await handleCheckWhitelist()
-      console.log('formValue', formValue)
+      // config.headers['X-cysis-wallet'] = address
+      // config.headers['X-cysis-signature'] = sig
+      // config.headers['X-cysis-timestamp'] = timestamp
       toast.success(t('registerSuccess'), {
         autoClose: false
       })

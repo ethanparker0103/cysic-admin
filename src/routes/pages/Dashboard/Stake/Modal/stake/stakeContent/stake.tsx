@@ -24,8 +24,6 @@ const Stake = ({ item }: any) => {
     const [validator, setValidator] = useState<any>()
     const current = items?.find(i => i?.operator_address == validator)
 
-    console.log('connector', connector, item)
-
     const onClose = () => {
         dispatch({ visible: false })
     }

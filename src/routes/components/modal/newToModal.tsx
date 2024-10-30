@@ -45,7 +45,6 @@ const NewToModal = () => {
           }
           const timestamp = +dayjs().unix()
           const message = `${JSON.stringify(formValue)}${defaultChainId}${timestamp}`
-          console.log('message', message)
           const sig = await signMessageAsync({ message: message })
     
           const header = {

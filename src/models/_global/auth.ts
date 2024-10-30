@@ -38,8 +38,6 @@ const useAuth = create(
           }
         }
 
-
-        console.log('params,', params)
         return params
       }),
 

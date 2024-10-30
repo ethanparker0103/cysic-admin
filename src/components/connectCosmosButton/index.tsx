@@ -84,7 +84,6 @@ export default function ConnectCosmosButton({ className, content }: any) {
             </div>
           </DropdownItem>
           <DropdownItem onClick={()=>{
-            console.log('connector', connector)
             connector?.disable?.()
           }} key="disconnect" className="text-danger" color="danger">
             Disconnect

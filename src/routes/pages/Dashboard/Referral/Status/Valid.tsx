@@ -21,8 +21,6 @@ const Valid = () => {
     const { address } = useAccount();
     const { levelListMap, levelList, code, overview, setState } = useReferral();
 
-
-    console.log('addressaddress', address)
     // 10.4 获取当前地址基础信息
     useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
         ready: !!address,
@@ -57,7 +55,6 @@ const Valid = () => {
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
 
-        console.log('overview', overview)
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
