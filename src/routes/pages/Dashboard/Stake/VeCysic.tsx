@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import { GasPrice, QueryClient, setupDistributionExtension } from "@cosmjs/stargate";
 import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 import { useRequest } from "ahooks";
-import { checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
+import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
 
 const sliceFormat = (value: string, decimal: number = 18) => {
   if (value.length <= decimal) return value
@@ -81,6 +81,7 @@ const VeCysic = () => {
   // withdrawRewards
   const handleClaim = async (closeLoading?: any) => {
     try {
+      checkKeplrWallet()
       // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
       // toast.success(`Submit Success at ${result?.transactionHash}`)
 
@@ -170,9 +171,9 @@ const VeCysic = () => {
                   <Button
                     type="dark"
                     className="h-[1.75rem] min-h-fit"
-                    onClick={() =>
+                    onClick={() =>{
                       dispatch({ visible: true, tab: StakeTab.stake })
-                    }
+                    }}
                   >
                     <span className="text-sm text-[#00F0FF]">Stake</span>
                   </Button>

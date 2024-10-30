@@ -34,7 +34,7 @@ const MainContainer = ({ noRoute, title, children, className }: any) => {
             </svg>
           </div>
         ) : null}
-        <div className="Gemsbuck text-3xl font-semibold">{t(title)}</div>
+        <div className="Gemsbuck text-3xl font-semibold">{typeof title =='string' ? t(title) : title}</div>
       </div>
 
       <div className={clsx(className, "flex flex-col gap-10 text-sm")}>

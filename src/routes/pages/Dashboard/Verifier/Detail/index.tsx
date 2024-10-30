@@ -151,7 +151,7 @@ const VerifierDetail = () => {
         return (
           <div className="flex items-center gap-2">
             {ids?.map((i, index) => (
-              <Link to={`/dashboard/provider/${i}`}>
+              <Link to={`/dashboard/prover/${i}`}>
                 <span className="underline" key={i}>
                   {shortStr(addrs[index], 12)}
                 </span>

@@ -1,4 +1,5 @@
-import { getImageUrl } from "@/utils/tools";
+import useReferral from "@/models/_global/referral";
+import { generateQueryString, getImageUrl } from "@/utils/tools";
 
 export const defaultChainId = '9527';
 
@@ -87,3 +88,10 @@ export const blockTime = {
     average: 10_000,
     long: 15_000
 }
+
+
+export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
+    text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r 👇 Get started now: \n",
+})}`
+
+export const getReferralUrl = ()=>`${window.location.origin}/m/referral/invite${useReferral.getState().code ? `?code=${useReferral.getState().code}` : ''}`

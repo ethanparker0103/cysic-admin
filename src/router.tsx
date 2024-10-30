@@ -27,6 +27,8 @@ import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
 import Phase1 from "@/routes/pages/Dashboard/My/page/phase1";
+import About from "@/routes/pages/About";
+import Faq from "@/routes/pages/Faq";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -42,15 +44,12 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
+                        loader: async ()=>redirect('/dashboard/overview')
+                        // element: <Dashboard />
+                    },
+                    {
+                        path: 'overview',
                         element: <Dashboard />
-                    },
-                    {
-                        path: 'my',
-                        element: <My />,
-                    },
-                    {
-                        path: 'my/phase1',
-                        element: <Phase1 />,
                     },
                     {
                         path: 'verifier',
@@ -61,17 +60,17 @@ export const router = createBrowserRouter([
                         element: <VerifierDetail />,
                     },
                     {
-                        path: 'provider',
+                        path: 'prover',
                         element: <DashboardComputility />,
                     },
                     {
-                        path: 'provider/:id',
+                        path: 'prover/:id',
                         element: <ComputilityDetail />,
                     },
                     {
                         path: 'project',
                         element: <DashboardProject />,
-                      
+
                     },
                     {
                         path: 'project/:id',
@@ -86,43 +85,99 @@ export const router = createBrowserRouter([
                         element: <TaskDetail />,
                     },
                     {
-                        path: 'leadingboard',
-                        element: <Leadingboard />,
-                    },
-                    {
-                        path: 'referral',
-                        element: <Referral />,
-                    },
-                    {
-                        path: 'referral/invite',
-                        element: <FillReferralCode />,
-                    },
-                    {
-                        path: 'stake',
-                        loader: async ()=>redirect('/dashboard')
-                    },
-                    {
-                        path: 'stake/cgt',
-                        element: <VeCysic />,
-                    },
-                    {
-                        path: 'stake/vecompute',
-                        element: <VeComputed />,
-                    },
-                    {
-                        path: 'faucet',
-                        element: <Faucet />,
-                    },
-                    {
-                        path: 'socialTasks',
-                        element: <SocialTasks />,
-                    },
-                    {
                         path: 'test',
                         element: <Test />
                     }
                 ]
             },
+            {
+                path: 'stake',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        path: 'cgt',
+                        element: <VeCysic />,
+                    },
+                    {
+                        path: 'vecompute',
+                        element: <VeComputed />,
+                    },
+                ]
+            },
+            {
+                path: 'my',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <My />,
+                    },
+                    {
+                        path: 'phase1',
+                        element: <Phase1 />,
+                    },
+                ]
+            },
+            {
+                path: 'leadingboard',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Leadingboard />,
+                    },
+                ]
+            },
+            {
+                path: 'referral',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Referral />,
+                    },
+                    {
+                        path: 'invite',
+                        element: <FillReferralCode />,
+                    },
+                    {
+                        path: 'socialTasks',
+                        element: <SocialTasks />,
+                    },
+                ]
+            },
+            {
+                path: 'faucet',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Faucet />,
+                    },
+                ]
+            },
+
+            {
+                path: 'about',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <About />,
+                    },
+                ]
+            },
+            {
+                path: 'faq',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Faq />,
+                    },
+                ]
+            },
+
             {
                 path: "/register",
                 element: <BasicLayout />,
@@ -132,7 +187,7 @@ export const router = createBrowserRouter([
                         element: <Home />
                     },
                     {
-                        path: 'provider',
+                        path: 'prover',
                         element: <Computility />
                     },
                     {

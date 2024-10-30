@@ -19,8 +19,6 @@ import {
 import { useRequest } from "ahooks";
 import axios from "axios";
 import useAccount from "@/hooks/useAccount";
-import Search from "@/routes/components/Search";
-import ConnectCosmosButton from "@/components/connectCosmosButton";
 import BasicDoubleconfirmModal from "@/components/BasicDoubleconfirmModal";
 import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
 import SlippageModal from "@/routes/pages/Dashboard/My/components/assets/Modal/slippage";
@@ -29,6 +27,17 @@ import BigNumber from "bignumber.js";
 import useRewardPoints from "@/models/_global/useRewardPoints";
 import CosmosTransferModal from "@/routes/components/modal/cosmosTransferModal";
 import useModalState from "@/hooks/useModalState";
+import MiddlePage from "@/routes/components/MiddlePage";
+import NewToModal from "@/routes/components/modal/newToModal";
+import KeplrConnectModal from "@/routes/components/modal/keplrConnectModal";
+import Phase2DescModal from "@/routes/components/modal/phase2AlertModal";
+import CosmosFaucetModal from "@/routes/components/modal/cosmosFaucetModal";
+import ConnectCosmosButton from "@/components/connectCosmosButton";
+import Button from "@/components/Button";
+import { ArrowUpRight, CircleAlert, CircleHelp } from "lucide-react";
+import ReferralCodeCopy from "@/components/ReferralCodeCopy";
+import Media from "@/components/Media";
+import useReferral from "@/models/_global/referral";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -40,7 +49,7 @@ const Accordion_ = ({ origin, navs, children }: any) => {
     <AccordionItem key={navs?.text} aria-label={navs?.text} title={children} className="">
       <div className="flex flex-col gap-3">
         {
-          navs?.children?.map((i, index) => {
+          navs?.children?.map((i: any, index: number) => {
             return <div key={i?.text || index} className={clsx("text-base pl-12 cursor-pointer text-[#A3A3A3]",
               (lastPathname.includes(i.link) &&
                 i?.link != origin?.[0]?.link) ||
@@ -61,7 +70,9 @@ const Accordion_ = ({ origin, navs, children }: any) => {
 }
 
 const HeaderNotice = () => {
-  return <div className="py-4 px-10 mb-6 flex items-center gap-2 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]">
+  const { dispatch } = useModalState({ eventName: 'modal_phase_2_desc_visible' })
+
+  return <div className="cursor-pointer py-4 px-10 mb-6 flex items-center gap-2 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]" onClick={()=>dispatch({visible: true})}>
     <img className="size-6" src={getImageUrl('@/assets/images/_global/logo.svg')} />
     <span>Cysic phase ll is now live!</span>
   </div>
@@ -177,7 +188,7 @@ const Verifier = (props?: any) => (
     <rect x="2.75" y="2.75" width="20.5" height="20.5" rx="2.25" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
     <rect x="6.5" y="19.5" width="13" height="1.5" rx="0.75" fill="currentColor" fillOpacity="1" />
     <circle cx="13" cy="11.5" r="5.75" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" />
-    <path d="M10.5 11.5L12 13L16 9.5" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10.5 11.5L12 13L16 9.5" stroke="currentColor" strokeOpacity="1" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 
 );
@@ -241,64 +252,72 @@ const SocialTasks = (props?: any) => {
 
 export const dashboardNavs_ = [
   {
-    prefix: <Hero className="size-6" />,
-    text: "Dashboard",
-    link: "/dashboard/",
+    prefix: <MyPage className="size-6 scale-[1]" />,
+    text: "MyPage",
+    link: "/my/",
+    needAccount: true,
   },
   {
-    prefix: <Flag className="size-6 scale-[1.3]" />,
+    prefix: <Hero className="size-6 scale-[1]" />,
+    text: "Dashboad",
+    // link: "/dashboard/stake",
+    children: [
+      {
+        prefix: <Verifier className="size-6" />,
+        text: "Overview",
+        link: "/dashboard/overview",
+      },
+      {
+        prefix: <Verifier className="size-6" />,
+        text: "Verifier",
+        link: "/dashboard/verifier",
+      },
+      {
+        prefix: <Provider className="size-6" />,
+        text: "Prover",
+        link: "/dashboard/prover",
+      },
+      {
+        prefix: <Projector className="size-6" />,
+        text: "Project",
+        link: "/dashboard/project",
+      },
+      {
+        prefix: <TaskList className="size-6 scale-[1]" />,
+        text: "TaskList",
+        link: "/dashboard/task",
+      },
+    ]
+  },
+  {
+    prefix: <Flag className="size-6 scale-[1]" />,
     text: "Stake",
     // link: "/dashboard/stake",
     children: [
       {
         text: "Stake CGT",
-        link: "/dashboard/stake/cgt",
+        link: "/stake/cgt",
       },
       {
         text: "Delegate veCompute",
-        link: "/dashboard/stake/veCompute",
+        link: "/stake/veCompute",
       },
     ]
   },
   {
-    prefix: <Projector className="size-6" />,
-    text: "Project",
-    link: "/dashboard/project",
-  },
-  {
-    prefix: <Provider className="size-6" />,
-    text: "Prover",
-    link: "/dashboard/provider",
-  },
-  {
-    prefix: <Verifier className="size-6" />,
-    text: "Verifier",
-    link: "/dashboard/verifier",
-  },
-  {
-    prefix: <TaskList className="size-6 scale-[1.3]" />,
-    text: "TaskList",
-    link: "/dashboard/task",
-  },
-  {
-    prefix: <MyPage className="size-6 scale-[1.3]" />,
-    text: "MyPage",
-    link: "/dashboard/my",
-    needAccount: true,
-  },
-  {
-    prefix: <LeadingBoard className="size-6 scale-[1.3]" />,
+    prefix: <LeadingBoard className="size-6 scale-[1]" />,
     text: "Leaderboard",
-    link: "/dashboard/leadingboard",
+    link: "/leadingboard",
   },
   {
-    prefix: <Referral className="size-6 scale-[1.3]" />,
+    prefix: <Referral className="size-6 scale-[1]" />,
     text: "Invite",
-    link: "/dashboard/referral",
+    link: "/referral",
   },
 ];
 
 export default function App() {
+  const { code } = useReferral()
   const { setState: setRewawrdPoints, phase1 } = useRewardPoints()
   const { t } = useTranslation();
   useCosmosUpdate()
@@ -330,10 +349,14 @@ export default function App() {
     }
   );
 
-  const {dispatch} = useModalState('modal_cosmos_transfer_visible')
+  const { dispatch } = useModalState({ eventName: 'modal_cosmos_faucet_visible' })
   return (
     <>
 
+      <Phase2DescModal />
+      <CosmosFaucetModal />
+      <KeplrConnectModal />
+      <NewToModal />
       <ToastContainer theme="dark" />
       <BasicDoubleconfirmModal />
       <ExchangeModal />
@@ -342,14 +365,14 @@ export default function App() {
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
-          <BrowserView className="h-full px-8 pt-10 flex flex-col gap-8 items-start justify-start w-[264px] relative bg-[#10141A]">
+          <BrowserView className="h-full px-8 pt-10 flex flex-col gap-4 items-start justify-start w-[264px] relative bg-[#10141A]">
             <div className="relative">
               <img
                 className="w-[154px]"
                 src={getImageUrl("@/assets/images/_global/logo_content.svg")}
               />
               <svg className="absolute top-0 right-0 translate-x-full -translate-y-full" width="46" height="18" viewBox="0 0 46 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="45" height="17" rx="3.5" fill="url(#paint0_linear_1053_13338)" fill-opacity="0.2" />
+                <rect x="0.5" y="0.5" width="45" height="17" rx="3.5" fill="url(#paint0_linear_1053_13338)" fillOpacity="0.2" />
                 <rect x="0.5" y="0.5" width="45" height="17" rx="3.5" stroke="url(#paint1_linear_1053_13338)" />
                 <path d="M6.96484 6.64H4.50484V6H10.1648V6.64H7.70484V13H6.96484V6.64ZM15.2302 10.59H10.8302C10.8702 11.1367 11.0802 11.58 11.4602 11.92C11.8402 12.2533 12.3202 12.42 12.9002 12.42C13.2268 12.42 13.5268 12.3633 13.8002 12.25C14.0735 12.13 14.3102 11.9567 14.5102 11.73L14.9102 12.19C14.6768 12.47 14.3835 12.6833 14.0302 12.83C13.6835 12.9767 13.3002 13.05 12.8802 13.05C12.3402 13.05 11.8602 12.9367 11.4402 12.71C11.0268 12.4767 10.7035 12.1567 10.4702 11.75C10.2368 11.3433 10.1202 10.8833 10.1202 10.37C10.1202 9.85667 10.2302 9.39667 10.4502 8.99C10.6768 8.58333 10.9835 8.26667 11.3702 8.04C11.7635 7.81333 12.2035 7.7 12.6902 7.7C13.1768 7.7 13.6135 7.81333 14.0002 8.04C14.3868 8.26667 14.6902 8.58333 14.9102 8.99C15.1302 9.39 15.2402 9.85 15.2402 10.37L15.2302 10.59ZM12.6902 8.31C12.1835 8.31 11.7568 8.47333 11.4102 8.8C11.0702 9.12 10.8768 9.54 10.8302 10.06H14.5602C14.5135 9.54 14.3168 9.12 13.9702 8.8C13.6302 8.47333 13.2035 8.31 12.6902 8.31ZM18.0953 13.05C17.6686 13.05 17.2586 12.99 16.8653 12.87C16.4786 12.7433 16.1753 12.5867 15.9553 12.4L16.2753 11.84C16.4953 12.0133 16.772 12.1567 17.1053 12.27C17.4386 12.3767 17.7853 12.43 18.1453 12.43C18.6253 12.43 18.9786 12.3567 19.2053 12.21C19.4386 12.0567 19.5553 11.8433 19.5553 11.57C19.5553 11.3767 19.492 11.2267 19.3653 11.12C19.2386 11.0067 19.0786 10.9233 18.8853 10.87C18.692 10.81 18.4353 10.7533 18.1153 10.7C17.6886 10.62 17.3453 10.54 17.0853 10.46C16.8253 10.3733 16.602 10.23 16.4153 10.03C16.2353 9.83 16.1453 9.55333 16.1453 9.2C16.1453 8.76 16.3286 8.4 16.6953 8.12C17.062 7.84 17.572 7.7 18.2253 7.7C18.5653 7.7 18.9053 7.74667 19.2453 7.84C19.5853 7.92667 19.8653 8.04333 20.0853 8.19L19.7753 8.76C19.342 8.46 18.8253 8.31 18.2253 8.31C17.772 8.31 17.4286 8.39 17.1953 8.55C16.9686 8.71 16.8553 8.92 16.8553 9.18C16.8553 9.38 16.9186 9.54 17.0453 9.66C17.1786 9.78 17.342 9.87 17.5353 9.93C17.7286 9.98333 17.9953 10.04 18.3353 10.1C18.7553 10.18 19.092 10.26 19.3453 10.34C19.5986 10.42 19.8153 10.5567 19.9953 10.75C20.1753 10.9433 20.2653 11.21 20.2653 11.55C20.2653 12.01 20.072 12.3767 19.6853 12.65C19.3053 12.9167 18.7753 13.05 18.0953 13.05ZM24.3479 12.68C24.2146 12.8 24.0479 12.8933 23.8479 12.96C23.6546 13.02 23.4512 13.05 23.2379 13.05C22.7446 13.05 22.3646 12.9167 22.0979 12.65C21.8312 12.3833 21.6979 12.0067 21.6979 11.52V8.34H20.7579V7.74H21.6979V6.59H22.4079V7.74H24.0079V8.34H22.4079V11.48C22.4079 11.7933 22.4846 12.0333 22.6379 12.2C22.7979 12.36 23.0246 12.44 23.3179 12.44C23.4646 12.44 23.6046 12.4167 23.7379 12.37C23.8779 12.3233 23.9979 12.2567 24.0979 12.17L24.3479 12.68ZM28.3204 7.7C28.9804 7.7 29.5037 7.89333 29.8904 8.28C30.2837 8.66 30.4804 9.21667 30.4804 9.95V13H29.7704V10.02C29.7704 9.47333 29.6337 9.05667 29.3604 8.77C29.0871 8.48333 28.6971 8.34 28.1904 8.34C27.6237 8.34 27.1737 8.51 26.8404 8.85C26.5137 9.18333 26.3504 9.64667 26.3504 10.24V13H25.6404V7.74H26.3204V8.71C26.5137 8.39 26.7804 8.14333 27.1204 7.97C27.4671 7.79 27.8671 7.7 28.3204 7.7ZM37.0075 10.59H32.6075C32.6475 11.1367 32.8575 11.58 33.2375 11.92C33.6175 12.2533 34.0975 12.42 34.6775 12.42C35.0042 12.42 35.3042 12.3633 35.5775 12.25C35.8508 12.13 36.0875 11.9567 36.2875 11.73L36.6875 12.19C36.4542 12.47 36.1608 12.6833 35.8075 12.83C35.4608 12.9767 35.0775 13.05 34.6575 13.05C34.1175 13.05 33.6375 12.9367 33.2175 12.71C32.8042 12.4767 32.4808 12.1567 32.2475 11.75C32.0142 11.3433 31.8975 10.8833 31.8975 10.37C31.8975 9.85667 32.0075 9.39667 32.2275 8.99C32.4542 8.58333 32.7608 8.26667 33.1475 8.04C33.5408 7.81333 33.9808 7.7 34.4675 7.7C34.9542 7.7 35.3908 7.81333 35.7775 8.04C36.1642 8.26667 36.4675 8.58333 36.6875 8.99C36.9075 9.39 37.0175 9.85 37.0175 10.37L37.0075 10.59ZM34.4675 8.31C33.9608 8.31 33.5342 8.47333 33.1875 8.8C32.8475 9.12 32.6542 9.54 32.6075 10.06H36.3375C36.2908 9.54 36.0942 9.12 35.7475 8.8C35.4075 8.47333 34.9808 8.31 34.4675 8.31ZM41.2327 12.68C41.0993 12.8 40.9327 12.8933 40.7327 12.96C40.5393 13.02 40.336 13.05 40.1227 13.05C39.6293 13.05 39.2493 12.9167 38.9827 12.65C38.716 12.3833 38.5827 12.0067 38.5827 11.52V8.34H37.6427V7.74H38.5827V6.59H39.2927V7.74H40.8927V8.34H39.2927V11.48C39.2927 11.7933 39.3693 12.0333 39.5227 12.2C39.6827 12.36 39.9093 12.44 40.2027 12.44C40.3493 12.44 40.4893 12.4167 40.6227 12.37C40.7627 12.3233 40.8827 12.2567 40.9827 12.17L41.2327 12.68Z" fill="white" />
                 <defs>
@@ -369,7 +392,7 @@ export default function App() {
             </div>
 
 
-            <div className="w-full flex flex-col gap-1 text-lg overflow-y-auto">
+            <div className="flex-1 w-full flex flex-col gap-1 text-base overflow-y-auto">
               {dashboardNavs?.map((i) => {
                 return (
                   <Accordion_ origin={dashboardNavs} navs={i} key={i.text}>
@@ -377,7 +400,7 @@ export default function App() {
                       onClick={() => i.link ? navigate(i.link) : null}
                       className={clsx(
                         "nav-item",
-                        "flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[16px] relative border border-[transparent] text-[#A3A3A3]",
+                        "!text-base flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[16px] relative border border-[transparent] text-[#A3A3A3]",
                         (lastPathname.includes(i.link) &&
                           i?.link != dashboardNavs?.[0]?.link) ||
                           lastPathname == i.link
@@ -396,6 +419,25 @@ export default function App() {
                 );
               })}
             </div>
+
+           <div className="w-full">
+           {address && code ? (
+              <div className="flex flex-col gap-2 pb-4">
+                <ReferralCodeCopy className="rounded-full text-xs [&_button]:!size-3 [&_svg]:size-full py-2"/>
+                <Button type="gradient" className="rounded-full h-fit min-h-fit py-2 px-1">
+                  <div className="w-full justify-center flex items-center gap-1 text-[#fff] text-xs">
+                    <img className="size-3" src={getImageUrl('@/assets/images/media/twitter_light.svg')}/>
+                    <span>Tweet for more points</span>
+                    <ArrowUpRight size={14}/>
+                  </div>
+                </Button>
+              </div>
+            ) : null}
+
+            <div className="w-full p-4 border-t border-[#FFFFFF33] flex">
+              <Media />
+            </div>
+           </div>
           </BrowserView>
 
           <MobileView className="z-[100] bg-[#000] border-b border-[#FFFFFF1F] w-full fixed top-0 p-3 flex items-center justify-between">
@@ -403,7 +445,7 @@ export default function App() {
               className="w-8"
               src={getImageUrl("@/assets/images/_global/logo.svg")}
             />
-            <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div>
+            {/* <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div> */}
 
             <div className="flex items-center gap-2">
               <ConnectButton className="!py-0 !min-h-10 !h-10 [&>span]:!text-xs !px-4" />
@@ -437,7 +479,7 @@ export default function App() {
                     <NavbarMenuItem key={`${item}-${index}`}>
                       <Link
                         className="w-full flex items-center justify-between"
-                        to={item?.link}
+                        to={item?.link || '/'}
                         onClick={() => {
                           console.log(111)
                           setIsMenuOpen(false)
@@ -477,41 +519,23 @@ export default function App() {
           >
 
             <BrowserView className="px-10 pt-4 pb-8 sticky top-0 right-0 left-0 w-full backdrop-blur bg-[#00000065] z-[1] flex items-center justify-between gap-1">
-              <Search />
-              <div className="flex items-center gap-1">
-                <div className="cursor-pointer gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]" onClick={()=>{
-                  dispatch({visible: true})
-                }}>
-                <svg stroke="#fff" fill="#fff" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M19.924 10.383a1 1 0 0 0-.217-1.09l-5-5-1.414 1.414L16.586 9H4v2h15a1 1 0 0 0 .924-.617zM4.076 13.617a1 1 0 0 0 .217 1.09l5 5 1.414-1.414L7.414 15H20v-2H5a.999.999 0 0 0-.924.617z"></path></svg>
+              <div className="flex items-center gap-3">
+                <Button className="rounded-full min-h-fit h-fit p-3 flex gap-1" type="solidGradient" onClick={()=>navigate('/about')}>
+                  <CircleAlert size={16}/>
+                  <span>About</span>
+                </Button>
+
+                <Button className="rounded-full min-h-fit h-fit p-3 flex gap-1" type="solidGradient" onClick={()=>navigate('/faq')}>
+                  <CircleHelp size={16}/>
+                  <span>FAQs</span>
+                </Button>
+              </div>
+
+
+              <div className="flex items-center gap-3">
+                <div onClick={() => dispatch({ visible: true })} className="rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]">
+                  <svg className="size-4" stroke="#fff" fill="#fff" strokeWidth="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M352,256H313.39c-15.71-13.44-35.46-23.07-57.39-28V180.44l-32-3.38-32,3.38V228c-21.93,5-41.68,14.6-57.39,28H16A16,16,0,0,0,0,272v96a16,16,0,0,0,16,16h92.79C129.38,421.73,173,448,224,448s94.62-26.27,115.21-64H352a32,32,0,0,1,32,32,32,32,0,0,0,32,32h64a32,32,0,0,0,32-32A160,160,0,0,0,352,256ZM81.59,159.91l142.41-15,142.41,15c9.42,1,17.59-6.81,17.59-16.8V112.89c0-10-8.17-17.8-17.59-16.81L256,107.74V80a16,16,0,0,0-16-16H208a16,16,0,0,0-16,16v27.74L81.59,96.08C72.17,95.09,64,102.9,64,112.89v30.22C64,153.1,72.17,160.91,81.59,159.91Z"></path></svg>
                 </div>
-                <Link to={'/dashboard/faucet'}>
-                <div className="gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]">
-                  <svg stroke="#fff" fill="#fff" strokeWidth="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M352,256H313.39c-15.71-13.44-35.46-23.07-57.39-28V180.44l-32-3.38-32,3.38V228c-21.93,5-41.68,14.6-57.39,28H16A16,16,0,0,0,0,272v96a16,16,0,0,0,16,16h92.79C129.38,421.73,173,448,224,448s94.62-26.27,115.21-64H352a32,32,0,0,1,32,32,32,32,0,0,0,32,32h64a32,32,0,0,0,32-32A160,160,0,0,0,352,256ZM81.59,159.91l142.41-15,142.41,15c9.42,1,17.59-6.81,17.59-16.8V112.89c0-10-8.17-17.8-17.59-16.81L256,107.74V80a16,16,0,0,0-16-16H208a16,16,0,0,0-16,16v27.74L81.59,96.08C72.17,95.09,64,102.9,64,112.89v30.22C64,153.1,72.17,160.91,81.59,159.91Z"></path></svg>
-                </div></Link>
-                {
-                  false && address ? (<Tooltip closeDelay={0} disableAnimation content={<div className="flex flex-col gap-2 text-sm">
-                    <div className="text-[#A3A3A3]">My Points Desc</div>
-
-                    <div className="flex flex-col gap-1 text-[#fff]">
-                      <div className="flex items-center justify-between gap-2"><span className="text-[#A3A3A3]">Phase 1</span>&nbsp;<span>{phase1?.total || '-'}</span></div>
-                      <div className="flex items-center justify-between gap-2"><span className="text-[#A3A3A3]">Phase 2</span>&nbsp;<span>0</span></div>
-                    </div>
-                  </div>}>
-
-                    <div className="px-3 text-[#A3A3A3] text-sm font-[500] h-10 bg-[#FFFFFF1F] rounded-[6px] flex items-center gap-2">
-                      <div className="flex items-center gap-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fillRule="evenodd" clipRule="evenodd" d="M2.88537 4.1695C2.65657 4.3855 2.60137 4.5543 2.60137 4.6679C2.60137 4.7807 2.65657 4.9495 2.88537 5.1655C3.11497 5.3831 3.47977 5.6071 3.98137 5.8071C4.97977 6.2071 6.39977 6.4671 7.99977 6.4671C9.59977 6.4671 11.0198 6.2071 12.0182 5.8071C12.5198 5.6071 12.8846 5.3831 13.1142 5.1655C13.3438 4.9495 13.3982 4.7815 13.3982 4.6679C13.3982 4.5543 13.343 4.3863 13.1142 4.1695C12.8846 3.9519 12.519 3.7287 12.0182 3.5279C11.0198 3.1287 9.59977 2.8687 7.99977 2.8687C6.39977 2.8687 4.97977 3.1287 3.98137 3.5279C3.47977 3.7279 3.11497 3.9519 2.88537 4.1695ZM3.53577 2.4143C4.70777 1.9447 6.28617 1.6687 7.99977 1.6687C9.71337 1.6687 11.2918 1.9447 12.4638 2.4143C13.0486 2.6479 13.5622 2.9415 13.939 3.2975C14.3174 3.6559 14.5982 4.1183 14.5982 4.6679C14.5982 5.2175 14.3174 5.6799 13.939 6.0375C13.5622 6.3943 13.0486 6.6879 12.4646 6.9215C11.2918 7.3903 9.71257 7.6671 7.99977 7.6671C6.28617 7.6671 4.70777 7.3903 3.53577 6.9215C2.95097 6.6879 2.43737 6.3935 2.06057 6.0375C1.68217 5.6799 1.40137 5.2175 1.40137 4.6679C1.40137 4.1183 1.68217 3.6559 2.06057 3.2975C2.43737 2.9415 2.95097 2.6479 3.53577 2.4143Z" fill="#A3A3A3" />
-                          <path fillRule="evenodd" clipRule="evenodd" d="M2.40857 7.40244C2.47834 7.43909 2.5402 7.48913 2.59062 7.5497C2.64105 7.61027 2.67905 7.68018 2.70245 7.75543C2.72585 7.83069 2.7342 7.90982 2.72701 7.9883C2.71982 8.06679 2.69725 8.14308 2.66057 8.21284C2.62321 8.2791 2.60287 8.35359 2.60137 8.42964C2.60137 8.54244 2.65657 8.71124 2.88537 8.92724C3.11497 9.14484 3.47977 9.36884 3.98137 9.56884C4.97977 9.96884 6.39977 10.2288 7.99977 10.2288C9.59977 10.2288 11.0198 9.96884 12.0182 9.56884C12.5198 9.36884 12.8846 9.14484 13.1142 8.92724C13.3438 8.71124 13.3982 8.54324 13.3982 8.42964C13.3967 8.35359 13.3763 8.2791 13.339 8.21284C13.2649 8.07195 13.2499 7.90743 13.2971 7.75545C13.3444 7.60347 13.4501 7.47649 13.591 7.40244C13.7318 7.32839 13.8964 7.31334 14.0484 7.3606C14.2003 7.40786 14.3273 7.51355 14.4014 7.65444C14.5254 7.89124 14.5982 8.15204 14.5982 8.42964C14.5982 8.97924 14.3174 9.44164 13.939 9.79924C13.5622 10.156 13.0486 10.4496 12.4646 10.6832C11.2918 11.152 9.71257 11.4288 7.99977 11.4288C6.28617 11.4288 4.70777 11.152 3.53577 10.6832C2.95097 10.4496 2.43737 10.156 2.06057 9.79924C1.68217 9.44164 1.40137 8.97924 1.40137 8.42964C1.40137 8.15204 1.47417 7.89124 1.59817 7.65444C1.63482 7.58467 1.68486 7.52281 1.74543 7.47238C1.806 7.42196 1.87591 7.38396 1.95116 7.36056C2.02642 7.33716 2.10555 7.32881 2.18403 7.336C2.26251 7.34318 2.33881 7.36576 2.40857 7.40244Z" fill="#A3A3A3" />
-                          <path fillRule="evenodd" clipRule="evenodd" d="M2.40857 11.0641C2.47834 11.1007 2.5402 11.1508 2.59062 11.2113C2.64105 11.2719 2.67905 11.3418 2.70245 11.4171C2.72585 11.4923 2.7342 11.5714 2.72701 11.6499C2.71982 11.7284 2.69725 11.8047 2.66057 11.8745C2.62321 11.9407 2.60287 12.0152 2.60137 12.0913C2.60137 12.2041 2.65657 12.3729 2.88537 12.5897C3.11497 12.8073 3.47977 13.0305 3.98137 13.2305C4.97977 13.6305 6.39977 13.8905 7.99977 13.8905C9.59977 13.8905 11.0198 13.6305 12.0182 13.2305C12.5198 13.0305 12.8846 12.8065 13.1142 12.5897C13.3438 12.3737 13.3982 12.2041 13.3982 12.0913C13.3967 12.0152 13.3763 11.9407 13.339 11.8745C13.2649 11.7336 13.2499 11.569 13.2971 11.4171C13.3444 11.2651 13.4501 11.1381 13.591 11.0641C13.7318 10.99 13.8964 10.975 14.0484 11.0222C14.2003 11.0695 14.3273 11.1752 14.4014 11.3161C14.5254 11.5529 14.5982 11.8137 14.5982 12.0921C14.5982 12.6409 14.3174 13.1033 13.939 13.4609C13.5622 13.8177 13.0486 14.1113 12.4646 14.3449C11.2918 14.8137 9.71257 15.0905 7.99977 15.0905C6.28617 15.0905 4.70777 14.8137 3.53577 14.3449C2.95097 14.1113 2.43737 13.8177 2.06057 13.4609C1.68217 13.1033 1.40137 12.6409 1.40137 12.0913C1.40137 11.8137 1.47417 11.5529 1.59817 11.3161C1.63482 11.2463 1.68486 11.1844 1.74543 11.134C1.806 11.0836 1.87591 11.0456 1.95116 11.0222C2.02642 10.9988 2.10555 10.9904 2.18403 10.9976C2.26251 11.0048 2.33881 11.0274 2.40857 11.0641Z" fill="#A3A3A3" />
-                        </svg>
-
-                        <span className="whitespace-nowrap">{t('myPoints')}</span>
-                      </div>
-                      <span className="text-[#00F0FF]">{phase1?.total || "0.00"}&nbsp;{t('Points')}</span>
-                    </div>
-                  </Tooltip>) : null
-                }
                 <ConnectButton />
                 <ConnectCosmosButton />
               </div>
@@ -520,7 +544,9 @@ export default function App() {
             <HeaderNotice />
             <div className={clsx(isMobile ? "px-0" : "px-10")}>
               <Suspense>
-                <Outlet />
+                <MiddlePage>
+                  <Outlet />
+                </MiddlePage>
               </Suspense>
             </div>
           </div>

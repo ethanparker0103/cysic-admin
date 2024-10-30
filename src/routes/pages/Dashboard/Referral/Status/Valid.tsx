@@ -13,54 +13,16 @@ import axios from "axios";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import useAccount from "@/hooks/useAccount";
+import { getReferralUrl, twitterLink } from "@/config";
+import ReferralCodeCopy from "@/components/ReferralCodeCopy";
 
-
-
-     
-const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
-    // hashtags: "demo",    
-    text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r 👇 Get started now: \n",
-    // url: "https://personalreferrallink",
-})}`
 
 const Valid = () => {
     const { address } = useAccount();
     const { levelListMap, levelList, code, overview, setState } = useReferral();
-    // 10.2 查询地址是否绑定邀请码
-    const { run } = useRequest(
-        () => axios.get(`/api/v1/referral/${address}/checkBind`),
-        {
-            ready: !!address,
-            refreshDeps: [address],
-            onSuccess(e) {
-                setState({
-                    checkBind: e?.data?.bind,
-                });
-            },
-            onFinally() {
-                if (!mock) return;
-                setState({
-                    checkBind: checkBind?.data?.bind,
-                });
-            },
-        }
-    );
-    // 10.3 生成邀请码
-    useRequest(() => axios.post(`/api/v1/referral/${address}/genCode`), {
-        ready: !!address,
-        refreshDeps: [address],
-        onSuccess(e) {
-            setState({
-                code: e?.data?.code,
-            });
-        },
-        onFinally() {
-            if (!mock) return;
-            setState({
-                code: genCode?.data?.code,
-            });
-        },
-    });
+
+
+    console.log('addressaddress', address)
     // 10.4 获取当前地址基础信息
     useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
         ready: !!address,
@@ -84,7 +46,7 @@ const Valid = () => {
     let totalPastActivateCnt = 0;
 
     const totalInviteValue = levelList?.reduce((prev: any, next: any) => {
-        if(+next?.ID < currentLevel){
+        if (+next?.ID < currentLevel) {
             totalPastActivateCnt = totalPastActivateCnt + next?.Require
         }
         return BigNumber(prev).plus(next?.Require).toString();
@@ -95,8 +57,7 @@ const Valid = () => {
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
 
-    const referralUrl = `${window.location.origin}/m/dashboard/referral/invite?code=${code}`
-
+        console.log('overview', overview)
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
@@ -108,37 +69,12 @@ const Valid = () => {
                                     <span className="text-lg font-[400]">
                                         Level {currentLevel}
                                     </span>
-                                    <span className="text-2xl font-bold">
-                                        {currentLevelConfig?.Name}
-                                    </span>
-                                </div>
-                                <div className="flex flex-col">
-                                    <Tooltip
-                                        placement="bottom"
-                                        closeDelay={0}
-                                        disableAnimation
-                                        content={
-                                            <div className="flex flex-col gap-2 text-sm">
-                                                <div className="text-[#A3A3A3]">My Points Desc</div>
-
-                                                <div className="flex flex-col gap-1 text-[#fff]">
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-[#A3A3A3]">Phase 1</span>
-                                                        &nbsp;<span>0</span>
-                                                    </div>
-                                                    <div className="flex items-center justify-between gap-2">
-                                                        <span className="text-[#A3A3A3]">Phase 2</span>
-                                                        &nbsp;<span>0</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        }
-                                    >
-                                        <span className="text-lg font-[400]">Rewards Points</span>
-                                    </Tooltip>
-                                    <span className="text-2xl font-bold self-end">
-                                        {currentLevelConfig?.LevelUpRewardPoint}
-                                    </span>
+                                    <div className="flex items-center gap-1">
+                                        <img className="size-8" src={currentLevelConfig?.Icon} />
+                                        <span className="text-2xl font-bold text-[#00F0FF]">
+                                            {currentLevelConfig?.Name}
+                                        </span>
+                                    </div>
                                 </div>
                                 <div className="flex flex-col">
                                     <span className="text-lg font-[400]">Pool Fee</span>
@@ -148,25 +84,25 @@ const Valid = () => {
                                 </div>
                             </div>
                             <div className=" flex flex-col gap-2 rounded-[12px] bg-[#FFFFFF0D] py-2 px-4">
-                                <div className="text-[#A3A3A3] text-base font-[600]">
-                                    Next Level:
+                                <div className="text-[#fff] text-base font-[600]">
+                                    Total Invite Rewards
                                 </div>
                                 <div className="flex justify-between">
                                     <div className="flex flex-col">
                                         <span className="text-[#A3A3A3] text-base font-[400]">
-                                            Reward
+                                            Referral Earnings
                                         </span>
                                         <span className="text-base font-[600]">
-                                            {nextLevelConfig?.LevelUpRewardPoint || "-"} Points
+                                            {overview?.rebateReward || '-'}
                                         </span>
                                     </div>
 
                                     <div className="flex flex-col">
                                         <span className="text-[#A3A3A3] text-base font-[400]">
-                                            Pool Fee
+                                            Upgrade Earnings
                                         </span>
                                         <span className="text-base font-[600] self-end">
-                                            {(nextLevelConfig?.PoolFee || 0) * 100 || "-"}%
+                                            {overview?.levelUpReward || '-'}
                                         </span>
                                     </div>
                                 </div>
@@ -176,29 +112,17 @@ const Valid = () => {
                     <MainCard>
                         <div className="flex flex-col gap-4">
                             <span className="text-lg font-[400] text-[#fff]">
-                                Invite your friends and get&nbsp;
-                                <span className="text-[#00F0FF]">15% of the points</span>
-                                &nbsp;your friends make.
+                                Invite your friends and earn&nbsp;
+                                <span className="italic text-[#00F0FF] font-bold">15%</span>
+                                &nbsp;of the Verifier/Prover Rewards your friends make.
                             </span>
                             <div className="flex flex-col gap-2">
-                                <span className="text-[#A3A3A3] text-base font-[500] leading-none">
-                                    Your referral code:
-                                </span>
-                                <Snippet
-                                    classNames={{
-                                        base: "bg-[#000]",
-                                    }}
-                                    symbol=""
-                                    codeString={referralUrl}
-                                    variant="bordered"
-                                >
-                                    {code}
-                                </Snippet>
+                                <ReferralCodeCopy />
                             </div>
                             <a
                                 className="w-full"
                                 target="_blank"
-                                href={twitterLink + `&url=${referralUrl}`}
+                                href={twitterLink + `&url=${getReferralUrl()}`}
                             >
                                 <Button
                                     type="gradient"
@@ -227,14 +151,11 @@ const Valid = () => {
                         </div>
                     </MainCard>
                 </div>
-                <MainCard title="Upgrade progress">
+                <MainCard title={<div className="flex flex-col gap-2">
+                    <span className="font-bold text-[#fff] text-2xl">Successful Invites</span>
+                    <span className="font-[400] text-[#737373] text-xs">Make sure your team members have their account activated! See <span className="underline">How Invites Work</span> for details.</span>
+                </div>}>
                     <>
-                        <div className="absolute bg-[#FFFFFF1F] px-2 py-1 rounded-full right-6 top-6 text-sm text-[#A3A3A3] font-[500]">
-                            Next Level:{" "}
-                            <span className="text-[#00F0FF]">
-                                +{nextLevelConfig?.LevelUpRewardPoint} Points
-                            </span>
-                        </div>
                         <div className="relative h-[10rem]">
                             <Progress
                                 size="md"
@@ -276,14 +197,43 @@ const Valid = () => {
                                                             : ENUM_ProgressStatus.pending
                                                 }
                                             >
-                                                {i?.Name}
+                                                <div className="flex flex-col gap-1">
+                                                    <Tooltip content={<div className="flex flex-col gap-1 text-sm">
+                                                        <div className="flex items-center gap-1 ">
+                                                            <span className="text-[#A1A1AA]">Reward</span>
+                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1 ">
+                                                            <span className="text-[#A1A1AA]">Pool Fee</span>
+                                                            <span className="text-[#fff]">{i?.PoolFee}%</span>
+                                                        </div>
+                                                    </div>}><span>{i?.Name}</span></Tooltip>
+                                                    <div className="flex items-center gap-1">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <g clipPath="url(#clip0_2574_89101)">
+                                                                <circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.2" />
+                                                                <circle cx="9.14328" cy="6.85714" r="2.85714" fill="white" />
+                                                                <path d="M4 14.5146C4 12.4948 5.63736 10.8574 7.65714 10.8574H10.6286C12.6484 10.8574 14.2857 12.4948 14.2857 14.5146C14.2857 15.0195 13.8764 15.4289 13.3714 15.4289H4.91429C4.40934 15.4289 4 15.0195 4 14.5146Z" fill="white" />
+                                                                <rect x="14.3125" y="6" width="0.875" height="3.5" rx="0.4375" fill="#00F0FF" />
+                                                                <rect x="16.5" y="7.3125" width="0.875" height="3.5" rx="0.4375" transform="rotate(90 16.5 7.3125)" fill="#00F0FF" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_2574_89101">
+                                                                    <rect width="20" height="20" fill="white" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+
+                                                        <span>{i?.Require}</span>
+                                                    </div>
+                                                </div>
                                             </ProgressLabel>
                                         </div>
                                     );
                                 })}
                                 {levelList?.slice(-1)?.map((i: any, index: any) => {
                                     return (
-                                        <div key={index} className="w-12 -translate-x-[3rem]">
+                                        <div key={index} className="w-12 ">
                                             <ProgressLabel
                                                 status={
                                                     currentLevel > i?.Level
@@ -293,7 +243,36 @@ const Valid = () => {
                                                             : ENUM_ProgressStatus.pending
                                                 }
                                             >
-                                                {i?.Name}
+                                                <div className="flex flex-col gap-1">
+                                                    <Tooltip content={<div className="flex flex-col gap-1 text-sm">
+                                                        <div className="flex items-center gap-1 ">
+                                                            <span className="text-[#A1A1AA]">Reward</span>
+                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint}</span>
+                                                        </div>
+                                                        <div className="flex items-center gap-1 ">
+                                                            <span className="text-[#A1A1AA]">Pool Fee</span>
+                                                            <span className="text-[#fff]">{i?.PoolFee}%</span>
+                                                        </div>
+                                                    </div>}><span>{i?.Name}</span></Tooltip>
+                                                    <div className="flex items-center gap-1">
+                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <g clipPath="url(#clip0_2574_89101)">
+                                                                <circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.2" />
+                                                                <circle cx="9.14328" cy="6.85714" r="2.85714" fill="white" />
+                                                                <path d="M4 14.5146C4 12.4948 5.63736 10.8574 7.65714 10.8574H10.6286C12.6484 10.8574 14.2857 12.4948 14.2857 14.5146C14.2857 15.0195 13.8764 15.4289 13.3714 15.4289H4.91429C4.40934 15.4289 4 15.0195 4 14.5146Z" fill="white" />
+                                                                <rect x="14.3125" y="6" width="0.875" height="3.5" rx="0.4375" fill="#00F0FF" />
+                                                                <rect x="16.5" y="7.3125" width="0.875" height="3.5" rx="0.4375" transform="rotate(90 16.5 7.3125)" fill="#00F0FF" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_2574_89101">
+                                                                    <rect width="20" height="20" fill="white" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg>
+
+                                                        <span>{BigNumber.max(i?.Require, 0).toString()}</span>
+                                                    </div>
+                                                </div>
                                             </ProgressLabel>
                                         </div>
                                     );
@@ -309,64 +288,14 @@ const Valid = () => {
                                     const flex = "flex-[" + v + "] ";
                                     return (
                                         <div key={index} style={{ flex: v }} className={flex}>
-                                            <ProgressIcon
-                                                status={
-                                                    currentLevel > i?.Level
-                                                        ? ENUM_ProgressStatus.finish
-                                                        : currentLevel == i?.Level
-                                                            ? ENUM_ProgressStatus.ongoing
-                                                            : ENUM_ProgressStatus.pending
-                                                }
-                                            />
+                                            <img className="size-10" src={i?.Icon} />
                                         </div>
                                     );
                                 })}
                                 {levelList?.slice(-1)?.map((i: any, index: any) => {
                                     return (
                                         <div key={index} className="w-12">
-                                            <ProgressIcon
-                                                status={
-                                                    currentLevel > i?.Level
-                                                        ? ENUM_ProgressStatus.finish
-                                                        : currentLevel == i?.Level
-                                                            ? ENUM_ProgressStatus.ongoing
-                                                            : ENUM_ProgressStatus.pending
-                                                }
-                                            />
-                                        </div>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="w-full absolute flex items-center top-1/2 -translate-y-3/4">
-                                {levelList?.slice(0, -1)?.map((i: any, index: any) => {
-                                    const v = BigNumber(i?.Require)
-                                        .div(totalInviteValue)
-                                        .multipliedBy(100)
-                                        .toFixed(0, BigNumber.ROUND_DOWN);
-                                    const flex = "flex-[" + v + "] ";
-                                    return (
-                                        <div
-                                            key={index}
-                                            style={{ flex: v }}
-                                            className={clsx(
-                                                flex,
-                                                "text-sm text-[#A3A3A3] font-[500]",
-                                                index != 0 ? " [&>div]:-translate-x-[16px]" : ""
-                                            )}
-                                        >
-                                            <div>{i?.Require} Referrals</div>
-                                        </div>
-                                    );
-                                })}
-                                {levelList?.slice(-1)?.map((i: any, index: any) => {
-                                    return <div className="whitespace-nowrap w-12 -translate-x-[2rem] text-sm text-[#A3A3A3] font-[500] text-right">-</div>
-                                    return (
-                                        <div
-                                            key={index}
-                                            className="whitespace-nowrap w-12 -translate-x-[2rem] text-sm text-[#A3A3A3] font-[500]"
-                                        >
-                                            <div>{i?.Require} Referrals</div>
+                                            <img className="size-10" src={i?.Icon} />
                                         </div>
                                     );
                                 })}
@@ -376,7 +305,7 @@ const Valid = () => {
                 </MainCard>
             </div>
 
-            <Detail />
+            <Detail overview={overview}/>
         </div>
     );
 };

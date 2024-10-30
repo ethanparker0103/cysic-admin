@@ -1,12 +1,14 @@
 import ConnectButton from "@/components/connectButton";
 import DigitInputs from "@/components/DigitInputs";
+import useAccount from "@/hooks/useAccount";
 import { getImageUrl } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import useAccount from "@/hooks/useAccount";
+import { useAccount as useWagmiAccount } from "wagmi";
+
 
 const investors = [
     {
@@ -57,13 +59,14 @@ const investors = [
 
 const FillReferralCode = () => {
     const navigate = useNavigate()
-    const { address }= useAccount()
+    const { address: rawAddress }= useWagmiAccount()
+    const { address } = useAccount()
     const [searchParams, setSearchhParams] = useSearchParams()
     const [tempParams, setTempParams] = useState<any>()
     const codeFromUrl = searchParams.get('code')
     const [value, setValue] = useState<string>('')
 
-    const handleValueChange = (v) => {
+    const handleValueChange = (v: any) => {
         setValue(v)
     };
 
@@ -76,13 +79,14 @@ const FillReferralCode = () => {
     }, [codeFromUrl])
 
     // 10.6 绑定邀请码
-    useRequest(() => axios.put(`/api/v1/referral/bind/${value}/${address}`), {
-        ready: !!value && value?.length == 5 && !!address,
-        refreshDeps: [value, address],
+    useRequest(() => axios.put(`/api/v1/referral/bind/${value}/${rawAddress}`), {
+        ready: !!value && value?.length == 5 && !!rawAddress,
+        refreshDeps: [value, rawAddress],
         debounceWait: 300,
         onSuccess(e){
             toast.success('Bind SuccessFully')
-            navigate('/dashboard/referral')
+            // navigate('/dashboard/referral')
+            dispatchEvent(new CustomEvent('refresh_profile'))
         },
         onError(e){
             toast.error(e?.message)
@@ -93,15 +97,11 @@ const FillReferralCode = () => {
         <div className="flex flex-col gap-12 items-center pt-10">
             <div className="flex flex-col gap-20">
                 <div className="text-[40px] font-[500] text-center">
-                    ENTER YOUR <span className="text-gradient">INVITE CODE</span> TO JOIN
+                    ENTER YOUR <span className="text-gradient">INVITE CODE</span>
                 </div>
                 <div className="flex flex-col gap-8 items-center text-base w-fit mx-auto">
                     <DigitInputs n={5} value={value} onValueChange={handleValueChange} />
-                    {
-                        address ? null : <ConnectButton />
-                    }
-                    {/* {address ? <DigitInputs n={5} value={value} onValueChange={handleValueChange} /> : <ConnectButton />} */}
-                    
+
                     <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
                         <div className="text-sm flex items-center gap-2 w-full">
                             <div className="h-px bg-[#FFFFFF1F] w-full"/>
@@ -109,7 +109,10 @@ const FillReferralCode = () => {
                             <div className="h-px bg-[#FFFFFF1F] w-full"/>
                         </div>
                         <div>Already Joined?</div>
-                        <div className="text-[#fff] cursor-pointer">Switch to another Address</div>
+                        {
+                            rawAddress ? (<div className="text-[#fff] cursor-pointer">Switch to another Address</div>) : (<ConnectButton className="!w-full"/>)
+                        }
+                        
 
                         <div className="text-sm flex items-center cursor-pointer">
                             Read about cysic{" "}

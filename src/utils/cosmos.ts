@@ -20,7 +20,8 @@ declare global{
     }
 }
 
-const provider = window?.keplr
+let provider = window?.keplr
+export const updateProvider = ()=>provider = window?.keplr
 
 const set = useCosmos.getState().setState
 // const rpc = 'http://dev-node-1.prover.xyz'
@@ -230,4 +231,14 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
     return result;
 }
 
+export const checkKeplrWallet = ()=>{
+    const status = !!useCosmos.getState().address && !!useCosmos.getState().client
+    if(!status){
+        dispatchEvent(new CustomEvent('modal_download_keplr_visible', {
+            detail: {visible: true}
+        }))
+
+        throw {message: 'Invalid Cosmos Wallet'}
+    }
+}
 export { connectWallet }

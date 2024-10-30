@@ -41,6 +41,7 @@
     "google-protobuf": "^3.21.4",
     "i18next": "^23.11.5",
     "lodash-es": "^4.17.21",
+    "lucide-react": "^0.454.0",
     "merkletreejs": "^0.3.11",
     "qs": "^6.12.1",
     "react": "^18.2.0",

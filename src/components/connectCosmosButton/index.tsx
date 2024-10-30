@@ -15,8 +15,10 @@ import {
 } from "@nextui-org/react";
 import copy from "copy-to-clipboard";
 import toast from "react-simple-toasts";
+import useModalState from "@/hooks/useModalState";
 
 export default function ConnectCosmosButton({ className, content }: any) {
+  const { dispatch } = useModalState({eventName: 'modal_download_keplr_visible'})
   const { t } = useTranslation();
   const {
     hasConnectedWithKeplr,
@@ -54,7 +56,7 @@ export default function ConnectCosmosButton({ className, content }: any) {
                 wordBreak: "break-word",
               }}
               className={clsx(
-                "w-fit break-words rounded-[6px] bg-[#FFFFFF1F] cursor-pointer flex flex-row items-center gap-3 flex",
+                "w-fit break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex",
                 isMobile ? "px-2 h-8" : "px-3 py-1 h-10"
               )}
             >
@@ -94,11 +96,8 @@ export default function ConnectCosmosButton({ className, content }: any) {
 
   return (
     <Button
-      onClick={connectWallet}
-      type="normal"
-      style={{
-        background: "linear-gradient(83.04deg, #8624D3 5.44%, #54F2FF 54.92%)",
-      }}
+      onClick={()=>dispatch({visible: true})}
+      type="gradient"
       className={clsx(
         "w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] ",
         isMobile ? "!min-h-8 !h-8 !px-2" : "px-4 !min-h-10 !h-10 py-[0.625rem]",
