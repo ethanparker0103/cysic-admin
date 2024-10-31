@@ -4,12 +4,14 @@ import useUser from "@/models/_global/user";
 import { useEventListener, useRequest } from "ahooks";
 import axios from "axios";
 import useReferral from "@/models/_global/referral";
+import { useNavigate } from "react-router-dom";
 
 const formatArray = (v: any) => {
     return Array.isArray(v) ? v : [v]
 }
 
 const useMetadata = () => {
+    const navigate = useNavigate()
     const { address } = useAccount()
     const { createAddress, phase2ModalStatus } = useUser()
     const { authMap } = useAuth(); // 状态初始为null，表示正在检查
