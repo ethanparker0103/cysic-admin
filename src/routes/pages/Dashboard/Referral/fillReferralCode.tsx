@@ -61,7 +61,7 @@ const investors = [
 
 const FillReferralCode = () => {
     const { runAsync } = useMetadata()
-    const { authMap } = useAuth();
+    const { authMap, updateAddress } = useAuth();
     const navigate = useNavigate();
     const { address: rawAddress } = useWagmiAccount();
     const { address } = useAccount();
@@ -121,7 +121,7 @@ const FillReferralCode = () => {
                     toast.success('Successfully Signed In')
                 }
             })
-            // dispatchEvent(new CustomEvent("refresh_profile"));
+            updateAddress(rawAddress, { valid: true })
             navigate("/my");
         },
         onError(e) {

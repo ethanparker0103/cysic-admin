@@ -988,7 +988,7 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-3">
-                {cosmosAddress ? (
+                {cosmosAddress && enableCosmosUrl.includes(pathname) ? (
                   <div
                     onClick={() => dispatch({ visible: true })}
                     className="rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"

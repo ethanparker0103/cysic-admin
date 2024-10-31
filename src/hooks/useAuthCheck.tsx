@@ -62,11 +62,12 @@ const useAuthCheck = () => {
                     dispatchEvent(new CustomEvent('refresh_profile'))
                 }
 
+                console.log('from?.current', from?.current)
 
                 if (from?.current?.includes('referral/invite') || from?.current == '/') {
                     navigate('/my', { replace: true })
                 } else {
-                    navigate(from?.current || '/my', { replace: true })
+                    navigate(from?.current, { replace: true })
                 }
             })
         }

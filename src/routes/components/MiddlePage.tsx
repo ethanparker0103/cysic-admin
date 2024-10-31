@@ -10,26 +10,16 @@ const MiddlePage = ({ children }: any) => {
     const { authMap, updateAddress } = useAuth(); // 状态初始为null，表示正在检查
     const auth = authMap?.[address as string]?.auth
 
-    useAccountEffect({
-        onConnect(){
+    useEffect(() => {
+        if (!al && connector && address && !auth) {
+            al = true
             signMessageAsync({ message: 'Welcome to Cysic！' }).then(res => {
                 updateAddress(address, { auth: res })
             }).catch((e: any)=>{
                 console.log('error', e)
             }).finally(()=>{al = false})
         }
-    })
-
-    // useEffect(() => {
-    //     if (!al && connector && address && !auth) {
-    //         al = true
-    //         signMessageAsync({ message: 'Welcome to Cysic！' }).then(res => {
-    //             updateAddress(address, { auth: res })
-    //         }).catch((e: any)=>{
-    //             console.log('error', e)
-    //         }).finally(()=>{al = false})
-    //     }
-    // }, [connector, address, auth])
+    }, [connector, address, auth])
 
 
     return children
