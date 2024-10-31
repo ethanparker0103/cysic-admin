@@ -67,7 +67,7 @@ const useAuthCheck = () => {
                 if (from?.current?.includes('referral/invite') || from?.current == '/') {
                     navigate('/my', { replace: true })
                 } else {
-                    navigate(from?.current, { replace: true })
+                    navigate(from?.current || '/my', { replace: true })
                 }
             })
         }
