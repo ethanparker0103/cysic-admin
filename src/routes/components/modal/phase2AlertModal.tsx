@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import useUser from "@/models/_global/user";
+import { mediasLink } from "@/config";
 
 const descList = [
   {
@@ -13,7 +14,7 @@ const descList = [
     desc: (
       <div >
         Introducing our new token model, $CYS and $CGT, built to optimize
-        network incentives and governance. <span className="cursor-pointer text-[#00F0FF] underline">Learn more</span> about how
+        network incentives and governance. <span onClick={()=>window.open(mediasLink.twitterWhitePaper, '_blank')} className="cursor-pointer text-[#00F0FF] underline">Learn more</span> about how
         these two tokens work together to power the Cysic ecosystem.
       </div>
     ),
@@ -73,7 +74,7 @@ const Phase2DescModal = () => {
           <Button className="flex-1" type="solidGradient" onClick={handleClose}>
             Got it
           </Button>
-          <Button className="flex-1" type="gradient">
+          <Button className="flex-1" type="gradient" onClick={()=>window.open(mediasLink.twitterWhitePaper, '_blank')}>
             Learn More
           </Button>
         </div>

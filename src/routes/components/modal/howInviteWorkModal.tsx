@@ -32,7 +32,7 @@ const descList = [
         progress: 100,
         title: 'Earn Instant Point Rebates from Your Team',
         img: getImageUrl('@/assets/images/howInviteWorks/step-3.png'),
-        desc: <div className="flex flex-col gap-1">
+        desc: <div className="flex flex-col gap-1 text-[#A1A1AA]">
             <span>After the people you invite and those they invite join Cysic, whenever they earn points, you’ll immediately receive <span className="text-[#00F0FF]">16%</span> of the points earned by your direct invites from being a Verifier/Prover and <span className="text-[#00F0FF]">8%</span> from their invites, regardless of whether they are activated users or not</span>
         </div>
     },

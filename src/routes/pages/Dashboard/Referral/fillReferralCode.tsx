@@ -1,101 +1,140 @@
 import ConnectButton from "@/components/connectButton";
 import DigitInputs from "@/components/DigitInputs";
+import { mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
+import useMetadata from "@/hooks/useMetadata";
 import useAuth from "@/models/_global/auth";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, shortStr } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAccount as useWagmiAccount } from "wagmi";
 
-
 const investors = [
     {
-        name: 'polycain',
-        img: getImageUrl('@/assets/images/investors/POLYCHAIN.png')
+        name: "polycain",
+        img: getImageUrl("@/assets/images/investors/POLYCHAIN.png"),
     },
     {
-        name: 'hashkey',
-        img: getImageUrl('@/assets/images/investors/HASHKEY.png')
+        name: "hashkey",
+        img: getImageUrl("@/assets/images/investors/HASHKEY.png"),
     },
     {
-        name: 'OKX',
-        img: getImageUrl('@/assets/images/investors/OKX.png')
+        name: "OKX",
+        img: getImageUrl("@/assets/images/investors/OKX.png"),
     },
     {
-        name: 'abcde',
-        img: getImageUrl('@/assets/images/investors/ABCDE.png')
+        name: "abcde",
+        img: getImageUrl("@/assets/images/investors/ABCDE.png"),
     },
     {
-        name: 'matrix',
-        img: getImageUrl('@/assets/images/investors/MATRIX.png')
+        name: "matrix",
+        img: getImageUrl("@/assets/images/investors/MATRIX.png"),
     },
     {
-        name: 'web3',
-        img: getImageUrl('@/assets/images/investors/WEB3.png')
+        name: "web3",
+        img: getImageUrl("@/assets/images/investors/WEB3.png"),
     },
     {
-        name: 'snz',
-        img: getImageUrl('@/assets/images/investors/SNZ.png')
+        name: "snz",
+        img: getImageUrl("@/assets/images/investors/SNZ.png"),
     },
     {
-        name: 'bitdigital',
-        img: getImageUrl('@/assets/images/investors/BITDIGITAL.png')
+        name: "bitdigital",
+        img: getImageUrl("@/assets/images/investors/BITDIGITAL.png"),
     },
     {
-        name: 'idg',
-        img: getImageUrl('@/assets/images/investors/IDG.png')
+        name: "idg",
+        img: getImageUrl("@/assets/images/investors/IDG.png"),
     },
     {
-        name: 'coinswitch',
-        img: getImageUrl('@/assets/images/investors/COINSWITCH.png')
+        name: "coinswitch",
+        img: getImageUrl("@/assets/images/investors/COINSWITCH.png"),
     },
     {
-        name: 'a&t',
-        img: getImageUrl('@/assets/images/investors/A&T.png')
+        name: "a&t",
+        img: getImageUrl("@/assets/images/investors/A&T.png"),
     },
-]
+];
 
 const FillReferralCode = () => {
-    const { authMap } = useAuth()
-    const navigate = useNavigate()
-    const { address: rawAddress }= useWagmiAccount()
-    const { address } = useAccount()
-    const [searchParams, setSearchhParams] = useSearchParams()
-    const [tempParams, setTempParams] = useState<any>()
-    const codeFromUrl = searchParams.get('code')
-    const [value, setValue] = useState<string>('')
-    const auth = authMap?.[rawAddress as string]?.auth
+    const { runAsync } = useMetadata()
+    const { authMap } = useAuth();
+    const navigate = useNavigate();
+    const { address: rawAddress } = useWagmiAccount();
+    const { address } = useAccount();
+    const [searchParams, setSearchhParams] = useSearchParams();
+    const [tempParams, setTempParams] = useState<any>();
+    const codeFromUrl = searchParams.get("code");
+    const [value, setValue] = useState<string>("");
+    const auth = authMap?.[rawAddress as string]?.auth;
+    const [exist, setExist] = useState<undefined | boolean>(undefined)
+    const cacheCode = useRef<any>()
 
     const handleValueChange = (v: any) => {
-        setValue(v)
+        setValue(v);
     };
 
-    useEffect(()=>{
-        if(codeFromUrl){
-            setTempParams(codeFromUrl)
-            handleValueChange(codeFromUrl)
-            setSearchhParams({})
+    useEffect(() => {
+        if (codeFromUrl) {
+            setTempParams(codeFromUrl);
+            handleValueChange(codeFromUrl);
+            setSearchhParams({});
         }
-    }, [codeFromUrl])
+    }, [codeFromUrl]);
 
-    // 10.6 绑定邀请码
-    useRequest(() => axios.put(`/api/v1/referral/bind/${value}/${rawAddress}`), {
-        ready: !!value && value?.length == 5 && !!auth,
-        refreshDeps: [value, auth],
+    useRequest(() => {
+        cacheCode.current = value
+        return axios.get(`/api/v1/referral/check/${value}`)
+    }, {
+        ready: !!value && value?.length == 5,
+        refreshDeps: [value],
         debounceWait: 300,
-        onSuccess(e){
-            toast.success('Bind SuccessFully')
-            // navigate('/dashboard/referral')
-            dispatchEvent(new CustomEvent('refresh_profile'))
+        onSuccess(e) {
+            const exist = e?.data?.exist
+            setExist(exist)
+            if (exist) {
+                toast.success(`Invite Code Success: ${cacheCode.current}`);
+            } else {
+                toast.error(`Invalid Invite Code: ${cacheCode.current}`);
+            }
+
         },
-        onError(e){
-            toast.error(e?.message)
-        }
     })
 
+    // 10.6 绑定邀请码
+    useRequest(() => {
+        // if (!exist || value?.length != 5 || !auth) return;
+        return axios.put(`/api/v1/referral/bind/${value}/${rawAddress}`)
+    }, {
+        ready: !!exist && !!value && value?.length == 5 && !!auth,
+        refreshDeps: [value, auth, exist],
+        debounceWait: 300,
+        async onSuccess(e) {
+            runAsync().then((res) => {
+                const needRegister = res?.needRegister
+                if (needRegister) {
+                    toast.success('Register your account')
+                } else {
+                    toast.success('Successfully Signed In')
+                }
+            })
+            // dispatchEvent(new CustomEvent("refresh_profile"));
+            navigate("/my");
+        },
+        onError(e) {
+            toast.error(e?.message);
+        },
+    });
+
+    useEffect(() => {
+        return () => {
+            setExist(undefined)
+            cacheCode.current = undefined
+        }
+    }, [])
     return (
         <div className="flex flex-col gap-12 items-center pt-10">
             <div className="flex flex-col gap-20">
@@ -106,18 +145,26 @@ const FillReferralCode = () => {
                     <DigitInputs n={5} value={value} onValueChange={handleValueChange} />
 
                     <div className="w-full flex flex-col gap-4 items-center text-[#A3A3A3]">
-                        <div className="text-sm flex items-center gap-2 w-full">
-                            <div className="h-px bg-[#FFFFFF1F] w-full"/>
-                            <span>OR</span>
-                            <div className="h-px bg-[#FFFFFF1F] w-full"/>
-                        </div>
-                        <div>Already Joined?</div>
-                        {
-                            rawAddress ? (<div className="text-[#fff] cursor-pointer">Switch to another Address</div>) : (<ConnectButton className="!w-full"/>)
-                        }
-                        
+                        {value ? null : (
+                            <>
+                                <div className="text-sm flex items-center gap-2 w-full">
+                                    <div className="h-px bg-[#FFFFFF1F] w-full" />
+                                    <span>OR</span>
+                                    <div className="h-px bg-[#FFFFFF1F] w-full" />
+                                </div>
+                                <div>Already Joined?</div>
+                            </>
+                        )}
+                        {rawAddress ? (
+                            <div className="text-[#fff]">
+                                Your current Address:{" "}
+                                <span className="underline">{shortStr(rawAddress, 12)}</span>
+                            </div>
+                        ) : (
+                            <ConnectButton className="!w-full" />
+                        )}
 
-                        <div className="text-sm flex items-center cursor-pointer">
+                        <div className="text-sm flex items-center cursor-pointer" onClick={()=>window.open(mediasLink.twitter, '_blank')}>
                             Read about cysic{" "}
                             <svg
                                 width="15"
@@ -140,20 +187,59 @@ const FillReferralCode = () => {
 
             <div className="flex flex-col gap-12 pt-6 items-center">
                 <div className="flex items-center gap-3">
-                    <svg width="121" height="1" viewBox="0 0 121 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0.5" y1="0.5" x2="120.5" y2="0.5" stroke="url(#paint0_linear_1495_24239)" />
+                    <svg
+                        width="121"
+                        height="1"
+                        viewBox="0 0 121 1"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <line
+                            x1="0.5"
+                            y1="0.5"
+                            x2="120.5"
+                            y2="0.5"
+                            stroke="url(#paint0_linear_1495_24239)"
+                        />
                         <defs>
-                            <linearGradient id="paint0_linear_1495_24239" x1="0.5" y1="1.5" x2="120.5" y2="1.5" gradientUnits="userSpaceOnUse">
+                            <linearGradient
+                                id="paint0_linear_1495_24239"
+                                x1="0.5"
+                                y1="1.5"
+                                x2="120.5"
+                                y2="1.5"
+                                gradientUnits="userSpaceOnUse"
+                            >
                                 <stop stopColor="#00F0FF" stopOpacity="0" />
                                 <stop offset="1" stopColor="#00F0FF" />
                             </linearGradient>
                         </defs>
                     </svg>
                     <div className="text-[40px] uppercase">Investors</div>
-                    <svg className="rotate-180" width="121" height="1" viewBox="0 0 121 1" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line x1="0.5" y1="0.5" x2="120.5" y2="0.5" stroke="url(#paint0_linear_1495_24239)" />
+                    <svg
+                        className="rotate-180"
+                        width="121"
+                        height="1"
+                        viewBox="0 0 121 1"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <line
+                            x1="0.5"
+                            y1="0.5"
+                            x2="120.5"
+                            y2="0.5"
+                            stroke="url(#paint0_linear_1495_24239)"
+                        />
                         <defs>
-                            <linearGradient id="paint0_linear_1495_24239" x1="0.5" y1="1.5" x2="120.5" y2="1.5" gradientUnits="userSpaceOnUse">
+                            <linearGradient
+                                id="paint0_linear_1495_24239"
+                                x1="0.5"
+                                y1="1.5"
+                                x2="120.5"
+                                y2="1.5"
+                                gradientUnits="userSpaceOnUse"
+                            >
                                 <stop stopColor="#00F0FF" stopOpacity="0" />
                                 <stop offset="1" stopColor="#00F0FF" />
                             </linearGradient>
@@ -162,15 +248,14 @@ const FillReferralCode = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-10 w-full max-w-[1200px] mx-auto">
-                    {
-                        investors.map((i,index)=>{
-                            return <div key={i.name} className="w-[140px]">
-                                <img className="w-full" src={i.img}/>
+                    {investors.map((i, index) => {
+                        return (
+                            <div key={i.name} className="w-[140px]">
+                                <img className="w-full" src={i.img} />
                             </div>
-                        })
-                    }
+                        );
+                    })}
                 </div>
-
             </div>
         </div>
     );

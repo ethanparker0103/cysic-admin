@@ -94,11 +94,6 @@ const Assets = () => {
           <div className="flex flex-wrap gap-2">
             <Verticle
               className="w-[calc(50%-0.5rem)]"
-              title="Activity CYS"
-              desc={cysList?.activity || '-'}
-            />
-            <Verticle
-              className="w-[calc(50%-0.5rem)]"
               title="Prover CYS"
               desc={cysList?.prover || '-'}
             />
@@ -162,11 +157,6 @@ const Assets = () => {
           </div>
 
           <div className="flex flex-wrap gap-2">
-            <Verticle
-              className="w-[calc(50%-0.5rem)]"
-              title="Activity CGT"
-              desc={cgtList?.activity || '-'}
-            />
             <Verticle
               className="w-[calc(50%-0.5rem)]"
               title="Prover CGT"

@@ -95,3 +95,14 @@ export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryStri
 })}`
 
 export const getReferralUrl = ()=>`${window.location.origin}/m/referral/invite${useReferral.getState().code ? `?code=${useReferral.getState().code}` : ''}`
+
+
+export const mediasLink = {
+    whitePaper: 'https://bit.ly/cysicnetworkwhitepaper',
+    discord: 'https://bit.ly/CysicDC',
+    twitter: 'https://bit.ly/Cysic_xyz',
+    medium: 'https://bit.ly/CysicMedium',
+    twitterWhitePaper: 'https://x.com/cysic_xyz/status/1846960627878866984'
+}
+
+export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/']

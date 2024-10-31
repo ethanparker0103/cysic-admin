@@ -1,5 +1,6 @@
 import useMetadata from "@/hooks/useMetadata";
 import useAuth from "@/models/_global/auth";
+import { useEventListener } from "ahooks";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,7 +10,10 @@ const whiteList = ['about', 'faq', 'aleopool', 'register']?.map(i => [i, '/' + i
 
 const useAuthCheck = () => {
     // const [from, setFrom] = useState<any>()
-    useMetadata()
+    const { runAsync } = useMetadata()
+    useEventListener('refresh_profile', ()=>{
+        runAsync()
+    })
     const from = useRef<string>()
     // const setFrom = v => from.current = v
     const { pathname } = useLocation()

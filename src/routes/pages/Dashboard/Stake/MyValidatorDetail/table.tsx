@@ -141,6 +141,7 @@ const UserTable = () => {
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Unstake</Button>
         </div>
+      case 'expected_apr':
       case 'commission_rate':
         return +getKeyValue(item, columnKey) + '%';
       default:
