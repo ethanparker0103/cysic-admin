@@ -1,5 +1,7 @@
+import Ad from "@/components/ad";
 import Button from "@/components/Button"
-import { getReferralUrl, twitterLink } from "@/config";
+import { getReferralUrl, mediasLink, twitterLink } from "@/config";
+import useAccount from "@/hooks/useAccount";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import { getImageUrl } from "@/utils/tools"
 import clsx from "clsx"
@@ -13,6 +15,7 @@ const Card = ({ className, children }: any) => {
 
 const About = () => {
     const navigate = useNavigate()
+    const {address} = useAccount()
 
     return <>
         <MainContainer className="gap-8" title={<div className="uppercase">Start <span className="text-gradient">earning</span> in 3 steps</div>}>
@@ -26,7 +29,7 @@ const About = () => {
                             <span>Looking for an invite code? Join our community to find and share yours!</span>
                         </div>
                     </div>
-                    <Button onClick={() => window.open('https://discord.com/invite/cysic', '_blank')} type="solidGradient"><img src={getImageUrl('@/assets/images/media/discord.svg')} />Join Discord</Button>
+                    <Button onClick={() => window.open(mediasLink.discord, '_blank')} type="solidGradient"><img src={getImageUrl('@/assets/images/media/discord.svg')} />Join Discord</Button>
                     <div className="text-sm text-[#737373] font-[400]">*Phase I whitelist holders can directly access Phase II for their early contributions!</div>
                 </Card>
                 <Card className="flex-1 min-w-[354px] flex flex-col gap-6 py-10 px-6 rounded-[20px]">
@@ -38,8 +41,8 @@ const About = () => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-3">
-                        <Button onClick={() => navigate('/dashboard/verifier')} type="solidGradient">Become a Verifier<ArrowRight size={16} /></Button>
-                        <Button onClick={() => navigate('/dashboard/prover')} type="solidGradient">Become a Prover<ArrowRight size={16} /></Button>
+                        <Button disabled={!address} onClick={() => navigate('/dashboard/verifier')} type="solidGradient">Become a Verifier<ArrowRight size={16} /></Button>
+                        <Button disabled={!address} onClick={() => navigate('/dashboard/prover')} type="solidGradient">Become a Prover<ArrowRight size={16} /></Button>
                     </div>
                     <div className="text-sm text-[#737373] font-[400]">*Certain hardware specifications are required for becoming a verifier or prover.</div>
                 </Card>
@@ -52,7 +55,7 @@ const About = () => {
                             <span>Boost your reward by the referral program!</span>
                         </div>
                     </div>
-                    <Button onClick={() => {
+                    <Button disabled={!address} onClick={() => {
                         const link = twitterLink + `&url=${getReferralUrl()}`
                         window.open(link, '_blank')
                     }} type="solidGradient"><img src={getImageUrl('@/assets/images/media/twitter.svg')} />Tweet for more points</Button>
@@ -60,13 +63,7 @@ const About = () => {
                 </Card>
             </div>
 
-            <div className="bg-[#913FEF33] py-6 px-8 relative h-[12.5rem] rounded-[20px] overflow-hidden">
-                <div className="flex flex-col gap-3 max-w-[32.5rem]">
-                    <div className="Gemsbuck uppercase text-[32px] font-bold">Maximize your <span className="text-gradient">reward</span> with Cysic Network Triple Reward System</div>
-                    <div className="text-[#A1A1AA] text-sm font-[300]">Our unique reward structure lets you contribute computational power and earn in three ways</div>
-                </div>
-                <img className="scale-[1.2] absolute h-full top-0 right-0" src={getImageUrl('@/assets/images/about/bg.png')} />
-            </div>
+            <Ad />
 
             <div className="flex items-stretch gap-2">
                 <div className="gradient-border rounded-[20px] flex-1">
@@ -94,7 +91,9 @@ const About = () => {
                             <span>If you are a prover, you can also delegate your VeCompute tokens (VeScroll/VeAleo) to get rewards. </span>
                         </div>
 
-                        <div className="text-[#00F0FF] text-xs font-[400] flex-1 items-end flex">*Read more on our Whitepaper.</div>
+                        <a href={mediasLink.whitePaper} target="_blank">
+                            <div className="text-[#00F0FF] text-xs font-[400] flex-1 items-end flex">*Read more on our Whitepaper.</div>
+                        </a>
                     </Card>
                 </div>
 
@@ -107,11 +106,11 @@ const About = () => {
                         <div className="text-[20px] font-bold text-[#fff]">Boost with Referrals</div>
                         <img className="self-center w-full" src={getImageUrl('@/assets/images/about/item-3.png')} />
                         <div className="flex flex-col gap-2 text-sm text-[#D3D3D3]">
-                            <span>Simply keep your Verifier Node running to earn $CYS and $CGT tokens by contributing to the verification for Cysic Network. </span>
-                            <span>Running Prover Node to earn VeCompute tokens (VeScroll/VeAleo) by ZKPs generation for projects.</span>
+                            <span>Invite others to join the Cysic Network and earn bonus rewards for each friend who joins. </span>
+                            <span>Enjoy 15% of your friend’s earnings.</span>
                         </div>
 
-                        <div className="text-[#00F0FF] text-xs font-[400] flex-1 items-end flex">*Read more on our Whitepaper.</div>
+                        <div onClick={()=>{dispatchEvent(new CustomEvent('modal_how_invite_work_visible', {detail: {visible: true}}))}} className="cursor-pointer text-[#00F0FF] text-xs font-[400] flex-1 items-end flex">*Check here to see how invites work.</div>
                     </Card>
                 </div>
 

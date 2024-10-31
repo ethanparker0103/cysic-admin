@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import Pagination from "@/components/Pagination";
-import { commonPageSize, cysicStCoin } from "@/config";
+import { blockTime, commonPageSize, cysicStCoin } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import useValidator from "@/models/_global/validator";
 import { StakeTab } from "@/routes/pages/Dashboard/Stake/Modal/stake";
@@ -64,6 +64,7 @@ const UserTable = () => {
       });
     },
     {
+      pollingInterval: blockTime.long,
       refreshDeps: [address],
       onSuccess(res) {
         const list = res?.data?.list?.map(i=>{
@@ -121,6 +122,7 @@ const UserTable = () => {
             }))
           }} className="min-h-fit h-fit py-2" type="solid">Stake</Button>
         </div>
+      case 'expected_apr':
       case 'commission_rate':
         return +getKeyValue(item, columnKey) + '%';
       default:

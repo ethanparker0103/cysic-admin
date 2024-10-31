@@ -20,26 +20,28 @@ const useMetadata = () => {
     const handleSearch = async () => {
         if (!auth) return;
         
-        const res: any = await Promise.allSettled([axios.get(`/api/v1/dashboard/queryByReward/${address}`), axios.post(`/api/v1/referral/${address}/genCode`)])  
-        const queryData = res?.[0]?.value?.data
-        const bindCodeData = res?.[1]?.value?.data
-        setReferralState({code: bindCodeData?.code})
+        const res: any = await axios.get(`/api/v1/myPage/${address}/profile`)
 
-        const project = formatArray(queryData?.project)?.filter(i => i?.ID)
-        const provider = formatArray(queryData?.provider)?.filter(i => i?.ID)
-        const verifier = formatArray(queryData?.verifier)?.filter(i => i?.ID)
+        const queryData = res?.data?.searchResult
+        const bindCodeData = res?.data?.referralCode
+        setReferralState({code: bindCodeData})
+
+        const project = formatArray(queryData?.Project)?.filter(i => i?.ID)
+        const provider = formatArray(queryData?.Provider)?.filter(i => i?.ID)
+        const verifier = formatArray(queryData?.Verifier)?.filter(i => i?.ID)
 
         const registered = project?.find(i => i.ID != 0) || provider?.find(i => i.ID != 0) || verifier?.find(i => i.ID != 0)
 
         const needRegister = !registered
-        const notInWhitelist = !queryData?.inWhitelist
+        const notInWhitelist = !res?.data?.inWhitelist
 
         createAddress(address, {
             notInWhitelist,
             project,
             provider,
             verifier,
-            needRegister
+            needRegister,
+            ...res?.data
         })
 
         console.log('needRegister', needRegister)
@@ -58,6 +60,10 @@ const useMetadata = () => {
                 }))
             }
         }
+
+        return {
+            needRegister
+        }
     };
 
 
@@ -72,11 +78,6 @@ const useMetadata = () => {
                 }))
             }
         }
-    })
-
-
-    useEventListener('refresh_profile', ()=>{
-        runAsync()
     })
 
     return { runAsync }

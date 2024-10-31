@@ -1,7 +1,9 @@
+import { mediasLink } from "@/config";
+
 const Media = () => {
   return (
     <div className="flex items-center gap-2 justify-center w-full">
-      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open('https://discord.com/invite/cysic', '_blank')}>
+      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.discord, '_blank')}>
         <svg
           width="32"
           height="32"
@@ -24,7 +26,7 @@ const Media = () => {
         </svg>
       </div>
 
-      <div className="text-[white] hover:text-[#000] group/item">
+      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.twitter, '_blank')}>
         <svg
           width="32"
           height="32"
@@ -49,7 +51,7 @@ const Media = () => {
         </svg>
       </div>
 
-      <div className="text-[white] hover:text-[#000] group/item">
+      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.medium, '_blank')}>
         <svg
           width="32"
           height="32"

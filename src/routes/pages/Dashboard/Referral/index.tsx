@@ -111,7 +111,7 @@ const Referral = () => {
                         <div>Invite</div>
                         <Button onClick={()=>dispatch({visible: true})} className="text-[#fff] p-0 rounded-full h-fit min-h-fit" type="solidGradient">
                             <div className="flex items-center gap-1 gradient-sub-bg text-xs px-2 py-1">
-                                How invite work <ArrowUpRight size={12} />
+                                How invite works <ArrowUpRight size={12} />
                             </div>
                         </Button>
                     </div>
@@ -119,7 +119,6 @@ const Referral = () => {
             >
                 <Valid />
             </MainContainer>
-            <HowInviteWorkModal />
         </>
     );
 };

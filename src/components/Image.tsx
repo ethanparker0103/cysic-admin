@@ -10,17 +10,16 @@ const Image = ({ src, ...props }: any) => {
         setForceSrc(basicSrc)
     }
     return forceSrc ? (
-        <svg className={props?.className} width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clipPath="url(#clip0_176_10923)">
-                <path d="M32 64C49.6731 64 64 49.6731 64 32C64 14.3269 49.6731 0 32 0C14.3269 0 0 14.3269 0 32C0 49.6731 14.3269 64 32 64Z" fill="#21E9FA" />
-                <text x="32" y="32" style={{ 'dominant-baseline': 'middle', 'text-anchor': 'middle' }} fill="#032E6C" font-weight="700" font-size="20" >{props?.text || '?'}</text>
-            </g>
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+            <circle cx="20" cy="20" r="20" fill="url(#paint0_linear_2699_34684)" />
             <defs>
-                <clipPath id="clip0_176_10923">
-                    <rect width="64" height="64" fill="white" />
-                </clipPath>
+                <linearGradient id="paint0_linear_2699_34684" x1="5" y1="37" x2="37.5954" y2="30.4825" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#9D47FF" />
+                    <stop offset="0.796948" stop-color="#00F0FF" />
+                </linearGradient>
             </defs>
         </svg>
+
 
     ) : (<img onError={handleError} src={forceSrc || _src} {...props} />)
 }
