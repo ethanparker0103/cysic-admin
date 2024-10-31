@@ -6,8 +6,8 @@ import { useEventListener } from "ahooks"
 import { useState } from "react"
 
 export enum StakeTab {
-    stake,
-    unstake
+    stake = 'stake',
+    unstake = 'unstake'
 }
 
 const StakeModal = () => {
@@ -24,41 +24,39 @@ const StakeModal = () => {
         setItem(e?.detail?.item)
     })
 
-
     return <Modal isOpen={visible} onOpenChange={setVisible}>
         <ModalContent>
-            {(onClose) => (
-                <>
-                    <ModalHeader />
-                    <ModalBody>
-                        <Tabs
-                            fullWidth
-                            size="md"
-                            aria-label="stake modal"
-                            selectedKey={selected}
-                            onSelectionChange={setSelected}
-                            classNames={{
-                                tabContent: 'group-data-[selected=true]:text-[#000] group-data-[selected=true]:font-[600]',
-                                cursor: 'bg-[#00F0FF]'
-                            }}
-                        >
-                            <Tab key={StakeTab.stake} title="Stake">
-                                <Stake item={item} />
-                            </Tab>
-                            <Tab key={StakeTab.unstake} title="Unstake">
-                                <Unstake item={item} />
-                            </Tab>
-                        </Tabs>
+            <>
+                <ModalHeader />
+                <ModalBody>
+                    <Tabs
+                        defaultSelectedKey={StakeTab.stake}
+                        fullWidth
+                        size="md"
+                        aria-label="stake modal"
+                        selectedKey={selected}
+                        onSelectionChange={setSelected}
+                        classNames={{
+                            tabContent: 'group-data-[selected=true]:text-[#000] group-data-[selected=true]:font-[600]',
+                            cursor: 'bg-[#00F0FF]'
+                        }}
+                    >
+                        <Tab key={StakeTab.stake} title="Stake">
+                            <Stake item={item} />
+                        </Tab>
+                        <Tab key={StakeTab.unstake} title="Unstake">
+                            <Unstake item={item} />
+                        </Tab>
+                    </Tabs>
 
 
-                    </ModalBody>
-                    {/* <ModalFooter>
+                </ModalBody>
+                {/* <ModalFooter>
                         <Button className="w-full" type="gradient" onClick={onClose}>
                             Stake
                         </Button>
                     </ModalFooter> */}
-                </>
-            )}
+            </>
         </ModalContent>
     </Modal>
 }
