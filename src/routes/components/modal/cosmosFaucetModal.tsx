@@ -15,9 +15,8 @@ const CosmosFaucetModal = () => {
 
     const { address } = useCosmos()
     const { run: handleClaim, loading } = useRequest(() => {
-        if(!address) return Promise.reject(null)
-
         checkKeplrWallet()
+        if(!address) return Promise.reject(null)
         return axios.get(`/api/v1/myPage/faucet/${address}`)
     }, {
         manual: true,
