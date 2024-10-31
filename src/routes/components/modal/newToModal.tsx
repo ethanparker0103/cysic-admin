@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const FormItem = ({ title, children, errorMsg }: any) => {
   return (
@@ -25,6 +26,7 @@ const FormItem = ({ title, children, errorMsg }: any) => {
 };
 
 const NewToModal = () => {
+  const navigate = useNavigate()
   const [errorMsg, setErrormsg] = useState()
   const { t } = useTranslation();
   const { address } = useAccount();
@@ -67,7 +69,7 @@ const NewToModal = () => {
         ["X-cysis-chain-id"]: defaultChainId,
       };
       // todo axios
-      await axios.post(
+      const data: any = await axios.post(
         "/api/v1/register",
         {
           ...formValue,
@@ -83,7 +85,10 @@ const NewToModal = () => {
       toast.success(t("registerSuccess"));
       setFormValue({});
       dispatchEvent(new CustomEvent("resetProviderUpload"));
-      dispatchEvent(new CustomEvent("refresh_profile"));  
+      dispatchEvent(new CustomEvent("refresh_profile"));
+      if(data?.code == '10000'){
+        navigate('my')
+      }
     } catch (e: any) {
       console.log("error", e);
       const msg = e?.response?.data?.msg || e?.message
