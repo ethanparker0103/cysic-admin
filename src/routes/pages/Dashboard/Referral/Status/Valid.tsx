@@ -15,9 +15,11 @@ import clsx from "clsx";
 import useAccount from "@/hooks/useAccount";
 import { getReferralUrl, twitterLink } from "@/config";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
+import useModalState from "@/hooks/useModalState";
 
 
 const Valid = () => {
+    const { dispatch } = useModalState({eventName: "modal_how_invite_work_visible"});
     const { address } = useAccount();
     const { levelListMap, levelList, code, overview, setState } = useReferral();
 
@@ -150,7 +152,7 @@ const Valid = () => {
                 </div>
                 <MainCard title={<div className="flex flex-col gap-2">
                     <span className="font-bold text-[#fff] text-2xl">Successful Invites</span>
-                    <span className="font-[400] text-[#737373] text-xs">Make sure your team members have their account activated! See <span className="underline">How Invites Work</span> for details.</span>
+                    <span className="font-[400] text-[#737373] text-xs">Make sure your team members have their account activated! See <span onClick={()=>dispatch({visible: true})} className="cursor-pointer underline">How Invite Works</span> for details.</span>
                 </div>}>
                     <>
                         <div className="relative h-[10rem]">
