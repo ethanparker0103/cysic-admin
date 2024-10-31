@@ -1,0 +1,5 @@
+declare module 'highlight.js'
+declare module 'highlightjs-copy'
+declare module 'highlight.js/lib/languages/bash'
+declare module 'react-syntax-highlighter'
+declare module 'react-syntax-highlighter/dist/esm/styles/hljs'

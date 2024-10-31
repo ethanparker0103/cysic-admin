@@ -1,5 +1,7 @@
 import { IconArrowDown } from "@/components/Icon";
 import MainCard from "@/components/MainCard";
+import Ad from "@/components/ad";
+import Provers from "@/components/provers";
 import ComputilityTable from "@/routes/pages/Dashboard/Computility/table";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import { getImageUrl } from "@/utils/tools";
@@ -36,6 +38,8 @@ const Computility = () => {
     return (
         <MainContainer title="Prover">
             <>
+                <Ad />
+                <Provers />
                 {/* <div className="flex gap-4">
 
                     <MainCard >
