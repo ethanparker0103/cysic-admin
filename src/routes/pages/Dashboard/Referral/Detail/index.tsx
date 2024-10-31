@@ -89,7 +89,7 @@ const Detail = ({overview}: any) => {
             </div>
           </div>
         </div>
-        <LeaderTable tableData={[]} />
+        <LeaderTable tableData={overview ? [overview] : []} />
 
         <div className="h-8 w-full" />
 
