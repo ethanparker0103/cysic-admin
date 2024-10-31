@@ -3,10 +3,11 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export const defaultInitState = {
-  profile: undefined
+  profile: undefined,
+  phase2ModalStatus: true
 }
 
-const persistFields: any = [''];
+const persistFields: any = ['phase2ModalStatus'];
 
 const useUser = create(
   persist(

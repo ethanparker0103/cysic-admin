@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
+import useUser from "@/models/_global/user";
 
 const descList = [
   {
@@ -24,7 +25,13 @@ const descList = [
 ];
 
 const Phase2DescModal = () => {
+  const { setState } = useUser()
   const { visible, setVisible } = useModalState({eventName: "modal_phase_2_desc_visible"});
+
+  const handleClose = ()=>{
+    setVisible(false)
+    setState({phase2ModalStatus: false})
+  }
 
   return (
     <Modal
@@ -63,7 +70,7 @@ const Phase2DescModal = () => {
         </div>
 
         <div className="px-6 pb-6 flex items-center gap-4 justify-between">
-          <Button className="flex-1" type="solidGradient" onClick={() => setVisible(false)}>
+          <Button className="flex-1" type="solidGradient" onClick={handleClose}>
             Got it
           </Button>
           <Button className="flex-1" type="gradient">
