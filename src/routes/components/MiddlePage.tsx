@@ -1,24 +1,35 @@
 import useAuth from "@/models/_global/auth";
 import { useEffect, useRef } from "react";
-import { useAccount, useSignMessage } from "wagmi";
+import { useAccount, useAccountEffect, useSignMessage } from "wagmi";
 
+let al = false
 const MiddlePage = ({ children }: any) => {
-    const al = useRef(false)
+    // const al = useRef(false)
     const { signMessageAsync } = useSignMessage()
     const { address, connector } = useAccount()
     const { authMap, updateAddress } = useAuth(); // 状态初始为null，表示正在检查
     const auth = authMap?.[address as string]?.auth
 
-    useEffect(() => {
-        if (!al.current && connector && address && !auth) {
-            al.current = true
+    useAccountEffect({
+        onConnect(){
             signMessageAsync({ message: 'Welcome to Cysic！' }).then(res => {
                 updateAddress(address, { auth: res })
             }).catch((e: any)=>{
                 console.log('error', e)
-            }).finally(()=>{al.current = false})
+            }).finally(()=>{al = false})
         }
-    }, [connector, address, auth])
+    })
+
+    // useEffect(() => {
+    //     if (!al && connector && address && !auth) {
+    //         al = true
+    //         signMessageAsync({ message: 'Welcome to Cysic！' }).then(res => {
+    //             updateAddress(address, { auth: res })
+    //         }).catch((e: any)=>{
+    //             console.log('error', e)
+    //         }).finally(()=>{al = false})
+    //     }
+    // }, [connector, address, auth])
 
 
     return children

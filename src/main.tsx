@@ -53,7 +53,7 @@ const config = getDefaultConfig({
 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
+    <>
         <Theme>
             <WagmiProvider config={config}>
                 <QueryClientProvider client={queryClient}>
@@ -63,5 +63,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </QueryClientProvider>
             </WagmiProvider>
         </Theme>
-    </React.StrictMode>
+    </>
 );

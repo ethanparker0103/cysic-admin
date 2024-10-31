@@ -86,9 +86,6 @@ const NewToModal = () => {
       setFormValue({});
       dispatchEvent(new CustomEvent("resetProviderUpload"));
       dispatchEvent(new CustomEvent("refresh_profile"));
-      if(data?.code == '10000'){
-        navigate('/my')
-      }
     } catch (e: any) {
       console.log("error", e);
       const msg = e?.response?.data?.msg || e?.message
