@@ -652,12 +652,12 @@ const SocialTasks = (props?: any) => {
 
 export const dashboardNavs_ = [
   {
-    prefix: <MyPage className="size-6 scale-[1]" />,
+    prefix: <MyPage className="size-4 scale-[1]" />,
     text: "MyPage",
     link: "/my/",
   },
   {
-    prefix: <Hero className="size-6 scale-[1]" />,
+    prefix: <Hero className="size-4 scale-[1]" />,
     text: "Dashboad",
     // link: "/dashboard/stake",
     children: [
@@ -682,14 +682,14 @@ export const dashboardNavs_ = [
         link: "/dashboard/project",
       },
       {
-        prefix: <TaskList className="size-6 scale-[1]" />,
+        prefix: <TaskList className="size-4 scale-[1]" />,
         text: "TaskList",
         link: "/dashboard/task",
       },
     ],
   },
   {
-    prefix: <Flag className="size-6 scale-[1]" />,
+    prefix: <Flag className="size-4 scale-[1]" />,
     text: "Stake",
     // link: "/dashboard/stake",
     children: [
@@ -704,12 +704,12 @@ export const dashboardNavs_ = [
     ],
   },
   {
-    prefix: <LeadingBoard className="size-6 scale-[1]" />,
+    prefix: <LeadingBoard className="size-4 scale-[1]" />,
     text: "Leaderboard",
     link: "/leadingboard",
   },
   {
-    prefix: <Referral className="size-6 scale-[1]" />,
+    prefix: <Referral className="size-4 scale-[1]" />,
     text: "Invite",
     link: "/referral",
   },
