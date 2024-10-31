@@ -29,7 +29,7 @@ const CosmosFaucetModal = () => {
       const { hours, minutes, seconds } = formattedRes;
       const countdownFormatted = toTime ? `In ${hours}:${minutes}:${seconds}` : ''
 
-    useRequest(()=>{
+    const {run} = useRequest(()=>{
         if(!address) return Promise.reject(null)
         return axios.get(`/api/v1/myPage/faucet/${address}/latestRecord`)
     }, {
@@ -38,7 +38,7 @@ const CosmosFaucetModal = () => {
         onSuccess(e){
             const _v = e?.data?.latestClaimTime
             if(_v && _v != '0001-01-01 00:00:00'){
-                setToTime(+dayjs(_v).add(1, 'day'))
+                setToTime(+dayjs.utc(_v).add(24, 'hours'))
             }
             
         }
@@ -54,6 +54,7 @@ const CosmosFaucetModal = () => {
     }, {
         manual: true,
         onSuccess() {
+            run()
             toast.success('Success!')
         },
         onError(e: any) {
