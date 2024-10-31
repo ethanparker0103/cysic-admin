@@ -1,4 +1,5 @@
 import Ad from "@/components/ad";
+import Tutorial from "@/components/tutorial";
 import VerifierTable from "@/routes/pages/Dashboard/Verifier/table";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import clsx from "clsx";
@@ -10,6 +11,7 @@ const Verifier = () => {
         <MainContainer title="Verifier">
             <>
                 <Ad/>
+                <Tutorial />
                 <div className={clsx(isMobile ? "" : "p-4", "shadow-[0px_4px_0px_0px_#000000] border-[#000] border rounded-[14px]")}>
                     <VerifierTable />
                 </div>

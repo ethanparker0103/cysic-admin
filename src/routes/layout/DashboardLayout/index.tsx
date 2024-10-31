@@ -67,17 +67,17 @@ const Accordion_ = ({ origin, navs, children }: any) => {
         title={children}
         className=""
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
           {navs?.children?.map((i: any, index: number) => {
             return (
               <div
                 key={i?.text || index}
                 className={clsx(
-                  "text-base pl-12 cursor-pointer text-[#A3A3A3]",
+                  "text-base pl-12 cursor-pointer text-[#A3A3A3] py-2",
                   (lastPathname.includes(i.link) &&
                     i?.link != origin?.[0]?.link) ||
                     lastPathname == i.link
-                    ? "font-semibold !text-[#fff]"
+                    ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] bg-bottom	bg-contain	bg-no-repeat rounded-[8px] bg-[url(@/assets/images/_global/nav-shadow.svg)]"
                     : // shadow-[0px_4px_0px_0px_#000000]
                       ""
                 )}
