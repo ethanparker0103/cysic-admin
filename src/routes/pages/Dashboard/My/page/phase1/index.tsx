@@ -25,7 +25,7 @@ const Phase1 = () => {
                         onClick={() => dispatch({ visible: true, fromToken: cysicBaseCoin, toToken: cysicStCoin })}
                     >
                         <div className="flex items-center gap-1">
-                            <span>换取 {cysicStCoin}</span>
+                            <span>Exchange {cysicStCoin}</span>
                             <svg
                                 width="20"
                                 height="20"
