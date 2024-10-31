@@ -72,19 +72,20 @@ const mock = {
 
 const LeaderTable = ({tableData}: any) => {
   const { t } = useTranslation();
+  const { address } = useAccount()
   const rows = tableData || [];
 
   const columns = [
     {
-      key: "Address",
+      key: "currentLevel",
       label: "User",
     },
     {
-      key: "Status",
+      key: "activated",
       label: "Status",
     },
     {
-      key: "BindAt",
+      key: "activateTime",
       label: "Time",
     },
   ];
@@ -94,7 +95,7 @@ const LeaderTable = ({tableData}: any) => {
       case "Status":
         return (
           <div className="flex items-center gap-1">
-            {item?.ActivateAt ? (
+            {item?.activated ? (
               <>
                 <svg
                   width="17"
@@ -123,21 +124,16 @@ const LeaderTable = ({tableData}: any) => {
             )}
           </div>
         );
-      case "RebatePoint":
-        return (
-          <div className="flex items-center gap-1">
-            <div>{getKeyValue(item, columnKey) || "-"}</div>
-            <span className="text-[#A3A3A3]">Points</span>
-          </div>
-        );
-      case "Address":
-        const data = getKeyValue(item, columnKey);
+      case "User":
+        const data = address
         return (
           <div className="flex items-center gap-1">
             <div className="size-5 rounded-full bg-gradient" />
             <div>{shortStr(data, 12)}</div>
           </div>
         );
+      case "Time":
+        return getKeyValue(item, 'activateTime')
       default:
         return getKeyValue(item, columnKey);
     }
@@ -171,7 +167,7 @@ const LeaderTable = ({tableData}: any) => {
       >
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn className="bg-[transparent] " key={column?.key}>
+            <TableColumn className="bg-[transparent] " key={column?.label}>
               {t(column?.label)}
             </TableColumn>
           )}
@@ -179,7 +175,7 @@ const LeaderTable = ({tableData}: any) => {
         <TableBody items={rows}>
           {(item: any) => {
             return (
-              <TableRow key={item?.Address}>
+              <TableRow key={address || item?.activateTime}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}
