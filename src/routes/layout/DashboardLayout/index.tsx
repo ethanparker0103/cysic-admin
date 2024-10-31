@@ -655,7 +655,6 @@ export const dashboardNavs_ = [
     prefix: <MyPage className="size-6 scale-[1]" />,
     text: "MyPage",
     link: "/my/",
-    needAccount: true,
   },
   {
     prefix: <Hero className="size-6 scale-[1]" />,
