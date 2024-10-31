@@ -11,7 +11,7 @@ const formatArray = (v: any) => {
 
 const useMetadata = () => {
     const { address } = useAccount()
-    const { createAddress } = useUser()
+    const { createAddress, phase2ModalStatus } = useUser()
     const { authMap } = useAuth(); // 状态初始为null，表示正在检查
     const auth = authMap?.[address as string]?.auth
     const { setState: setReferralState } = useReferral();
@@ -42,7 +42,6 @@ const useMetadata = () => {
             needRegister
         })
 
-
         console.log('needRegister', needRegister)
         if(needRegister){
             dispatchEvent(new CustomEvent('modal_new_to_visible', {
@@ -53,9 +52,11 @@ const useMetadata = () => {
                 detail: {visible: false}
             }))
 
-            dispatchEvent(new CustomEvent('modal_phase_2_desc_visible', {
-                detail: {visible: true}
-            }))
+            if(phase2ModalStatus){
+                dispatchEvent(new CustomEvent('modal_phase_2_desc_visible', {
+                    detail: {visible: true}
+                }))
+            }
         }
     };
 
