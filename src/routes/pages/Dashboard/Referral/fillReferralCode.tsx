@@ -113,14 +113,13 @@ const FillReferralCode = () => {
         refreshDeps: [value, auth, exist],
         debounceWait: 300,
         async onSuccess(e) {
-            runAsync().then((res) => {
-                const needRegister = res?.needRegister
-                if (needRegister) {
-                    toast.success('Register your account')
-                } else {
-                    toast.success('Successfully Signed In')
-                }
-            })
+            const res = await runAsync()
+            const needRegister = res?.needRegister
+            if (needRegister) {
+                toast.success('Register your account')
+            } else {
+                toast.success('Successfully Signed In')
+            }
             updateAddress(rawAddress, { valid: true })
             navigate("/my");
         },

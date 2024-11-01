@@ -46,7 +46,6 @@ const useMetadata = () => {
             ...res?.data
         })
 
-        console.log('needRegister', needRegister)
         if(needRegister){
             dispatchEvent(new CustomEvent('modal_new_to_visible', {
                 detail: {visible: true}
@@ -63,6 +62,8 @@ const useMetadata = () => {
             }
         }
 
+
+        console.log('needRegister', needRegister)
         return {
             needRegister
         }
