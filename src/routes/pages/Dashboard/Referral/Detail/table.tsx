@@ -166,7 +166,7 @@ const UserTable = () => {
         return (
           <div className="flex items-center gap-1">
             <div>{getKeyValue(item, columnKey) || "-"}</div>
-            <span className="text-[#A3A3A3]">Points</span>
+            {/* <span className="text-[#A3A3A3]">Points</span> */}
           </div>
         );
       case "Address":

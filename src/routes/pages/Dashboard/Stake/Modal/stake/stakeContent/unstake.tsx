@@ -141,7 +141,7 @@ const Unstake = ({ item }: any) => {
 
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                    <span className="text-[#A3A3A3]">赎回金额</span>
+                    <span className="text-[#A3A3A3]">Unstake</span>
                     <div className="flex items-center gap-1">
                         <span>{unstakeAmount || '-'}</span>
                         <span className="text-[#A3A3A3]">{cysicStCoin}</span>
@@ -149,7 +149,7 @@ const Unstake = ({ item }: any) => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <span className="text-[#A3A3A3]">累计收益</span>
+                    <span className="text-[#A3A3A3]">Accumulated rewards</span>
                     <div className="flex items-center gap-1">
                         <span>-</span>
                         <span className="text-[#A3A3A3]">{cysicStCoin}</span>
@@ -157,9 +157,9 @@ const Unstake = ({ item }: any) => {
                 </div>
 
                 <div className="flex items-center justify-between">
-                    <span className="text-[#A3A3A3]">预计到账时间</span>
+                    <span className="text-[#A3A3A3]">Estimated arrival time</span>
                     <div className="flex items-center gap-1">
-                        <span>{dayjs().add(21, 'D').format('YYYY/MM/DD HH:mm')}</span>
+                        <span>{dayjs().add(21, 'day').format('YYYY/MM/DD HH:mm')}</span>
                     </div>
                 </div>
 

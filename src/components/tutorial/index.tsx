@@ -26,38 +26,52 @@ hljs.registerLanguage("bash", bash);
 
 const Tutorial = () => {
     return (
-        <div className="px-3 rounded-[20px] bg-[#FFFFFF12]">
-            <Accordion
-                keepContentMounted
-                defaultExpandedKeys={["0"]}
-                className="[&_button]:flex-row-reverse"
-            >
-                <AccordionItem
-                    title={
-                        <div className="flex flex-col ">
-                            <div className="text-lg font-bold">
-                                Tutorial: Run Cysic Verifier Node in 2 simple steps
-                            </div>
-                            <div className="text-base text-[#A3A3A3] font-[500]">
-                                For more details, see the full{" "}
-                                <a
-                                    href="https://cysic2022.larksuite.com/docx/NErkdcvz1oSJo1x4JIEuh2LVsGb?source_type=message&from=message"
-                                    target="_blank"
-                                >
-                                    <span className="text-[#00F0FF] underline">
-                                        Verifier Tutorial Doc
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    }
+        <>
+            <style>
+                {`
+        
+        .tutorial .rotate-0{
+            transform: rotate(90deg)
+        }
+        .tutorial .rotate-0[data-open=true]{
+            transform: rotate(270deg)
+        }
+        `}
+            </style>
+            <div className="px-3 rounded-[20px] bg-[#FFFFFF12] tutorial">
+                <Accordion
+                    defaultChecked
+                    keepContentMounted
+                    defaultSelectedKeys={'all'}
+                    className="[&_button]:flex-row-reverse"
                 >
-                    <div className="pl-6 leading-[1.4] pb-6">
-                        <CodeTutorial />
-                    </div>
-                </AccordionItem>
-            </Accordion>
-        </div>
+                    <AccordionItem
+                        title={
+                            <div className="flex flex-col ">
+                                <div className="text-lg font-bold">
+                                    Tutorial: Run Cysic Verifier Node in 2 simple steps
+                                </div>
+                                <div className="text-base text-[#A3A3A3] font-[500]">
+                                    For more details, see the full{" "}
+                                    <a
+                                        href="https://cysic2022.larksuite.com/docx/NErkdcvz1oSJo1x4JIEuh2LVsGb?source_type=message&from=message"
+                                        target="_blank"
+                                    >
+                                        <span className="text-[#00F0FF] underline">
+                                            Verifier Tutorial Doc
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                    >
+                        <div className="pl-6 leading-[1.4] pb-6">
+                            <CodeTutorial />
+                        </div>
+                    </AccordionItem>
+                </Accordion>
+            </div>
+        </>
     );
 };
 
@@ -79,8 +93,10 @@ const tutorialList = {
         },
         {
             title: "🎉 Success! ",
-            subTitle:
-                "Start your terminal program on Linux. Copy the code below, replacing the address placeholder with your reward address, then run it in your terminal.",
+            subTitle: <div className="flex flex-col gap-1">
+            <span>If you need to reconnect the verifier, please execute Step 2 again.</span>
+            <span>*The verifier program will create mnemonic files for you. Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.</span>
+            </div>,
         },
     ],
     windows: [
@@ -109,8 +125,10 @@ const tutorialList = {
         },
         {
             title: "🎉 Success! ",
-            subTitle: `If you need to reconnect the verifier, please execute Step 2 again. 
-*The verifier program will create mnemonic files for you. Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.`,
+            subTitle: <div className="flex flex-col gap-1">
+            <span>If you need to reconnect the verifier, please execute Step 2 again.</span>
+            <span>*The verifier program will create mnemonic files for you. Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.</span>
+            </div>
         },
     ],
     macos: [
@@ -130,8 +148,10 @@ const tutorialList = {
         },
         {
             title: "🎉 Success! ",
-            subTitle: `If you need to reconnect the verifier, please execute Step 2 again. 
-*The verifier program will create mnemonic files for you. Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.`,
+            subTitle: <div className="flex flex-col gap-1">
+            <span>If you need to reconnect the verifier, please execute Step 2 again.</span>
+            <span>*The verifier program will create mnemonic files for you. Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.</span>
+            </div>
         },
     ],
 };
@@ -174,10 +194,10 @@ const CodeTutorial = () => {
                                         {i?.desc ? (
                                             <div className="font-[400] bg-[#FFFFFF] p-4 rounded-[20px] text-[#32363C] relative">
                                                 <div className="relative bg-[#F5F6F7] border border-[#E6E8EA] rounded-[16px] px-8 py-6">
-                                                <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={()=>handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
-                                                <SyntaxHighlighter language="bash" style={github}>
-                                                    {i?.desc}
-                                                </SyntaxHighlighter>
+                                                    <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={() => handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
+                                                    <SyntaxHighlighter language="bash" style={github}>
+                                                        {i?.desc}
+                                                    </SyntaxHighlighter>
                                                 </div>
                                             </div>
                                         ) : null}
@@ -212,10 +232,10 @@ const CodeTutorial = () => {
                                         {i?.desc ? (
                                             <div className="font-[400] bg-[#FFFFFF] p-4 rounded-[20px] text-[#32363C] relative">
                                                 <div className="relative bg-[#F5F6F7] border border-[#E6E8EA] rounded-[16px] px-8 py-6">
-                                                <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={()=>handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
-                                                <SyntaxHighlighter language="bash" style={github}>
-                                                    {i?.desc}
-                                                </SyntaxHighlighter>
+                                                    <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={() => handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
+                                                    <SyntaxHighlighter language="bash" style={github}>
+                                                        {i?.desc}
+                                                    </SyntaxHighlighter>
                                                 </div>
                                             </div>
                                         ) : null}
@@ -250,10 +270,10 @@ const CodeTutorial = () => {
                                         {i?.desc ? (
                                             <div className="font-[400] bg-[#FFFFFF] p-4 rounded-[20px] text-[#32363C] relative">
                                                 <div className="relative bg-[#F5F6F7] border border-[#E6E8EA] rounded-[16px] px-8 py-6">
-                                                <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={()=>handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
-                                                <SyntaxHighlighter language="bash" style={github}>
-                                                    {i?.desc}
-                                                </SyntaxHighlighter>
+                                                    <div className="absolute right-6 top-4 cursor-pointer px-2 py-1 rounded-[6px] bg-[#0000001A] text-[#525252] text-xs font-[500] flex items-center gap-1" onClick={() => handleCopy(i?.desc)}><Copy size={12} /> <span>Copy</span></div>
+                                                    <SyntaxHighlighter language="bash" style={github}>
+                                                        {i?.desc}
+                                                    </SyntaxHighlighter>
                                                 </div>
                                             </div>
                                         ) : null}

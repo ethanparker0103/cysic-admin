@@ -38,7 +38,7 @@ const Computility = () => {
     return (
         <MainContainer title="Prover">
             <>
-                <Ad />
+                <Ad type="prover" />
                 <Provers />
                 {/* <div className="flex gap-4">
 

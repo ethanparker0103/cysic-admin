@@ -26,6 +26,7 @@ const useMetadata = () => {
 
         const queryData = res?.data?.searchResult
         const bindCodeData = res?.data?.referralCode
+
         setReferralState({code: bindCodeData})
 
         const project = formatArray(queryData?.Project)?.filter(i => i?.ID)
