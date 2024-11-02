@@ -71,8 +71,8 @@ const About = () => {
                         <div className="text-[20px] font-bold text-[#fff]">Keep Your Node Active</div>
                         <img className="self-center w-full" src={getImageUrl('@/assets/images/about/item-1.png')} />
                         <div className="flex flex-col gap-2 text-sm text-[#D3D3D3]">
-                            <span>Simply keep your Verifier Node running to earn $CYS and $CGT tokens by contributing to the verification for Cysic Network. </span>
-                            <span>Running Prover Node to earn VeCompute tokens (VeScroll/VeAleo) by ZKPs generation for projects.</span>
+                            <span className="leading-[1.5]">Simply keep your Verifier Node running to earn $CYS and $CGT tokens by contributing to the verification for Cysic Network. </span>
+                            <span className="leading-[1.5]">Running Prover Node to earn VeCompute tokens (VeScroll/VeAleo) by ZKPs generation for projects.</span>
                         </div>
                     </Card>
                 </div>
@@ -87,8 +87,8 @@ const About = () => {
                         <div className="text-[20px] font-bold text-[#fff]">Stake and Delegate</div>
                         <img className="self-center w-full" src={getImageUrl('@/assets/images/about/item-2.png')} />
                         <div className="flex flex-col gap-2 text-sm text-[#D3D3D3]">
-                            <span>Stake $CGT to earn $CYS rewards.</span>
-                            <span>If you are a prover, you can also delegate your VeCompute tokens (VeScroll/VeAleo) to get rewards. </span>
+                            <span className="leading-[1.5]">Stake $CGT to earn $CYS rewards.</span>
+                            <span className="leading-[1.5]">If you are a prover, you can also delegate your VeCompute tokens (VeScroll/VeAleo) to get rewards. </span>
                         </div>
 
                         <a href={mediasLink.whitePaper} target="_blank">
@@ -106,8 +106,8 @@ const About = () => {
                         <div className="text-[20px] font-bold text-[#fff]">Boost with Referrals</div>
                         <img className="self-center w-full" src={getImageUrl('@/assets/images/about/item-3.png')} />
                         <div className="flex flex-col gap-2 text-sm text-[#D3D3D3]">
-                            <span>Invite others to join the Cysic Network and earn bonus rewards for each friend who joins. </span>
-                            <span>Enjoy 15% of your friend’s earnings.</span>
+                            <span className="leading-[1.5]">Invite others to join the Cysic Network and earn bonus rewards for each friend who joins. </span>
+                            <span className="leading-[1.5]">Enjoy 15% of your friend’s earnings.</span>
                         </div>
 
                         <div onClick={()=>{dispatchEvent(new CustomEvent('modal_how_invite_work_visible', {detail: {visible: true}}))}} className="cursor-pointer text-[#00F0FF] text-xs font-[400] flex-1 items-end flex">*Check here to see how invites work.</div>

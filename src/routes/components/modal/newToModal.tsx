@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import useModalState from "@/hooks/useModalState";
 import Input from "@/components/Input";
 import Upload from "@/components/Upload";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { defaultChainId, mainUrl } from "@/config";
 import clsx from "clsx";
 import Modal from "@/components/Modal";
@@ -27,7 +27,8 @@ const FormItem = ({ title, children, errorMsg }: any) => {
 
 const NewToModal = () => {
   const navigate = useNavigate()
-  const [errorMsg, setErrormsg] = useState()
+  const [errorMsg, setErrormsg] = useState<string | undefined>(undefined)
+  const [validationError, setValidationError] = useState<string | undefined>(undefined);
   const { t } = useTranslation();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
@@ -36,9 +37,10 @@ const NewToModal = () => {
     eventName: "modal_new_to_visible",
   });
   const [formValue, setFormValue] = useState<any>({});
+
   const updateFromValue = (field: string | number, value: any) => {
-    if(errorMsg){
-      setErrormsg(undefined)
+    if(errorMsg) {
+      setErrormsg(undefined);
     }
     if (errorShow) {
       setErrorShow(false);
@@ -48,6 +50,15 @@ const NewToModal = () => {
       _new[field] = value;
       return _new;
     });
+
+    if (field === 'name') {
+      if (value) {
+        const isValid = nameRegex.test(value);
+        setValidationError(isValid ? undefined : 'Invalid Username');
+      } else {
+        setValidationError(undefined);
+      }
+    }
   };
 
   const handleSubmit = async (closeLoading: any) => {
@@ -96,7 +107,7 @@ const NewToModal = () => {
     }
   };
 
-
+  const nameRegex = /^[a-zA-Z0-9]{3,12}$/;
 
   return (
     <Modal
@@ -125,13 +136,16 @@ const NewToModal = () => {
                 )}
               />
             </div>
-            <FormItem title={"Username"} errorMsg={errorMsg}>
+            <FormItem 
+              title={"Username"} 
+              errorMsg={validationError || errorMsg}
+            >
               <Input
                 value={formValue?.name}
                 onChange={(v: any) => updateFromValue("name", v)}
                 className={clsx(
-                  ((errorShow && !formValue?.name)||errorMsg)
-                    ? "border-[#da1a1a]"
+                  ((errorShow && !formValue?.name) || validationError || errorMsg)
+                    ? "!border-[#da1a1a]"
                     : "border-[#525252]",
                   "rounded-[8px]"
                 )}
@@ -140,7 +154,7 @@ const NewToModal = () => {
             </FormItem>
           </div>
           <Button
-            disabled={!address || !formValue?.name || !formValue?.logo}
+            disabled={!address || !formValue?.name || !formValue?.logo || !!validationError || !!errorMsg}
             needLoading
             onClick={handleSubmit}
             type="gradient"

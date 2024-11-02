@@ -62,12 +62,22 @@ const VeCysic = () => {
       }))
     };
 
+    // return {
+    //   ...result,
+    //   total: result?.total
+    //   ?.reduce((prev, next) => {
+    //     return BigNumber(next?.amount).plus(prev);
+    //   }, BigNumber(0))
+    //   .div(1e18)
+    //   .toString()
+    // };
+
     return result?.total
       ?.reduce((prev, next) => {
         return BigNumber(next?.amount).plus(prev);
       }, BigNumber(0))
       .div(1e18)
-      .toString();
+      .toString()
   };
 
   const { data: totalRewards, run: queryRewardsRun } = useRequest(() => queryRewards(), {
@@ -79,7 +89,7 @@ const VeCysic = () => {
     },
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log('totalRewards refresh', totalRewards)
   }, [totalRewards])
 
@@ -110,7 +120,7 @@ const VeCysic = () => {
         withdrawMsgs.push(withdrawMsg);
       }
 
-      const result2 = await signAndBroadcastDirect(address, withdrawMsgs, {...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString()}, connector)
+      const result2 = await signAndBroadcastDirect(address, withdrawMsgs, { ...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString() }, connector)
 
       await checkkTx(connector, result2?.transactionHash);
 
@@ -176,7 +186,7 @@ const VeCysic = () => {
                   <Button
                     type="dark"
                     className="h-[1.75rem] min-h-fit"
-                    onClick={() =>{
+                    onClick={() => {
                       dispatch({ visible: true, tab: StakeTab.stake })
                     }}
                   >

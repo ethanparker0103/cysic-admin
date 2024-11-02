@@ -148,14 +148,14 @@ const Faq = () => {
           {faqs.map((i, index) => {
             return (
               <div key={index} className="flex flex-col gap-4">
-                <div className="text-gradient text-2xl font-[500]">
+                <div className="text-gradient text-2xl font-[500] Gemsbuck">
                   {i.title}
                 </div>
 
                 <div className="flex flex-col faq bg-[#1b1b1b] p-6 rounded-[20px]">
                   {i.list.map((j, jndex) => {
                     return (
-                      <div key={jndex}>
+                      <div key={jndex} className={jndex == 0 ? '' : `border-t border-[rgba(255,255,255,0.2)]`}>
                         <Accordion
                           defaultExpandedKeys={["0"]}
                           className="[&_button]:flex-row-reverse"

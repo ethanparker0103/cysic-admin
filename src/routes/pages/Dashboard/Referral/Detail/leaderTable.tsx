@@ -1,7 +1,9 @@
+import Image from "@/components/Image";
 import Pagination from "@/components/Pagination";
 import { commonPageSize } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import usePagnation from "@/hooks/usePagnation";
+import useUser from "@/models/_global/user";
 import { shortStr } from "@/utils/tools";
 import {
   Table,
@@ -71,8 +73,11 @@ const mock = {
 };
 
 const LeaderTable = ({tableData}: any) => {
-  const { t } = useTranslation();
   const { address } = useAccount()
+  const { profile: _profile } = useUser();
+  const profile = _profile?.[address || '']
+
+  const { t } = useTranslation();
   const rows = tableData || [];
 
   const columns = [
@@ -128,8 +133,9 @@ const LeaderTable = ({tableData}: any) => {
         const data = address
         return (
           <div className="flex items-center gap-1">
-            <div className="size-5 rounded-full bg-gradient" />
-            <div>{shortStr(data, 12)}</div>
+            {/* <div className="size-5 rounded-full bg-gradient" /> */}
+            <Image className="size-5" src={profile?.avatar}/>
+            <div>You</div>
           </div>
         );
       case "Time":

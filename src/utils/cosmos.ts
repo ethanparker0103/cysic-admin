@@ -4,57 +4,67 @@ import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
 import { SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate";
-import { MsgExchangeToPlatformToken, MsgExchangeToGovToken, MsgDelegate } from "./cysic-msg";
+import {
+    MsgExchangeToPlatformToken,
+    MsgExchangeToGovToken,
+    MsgDelegate,
+} from "./cysic-msg";
 import { keplrDownloadLink } from "@/config";
-import * as bech32 from 'bech32'
+import * as bech32 from "bech32";
 import { toast } from "react-toastify";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
-import { AuthInfo, TxBody, Fee, TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
+import {
+    AuthInfo,
+    TxBody,
+    Fee,
+    TxRaw,
+} from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { PubKey } from "cosmjs-types/cosmos/crypto/secp256k1/keys";
 import { Buffer } from "buffer";
 
-
-declare global{
-    interface Window{
-        keplr?: any
+declare global {
+    interface Window {
+        keplr?: any;
     }
 }
 
-let provider = window?.keplr
-export const updateProvider = ()=>provider = window?.keplr
+let provider = window?.keplr;
+export const updateProvider = () => (provider = window?.keplr);
 
-const set = useCosmos.getState().setState
+const set = useCosmos.getState().setState;
 // const rpc = 'http://dev-node-1.prover.xyz'
 
-const chain = cysicTestnet.chainId
+const chain = cysicTestnet.chainId;
 const cosmosConfig = {
     [OsmosisTestnetChainInfo.chainId]: OsmosisTestnetChainInfo,
     [cosmosHubTestnet.chainId]: cosmosHubTestnet,
-    [cysicTestnet.chainId]: cysicTestnet
-}
+    [cysicTestnet.chainId]: cysicTestnet,
+};
 
 async function connectWallet() {
-    const chainId = cosmosConfig[chain]?.chainId
-    const rpc = cosmosConfig[chain]?.rpc
+    const chainId = cosmosConfig[chain]?.chainId;
+    const rpc = cosmosConfig[chain]?.rpc;
 
     // 检查是否安装了 Keplr
     if (!provider) {
-        console.log('dispatch')
-        dispatchEvent(new CustomEvent('basicDoubleconfirmModalVisible', {
-            detail: {
-                callback: (closeLoading?: any) => {
-                    window.open(keplrDownloadLink, '_blank');
-                    closeLoading?.()
-                },
-                title: 'Download Keplr',
-                desc: 'Keplr is not available, Please download first.',
-                btnText: 'Go'
-            }
-        }))
-        throw { message: 'Keplr is not available' }
+        // console.log('dispatch')
+        // dispatchEvent(new CustomEvent('basicDoubleconfirmModalVisible', {
+        //     detail: {
+        //         callback: (closeLoading?: any) => {
+        //             window.open(keplrDownloadLink, '_blank');
+        //             closeLoading?.()
+        //         },
+        //         title: 'Download Keplr',
+        //         desc: 'Keplr is not available, Please download first.',
+        //         btnText: 'Go'
+        //     }
+        // }))
+
+        checkKeplrWallet();
+        throw { message: "Keplr is not available" };
         return;
     }
-    set({ isConnecting: true })
+    set({ isConnecting: true });
 
     try {
         await provider.experimentalSuggestChain(cosmosConfig[chain]);
@@ -65,14 +75,26 @@ async function connectWallet() {
         // 创建签名客户端
         const offlineSigner = provider.getOfflineSigner(chainId);
         const accounts = await offlineSigner.getAccounts();
+        console.log('accounts', accounts)
 
         // register cysic msgs
         const cysicRegistryTypes = [
-            ["/cysicmint.govtoken.v1.MsgExchangeToGovToken", MsgExchangeToGovToken] as [string, GeneratedType],
-            ["/cysicmint.govtoken.v1.MsgExchangeToPlatformToken", MsgExchangeToPlatformToken] as [string, GeneratedType],
-            ["/cysicmint.delegate.v1.MsgDelegate", MsgDelegate] as [string, GeneratedType],
+            [
+                "/cysicmint.govtoken.v1.MsgExchangeToGovToken",
+                MsgExchangeToGovToken,
+            ] as [string, GeneratedType],
+            [
+                "/cysicmint.govtoken.v1.MsgExchangeToPlatformToken",
+                MsgExchangeToPlatformToken,
+            ] as [string, GeneratedType],
+            ["/cysicmint.delegate.v1.MsgDelegate", MsgDelegate] as [
+                string,
+                GeneratedType
+            ],
         ];
-        const registry = new Registry(defaultRegistryTypes.concat(cysicRegistryTypes));
+        const registry = new Registry(
+            defaultRegistryTypes.concat(cysicRegistryTypes)
+        );
         const client: any = await SigningStargateClient.connectWithSigner(
             rpc,
             offlineSigner,
@@ -80,9 +102,9 @@ async function connectWallet() {
         );
 
         client.disable = () => {
-            client?.signer?.keplr?.disable?.()
-            useCosmos.getState().init()
-        }
+            client?.signer?.keplr?.disable?.();
+            useCosmos.getState().init();
+        };
         useCosmos.getState().setState({
             address: accounts[0].address,
             client,
@@ -91,25 +113,24 @@ async function connectWallet() {
             isConnected: true,
             isConnecting: false,
             hasConnectedWithKeplr: true,
-        })
+        });
 
-        return client
+        return client;
     } catch (e) {
         useCosmos.getState().setState({
-            isConnecting: false
-        })
+            isConnecting: false,
+        });
     }
 }
-
 
 export function cosmosToEthAddress(cosmosAddress: string) {
     try {
         const decoded = bech32.decode(cosmosAddress);
         const data = bech32.fromWords(decoded.words);
-        const ethAddress = '0x' + Buffer.from(data).toString('hex');
+        const ethAddress = "0x" + Buffer.from(data).toString("hex");
         return ethAddress;
     } catch (error) {
-        console.error('Incorrect Cosmos Address:', error);
+        console.error("Incorrect Cosmos Address:", error);
         return null;
     }
 }
@@ -120,19 +141,23 @@ export function cosmosToEthAddress(cosmosAddress: string) {
 export const checkkTx = async (client: any, txHash: string) => {
     // 查询交易状态
     const result = await client.getTx(txHash);
-    console.log('tx res', result)
+    console.log("tx res", result);
 
     if (result && result.code === 0) {
         toast.success(`Tx Success at ${result?.hash}`);
     } else {
-        toast.error(`Tx Failed at ${result?.hash}`)
+        toast.error(`Tx Failed at ${result?.hash}`);
     }
 
-    return result
-}
+    return result;
+};
 
-
-export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: any, client: any) {
+export async function signAndBroadcastDirect(
+    address: any,
+    msg: any,
+    cosmosFee: any,
+    client: any
+) {
     if (!window?.keplr) {
         throw new Error("Keplr is not installed");
     }
@@ -165,7 +190,7 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
         bodyBytes: TxBody.encode(
             TxBody.fromPartial({
                 messages: Array.isArray(msg) ? msg : [msg],
-                memo: '',
+                memo: "",
             })
         ).finish(),
         authInfoBytes: AuthInfo.encode({
@@ -197,17 +222,12 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
             }),
         }).finish(),
         chainId: chainId,
-        accountNumber: account.accountNumber
-    }
+        accountNumber: account.accountNumber,
+    };
 
+    console.log("signDoc", signDoc);
 
-    console.log('signDoc', signDoc)
-
-    const signed = await window?.keplr.signDirect(
-        chainId,
-        address,
-        signDoc,
-    )
+    const signed = await window?.keplr.signDirect(chainId, address, signDoc);
 
     const signedTx = {
         tx: TxRaw.encode({
@@ -216,25 +236,41 @@ export async function signAndBroadcastDirect(address: any, msg: any, cosmosFee: 
             signatures: [Buffer.from(signed.signature.signature, "base64")],
         }).finish(),
         signDoc: signed.signed,
-    }
+    };
 
-    console.log('signedTx', signedTx, 'signDoc', signDoc)
+    console.log("signedTx", signedTx, "signDoc", signDoc);
 
     // 广播签名后的交易
     // const result = await window?.keplr.sendTx(chainId,  signedTx.tx, "sync")
-    const result = await client.broadcastTx(signedTx.tx)
-    console.log('result', result)
+    const result = await client.broadcastTx(signedTx.tx);
+    console.log("result", result);
     return result;
 }
 
-export const checkKeplrWallet = ()=>{
-    const status = !!useCosmos.getState().address && !!useCosmos.getState().client
-    if(!status){
-        dispatchEvent(new CustomEvent('modal_download_keplr_visible', {
-            detail: {visible: true}
-        }))
+export const checkKeplrWallet = () => {
+    const status =
+        !!useCosmos.getState().address && !!useCosmos.getState().client;
+    if (!status) {
+        dispatchEvent(
+            new CustomEvent("modal_download_keplr_visible", {
+                detail: { visible: true },
+            })
+        );
 
-        throw {message: 'Invalid Cosmos Wallet'}
+        throw { message: "Invalid Cosmos Wallet" };
     }
-}
-export { connectWallet }
+};
+
+export const convertAddrByProvider = async ({ client }: { client: any }) => {
+    checkKeplrWallet();
+
+    const chainId = cysicTestnet.chainId; // 替换为实际的 chainId
+    const accounts = await client?.signer?.keplr?.getKey(chainId)
+
+    return {
+        ethereumHexAddress: accounts?.ethereumHexAddress,
+        bech32Address: accounts?.bech32Address
+    }
+};
+
+export { connectWallet };

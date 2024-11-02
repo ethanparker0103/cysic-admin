@@ -6,12 +6,23 @@ import { useEffect, useState } from "react";
 import { connectWallet, updateProvider } from "@/utils/cosmos";
 import { ArrowRight } from "lucide-react";
 import useCosmos from "@/models/_global/cosmos";
+import { useEventListener } from "ahooks";
 
 const KeplrConnectModal = () => {
+    const [unmatchedError, setUnmatchedError] = useState(false)
     const { visible, setVisible } = useModalState({eventName: 'modal_download_keplr_visible'})
 
+    useEventListener('modal_download_keplr_visible', (e: any)=>{
+        console.log('eee', e)
+        if(e?.detail?.type == 'unmathedAddress'){
+            setUnmatchedError(true)
+            // setVisible(true)
+        }
+
+    })
+
     const [walletValid, setWalletValid] = useState(false)
-    const { address } = useCosmos()
+    const { address, connector } = useCosmos()
 
     useEffect(()=>{
         if(window?.keplr){
@@ -20,12 +31,22 @@ const KeplrConnectModal = () => {
         }
     }, [window?.keplr])
 
+    useEffect(()=>{
+        if(!visible){
+            setUnmatchedError(false)
+        }
+    }, [])
 
     useEffect(()=>{
-        if(address && visible){
+        if(address && visible && !unmatchedError){
             setVisible(false)
         }
-    }, [address, visible])
+    }, [address, visible, unmatchedError])
+
+    const reconnectWallet = async ()=>{
+        await connector?.disable?.()
+        setVisible(false)
+    }
 
 
     return <Modal isOpen={visible} onClose={() => setVisible(false)} className="[&_button]:z-[2] max-w-[820px] border border-[#FFFFFF33]">
@@ -45,8 +66,8 @@ const KeplrConnectModal = () => {
 
                     </div>
                     <Button onClick={() => {
-                        walletValid ? connectWallet() : window.open(keplrDownloadLink, '_blank');
-                    }} type="gradient">{walletValid ? 'Connect Keplr' : 'Download Keplr'} <ArrowRight size={16} /></Button>
+                        unmatchedError ? reconnectWallet() : (walletValid) ? connectWallet() : window.open(keplrDownloadLink, '_blank');
+                    }} type="gradient">{unmatchedError ? 'Reconnect Keplr' : walletValid ? 'Connect Keplr' : 'Download Keplr'} <ArrowRight size={16} /></Button>
 
                 </div>
             </div>  

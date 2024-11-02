@@ -13,27 +13,33 @@ const descList = [
         progress: 33.33,
         title: 'Invites Team Members to Cysic Network',
         img: getImageUrl('@/assets/images/howInviteWorks/step-1.png'),
-        desc: <div className="flex flex-col gap-2 text-[#A1A1AA]">
-            <span>Share your invite code with potential users to invite more people to join Cysic and earn additional rewards!</span>
-            <span>Your invite code is <span className="text-[#00F0FF]">permanently valid</span> and can be shared with up to <span className="text-[#00F0FF]">1,000 users</span>.</span>
+        desc: <div className="flex flex-col gap-2 text-[#A1A1AA] leading-[1.5]">
+            <span className="leading-[1.3]">Congratulations, you’re now the leader of your team! Share your invite code to grow the Cysic community and boost your rewards. </span>
+            <span className="leading-[1.3]">Your code is <span className="text-[#00F0FF]">permanently valid</span> and can be shared with up to <span className="text-[#00F0FF]">300 users</span>.</span>
         </div>
     },
     {
         progress: 66.67,
-        title: 'Unlock Rewards and Lower Fees by Leveling Up',
+        title: 'Unlock Bonus and Lower Pool Fees by Leveling Up',
         img: getImageUrl('@/assets/images/howInviteWorks/step-2.png'),
-        desc: <div className="flex flex-col gap-2 text-[#A1A1AA]">
-            <span>Higher levels grant you one-time point rewards and lower pool fees. Leveling up depends on the number of activated users you've directly invited, with each level requiring a certain number.</span>
-            <span>To become activated, <span className="text-[#00F0FF]">Verifiers</span> must complete <span className="text-[#00F0FF]">10</span> verification tasks, <span className="text-[#00F0FF]">Provers</span> need <span className="text-[#00F0FF]">3</span> proof tasks, and if they are both, the faster of the two will be counted. Only activated users are considered successful invitations.</span>
-            <div className="text-[#A1A1AA] p-2 bg-[#FFFFFF0D]">You can check your current level, pool fee, and the number of activated users you've invited in the "My Level" section.</div>
+        desc: <div className="flex flex-col gap-2 text-[#A1A1AA] leading-[1.5]">
+            <span className="leading-[1.3]">Higher levels grant you one-time rewards and reduced pool fees. Level up by inviting successfully activated users—each level requires a specific count of activated invites.</span>
+            <span className="leading-[1.3]">To qualify as an activated and successful invite:</span>
+            <ul>
+                <li className="leading-[1.3] list-inside list-disc">Verifiers must complete 10 verification tasks.</li>
+                <li className="leading-[1.3] list-inside list-disc">Provers must complete 3 proof tasks.</li>
+                <li className="leading-[1.3] list-inside list-disc">For users with both roles, the faster task completion counts.</li>
+            </ul>
+            <div className="text-[#A1A1AA] leading-[1.5] p-2 bg-[#FFFFFF0D]">Only activated users count as successful invites.</div>
         </div>
     },
     {
         progress: 100,
-        title: 'Earn Instant Point Rebates from Your Team',
+        title: 'Earn Instant Referral Earnings from Your Team',
         img: getImageUrl('@/assets/images/howInviteWorks/step-3.png'),
-        desc: <div className="flex flex-col gap-1 text-[#A1A1AA]">
-            <span>After the people you invite and those they invite join Cysic, whenever they earn points, you’ll immediately receive <span className="text-[#00F0FF]">16%</span> of the points earned by your direct invites from being a Verifier/Prover and <span className="text-[#00F0FF]">8%</span> from their invites, regardless of whether they are activated users or not</span>
+        desc: <div className="flex flex-col gap-1 text-[#A1A1AA] leading-[1.5]">
+            <span className="leading-[1.3]">After your invites join Cysic, you’ll receive 15% of their Verifier/Prover rewards, regardless of whether they are activated users.</span>
+            <span className="leading-[1.3]">View your current level, bonus, pool fee, and successful invites in the "My Level" section.</span>
         </div>
     },
 ]
