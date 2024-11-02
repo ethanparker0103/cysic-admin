@@ -176,6 +176,8 @@ const Valid = () => {
                                         .multipliedBy(100)
                                         .toFixed(0, BigNumber.ROUND_DOWN);
                                     const flex = "flex-[" + v + "] ";
+
+                                    const required = levelList?.[index - 1]?.Require || 0
                                     return (
                                         <div
                                             key={index}
@@ -223,7 +225,7 @@ const Valid = () => {
                                                             </defs>
                                                         </svg>
 
-                                                        <span>{i?.Require}</span>
+                                                        <span>{required}</span>
                                                     </div>
                                                 </div>
                                             </ProgressLabel>
@@ -231,6 +233,7 @@ const Valid = () => {
                                     );
                                 })}
                                 {levelList?.slice(-1)?.map((i: any, index: any) => {
+                                    const required = levelList?.slice(-2)?.[0]?.Require || 0
                                     return (
                                         <div key={index} className="w-12 ">
                                             <ProgressLabel
@@ -269,7 +272,7 @@ const Valid = () => {
                                                             </defs>
                                                         </svg>
 
-                                                        <span>{BigNumber.max(i?.Require, 0).toString()}</span>
+                                                        <span>{required}</span>
                                                     </div>
                                                 </div>
                                             </ProgressLabel>
