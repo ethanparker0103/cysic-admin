@@ -13,14 +13,22 @@ import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc";
 import { format, getImageUrl, sleep } from "@/utils/tools";
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
-import { GasPrice, QueryClient, setupDistributionExtension } from "@cosmjs/stargate";
+import {
+  GasPrice,
+  QueryClient,
+  setupDistributionExtension,
+} from "@cosmjs/stargate";
 import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx";
 import { useRequest } from "ahooks";
-import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
+import {
+  checkKeplrWallet,
+  checkkTx,
+  signAndBroadcastDirect,
+} from "@/utils/cosmos";
 import { useEffect } from "react";
 
 const sliceFormat = (value: string, decimal: number = 18) => {
-  if (value.length <= decimal) return value
+  if (value.length <= decimal) return value;
 
   const decimalPosition = value.length - decimal; // 小数点前 18 位
 
@@ -34,10 +42,9 @@ const token = cysicStCoin;
 const VeCysic = () => {
   const { address, connector, stakeMap } = useCosmos();
   const { dispatch }: any = useModalState({ eventName: "modal_stake_visible" });
-  const { myValidators, un_stake_amount, total_apr } = useValidator();
+  const { myValidators, un_stake_amount, total_apr, setState } = useValidator();
 
   const queryRewards = async () => {
-
     const queryClient = QueryClient.withExtensions(
       connector.getQueryClient(),
       setupDistributionExtension
@@ -47,19 +54,22 @@ const VeCysic = () => {
     );
 
     const result = {
-      rewards: result_.rewards.map(reward => {
+      rewards: result_.rewards.map((reward) => {
         return {
           validatorAddress: reward.validatorAddress,
-          reward: reward.reward.map(r => ({
+          reward: reward.reward.map((r) => ({
             denom: r.denom,
-            amount: sliceFormat(r.amount, 18)
-          }))
+            amount: sliceFormat(r.amount, 18),
+            amount_hm: BigNumber(sliceFormat(r.amount, 18))
+              .div(1e18)
+              .toString(),
+          })),
         };
       }),
-      total: result_.total.map(t => ({
+      total: result_.total.map((t) => ({
         denom: t.denom,
-        amount: sliceFormat(t.amount, 18)
-      }))
+        amount: sliceFormat(t.amount, 18),
+      })),
     };
 
     // return {
@@ -72,31 +82,45 @@ const VeCysic = () => {
     //   .toString()
     // };
 
+    setState({
+      stakeRewardsMap: result?.rewards?.reduce((prev: any, next: any) => {
+        if (!prev?.[next?.validatorAddress]) {
+          prev[next?.validatorAddress] = {};
+        }
+        prev[next?.validatorAddress] = next;
+
+        return prev;
+      }, {}),
+    });
+
     return result?.total
       ?.reduce((prev, next) => {
         return BigNumber(next?.amount).plus(prev);
       }, BigNumber(0))
       .div(1e18)
-      .toString()
+      .toString();
   };
 
-  const { data: totalRewards, run: queryRewardsRun } = useRequest(() => queryRewards(), {
-    ready: !!address && !!connector,
-    refreshDeps: [address, connector],
-    pollingInterval: blockTime.long,
-    onError(e) {
-      console.log("error", e);
-    },
-  });
+  const { data: totalRewards, run: queryRewardsRun } = useRequest(
+    () => queryRewards(),
+    {
+      ready: !!address && !!connector,
+      refreshDeps: [address, connector],
+      pollingInterval: blockTime.long,
+      onError(e) {
+        console.log("error", e);
+      },
+    }
+  );
 
   useEffect(() => {
-    console.log('totalRewards refresh', totalRewards)
-  }, [totalRewards])
+    console.log("totalRewards refresh", totalRewards);
+  }, [totalRewards]);
 
   // withdrawRewards
   const handleClaim = async (closeLoading?: any) => {
     try {
-      checkKeplrWallet()
+      checkKeplrWallet();
       // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
       // toast.success(`Submit Success at ${result?.transactionHash}`)
 
@@ -112,15 +136,22 @@ const VeCysic = () => {
       for (const validator of result.validators) {
         const withdrawMsg = {
           typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
-          value: tx_1.MsgWithdrawDelegatorReward.encode(tx_1.MsgWithdrawDelegatorReward.fromPartial({
-            delegatorAddress: address,
-            validatorAddress: validator,
-          })).finish(),
+          value: tx_1.MsgWithdrawDelegatorReward.encode(
+            tx_1.MsgWithdrawDelegatorReward.fromPartial({
+              delegatorAddress: address,
+              validatorAddress: validator,
+            })
+          ).finish(),
         };
         withdrawMsgs.push(withdrawMsg);
       }
 
-      const result2 = await signAndBroadcastDirect(address, withdrawMsgs, { ...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString() }, connector)
+      const result2 = await signAndBroadcastDirect(
+        address,
+        withdrawMsgs,
+        { ...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString() },
+        connector
+      );
 
       await checkkTx(connector, result2?.transactionHash);
 
@@ -182,12 +213,14 @@ const VeCysic = () => {
               <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
                 <span className="">APR</span>
                 <div className="flex gap-2 items-center">
-                  <span className="text-[24px] text-[#fff] font-[600]">{total_apr}%</span>
+                  <span className="text-[24px] text-[#fff] font-[600]">
+                    {total_apr}%
+                  </span>
                   <Button
                     type="dark"
                     className="h-[1.75rem] min-h-fit"
                     onClick={() => {
-                      dispatch({ visible: true, tab: StakeTab.stake })
+                      dispatch({ visible: true, tab: StakeTab.stake });
                     }}
                   >
                     <span className="text-sm text-[#00F0FF]">Stake</span>
@@ -202,7 +235,7 @@ const VeCysic = () => {
                 <span className="">Claim Rewards</span>
                 <div className="flex gap-1">
                   <span className="text-[#fff] text-[24px]">
-                    {+totalRewards ? format(totalRewards as string, 3) : '-'}
+                    {+totalRewards ? format(totalRewards as string, 3) : "-"}
                   </span>
                   <span className="self-end">{cysicBaseCoin}</span>
                 </div>

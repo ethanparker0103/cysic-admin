@@ -7,7 +7,8 @@ export const defaultInitState = {
   myValidators: undefined,
   stake_amount: undefined, 
   un_stake_amount: undefined,
-  total_apr: undefined
+  total_apr: undefined,
+  stakeRewardsMap: undefined
 }
 
 const persistFields: any = [];

@@ -12,7 +12,7 @@ const ValidatorDesc = () => {
         <div className=" text-[#A3A3A3] text-sm font-[400]">
           In Proof-of-Stake networks, staking your assets with validators is
           essential to earn voting power and staking rewards.To start staking,
-          first deposit or buy CYSIC to your XXXX address and click on Stake.
+          first deposit or buy CYSIC to your address and click on Stake.
         </div>
       </div>
     </div>
