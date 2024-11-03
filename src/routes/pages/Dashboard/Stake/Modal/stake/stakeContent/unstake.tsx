@@ -5,7 +5,7 @@ import useModalState from "@/hooks/useModalState"
 import useCosmos from "@/models/_global/cosmos"
 import useValidator from "@/models/_global/validator"
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos"
-import { sleep } from "@/utils/tools"
+import { format, sleep } from "@/utils/tools"
 import { Select, SelectItem, Slider } from "@nextui-org/react"
 import BigNumber from "bignumber.js"
 import dayjs from "dayjs"
@@ -14,7 +14,7 @@ import { toast } from "react-toastify"
 import { MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 
 const Unstake = ({ item }: any) => {
-    const { myValidators: items } = useValidator()
+    const { myValidators: items, stakeRewardsMap } = useValidator()
     const { address, connector, stakeMap } = useCosmos()
     const [unstakeAmount, setUnstakeAmount] = useState<any>()
     const [slider, setSlider] = useState<any>()
@@ -73,6 +73,7 @@ const Unstake = ({ item }: any) => {
     }, [item?.operator_address, validator, items])
 
 
+    console.log('stakeRewardsMap', stakeRewardsMap)
     return <div className="flex flex-col gap-8">
 
         <div className="flex flex-col gap-4">
@@ -97,7 +98,7 @@ const Unstake = ({ item }: any) => {
 
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                    <div className="text-[#A3A3A3]">数量</div>
+                    <div className="text-[#A3A3A3]">Amount</div>
                     <div className="flex items-center gap-1 text-[#A3A3A3]">
                         <div className="flex items-center gap-1">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -151,7 +152,7 @@ const Unstake = ({ item }: any) => {
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Accumulated rewards</span>
                     <div className="flex items-center gap-1">
-                        <span>-</span>
+                        <span>{format(stakeRewardsMap?.[item?.operator_address]?.reward?.[0]?.amount_hm || '-', 3)}</span>
                         <span className="text-[#A3A3A3]">{cysicStCoin}</span>
                     </div>
                 </div>

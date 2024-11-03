@@ -99,7 +99,7 @@ const Stake = ({ item }: any) => {
             </div>
             <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                    <div className="text-[#A3A3A3]">质押数量</div>
+                    <div className="text-[#A3A3A3]">Amount</div>
                     <div className="flex items-center gap-1 text-[#A3A3A3]">
                         <div className="flex items-center gap-1">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 
 export const defaultInitState = {
   activeDelegate: undefined,
-  myDelegate: undefined
+  myDelegate: undefined,
 }
 
 const persistFields: any = [];
