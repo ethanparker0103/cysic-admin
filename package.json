@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:qa": "vite --mode prod",
+    "dev:qa": "vite --mode qa",
     "dev:prod": "vite --mode prod",
     "build:qa": "vite build --mode qa",
-    "build": "vite build --mode qa",
+    "build": "vite build --mode prod",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "postinstall": "patch-package"
