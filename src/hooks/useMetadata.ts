@@ -18,7 +18,6 @@ const useMetadata = () => {
     const auth = authMap?.[address as string]?.auth
     const { setState: setReferralState } = useReferral();
 
-
     const handleSearch = async () => {
         if (!auth) return;
         

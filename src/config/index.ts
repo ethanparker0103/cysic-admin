@@ -91,10 +91,24 @@ export const blockTime = {
 
 
 export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
-    text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r 👇 Get started now: \n",
+    text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r ",
 })}`
 
 export const getReferralUrl = ()=>`${window.location.origin}/m/referral/invite${useReferral.getState().code ? `?code=${useReferral.getState().code}` : ''}`
+
+export const genTwitterLink = ()=>{
+    let link = twitterLink;
+    if(useReferral.getState().code){
+        link = twitterLink + '👇 Get started now: \n' + `&url=${getReferralUrl()}`
+    }
+    return link;
+}
+
+
+export const openTwitterLink = ()=>{
+    window.open(genTwitterLink(), '_blank')
+}
+
 
 
 export const mediasLink = {
@@ -106,3 +120,6 @@ export const mediasLink = {
 }
 
 export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/']
+
+
+export const loginSignContent = 'Welcome to Cysic！'

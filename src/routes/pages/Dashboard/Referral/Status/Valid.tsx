@@ -13,15 +13,17 @@ import axios from "axios";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import useAccount from "@/hooks/useAccount";
-import { getReferralUrl, twitterLink } from "@/config";
+import { cysicStCoin, genTwitterLink, getReferralUrl, twitterLink } from "@/config";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
 import useModalState from "@/hooks/useModalState";
-
+import { useEffect, useMemo } from "react";
 
 const Valid = () => {
-    const { dispatch } = useModalState({eventName: "modal_how_invite_work_visible"});
+    const { dispatch } = useModalState({ eventName: "modal_how_invite_work_visible" });
     const { address } = useAccount();
     const { levelListMap, levelList, code, overview, setState } = useReferral();
+
+    console.log('overview', overview)
 
     // 10.4 获取当前地址基础信息
     useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
@@ -57,6 +59,24 @@ const Valid = () => {
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
 
+    const currentInvites = BigNumber(totalPastActivateCnt).plus(overview?.activateCnt || '0').toString()
+
+    const twitterLink = useMemo(() => {
+        return genTwitterLink()
+    }, [code])
+
+    useEffect(() => {
+        if (currentInvites && nextLevelConfig) {
+
+            dispatchEvent(new CustomEvent("modal_referral_reward_visible", {
+                detail: {
+                    visible: true,
+                    nextLevel: currentLevelConfig,
+                    currentInvites
+                }
+            }))
+        }
+    }, [nextLevelConfig, currentInvites])
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
@@ -121,7 +141,7 @@ const Valid = () => {
                             <a
                                 className="w-full"
                                 target="_blank"
-                                href={twitterLink + `&url=${getReferralUrl()}`}
+                                href={twitterLink}
                             >
                                 <Button
                                     type="gradient"
@@ -152,7 +172,7 @@ const Valid = () => {
                 </div>
                 <MainCard title={<div className="flex flex-col gap-2">
                     <span className="font-bold text-[#fff] text-2xl">Successful Invites</span>
-                    <span className="font-[400] text-[#737373] text-xs">Make sure your team members have their account activated! See <span onClick={()=>dispatch({visible: true})} className="cursor-pointer underline">How Invite Works</span> for details.</span>
+                    <span className="font-[400] text-[#737373] text-xs">Make sure your team members have their account activated! See <span onClick={() => dispatch({ visible: true })} className="cursor-pointer underline">How Invite Works</span> for details.</span>
                 </div>}>
                     <>
                         <div className="relative h-[10rem]">
@@ -202,7 +222,7 @@ const Valid = () => {
                                                     <Tooltip content={<div className="flex flex-col gap-1 text-sm">
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Reward</span>
-                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint}</span>
+                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint} {cysicStCoin}</span>
                                                         </div>
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Pool Fee</span>
@@ -249,7 +269,7 @@ const Valid = () => {
                                                     <Tooltip content={<div className="flex flex-col gap-1 text-sm">
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Reward</span>
-                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint}</span>
+                                                            <span className="text-[#fff]">{i?.LevelUpRewardPoint} {cysicStCoin}</span>
                                                         </div>
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Pool Fee</span>
@@ -307,7 +327,7 @@ const Valid = () => {
                 </MainCard>
             </div>
 
-            <Detail overview={overview}/>
+            <Detail overview={overview} />
         </div>
     );
 };

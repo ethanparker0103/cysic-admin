@@ -10,6 +10,7 @@ import Input from "@/components/Input";
 import { checkKeplrWallet } from "@/utils/cosmos";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import BigNumber from "bignumber.js";
 
 const CosmosFaucetModal = () => {
     const { address } = useCosmos()
@@ -27,7 +28,7 @@ const CosmosFaucetModal = () => {
         targetDate: toTime
       });
       const { hours, minutes, seconds } = formattedRes;
-      const countdownFormatted = toTime ? `In ${hours}:${minutes}:${seconds}` : ''
+      const countdownFormatted = (toTime && BigNumber(Date.now()).minus(toTime).lt(24 * 60 * 60 * 1000)) ? `In ${hours}:${minutes}:${seconds}` : ''
 
     const {run} = useRequest(()=>{
         if(!address) return Promise.reject(null)

@@ -25,6 +25,9 @@ interface profile {
   referralCode: string;
   searchResult: SearchResult;
   referralOverview: ReferralOverview;
+  "can_claim_reward": boolean,
+  "reward_amount": string,
+  "reward_token": string
 }
 
 export const defaultInitState: {

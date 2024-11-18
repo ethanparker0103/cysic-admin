@@ -47,7 +47,9 @@ import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
 import useUser from "@/models/_global/user";
 import UserProfile from "@/components/UserProfile";
-import { enableCosmosUrl } from "@/config";
+import { enableCosmosUrl, openTwitterLink } from "@/config";
+import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
+import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -759,6 +761,8 @@ export default function App() {
   return (
     <>
       <HowInviteWorkModal />
+      <ReferralRewardModal />
+      <Phase1RewardModal />
       <Phase2DescModal />
       <CosmosFaucetModal />
       <KeplrConnectModal />
@@ -869,6 +873,7 @@ export default function App() {
                   <Button
                     type="gradient"
                     className="rounded-full h-fit min-h-fit py-2 px-1"
+                    onClick={openTwitterLink}
                   >
                     <div className="w-full justify-center flex items-center gap-1 text-[#fff] text-xs">
                       <img

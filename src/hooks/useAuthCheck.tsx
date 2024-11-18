@@ -1,5 +1,6 @@
 import useMetadata from "@/hooks/useMetadata";
 import useAuth from "@/models/_global/auth";
+import useUser from "@/models/_global/user";
 import { useEventListener } from "ahooks";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
@@ -10,8 +11,11 @@ const whiteList = ['about', 'faq', 'aleopool', 'register']?.map(i => [i, '/' + i
 
 const useAuthCheck = () => {
     // const [from, setFrom] = useState<any>()
+    const { address } = useAccount()
+    const { phase2ModalStatus, profile } = useUser()
+
     const { runAsync } = useMetadata()
-    useEventListener('refresh_profile', ()=>{
+    useEventListener('refresh_profile', () => {
         runAsync()
     })
     const from = useRef<string>()
@@ -19,10 +23,9 @@ const useAuthCheck = () => {
     const { pathname } = useLocation()
     const navigate = useNavigate();
     const { reset, authMap, setState, createAddress, updateAddress } = useAuth();
-    const { address } = useAccount()
     useAccountEffect({
-        onDisconnect(){
-            dispatchEvent(new CustomEvent('modal_new_to_visible', {detail: {visible: false}}))
+        onDisconnect() {
+            dispatchEvent(new CustomEvent('modal_new_to_visible', { detail: { visible: false } }))
             reset()
         }
     })
@@ -43,8 +46,8 @@ const useAuthCheck = () => {
         }
     }, [!auth, valid, pathname])
 
-    useEffect(()=>{
-        if(!['/my', '/referral/invite'].includes(pathname)){
+    useEffect(() => {
+        if (!['/my', '/referral/invite'].includes(pathname)) {
             // setFrom(pathname)
             from.current = pathname
         }
@@ -72,6 +75,14 @@ const useAuthCheck = () => {
             })
         }
     }, [auth, from])
+
+
+    useEffect(() => {
+        if (address && profile?.[address]?.needRegister != undefined && !profile?.[address]?.needRegister && !phase2ModalStatus && profile?.[address]?.can_claim_reward) {
+            console.log(11)
+            dispatchEvent(new CustomEvent('modal_phase_1_reward_visible', { detail: { visible: true } }))
+        }
+    }, [address, profile, phase2ModalStatus])
 };
 
 export default useAuthCheck
