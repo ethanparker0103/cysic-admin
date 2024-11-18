@@ -96,7 +96,7 @@ const FillReferralCode = () => {
             const exist = e?.data?.exist
             setExist(exist)
             if (exist) {
-                toast.success(`Invite Code Success: ${cacheCode.current}`);
+                toast.success(`Invite Code Found: ${cacheCode.current}, Please Connect Your Wallet to Bind`);
             } else {
                 toast.error(`Invalid Invite Code: ${cacheCode.current}`);
             }

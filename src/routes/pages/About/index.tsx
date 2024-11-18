@@ -1,6 +1,6 @@
 import Ad from "@/components/ad";
 import Button from "@/components/Button"
-import { getReferralUrl, mediasLink, twitterLink } from "@/config";
+import { getReferralUrl, mediasLink, openTwitterLink, twitterLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer"
 import { getImageUrl } from "@/utils/tools"
@@ -55,10 +55,7 @@ const About = () => {
                             <span>Boost your reward by the referral program!</span>
                         </div>
                     </div>
-                    <Button disabled={!address} onClick={() => {
-                        const link = twitterLink + `&url=${getReferralUrl()}`
-                        window.open(link, '_blank')
-                    }} type="solidGradient"><img src={getImageUrl('@/assets/images/media/twitter.svg')} />Tweet for more points</Button>
+                    <Button disabled={!address} onClick={openTwitterLink} type="solidGradient"><img src={getImageUrl('@/assets/images/media/twitter.svg')} />Tweet for more points</Button>
                     <div className="text-sm text-[#737373] font-[400]">*Phase I whitelist holders can directly access Phase II for their early contributions!</div>
                 </Card>
             </div>

@@ -5,6 +5,7 @@ import autoprefixer from 'autoprefixer'
 import { fileURLToPath, URL } from "node:url";
 import { NodeGlobalsPolyfillPlugin } from '@esbuild-plugins/node-globals-polyfill';
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/m',

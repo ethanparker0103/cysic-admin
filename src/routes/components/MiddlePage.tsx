@@ -1,3 +1,4 @@
+import { loginSignContent } from "@/config";
 import useAuth from "@/models/_global/auth";
 import { useEffect, useRef } from "react";
 import { useAccount, useAccountEffect, useSignMessage } from "wagmi";
@@ -13,7 +14,7 @@ const MiddlePage = ({ children }: any) => {
     useEffect(() => {
         if (!al && connector && address && !auth) {
             al = true
-            signMessageAsync({ message: 'Welcome to Cysic！' }).then(res => {
+            signMessageAsync({ message: loginSignContent }).then(res => {
                 updateAddress(address, { auth: res })
             }).catch((e: any)=>{
                 console.log('error', e)

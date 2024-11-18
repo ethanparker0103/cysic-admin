@@ -17,7 +17,7 @@ const ReferralCodeCopy = ({ className }: any) => {
       className={clsx("!gap-0 [&_pre]:w-full", className)}
     >
       <div className="w-full flex items-center justify-between gap-4">
-        <span>referral code</span>
+        <span>Referral Code</span>
         <span>{code}</span>
       </div>
     </Snippet>
