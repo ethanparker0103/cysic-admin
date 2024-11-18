@@ -23,6 +23,7 @@ import useValidator from "@/models/_global/validator";
 import usePagnation from "@/hooks/usePagnation";
 import axios from "axios";
 import { checkKeplrWallet, checkkTx, cosmosToEthAddress, signAndBroadcastDirect } from "@/utils/cosmos";
+import Image from "@/components/Image";
 
 const DelegateModal = () => {
     const { setState, activeValidator } = useValidator()
@@ -133,7 +134,6 @@ const DelegateModal = () => {
         }
     }, [validator, activeValidator])
 
-
     return (
         <Modal isOpen={visible} onOpenChange={setVisible}>
             <ModalContent>
@@ -184,7 +184,7 @@ const DelegateModal = () => {
                                             {selections?.map((i: { value: string | number; icon: string | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Iterable<React.ReactNode> | null | undefined; }) => (
                                                 <SelectItem key={i?.value}>
                                                     <div className="flex items-center gap-1">
-                                                        <img src={i?.icon} />
+                                                        <Image className="size-4" src={i?.icon} />
                                                         <span>{i?.name}</span>
                                                     </div>
                                                 </SelectItem>
