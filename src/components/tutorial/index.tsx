@@ -54,7 +54,7 @@ const Tutorial = () => {
                                 <div className="text-base text-[#A3A3A3] font-[500]">
                                     For more details, see the full{" "}
                                     <a
-                                        href="https://cysic2022.larksuite.com/docx/NErkdcvz1oSJo1x4JIEuh2LVsGb?source_type=message&from=message"
+                                        href="https://medium.com/@cysic/6a09720cba4e"
                                         target="_blank"
                                     >
                                         <span className="text-[#00F0FF] underline">
