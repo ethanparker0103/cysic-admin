@@ -39,7 +39,7 @@ const descList = [
         img: getImageUrl('@/assets/images/howInviteWorks/step-3.png'),
         desc: <div className="flex flex-col gap-1 text-[#A1A1AA] leading-[1.5]">
             <span className="leading-[1.3]">After your invites join Cysic, you’ll receive 15% of their Verifier/Prover rewards, regardless of whether they are activated users.</span>
-            <span className="leading-[1.3]">View your current level, bonus, pool fee, and successful invites in the "My Level" section.</span>
+            <span className="leading-[1.3]">View your current level, bonus, pool fee, and successful invites in the "Referral" page.</span>
         </div>
     },
 ]

@@ -81,7 +81,7 @@ const faqs = [
       },
       {
         q: "How do I level up as a team leader, and what are the benefits?",
-        a: "Level up by inviting successfully activated users, which grants one-time rewards and reduced pool fees. You can track your progress in the “My Level” section.",
+        a: "Level up by inviting successfully activated users, which grants one-time rewards and reduced pool fees. You can track your progress in the 'Referral' Page.",
       },
       {
         q: "What qualifies as a successful invite?",
@@ -93,7 +93,7 @@ const faqs = [
       },
       {
         q: "Where can I view my level, bonuses, and referral details?",
-        a: "Visit the “My Level” section to check your current level, bonuses, pool fees, and successful invite count.",
+        a: "Visit the 'Referral' page to check your current level, bonuses, pool fees, and successful invite count.",
       },
     ],
   },
