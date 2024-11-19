@@ -6,7 +6,7 @@ import useReferral from "@/models/_global/referral";
 import { mock } from "@/routes/pages/Dashboard/Referral";
 import Detail from "@/routes/pages/Dashboard/Referral/Detail";
 import { Progress, Tooltip } from "@nextui-org/react";
-import { useRequest } from "ahooks";
+import { useRequest, useSessionStorageState } from "ahooks";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
@@ -61,9 +61,13 @@ const Valid = () => {
         return genTwitterLink()
     }, [code])
 
-    useEffect(() => {
-        if (currentInvites && nextLevelConfig) {
 
+    const [status, setStatus] = useSessionStorageState('referral_rward', {
+        defaultValue: '',
+      })
+    useEffect(() => {
+        if (!status && currentInvites && nextLevelConfig) {
+            setStatus('1')
             dispatchEvent(new CustomEvent("modal_referral_reward_visible", {
                 detail: {
                     visible: true,
@@ -75,7 +79,7 @@ const Valid = () => {
                 }
             }))
         }
-    }, [nextLevelConfig, currentInvites])
+    }, [status, nextLevelConfig, currentInvites])
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">

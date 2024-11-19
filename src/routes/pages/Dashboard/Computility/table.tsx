@@ -60,10 +60,10 @@ const ComputilityTable = ({ classNames }: any) => {
             key: "name",
             label: "proverName",
         },
-        {
-            key: "domain",
-            label: "domain",
-        },
+        // {
+        //     key: "domain",
+        //     label: "domain",
+        // },
         {
             key: 'status',
             label: 'status'

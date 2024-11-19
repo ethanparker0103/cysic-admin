@@ -120,10 +120,10 @@ const VerifierTable = () => {
       key: "claim_reward_address",
       label: "Verifier Address",
     },
-    {
-      key: "verifier_point",
-      label: "Verifier Points",
-    },
+    // {
+    //   key: "verifier_point",
+    //   label: "Verifier Points",
+    // },
     // {
     //   key: "activity_score",
     //   label: "Activity Points",
