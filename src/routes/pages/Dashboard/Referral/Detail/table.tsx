@@ -174,7 +174,7 @@ const UserTable = () => {
         return (
           <div className="flex items-center gap-1">
             <div className="size-5 rounded-full bg-gradient" />
-            <div>{shortStr(data, 12)}</div>
+            <div>{data}</div>
           </div>
         );
       default:
