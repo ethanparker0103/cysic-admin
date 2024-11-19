@@ -231,7 +231,7 @@ const Valid = () => {
                                                     <div className="flex items-center gap-1">
                                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <g clipPath="url(#clip0_2574_89101)">
-                                                                <circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.2" />
+                                                                <circle cx="10" cy="10" r="10" fill="white" fillOpacity="0.2" />
                                                                 <circle cx="9.14328" cy="6.85714" r="2.85714" fill="white" />
                                                                 <path d="M4 14.5146C4 12.4948 5.63736 10.8574 7.65714 10.8574H10.6286C12.6484 10.8574 14.2857 12.4948 14.2857 14.5146C14.2857 15.0195 13.8764 15.4289 13.3714 15.4289H4.91429C4.40934 15.4289 4 15.0195 4 14.5146Z" fill="white" />
                                                                 <rect x="14.3125" y="6" width="0.875" height="3.5" rx="0.4375" fill="#00F0FF" />
@@ -278,7 +278,7 @@ const Valid = () => {
                                                     <div className="flex items-center gap-1">
                                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <g clipPath="url(#clip0_2574_89101)">
-                                                                <circle cx="10" cy="10" r="10" fill="white" fill-opacity="0.2" />
+                                                                <circle cx="10" cy="10" r="10" fill="white" fillOpacity="0.2" />
                                                                 <circle cx="9.14328" cy="6.85714" r="2.85714" fill="white" />
                                                                 <path d="M4 14.5146C4 12.4948 5.63736 10.8574 7.65714 10.8574H10.6286C12.6484 10.8574 14.2857 12.4948 14.2857 14.5146C14.2857 15.0195 13.8764 15.4289 13.3714 15.4289H4.91429C4.40934 15.4289 4 15.0195 4 14.5146Z" fill="white" />
                                                                 <rect x="14.3125" y="6" width="0.875" height="3.5" rx="0.4375" fill="#00F0FF" />

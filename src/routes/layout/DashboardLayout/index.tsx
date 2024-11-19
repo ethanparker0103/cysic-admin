@@ -712,7 +712,7 @@ export const dashboardNavs_ = [
   },
   {
     prefix: <Referral className="size-4 scale-[1]" />,
-    text: "Invite",
+    text: "Referral",
     link: "/referral",
   },
 ];

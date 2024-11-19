@@ -37,8 +37,8 @@ const Media = () => {
           <g clipPath="url(#clip0_2632_18324)">
             <circle cx="16" cy="16" r="16" fill="white" className="group-hover/item:fill-[#00F0FF] group-hover/item:opacity-100 opacity-[0.12]" />
             <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
+              fillRule="evenodd"
+              clipRule="evenodd"
               d="M18.8772 11H20.4084L17.1039 14.9037L21 20.072H17.9026L15.4501 16.8571L12.7286 20.0719H11.1857L14.7213 15.9017L11 11.0233H14.1787L16.3808 13.9444L18.8772 11ZM15.7871 14.6447L13.7147 11.9049H12.775L15.3073 15.2106L15.7871 14.6447ZM16.0372 16.1636L18.3203 19.1439H19.1903L16.5119 15.6029L16.0372 16.1636Z"
               fill="currentColor"
             />

@@ -23,7 +23,7 @@ const Status = ({ suc }: any) => {
         <circle cx="6" cy="6" r="6" fill="currentColor" fillOpacity="0.2" />
         <circle cx="6" cy="6" r="3" fill="currentColor" />
       </svg>
-      <span className="text-sm font-[400]">{suc == undefined ? 'Unknown' : suc ? 'Active' : 'Inactive'}</span>
+      <span className="text-sm font-[400]">{suc == undefined ? 'Pending' : suc ? 'Active' : 'Inactive'}</span>
     </div>
   );
 };
@@ -84,7 +84,7 @@ const Provers = () => {
           </Link>
         </div>
 
-        <div className="flex items-center gap-1 text-sm justify-end font-[400]"><span>Become a Scroll Prover</span> <ArrowRight size={16} /></div>
+        <a href="https://medium.com/@cysic/phase-ii-genesis-node-prover-guide-53f17125ae4d" target="_blank"><div className="flex items-center gap-1 text-sm justify-end font-[400]"><span>Become a Scroll Prover</span> <ArrowRight size={16} /></div></a>
       </MainCard>
 
 
