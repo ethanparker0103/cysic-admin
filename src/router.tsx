@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Root from "./routes/root";
 import Home from "./routes/pages/Home/index";
 import BasicLayout from "@/routes/layout/BasicLayout/index";
@@ -20,6 +20,15 @@ import My from "@/routes/pages/Dashboard/My";
 import ActivityLayout from "@/routes/layout/ActivityLayout/inidex";
 import Aleo from "@/routes/pages/Activity/Aleo";
 import Leadingboard from "@/routes/pages/Dashboard/Leadingboard";
+import Referral from "@/routes/pages/Dashboard/Referral";
+import Faucet from "@/routes/pages/Dashboard/Faucet";
+import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
+import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
+import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
+import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
+import Phase1 from "@/routes/pages/Dashboard/My/page/phase1";
+import About from "@/routes/pages/About";
+import Faq from "@/routes/pages/Faq";
 
 
 /* eslint-enable react-refresh/only-export-components */
@@ -35,11 +44,12 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         index: true,
-                        element: <Dashboard />
+                        loader: async ()=>redirect('/dashboard/overview')
+                        // element: <Dashboard />
                     },
                     {
-                        path: 'my',
-                        element: <My />,
+                        path: 'overview',
+                        element: <Dashboard />
                     },
                     {
                         path: 'verifier',
@@ -50,17 +60,17 @@ export const router = createBrowserRouter([
                         element: <VerifierDetail />,
                     },
                     {
-                        path: 'provider',
+                        path: 'prover',
                         element: <DashboardComputility />,
                     },
                     {
-                        path: 'provider/:id',
+                        path: 'prover/:id',
                         element: <ComputilityDetail />,
                     },
                     {
                         path: 'project',
                         element: <DashboardProject />,
-                      
+
                     },
                     {
                         path: 'project/:id',
@@ -69,18 +79,105 @@ export const router = createBrowserRouter([
                     {
                         path: 'task',
                         element: <Task />,
-                      
                     },
                     {
                         path: 'task/:id',
                         element: <TaskDetail />,
                     },
                     {
-                        path: 'leadingboard',
-                        element: <Leadingboard />,
+                        path: 'test',
+                        element: <Test />
                     }
                 ]
             },
+            {
+                path: 'stake',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        path: 'cgt',
+                        element: <VeCysic />,
+                    },
+                    {
+                        path: 'vecompute',
+                        element: <VeComputed />,
+                    },
+                ]
+            },
+            {
+                path: 'my',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <My />,
+                    },
+                    {
+                        path: 'phase1',
+                        element: <Phase1 />,
+                    },
+                ]
+            },
+            {
+                path: 'leadingboard',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Leadingboard />,
+                    },
+                ]
+            },
+            {
+                path: 'referral',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Referral />,
+                    },
+                    {
+                        path: 'invite',
+                        element: <FillReferralCode />,
+                    },
+                    {
+                        path: 'socialTasks',
+                        element: <SocialTasks />,
+                    },
+                ]
+            },
+            {
+                path: 'faucet',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Faucet />,
+                    },
+                ]
+            },
+
+            {
+                path: 'about',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <About />,
+                    },
+                ]
+            },
+            {
+                path: 'faq',
+                element: <DashboardLayout />,
+                children: [
+                    {
+                        index: true,
+                        element: <Faq />,
+                    },
+                ]
+            },
+
             {
                 path: "/register",
                 element: <BasicLayout />,
@@ -90,7 +187,7 @@ export const router = createBrowserRouter([
                         element: <Home />
                     },
                     {
-                        path: 'provider',
+                        path: 'prover',
                         element: <Computility />
                     },
                     {
@@ -101,10 +198,6 @@ export const router = createBrowserRouter([
                         path: 'verifier',
                         element: <Verify />
                     },
-                    {
-                        path: 'test',
-                        element: <Test />
-                    }
                 ],
             },
             {

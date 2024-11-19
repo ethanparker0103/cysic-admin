@@ -15,7 +15,7 @@ const tabs = [
     title: "Prover",
     // desc: "proverDesc",
     img: getImageUrl("@/assets/images/_global/prover.svg"),
-    link: "/register/provider",
+    link: "/register/prover",
   },
   {
     title: "Verifier",

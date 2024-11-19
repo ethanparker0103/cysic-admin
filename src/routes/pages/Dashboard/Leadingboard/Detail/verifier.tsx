@@ -8,7 +8,7 @@ import axios from "axios";
 import copy from "copy-to-clipboard";
 import { useTranslation } from "react-i18next";
 import toast from "react-simple-toasts";
-import { useAccount } from "wagmi";
+import useAccount from "@/hooks/useAccount";
 
 const mock = {
   "msg": "success",
@@ -124,10 +124,10 @@ const VerifierTable = () => {
       key: "verifier_point",
       label: "Verifier Points",
     },
-    {
-      key: "activity_score",
-      label: "Activity Points",
-    },
+    // {
+    //   key: "activity_score",
+    //   label: "Activity Points",
+    // },
     {
       key: "sum",
       label: "Cumulation",

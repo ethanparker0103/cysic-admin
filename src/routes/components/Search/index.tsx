@@ -1,13 +1,12 @@
 import Image from "@/components/Image";
 import Spinner from "@/components/spinner";
+import { mediasLink } from "@/config";
 import GradientContainer from "@/routes/components/GradientContainer";
 import { getImageUrl } from "@/utils/tools";
 import { Input } from "@nextui-org/input";
 import { useDebounce, useDebounceEffect } from "ahooks";
 import axios from "axios";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 import toast, { toastConfig } from 'react-simple-toasts';
 import 'react-simple-toasts/dist/theme/dark.css';
@@ -173,7 +172,7 @@ const Search = () => {
                                                     <rect width="12" height="12" fill="white" />
                                                 </mask>
                                                 <g mask="url(#mask0_1042_15638)">
-                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0608 9.35526L6 2.64474L1.9392 9.35526H10.0608ZM6.81216 2.19737C6.4512 1.60088 5.5488 1.60088 5.18784 2.19737L1.12704 8.90789C0.766081 9.50439 1.21728 10.25 1.9392 10.25H10.0608C10.7827 10.25 11.2339 9.50439 10.873 8.90789L6.81216 2.19737Z" fill="#FF401A" />
+                                                    <path fillRule="evenodd" clipRule="evenodd" d="M10.0608 9.35526L6 2.64474L1.9392 9.35526H10.0608ZM6.81216 2.19737C6.4512 1.60088 5.5488 1.60088 5.18784 2.19737L1.12704 8.90789C0.766081 9.50439 1.21728 10.25 1.9392 10.25H10.0608C10.7827 10.25 11.2339 9.50439 10.873 8.90789L6.81216 2.19737Z" fill="#FF401A" />
                                                     <path d="M5.68788 7.25L5.5303 5.50866L5.5 4.75H6.5L6.4697 5.50866L6.31212 7.25H5.68788Z" fill="#FF401A" />
                                                     <path d="M5.5 8.24718C5.5 8.54096 5.70904 8.75 6.00282 8.75C6.28531 8.75 6.5 8.54096 6.5 8.24718C6.5 7.95339 6.28531 7.75 6.00282 7.75C5.71469 7.75 5.5 7.95339 5.5 8.24718Z" fill="#FF401A" />
                                                 </g>
@@ -182,7 +181,7 @@ const Search = () => {
                                             <span className="text-[#FF401A] origin-left">{searchInfo?.needRegister ? 'Not Registered' : searchInfo?.notInWhitelist ? 'Not White List' : ''}</span>
                                         </div>
                                     </div>
-                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open('https://discord.com/invite/cysic', '_blank') : ''} className="origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
+                                    <GradientContainer onClick={() => searchInfo?.needRegister ? navigate('/register') : searchInfo?.notInWhitelist ? window.open(mediasLink.discord, '_blank') : ''} className="origin-right cursor-pointer basic-bg-gradient rounded-[6px] px-1 py-1">
                                         <div className="relative z-[3] flex items-center gap-1">
                                             <span className="">{searchInfo?.needRegister ? 'Register Now' : searchInfo?.notInWhitelist ? 'Join Discord' : ''}</span>
                                             <svg className="size-[14px]" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -197,9 +196,9 @@ const Search = () => {
 
                             <div className="text-xs text-[#fff]">Prover</div>
                             <div>{searchInfo?.provider?.length ? (<div>
-                                {searchInfo?.provider?.map((i, index) => {
+                                {searchInfo?.provider?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {
-                                        navigate(`/dashboard/provider/${i?.ID}`)
+                                        navigate(`/dashboard/prover/${i?.ID}`)
                                         setAddr('')
                                     }}>
                                         <div className="flex items-center gap-2" >
@@ -223,7 +222,7 @@ const Search = () => {
                         <div className="flex flex-col gap-3">
                             <div className="text-xs text-[#fff]">Verifier</div>
                             <div>{searchInfo?.verifier?.length ? (<div>
-                                {searchInfo?.verifier?.map((i, index) => {
+                                {searchInfo?.verifier?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {
                                         navigate(`/dashboard/verifier/${i?.ID}`)
                                         setAddr('')

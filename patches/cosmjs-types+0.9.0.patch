@@ -1,0 +1,137 @@
+diff --git a/node_modules/cosmjs-types/.DS_Store b/node_modules/cosmjs-types/.DS_Store
+new file mode 100644
+index 0000000..7c4a8de
+Binary files /dev/null and b/node_modules/cosmjs-types/.DS_Store differ
+diff --git a/node_modules/cosmjs-types/cosmos/.DS_Store b/node_modules/cosmjs-types/cosmos/.DS_Store
+new file mode 100644
+index 0000000..3ebc3dc
+Binary files /dev/null and b/node_modules/cosmjs-types/cosmos/.DS_Store differ
+diff --git a/node_modules/cosmjs-types/cosmos/staking/.DS_Store b/node_modules/cosmjs-types/cosmos/staking/.DS_Store
+new file mode 100644
+index 0000000..8a8b2d6
+Binary files /dev/null and b/node_modules/cosmjs-types/cosmos/staking/.DS_Store differ
+diff --git a/node_modules/cosmjs-types/cosmos/staking/v1beta1/staking.js b/node_modules/cosmjs-types/cosmos/staking/v1beta1/staking.js
+index 7c1ec18..aebe10e 100644
+--- a/node_modules/cosmjs-types/cosmos/staking/v1beta1/staking.js
++++ b/node_modules/cosmjs-types/cosmos/staking/v1beta1/staking.js
+@@ -1752,4 +1752,5 @@ exports.ValidatorUpdates = {
+         return message;
+     },
+ };
++
+ //# sourceMappingURL=staking.js.map
+\ No newline at end of file
+diff --git a/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.d.ts b/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.d.ts
+index 56d49ab..877ef3d 100644
+--- a/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.d.ts
++++ b/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.d.ts
+@@ -23,6 +23,12 @@ export interface ContinuousVestingAccount {
+     /** Vesting start time, as unix timestamp (in seconds). */
+     startTime: bigint;
+ }
++
++export interface EthAccount {
++    baseAccount?: BaseAccount;
++    codeHash: string;
++}
++
+ /**
+  * DelayedVestingAccount implements the VestingAccount interface. It vests all
+  * coins after a specific time, but non prior. In other words, it keeps them
+diff --git a/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.js b/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.js
+index e922d09..210f63b 100644
+--- a/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.js
++++ b/node_modules/cosmjs-types/cosmos/vesting/v1beta1/vesting.js
+@@ -1,7 +1,8 @@
+ "use strict";
+ Object.defineProperty(exports, "__esModule", { value: true });
+-exports.PermanentLockedAccount = exports.PeriodicVestingAccount = exports.Period = exports.DelayedVestingAccount = exports.ContinuousVestingAccount = exports.BaseVestingAccount = exports.protobufPackage = void 0;
+-/* eslint-disable */
++exports.PermanentLockedAccount = exports.PeriodicVestingAccount = exports.Period = exports.DelayedVestingAccount = exports.ContinuousVestingAccount = exports.BaseVestingAccount = exports.protobufPackage = exports.EthAccount = void 0;
++/* eslint-disable *//* eslint-disable */
++const any_1 = require("../../../google/protobuf/any");
+ const auth_1 = require("../../auth/v1beta1/auth");
+ const coin_1 = require("../../base/v1beta1/coin");
+ const binary_1 = require("../../../binary");
+@@ -433,4 +434,68 @@ exports.PermanentLockedAccount = {
+         return message;
+     },
+ };
++
++
++
++function createBaseEthAccount() {
++    return {
++        baseAccount: undefined,
++        codeHash: ''
++    };
++}
++exports.EthAccount = {
++    typeUrl: "/cysicmint.types.v1.EthAccount",
++    encode(message, writer = binary_1.BinaryWriter.create()) {
++        if (message.baseAccount !== undefined) {
++            exports.EthAccount.encode(message.baseAccount, writer.uint32(10).fork()).ldelim();
++        }
++        if (message.codeHash !== '') {
++            writer.uint32(10).string(message.codeHash);
++        }
++        return writer;
++    },
++    decode(input, length) {
++        const reader = input instanceof binary_1.BinaryReader ? input : new binary_1.BinaryReader(input);
++        let end = length === undefined ? reader.len : reader.pos + length;
++        const message = createBaseEthAccount();
++        while (reader.pos < end) {
++            const tag = reader.uint32();
++            switch (tag >>> 3) {
++                case 1:
++                    message.baseAccount = auth_1.BaseAccount.decode(reader, reader.uint32());
++                    break;
++                case 2:
++                    message.codeHash = reader.string();
++                    break;
++                default:
++                    reader.skipType(tag & 7);
++                    break;
++            }
++        }
++        return message;
++    },
++    fromJSON(object) {
++        const obj = createBaseEthAccount();
++        if ((0, helpers_1.isSet)(object.baseAccount))
++            obj.baseAccount = auth_1.BaseAccount.fromJSON(object.baseAccount);
++        if ((0, helpers_1.isSet)(object.codeHash))
++            obj.codeHash = String(object.codeHash);
++        return obj;
++    },
++    toJSON(message) {
++        const obj = {};
++        message.baseAccount !== undefined &&
++            (obj.baseAccount = message.baseAccount ? auth_1.BaseAccount.toJSON(message.baseAccount) : undefined);
++        message.codeHash !== undefined && (obj.codeHash = message.codeHash);
++        return obj;
++    },
++    fromPartial(object) {
++        const message = createBaseEthAccount();
++        if (object.baseAccount !== undefined && object.baseAccount !== null) {
++            message.baseAccount = auth_1.BaseAccount.fromPartial(object.baseAccount);
++        }
++        message.codeHash = object.codeHash ?? '';
++        return message;
++    },
++};
+ //# sourceMappingURL=vesting.js.map
+\ No newline at end of file
+diff --git a/node_modules/cosmjs-types/google/.DS_Store b/node_modules/cosmjs-types/google/.DS_Store
+new file mode 100644
+index 0000000..1a59bec
+Binary files /dev/null and b/node_modules/cosmjs-types/google/.DS_Store differ
+diff --git a/node_modules/cosmjs-types/ibc/.DS_Store b/node_modules/cosmjs-types/ibc/.DS_Store
+new file mode 100644
+index 0000000..9b856ae
+Binary files /dev/null and b/node_modules/cosmjs-types/ibc/.DS_Store differ
+diff --git a/node_modules/cosmjs-types/tendermint/.DS_Store b/node_modules/cosmjs-types/tendermint/.DS_Store
+new file mode 100644
+index 0000000..36e0c43
+Binary files /dev/null and b/node_modules/cosmjs-types/tendermint/.DS_Store differ

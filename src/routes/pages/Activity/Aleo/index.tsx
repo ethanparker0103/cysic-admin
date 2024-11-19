@@ -8,8 +8,9 @@ import clsx from "clsx";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
 import { toast } from "react-toastify";
-import { useAccount, useSignMessage } from "wagmi";
+import { useSignMessage } from "wagmi";
 import { Helmet } from "react-helmet";
+import useAccount from "@/hooks/useAccount";
 
 const mock = {
     "cysic_address": "0xf761f43501ebfb391cd9d8b8d798f7bf48468d73",

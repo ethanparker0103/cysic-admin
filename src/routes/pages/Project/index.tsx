@@ -4,7 +4,7 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import dayjs from "dayjs";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useConnect, useSignMessage } from "wagmi";
 import axios from "@/service";
 // import queryString from 'qs'
 import { defaultChainId, mainUrl } from "@/config";
@@ -15,6 +15,7 @@ import { convertErc2Cosmos } from "@/utils/tools";
 import { useDebounce, useRequest } from "ahooks";
 import { useTranslation } from "react-i18next";
 import Upload from "@/components/Upload";
+import useAccount from "@/hooks/useAccount";
 
 const FormItem = ({ title, children }: any) => {
   return (
@@ -102,7 +103,6 @@ const Project = () => {
       const message = `${JSON.stringify(
         formValue
       )}${defaultChainId}${timestamp}`;
-      console.log("message", message);
       const sig = await signMessageAsync({ message: message });
 
       const header = {
@@ -124,7 +124,6 @@ const Project = () => {
       // config.headers['X-cysis-wallet'] = address
       // config.headers['X-cysis-signature'] = sig
       // config.headers['X-cysis-timestamp'] = timestamp
-      console.log("formValue", formValue);
       toast.success(t("registerSuccess"), {
         autoClose: false
       });
