@@ -3,7 +3,7 @@ import { mediasLink } from "@/config";
 const Media = () => {
   return (
     <div className="flex items-center gap-2 justify-center w-full">
-      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.discord, '_blank')}>
+      <a href={mediasLink.discord} target="_blank" className="text-[white] hover:text-[#000] group/item cursor-pointer" >
         <svg
           width="32"
           height="32"
@@ -24,9 +24,9 @@ const Media = () => {
             </clipPath>
           </defs>
         </svg>
-      </div>
+      </a>
 
-      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.twitter, '_blank')}>
+      <a href={mediasLink.twitter} target="_blank" className="text-[white] hover:text-[#000] group/item cursor-pointer" >
         <svg
           width="32"
           height="32"
@@ -49,9 +49,9 @@ const Media = () => {
             </clipPath>
           </defs>
         </svg>
-      </div>
+      </a>
 
-      <div className="text-[white] hover:text-[#000] group/item" onClick={()=>window.open(mediasLink.medium, '_blank')}>
+      <a href={mediasLink.medium} target="_blank" className="text-[white] hover:text-[#000] group/item cursor-pointer" >
         <svg
           width="32"
           height="32"
@@ -70,10 +70,10 @@ const Media = () => {
           />
           <path
             d="M24.6667 21.3327C25.403 21.3327 26 18.9449 26 15.9993C26 13.0538 25.403 10.666 24.6667 10.666C23.9303 10.666 23.3333 13.0538 23.3333 15.9993C23.3333 18.9449 23.9303 21.3327 24.6667 21.3327Z"
-            fill="black"
+            fill="currentColor"
           />
         </svg>
-      </div>
+      </a>
     </div>
   );
 };

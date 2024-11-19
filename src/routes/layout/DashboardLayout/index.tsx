@@ -996,7 +996,7 @@ export default function App() {
                 {cosmosAddress && enableCosmosUrl.includes(pathname) ? (
                   <div
                     onClick={() => dispatch({ visible: true })}
-                    className="rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"
+                    className="cursor-pointer rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"
                   >
                     <svg
                       className="size-4"
