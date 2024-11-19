@@ -66,7 +66,7 @@ const HowInviteWorkModal = () => {
                             return <div key={index} className="flex flex-col gap-6">
                                 <img src={i.img} />
                                 <div className="flex flex-col gap-2">
-                                    <div>{i.title}</div>
+                                    <div className="text-base font-[600]">{i.title}</div>
                                     {i.desc}
                                 </div>
                             </div>
