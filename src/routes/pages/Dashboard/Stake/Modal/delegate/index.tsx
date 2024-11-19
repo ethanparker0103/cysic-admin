@@ -41,13 +41,10 @@ const DelegateModal = () => {
     });
 
     const selections =
-        activeDelegate?.map((i: { token: any; }) => {
-            const v = i?.token;
-            const imgUrl = `@/assets/images/tokens/${v}.svg`;
-
+        activeDelegate?.map((i: { token: any; img_url?: string}) => {
             return {
                 value: i?.token,
-                icon: getImageUrl(imgUrl),
+                icon: i?.img_url,
                 name: i?.token,
             };
         }) || [];
@@ -66,7 +63,6 @@ const DelegateModal = () => {
             }
             
             const worker = cosmosToEthAddress(address)
-
             const msg = {
                 typeUrl: MsgDelegate.typeUrl,
                 value: MsgDelegate.encode(MsgDelegate.fromPartial({
@@ -76,9 +72,7 @@ const DelegateModal = () => {
                     amount: amount.amount,
                 })).finish(),
             };
-
             const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
-
             await checkkTx(connector, result?.transactionHash)
             setDelegateAmount('')
 

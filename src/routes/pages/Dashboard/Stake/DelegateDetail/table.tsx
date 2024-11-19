@@ -55,7 +55,7 @@ const UserTable = () => {
       return axios.get(`/api/v1/myPage/${address}/balance`, {
         params: {
           pageNum: page,
-          pageSize: commonPageSize,
+          pageSize: 100 || commonPageSize,
         },
       });
     },
@@ -102,9 +102,8 @@ const UserTable = () => {
     switch (columnKey) {
       case 'token':
         const v = getKeyValue(item, columnKey)
-        const imgUrl = `@/assets/images/tokens/${v}.svg`
         return <div className="flex items-center gap-1">
-          <Image className="size-6" src={getImageUrl(imgUrl)}/>
+          <Image className="size-6" src={item?.img_url}/>
           <span>{v}</span>
         </div>
       case 'amount':
