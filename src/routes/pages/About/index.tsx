@@ -29,7 +29,7 @@ const About = () => {
                             <span>Looking for an invite code? Join our community to find and share yours!</span>
                         </div>
                     </div>
-                    <Button onClick={() => window.open(mediasLink.discord, '_blank')} type="solidGradient"><img src={getImageUrl('@/assets/images/media/discord.svg')} />Join Discord</Button>
+                    <a className="w-full block" href={mediasLink.discord} target="_blank"><Button className="w-full" type="solidGradient"><img src={getImageUrl('@/assets/images/media/discord.svg')} />Join Discord</Button></a>
                     <div className="text-sm text-[#737373] font-[400]">*Phase I whitelist holders can directly access Phase II for their early contributions!</div>
                 </Card>
                 <Card className="flex-1 min-w-[354px] flex flex-col gap-6 py-10 px-6 rounded-[20px]">
