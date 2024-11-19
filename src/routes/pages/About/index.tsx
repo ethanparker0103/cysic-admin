@@ -60,7 +60,7 @@ const About = () => {
                 </Card>
             </div>
 
-            <Ad />
+            <Ad type={""} />
 
             <div className="flex items-stretch gap-2">
                 <div className="gradient-border rounded-[20px] flex-1">

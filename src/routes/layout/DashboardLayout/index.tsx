@@ -733,7 +733,7 @@ export default function App() {
 
   const { address } = useAccount();
 
-  const dashboardNavs = dashboardNavs_?.filter((i) =>
+  const dashboardNavs = dashboardNavs_?.filter((i: any) =>
     i?.needAccount ? !!address : true
   );
 
