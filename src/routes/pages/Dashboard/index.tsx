@@ -291,7 +291,7 @@ const Dashboard = () => {
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2 text-lg leading-none">
                   <span className="font-[400]">Total Rewards</span>
-                  <span className="font-[600]">{(overview2?.total_task || 0) * 100}</span>
+                  {/* <span className="font-[600]">{(overview2?.total_task || 0) * 100}</span> */}
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="flex flex-col gap-1">
