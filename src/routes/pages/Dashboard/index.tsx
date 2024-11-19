@@ -125,7 +125,7 @@ const MainCard = (props: any) => {
       }}
       {...props}
     >
-     {props?.title ?  <div className="flex items-center gap-1 text-[#A3A3A3]">
+      {props?.title ? <div className="flex items-center gap-1 text-[#A3A3A3]">
         {/* <Hero className="size-4 text-[#A3A3A3]" /> */}
         <span className="text-[18px] text-[#fff]">
           {typeof props?.title == "string" ? t(props?.title) : props?.title}
@@ -295,12 +295,18 @@ const Dashboard = () => {
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#A3A3A3] text-sm font-[400]">CYS</span>
+                    <div className="flex items-center gap-1">
+                      <img className="size-3" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
+                      <span className="text-[#A3A3A3] text-sm font-[400]">CYS</span>
+                    </div>
                     <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
                   </div>
                   <div className="w-px h-10 bg-[#2B2B2B]" />
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#A3A3A3] text-sm font-[400]">CGT</span>
+                    <div className="flex items-center gap-1">
+                      <img className="size-3" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
+                      <span className="text-[#A3A3A3] text-sm font-[400]">CGT</span>
+                    </div>
                     <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
                   </div>
                 </div>
