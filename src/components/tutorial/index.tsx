@@ -111,7 +111,7 @@ const tutorialList = {
 
 2 cd $env:USERPROFILE
 
-3 Invoke-WebRequest  -Uri "https://github.com/cysic-3Labs/phase2 libs/releases/download/v1.0.0/setup_win.psl" -0utFile "setup_win.ps1"
+3 Invoke-WebRequest  -Uri "https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_win.psl" -0utFile "setup_win.ps1"
 
 4 .\\setup_win.pS1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here"`,
         },

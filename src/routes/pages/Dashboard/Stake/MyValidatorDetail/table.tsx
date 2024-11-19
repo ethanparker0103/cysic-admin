@@ -110,10 +110,10 @@ const UserTable = () => {
       key: "commission_rate",
       label: "Commission Rate",
     },
-    {
-      key: "expected_apr",
-      label: "Expected APR",
-    },
+    // {
+    //   key: "expected_apr",
+    //   label: "Expected APR",
+    // },
     {
       key: "action",
       label: "Action",

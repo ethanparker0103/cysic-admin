@@ -125,7 +125,7 @@ const MainCard = (props: any) => {
       }}
       {...props}
     >
-     {props?.title ?  <div className="flex items-center gap-1 text-[#A3A3A3]">
+      {props?.title ? <div className="flex items-center gap-1 text-[#A3A3A3]">
         {/* <Hero className="size-4 text-[#A3A3A3]" /> */}
         <span className="text-[18px] text-[#fff]">
           {typeof props?.title == "string" ? t(props?.title) : props?.title}
@@ -174,11 +174,16 @@ const Dashboard = () => {
   const overview: any = overviewData?.data || mock1?.data;
   const overview1: any = {
     project_num: format(overviewData?.data?.project_num),
-    provider_num: format(overviewData?.data?.provider_num),
+    // provider_num: format(overviewData?.data?.provider_num),
     // verifier_num: overviewData?.data?.verifier_num ? `${overviewData?.data?.approved_verifier_num} / ${overviewData?.data?.verifier_num}` : undefined,
 
+    provider_num: {
+      Accept: format(overviewData?.data?.approved_provider_num),
+      Applied: format(overviewData?.data?.provider_num),
+    },
+
     verifier_num: {
-      Running: format(overviewData?.data?.approved_verifier_num),
+      Accept: format(overviewData?.data?.approved_verifier_num),
       Applied: format(overviewData?.data?.verifier_num),
     },
 
@@ -285,18 +290,24 @@ const Dashboard = () => {
             <MainCard>
               <div className="flex flex-col gap-4">
                 <div className="flex items-center gap-2 text-lg leading-none">
-                  <span className="font-[400]">{t('totalPoints')}</span>
-                  <span className="font-[600]">{total_reward}</span>
+                  <span className="font-[400]">Total Rewards</span>
+                  {/* <span className="font-[600]">{(overview2?.total_task || 0) * 100}</span> */}
                 </div>
                 <div className="flex items-center gap-8">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#A3A3A3] text-sm font-[400]">Verifier</span>
-                    <div className="text-[#fff] text-lg">{verifier_reward}</div>
+                    <div className="flex items-center gap-1">
+                      <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
+                      <span className="text-[#A3A3A3] text-sm font-[400]">CYS</span>
+                    </div>
+                    <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
                   </div>
                   <div className="w-px h-10 bg-[#2B2B2B]" />
                   <div className="flex flex-col gap-1">
-                    <span className="text-[#A3A3A3] text-sm font-[400]">Prover</span>
-                    <div className="text-[#fff] text-lg">{provider_reward}</div>
+                    <div className="flex items-center gap-1">
+                      <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
+                      <span className="text-[#A3A3A3] text-sm font-[400]">CGT</span>
+                    </div>
+                    <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
                   </div>
                 </div>
               </div>
