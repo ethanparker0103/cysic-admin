@@ -1,10 +1,6 @@
 import Image from "@/components/Image";
-import Pagination from "@/components/Pagination";
-import { commonPageSize } from "@/config";
 import useAccount from "@/hooks/useAccount";
-import usePagnation from "@/hooks/usePagnation";
 import useUser from "@/models/_global/user";
-import { shortStr } from "@/utils/tools";
 import {
   Table,
   TableHeader,
@@ -14,7 +10,6 @@ import {
   TableCell,
   getKeyValue,
 } from "@nextui-org/react";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const mock = {

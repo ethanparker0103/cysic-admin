@@ -124,10 +124,10 @@ const VerifierTable = () => {
       key: "verifier_point",
       label: "Verifier Points",
     },
-    {
-      key: "activity_score",
-      label: "Activity Points",
-    },
+    // {
+    //   key: "activity_score",
+    //   label: "Activity Points",
+    // },
     {
       key: "sum",
       label: "Cumulation",
