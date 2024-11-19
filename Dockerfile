@@ -14,7 +14,7 @@ RUN npm install --force
 COPY . .
 
 # 构建项目
-RUN yarn build
+RUN yarn build:qa
 
 # Stage 2: Serve the application with nginx
 FROM nginx:alpine
