@@ -1,15 +1,12 @@
-import { isProd } from "@/config"
-import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev"
-
-  export const cysicTestnet_testnet = {
+  export const cysicTestnet_dev = {
     "chainId": "cysicmint_9001-1",
     "chainName": "Cysic Network Testnet",  
     "chainSymbolImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/chain.png",
     // NOTE: local test connects to node 1
     // "rpc": "http://localhost:26668",
     // "rest": "http://localhost:8327",
-    "rpc": "https://rpc-testnet.prover.xyz",
-    "rest": "https://api-testnet.prover.xyz",
+    "rpc": "https://dev-rpc.prover.xyz/",
+    "rest": "https://dev-api.prover.xyz",
     "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
     "bip44": {
       "coinType": 60
@@ -58,5 +55,3 @@ import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev"
     "features": ["eth-address-gen"]
     // "features": []
   }
-
-  export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev

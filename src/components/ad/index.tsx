@@ -4,11 +4,11 @@ const Ad = ({ type }: { type: string }) => {
   switch (type) {
     case "verifier":
       return (
-        <div className="bg-[#913FEF33] py-6 px-8 relative h-[12.5rem] rounded-[20px] overflow-hidden">
+        <div className="bg-[#913FEF33] py-6 px-8 relative h-[11.5rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col gap-3 max-w-[32.5rem] leading-[1.2] justify-between h-full">
             <div className="leading-[1.2] Gemsbuck uppercase text-[32px] font-bold">
               Become a <span className="text-gradient Gemsbuck">Verifier</span>{" "}
-              to earn $CYS and $CGT
+              <br/> to earn $CYS and $CGT
             </div>
             <div className="leading-[1.2] text-[#A1A1AA] text-sm font-[300]">
               Run a lightweight node to support proof verification,
@@ -46,7 +46,7 @@ const Ad = ({ type }: { type: string }) => {
       );
     default:
       return (
-        <div className="bg-[#913FEF33] py-6 px-8 relative h-[12.5rem] rounded-[20px] overflow-hidden">
+        <div className="bg-[#913FEF33] py-6 px-8 relative h-[11.5rem] rounded-[20px] overflow-hidden">
           <div className="flex flex-col gap-3 max-w-[32.5rem] leading-[1.2] justify-between h-full">
             <div className="leading-[1.2] Gemsbuck uppercase text-[32px] font-bold">
               Maximize your{" "}

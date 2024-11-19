@@ -1,14 +1,17 @@
 import MainCard from "@/components/MainCard";
+import useAccount from "@/hooks/useAccount";
+import useUser from "@/models/_global/user";
 import { getImageUrl } from "@/utils/tools";
+import { useRequest } from "ahooks";
+import axios from "axios";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Status = ({ suc }: any) => {
 
   return (
-    <div className={clsx("flex items-center gap-1", suc ? 'text-[#11D473]' : 'text-[#FF401A]')}>
+    <div className={clsx("flex items-center gap-1", suc == undefined ? 'text-[#4e4e4e]' : suc ? 'text-[#11D473]' : 'text-[#FF401A]')}>
       <svg
         width="12"
         height="12"
@@ -19,12 +22,42 @@ const Status = ({ suc }: any) => {
         <circle cx="6" cy="6" r="6" fill="currentColor" fillOpacity="0.2" />
         <circle cx="6" cy="6" r="3" fill="currentColor" />
       </svg>
-      <span className="text-sm font-[400]">{suc ? 'Active' : 'Inactive'}</span>
+      <span className="text-sm font-[400]">{suc == undefined ? 'Unknown' : suc ? 'Active' : 'Inactive'}</span>
     </div>
   );
 };
 
 const Provers = () => {
+  const { address } = useAccount()
+  const { profile } = useUser()
+
+
+  const aleoAddress = profile?.[address as string]?.aleoAddress
+  const scrollProverStatus = profile?.[address as string] ? !!profile?.[address as string]?.provider?.find((i: any) => i?.ID) : undefined
+  console.log('profile', profile, scrollProverStatus)
+
+  // const aleoProverStatus
+
+  const { data } = useRequest(() => {
+    return axios.post('https://api.47s3rx.org/graphql', {
+        "query": "query userInfo($userId: String!) {\n  userInfo(userId: $userId) {\n    id\n    totalIncomes\n    paid\n    unpaid\n    todayIncomes\n    realtimeHashRate\n    realtimeHashRateUnit\n    balance\n    totalPayouts\n    totalShares\n  }\n  userWorkerStat(userId: $userId) {\n    all\n    online\n    offline\n    invalid\n  }\n}",
+        "variables": {
+          "userId": aleoAddress
+        },
+        "operationName": "userInfo"
+      })
+  }, {
+    ready: !!aleoAddress,
+    refreshDeps: [aleoAddress],
+    onSuccess(e){
+      console.log('aleo result', e)
+    },
+    onError(e){
+      console.log('aleo error', e)
+    }
+  })
+
+
   return (
     <div className="flex items-center gap-4">
       <MainCard className="flex flex-col gap-6 rounded-[16px]">
@@ -33,7 +66,7 @@ const Provers = () => {
             <img className="size-[28px]" src={getImageUrl('@/assets/images/tokens/veScroll.svg')} />
             <div className="text-[24px] font-[500]">Scroll Prover</div>
           </div>
-          <Status suc />
+          <Status suc={scrollProverStatus} />
         </div>
 
         <div className="flex flex-col gap-2 text-[#A1A1AA] text-sm font-[400]">
@@ -53,7 +86,7 @@ const Provers = () => {
             <img className="size-[28px]" src={getImageUrl('@/assets/images/tokens/veAleo.svg')} />
             <div className="text-[24px] font-[500]">Aleo Prover</div>
           </div>
-          <Status suc={false} />
+          <Status suc={aleoAddress ? data : undefined} />
         </div>
 
         <div className="flex flex-col gap-2 text-[#A1A1AA] text-sm font-[400]">

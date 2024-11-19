@@ -1,19 +1,17 @@
 import Button from "@/components/Button";
 import MainCard from "@/components/MainCard";
-import ProgressIcon, { ENUM_ProgressStatus } from "@/components/Progess/icon";
+import { ENUM_ProgressStatus } from "@/components/Progess/icon";
 import ProgressLabel from "@/components/Progess/label";
-import { checkBind, genCode } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
 import { mock } from "@/routes/pages/Dashboard/Referral";
 import Detail from "@/routes/pages/Dashboard/Referral/Detail";
-import { generateQueryString } from "@/utils/tools";
-import { Progress, Snippet, Tooltip } from "@nextui-org/react";
+import { Progress, Tooltip } from "@nextui-org/react";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import useAccount from "@/hooks/useAccount";
-import { cysicStCoin, genTwitterLink, getReferralUrl, twitterLink } from "@/config";
+import { cysicStCoin, genTwitterLink } from "@/config";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
 import useModalState from "@/hooks/useModalState";
 import { useEffect, useMemo } from "react";
@@ -43,23 +41,21 @@ const Valid = () => {
     const currentLevel = overview?.currentLevel;
     const currentLevelConfig = levelListMap?.[currentLevel];
     const nextLevelConfig = levelListMap?.[currentLevel + 1];
-    let totalPastActivateCnt = 0;
+    let totalPastActivateCnt =  overview?.activateCnt || '0';
 
     const totalInviteValue = levelList?.reduce((prev: any, next: any) => {
         if (+next?.ID < currentLevel) {
-            totalPastActivateCnt = totalPastActivateCnt + next?.Require
+            totalPastActivateCnt = BigNumber(totalPastActivateCnt).plus(BigNumber.max(next?.Require, 0)).toString()
         }
-        return BigNumber(prev).plus(next?.Require).toString();
+        return BigNumber(prev).plus(BigNumber.max(next?.Require, 0)).toString();
     }, "0");
-
-    console.log('overview', overview, currentLevelConfig, nextLevelConfig)
 
     const currentInviteValue = BigNumber(totalPastActivateCnt)
         .div(totalInviteValue)
         .multipliedBy(100)
         .toFixed(0, BigNumber.ROUND_DOWN);
 
-    const currentInvites = BigNumber(totalPastActivateCnt).plus(overview?.activateCnt || '0').toString()
+    const currentInvites = totalPastActivateCnt
 
     const twitterLink = useMemo(() => {
         return genTwitterLink()
@@ -73,13 +69,14 @@ const Valid = () => {
                     visible: true,
                     nextLevel: {
                         ...nextLevelConfig,
-                        Require: overview?.LevelUpNeed
+                        Require: (overview?.LevelUpNeed||0) - (overview?.activateCnt||0)
                     },
                     currentInvites
                 }
             }))
         }
     }, [nextLevelConfig, currentInvites])
+
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
@@ -229,7 +226,7 @@ const Valid = () => {
                                                         </div>
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Pool Fee</span>
-                                                            <span className="text-[#fff]">{i?.PoolFee}%</span>
+                                                            <span className="text-[#fff]">{(i?.PoolFee || 0) * 100}%</span>
                                                         </div>
                                                     </div>}><span>{i?.Name}</span></Tooltip>
                                                     <div className="flex items-center gap-1">
@@ -276,7 +273,7 @@ const Valid = () => {
                                                         </div>
                                                         <div className="flex items-center gap-1 ">
                                                             <span className="text-[#A1A1AA]">Pool Fee</span>
-                                                            <span className="text-[#fff]">{i?.PoolFee}%</span>
+                                                            <span className="text-[#fff]">{(i?.PoolFee || 0) * 100}%</span>
                                                         </div>
                                                     </div>}><span>{i?.Name}</span></Tooltip>
                                                     <div className="flex items-center gap-1">
