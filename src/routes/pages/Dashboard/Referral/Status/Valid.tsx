@@ -23,8 +23,6 @@ const Valid = () => {
     const { address } = useAccount();
     const { levelListMap, levelList, code, overview, setState } = useReferral();
 
-    console.log('overview', overview)
-
     // 10.4 获取当前地址基础信息
     useRequest(() => axios.get(`/api/v1/referral/${address}/overview`), {
         ready: !!address,
