@@ -97,7 +97,7 @@ const ReferralRewardModal = () => {
               type="solidGradient"
               onClick={() => setVisible(false)}
             >
-              Got it
+              Claim it
             </Button>
             <Button
               className="rounded-full flex-1"
