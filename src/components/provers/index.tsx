@@ -6,6 +6,7 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Status = ({ suc }: any) => {
@@ -31,29 +32,36 @@ const Provers = () => {
   const { address } = useAccount()
   const { profile } = useUser()
 
-
   const aleoAddress = profile?.[address as string]?.aleoAddress
   const scrollProverStatus = profile?.[address as string] ? !!profile?.[address as string]?.provider?.find((i: any) => i?.ID) : undefined
-  console.log('profile', profile, scrollProverStatus)
 
-  // const aleoProverStatus
-
-  const { data } = useRequest(() => {
+  const [aleoProverStatus, setAleoProverStatus] = useState<undefined | boolean>(undefined)
+  useRequest(() => {
     return axios.post('https://api.47s3rx.org/graphql', {
-        "query": "query userInfo($userId: String!) {\n  userInfo(userId: $userId) {\n    id\n    totalIncomes\n    paid\n    unpaid\n    todayIncomes\n    realtimeHashRate\n    realtimeHashRateUnit\n    balance\n    totalPayouts\n    totalShares\n  }\n  userWorkerStat(userId: $userId) {\n    all\n    online\n    offline\n    invalid\n  }\n}",
-        "variables": {
-          "userId": aleoAddress
-        },
-        "operationName": "userInfo"
-      })
+      "query": "query userInfo($userId: String!) {\n  userInfo(userId: $userId) {\n    id\n    totalIncomes\n    paid\n    unpaid\n    todayIncomes\n    realtimeHashRate\n    realtimeHashRateUnit\n    balance\n    totalPayouts\n    totalShares\n  }\n  userWorkerStat(userId: $userId) {\n    all\n    online\n    offline\n    invalid\n  }\n}",
+      "variables": {
+        "userId": aleoAddress
+      },
+      "operationName": "userInfo"
+    })
   }, {
     ready: !!aleoAddress,
     refreshDeps: [aleoAddress],
-    onSuccess(e){
+    onSuccess(e: any) {
       console.log('aleo result', e)
+      if (e?.data) {
+        setAleoProverStatus(true)
+        return
+      }
+      if (e?.errors) {
+        setAleoProverStatus(false)
+        return
+      }
     },
-    onError(e){
+    onError(e) {
       console.log('aleo error', e)
+      setAleoProverStatus(false)
+      return
     }
   })
 
@@ -86,7 +94,7 @@ const Provers = () => {
             <img className="size-[28px]" src={getImageUrl('@/assets/images/tokens/veAleo.svg')} />
             <div className="text-[24px] font-[500]">Aleo Prover</div>
           </div>
-          <Status suc={aleoAddress ? data : undefined} />
+          <Status suc={aleoAddress ? aleoProverStatus : undefined} />
         </div>
 
         <div className="flex flex-col gap-2 text-[#A1A1AA] text-sm font-[400]">
