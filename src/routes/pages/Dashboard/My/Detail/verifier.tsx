@@ -1,6 +1,6 @@
 import Image from "@/components/Image";
 import Pagination from "@/components/Pagination";
-import { commonPageSize, TaskStatus } from "@/config";
+import { blockTime, commonPageSize, TaskStatus } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import { shortStr, getImageUrl } from "@/utils/tools";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react"
@@ -34,6 +34,7 @@ const VerifierTable = () => {
       });
     },
     {
+      pollingInterval: blockTime.long,
       ready: !!address,
       refreshDeps: [address],
     }

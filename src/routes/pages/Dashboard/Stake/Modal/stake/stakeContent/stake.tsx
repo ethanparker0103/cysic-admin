@@ -112,7 +112,7 @@ const Stake = ({ item }: any) => {
                     </div>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <Input suffix={<Button onClick={() => { setStakeAmount(maxAmount); setSlider(1) }} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
+                    <Input max={maxAmount} suffix={<Button onClick={() => { setStakeAmount(maxAmount); setSlider(1) }} type="solid" className="min-h-fit h-fit py-1 rounded-full ">
                         <div className="text-[#00F0FF] text-sm font-[500]">Max</div>
                     </Button>} className="!bg-[#000]" value={stakeAmount} onChange={(v) => {
                         setStakeAmount(v);

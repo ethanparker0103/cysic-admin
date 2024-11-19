@@ -1,5 +1,6 @@
+import BigNumber from "bignumber.js";
 import clsx from "clsx";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const Input = ({
   disabled,
@@ -12,10 +13,47 @@ const Input = ({
   prefix,
   type,
   onFocus,
-  onBlur
+  onBlur,
+  max,
+  precision
 }: any) => {
+  // useEffect(() => {
+  //   let newValue = value;
+
+  //   if (precision !== undefined && !isNaN(newValue) && newValue.includes('.')) {
+  //     const [integerPart, decimalPart] = newValue.split('.');
+  //     if (decimalPart.length > precision) {
+  //       newValue = BigNumber(newValue).toFixed(precision, BigNumber.ROUND_DOWN);
+  //     }
+  //   }
+
+  //   if (max !== undefined && BigNumber(newValue).isGreaterThan(max)) {
+  //     newValue = max;
+  //   }
+
+  //   if (newValue !== value) {
+  //     onChange(newValue);
+  //   }
+  // }, [value, max, precision, onChange]);
+
+  // const handleChange = (e) => {
+  //   onChange?.(e.target.value);
+  // };
+
   const handleChange = (e) => {
-    const value = e.target.value;
+    let value = e.target.value;
+
+    if (precision !== undefined && !isNaN(value) && value.includes('.')) {
+      const [integerPart, decimalPart] = value.split('.');
+      if (decimalPart.length > precision) {
+        value = BigNumber(value).toFixed(precision, BigNumber.ROUND_DOWN);
+      }
+    }
+
+    if (max !== undefined && BigNumber(value).isGreaterThan(max)) {
+      onChange(max)
+      return;
+    }
     onChange?.(value);
   };
 

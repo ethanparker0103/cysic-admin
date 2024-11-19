@@ -132,9 +132,9 @@ const ExchangeModal = () => {
 
     const toggle = () => {
         const tempDataList: any = {
-            fromAmount,
+            fromAmount: '',
             fromToken,
-            toAmount,
+            toAmount: '',
             toToken,
         };
         setFromToken(tempDataList?.toToken);
@@ -156,6 +156,7 @@ const ExchangeModal = () => {
                                     <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
                                         <span className="text-[#A3A3A3]">Sell</span>
                                         <Input
+                                            max={format(balanceMap?.[fromToken]?.hm_amount, 3)}
                                             value={fromAmount}
                                             onChange={setFromAmount}
                                             type="text"
@@ -237,6 +238,7 @@ const ExchangeModal = () => {
                                     <div className="border border-[#FFFFFF52] rounded-[16px] p-4 flex flex-col gap-3 bg-[#000000]">
                                         <span className="text-[#A3A3A3]">Buy</span>
                                         <Input
+                                            max={format(balanceMap?.[toToken]?.hm_amount, 3)}
                                             value={toAmount}
                                             onChange={setToAmount}
                                             type="text"

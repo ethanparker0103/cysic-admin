@@ -217,6 +217,7 @@ const DelegateModal = () => {
                                         </div>
                                         <div className="flex flex-col gap-1">
                                             <Input
+                                                max={maxAmount}
                                                 suffix={
                                                     <Button
                                                         onClick={() => setDelegateAmount(maxAmount)}

@@ -1,3 +1,4 @@
+import { blockTime } from "@/config"
 import useCosmos from "@/models/_global/cosmos"
 import { useEventListener, useRequest } from "ahooks"
 import BigNumber from "bignumber.js"
@@ -11,6 +12,7 @@ const useCosmosBalance = ()=>{
     }, {
         ready: !!connector && !!address,
         refreshDeps: [connector, address],
+        pollingInterval: blockTime.long,
         onSuccess(e: any){
             const res = e?.reduce((prev, next)=>{
                 if(!prev?.[next?.denom]){

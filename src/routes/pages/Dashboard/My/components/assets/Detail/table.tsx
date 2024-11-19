@@ -1,5 +1,5 @@
 import Pagination from "@/components/Pagination";
-import { commonPageSize } from "@/config";
+import { blockTime, commonPageSize } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import { activatedUserList } from "@/mock/referral";
 import useCosmos from "@/models/_global/cosmos";
@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import useAccount from "@/hooks/useAccount";
+import dayjs from "dayjs";
 
 const mock = {
   msg: "success",
@@ -85,6 +86,7 @@ const UserTable = () => {
     {
       ready: !!cosmosAddress,
       refreshDeps: [cosmosAddress],
+      pollingInterval: blockTime.long,
     }
   );
   const tableData = taskList?.data?.list || [];
@@ -114,6 +116,8 @@ const UserTable = () => {
           <img className="size-6" src={getImageUrl(imgUrl)}/>
           <span>{token}</span>
         </div>
+      case "UpdatedAt":
+        return dayjs(getKeyValue(item, columnKey)).format("YYYY-MM-DD HH:mm:ss");
       case "Status":
         return (
           <div className="flex items-center gap-1">

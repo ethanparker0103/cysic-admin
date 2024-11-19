@@ -77,7 +77,7 @@ const CosmosFaucetModal = () => {
                             <span className="text-[#9C9C9C]">Wallet Address</span>
                             <Input type="solid" className="text-[#626365]" disabled value={address || '-'} />
                         </div>
-                        <Button type="gradient" loading={loading} onClick={handleClaim}>Claim 10 $CYS {countdownFormatted}</Button>
+                        <Button type="gradient" loading={loading} onClick={handleClaim}>Claim 1 $CYS {countdownFormatted}</Button>
                     </div>
                 </ModalBody>
 
