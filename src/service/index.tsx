@@ -24,6 +24,11 @@ axios.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
+    // 如果接口的url包含 graphql 则直接返回
+    if (response.config.url?.includes('/graphql')) {
+        return response?.data
+    }
+    
     if (response?.data?.code != 10000) {
         if (response?.data?.code == 10199) {
             const auth: any = useAuth.getState()
