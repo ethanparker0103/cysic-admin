@@ -52,6 +52,8 @@ const Valid = () => {
         return BigNumber(prev).plus(next?.Require).toString();
     }, "0");
 
+    console.log('overview', overview, currentLevelConfig, nextLevelConfig)
+
     const currentInviteValue = BigNumber(totalPastActivateCnt)
         .div(totalInviteValue)
         .multipliedBy(100)
@@ -69,7 +71,10 @@ const Valid = () => {
             dispatchEvent(new CustomEvent("modal_referral_reward_visible", {
                 detail: {
                     visible: true,
-                    nextLevel: currentLevelConfig,
+                    nextLevel: {
+                        ...nextLevelConfig,
+                        Require: overview?.LevelUpNeed
+                    },
                     currentInvites
                 }
             }))
