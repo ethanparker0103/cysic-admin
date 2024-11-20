@@ -81,9 +81,9 @@ const tutorialList = {
             title: "👉 Step 1: Setup",
             subTitle:
                 "Start your terminal program on Linux. Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.",
-            desc: `1. # replace 0x-Fill-in-your-reward-address-here to your reward address below 
-
-2. curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
+            desc: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
+            
+curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
         },
         {
             title: "👉 Step 2: Start the verifier program",
@@ -92,7 +92,7 @@ const tutorialList = {
                 <span>· If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect. </span>
                 <span>· Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.</span>
             </div>,
-            desc: `1 cd ~/cysic-verifier/ && bash start.sh`,
+            desc: `cd ~/cysic-verifier/ && bash start.sh`,
         },
         {
             title: "🎉 Success! ",
@@ -107,13 +107,13 @@ const tutorialList = {
             title: "👉 Step 1: Setup",
             subTitle:
                 "Open your terminal Powershell, and start as administrator. Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.",
-            desc: `1 # replace 0x-Fill-in-your-reward-address-here with your reward address below
+            desc: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
 
-2 cd $env:USERPROFILE
+cd $env:USERPROFILE
 
-3 Invoke-WebRequest  -Uri "https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_win.psl" -0utFile "setup_win.ps1"
+Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_win.ps1" -OutFile "setup_win.ps1"
 
-4 .\\setup_win.pS1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here"`,
+.\\setup_win.ps1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here" `,
         },
         {
             title: "👉 Step 2: Start the verifier program",
@@ -122,11 +122,11 @@ const tutorialList = {
         <span>· If you see “err: network error”, don’t worry—just wait a few minutes for the verifier to connect.</span>
         <span>· Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.</span>
       </div>,
-            desc: `1 # run the verifier
+            desc: `# run the verifier
 
-2 cd $env:USERPROFILE\\cysic-verifier
+cd $env:USERPROFILE\cysic-verifier
 
-3 .\\start.psl`,
+.\\start.ps1`,
         },
         {
             title: "🎉 Success! ",
@@ -140,9 +140,9 @@ const tutorialList = {
         {
             title: "👉 Step 1: Setup",
             subTitle: `Open your terminal first. Copy the code below, replacing the address placeholder with your reward address, then press to run.`,
-            desc: `1 # replace 0x-Fill-in-your-reward-address-here with your reward address below
-        
-2 2 curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_mac.sh >~/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
+            desc: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
+
+curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_mac.sh > ~/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
         },
         {
             title: "👉 Step 2: Start the verifier program",
@@ -151,7 +151,7 @@ const tutorialList = {
             <span>· If you see “err: network error”, don’t worry—just wait a few minutes for the verifier to connect.</span>
             <span>· Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.</span>
           </div>,
-            desc: `1 cd ~/cysic-verifier/ && bash start.sh`,
+            desc: `cd ~/cysic-verifier/ && bash start.sh`,
         },
         {
             title: "🎉 Success! ",

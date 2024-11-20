@@ -60,7 +60,7 @@ const ReferralRewardModal = () => {
       console.log("res", res);
 
       if (res?.data?.success) {
-        toast.success("Sumit Claim success");
+        toast.success("Submit Claim success");
       }
       setVisible(false);
     } catch (e) {
