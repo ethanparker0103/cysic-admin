@@ -9,7 +9,6 @@ import {
   Accordion,
   AccordionItem,
   NextUIProvider,
-  Tooltip,
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
@@ -45,12 +44,10 @@ import Media from "@/components/Media";
 import useReferral from "@/models/_global/referral";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
-import Joyride from 'react-joyride';
 import UserProfile from "@/components/UserProfile";
 import { enableCosmosUrl, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
-import { cosmosJoyRideSteps, joyRideStyleSheet } from "@/config/joyride";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
