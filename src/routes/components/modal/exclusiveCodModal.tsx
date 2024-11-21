@@ -3,19 +3,22 @@ import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import useUser from "@/models/_global/user";
 import { blockTime, mediasLink, openTwitterLink } from "@/config";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, sleep } from "@/utils/tools";
 import useAccount from "@/hooks/useAccount";
 import axios from "axios";
 import { useEffect } from "react";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
 import { useLocalStorageState, useRequest } from "ahooks";
+import useReferral from "@/models/_global/referral";
 
 const ExclusiveCodModal = () => {
   const [storage, setStorage] = useLocalStorageState('codeCreatedModalVisible', {
     defaultValue: false
   })
+
+  const { setState: setReferralState } = useReferral()
   const { address } = useAccount();
-  const { setState, profile } = useUser();
+  // const { setState, profile } = useUser();
   const { visible, setVisible } = useModalState({
     eventName: "modal_exclusive_code_visible",
   });
@@ -33,11 +36,13 @@ const ExclusiveCodModal = () => {
     );
 
   }, {
-    onSuccess(e){
+    async onSuccess(e){
       const isPhase1Whitelist = e?.data?.isPhase1Whitelist
       const code = e?.data?.code
       if(code && !isPhase1Whitelist){
+        setReferralState({code: code})
         setStorage(true)
+        await sleep(100)
         setVisible(true)
       }
     },
