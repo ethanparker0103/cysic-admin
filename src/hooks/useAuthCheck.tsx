@@ -79,8 +79,8 @@ const useAuthCheck = () => {
 
     useEffect(() => {
         if (address && profile?.[address]?.needRegister != undefined && !profile?.[address]?.needRegister && !phase2ModalStatus && profile?.[address]?.can_claim_reward) {
-            console.log(11)
             dispatchEvent(new CustomEvent('modal_phase_1_reward_visible', { detail: { visible: true } }))
+            return;
         }
     }, [address, profile, phase2ModalStatus])
 };

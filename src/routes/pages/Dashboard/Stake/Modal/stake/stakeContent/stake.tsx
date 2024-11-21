@@ -142,12 +142,12 @@ const Stake = ({ item }: any) => {
             </div>
 
             <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">APR</span>
                     <div className="flex items-center gap-1 cursor-pointer" onClick={() => dispatch({ visible: true })}>
                         <span>{current?.expected_apr || '-'}%</span>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="flex items-center justify-between">
                     <span className="text-[#A3A3A3]">Voting Power</span>

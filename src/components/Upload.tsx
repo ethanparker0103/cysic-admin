@@ -5,6 +5,10 @@ import { toast } from "react-toastify";
 
 import {Upload as _Upload} from '@arco-design/web-react'
 import { useEventListener } from "ahooks";
+import { getImageUrl } from "@/utils/tools";
+
+const MAX_FILE_SIZE = 500 * 1024; // 500k
+
 
 const Upload = ({onChange, className, resetEventName}: any) => {
     useEventListener(resetEventName, ()=>{
@@ -40,7 +44,15 @@ const Upload = ({onChange, className, resetEventName}: any) => {
     //   }
     // ]
     const handleImgChange = async (option: any) => {
-        const { onProgress, onError, onSuccess, file } = option;
+        const { onProgress, onError, onSuccess, file, ...props } = option;
+
+        if (file.size > MAX_FILE_SIZE) {
+            toast.error('File size exceeds the 500KB limit');
+            setFileList(() => []);
+
+            return onError(new Error('File size exceeds the 500KB limit'));
+        }
+
         const xhr = new XMLHttpRequest();
 
         if (xhr.upload) {
@@ -101,7 +113,22 @@ const Upload = ({onChange, className, resetEventName}: any) => {
         onPreview={(file) => {
             console.log('file', file)
         }}
-    />)
+        beforeUpload={(file) => {
+            return new Promise((resolve, reject) => {
+                if (file.size > MAX_FILE_SIZE) {
+                    toast.error('File size exceeds the 500KB limit');
+                    setFileList(() => []);
+                    reject('File size exceeds the 500KB limit')
+                }
+                resolve(true)
+            });
+          }}
+    >
+        <div className="relative border border-[1.5px] border-[#FFFFFF33] hover:border-[#21E9FA] size-[7rem] rounded-full flex items-center justify-center flex-col">
+            <img src={getImageUrl('@/assets/images/_global/upload.svg')}/>
+            <div className="absolute bottom-0 -translate-y-1/2 left-1/2 -translate-x-1/2 text-sm text-[#A1A1AA]">{'<'}500KB</div>
+        </div>
+    </_Upload>)
 }
 
 export default Upload

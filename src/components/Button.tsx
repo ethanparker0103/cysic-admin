@@ -16,7 +16,8 @@ const Button = ({
     disabled,
     loading,
     style = {},
-    needLoading
+    needLoading,
+    id
 }: {
     children: ReactNode
     className?: string
@@ -26,6 +27,7 @@ const Button = ({
     loading?: boolean
     style?: any
     needLoading?: boolean
+    id?: string
 }) => {
 
     const [interalLoading, setInternalLoading] = useState(false)
@@ -47,6 +49,7 @@ const Button = ({
 
     return (
         <button
+            id={id}
             style={style}
             disabled={disabled || _loading}
             onClick={()=>{
