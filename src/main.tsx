@@ -18,7 +18,8 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 
 import en from '@/lng/en.json'
-
+import BigNumber from "bignumber.js";
+BigNumber.config({ DECIMAL_PLACES: 99  });
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
