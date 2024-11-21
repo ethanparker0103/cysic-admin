@@ -36,7 +36,7 @@ const VerifierStatus = ()=>{
         <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-1">
                 <span className="text-base font-[500]">✨ Run your Verifier Node and start earning Testnet Token $CYS and $CGT!</span>
-                <span className="text-[#A3A3A3] text-sm">Tasks are assigned randomly and automatically, so make sure the node is running in the background to maintain your active status.  Once a task is assigned to you and successfully completed as one of the top 6 verifiers, you'll see your $CYS and $CGT token rewards on "My Page". If you have any questions, find us in our discord channel for support: <a href="https://discord.com/channels/1127954093990760539/1308397379954671696" target="_blank">https://discord.com/channels/1127954093990760539/1308397379954671696</a></span>
+                <span className="text-[#A3A3A3] text-sm">Tasks are assigned randomly and automatically, so make sure the node is running in the background to maintain your active status.  Once a task is assigned to you and successfully completed as one of the top 6 verifiers, you'll see your $CYS and $CGT token rewards on "My Page". If you have any questions, find us in our discord channel for support:&nbsp;<a className="inline-block !underline !font-[500] !text-[#fff]" href="https://discord.com/channels/1127954093990760539/1308397379954671696" target="_blank">https://discord.com/channels/1127954093990760539/1308397379954671696</a></span>
             </div>
             <div></div>
         </div>
