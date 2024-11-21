@@ -41,7 +41,6 @@ const ReferralRewardModal = () => {
   const [nextLevel, setNextLevel] = useState<any>()
   const [currentInvites, setCurrentInvites] = useState('0')
   const { address } = useAccount();
-  const { setState, profile } = useUser();
   const { visible, setVisible } = useModalState({
     eventName: "modal_referral_reward_visible",
   });

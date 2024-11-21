@@ -41,7 +41,7 @@ const Valid = () => {
     const currentLevel = overview?.currentLevel;
     const currentLevelConfig = levelListMap?.[currentLevel];
     const nextLevelConfig = levelListMap?.[currentLevel + 1];
-    let totalPastActivateCnt =  overview?.activateCnt || '0';
+    let totalPastActivateCnt = overview?.activateCnt || '0';
 
     const totalInviteValue = levelList?.reduce((prev: any, next: any) => {
         if (+next?.ID < currentLevel) {
@@ -64,22 +64,23 @@ const Valid = () => {
 
     const [status, setStatus] = useSessionStorageState('referral_rward', {
         defaultValue: '',
-      })
+    })
+
     useEffect(() => {
-        if (!status && currentInvites && nextLevelConfig) {
+        if (!status && currentInvites && nextLevelConfig && code) {
             setStatus('1')
             dispatchEvent(new CustomEvent("modal_referral_reward_visible", {
                 detail: {
                     visible: true,
                     nextLevel: {
                         ...nextLevelConfig,
-                        Require: (overview?.LevelUpNeed||0) - (overview?.activateCnt||0)
+                        Require: (overview?.LevelUpNeed || 0) - (overview?.activateCnt || 0)
                     },
                     currentInvites
                 }
             }))
         }
-    }, [status, nextLevelConfig, currentInvites])
+    }, [code, status, nextLevelConfig, currentInvites])
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
