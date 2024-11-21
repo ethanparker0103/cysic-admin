@@ -48,6 +48,7 @@ import UserProfile from "@/components/UserProfile";
 import { enableCosmosUrl, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
+import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -777,6 +778,7 @@ export default function App() {
           steps={cosmosJoyRideSteps} />
       </>) : null} */}
 
+      <ExclusiveCodModal />
       <HowInviteWorkModal />
       <ReferralRewardModal />
       <Phase1RewardModal />

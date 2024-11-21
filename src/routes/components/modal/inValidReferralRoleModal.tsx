@@ -35,7 +35,7 @@ const InValidReferralRoleModal = () => {
     return (
         <Modal
             isOpen={visible}
-            onClose={() => { }}
+            onClose={() => {}}
             className="[&_button.absolute]:hidden max-w-[558px] border border-[#FFFFFF33]"
         >
             <div className="flex flex-col">
@@ -57,17 +57,10 @@ const InValidReferralRoleModal = () => {
                     <div className="flex items-center gap-4">
                         <Button
                             className="rounded-full flex-1"
-                            type="solidGradient"
-                            onClick={() => navigate('/dashboard/verifier')}
-                        >
-                            Become a Verifier
-                        </Button>
-                        <Button
-                            className="rounded-full flex-1"
-                            onClick={() => navigate('/dashboard/prover')}
+                            onClick={() => navigate('/my')}
                             type="gradient"
                         >
-                            Become a Prover
+                            Start Exploring
                         </Button>
                     </div>
                 </div>
