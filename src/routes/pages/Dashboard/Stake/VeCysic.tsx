@@ -185,6 +185,15 @@ const VeCysic = () => {
                     {stakeMap?.[cysicStCoin]?.hm_amount || 0}
                   </span>
                   <span className="">{token}</span>
+                  <Button
+                    type="dark"
+                    className="h-[1.75rem] min-h-fit"
+                    onClick={() => {
+                      dispatch({ visible: true, tab: StakeTab.stake });
+                    }}
+                  >
+                    <span className="text-sm text-[#00F0FF]">Stake</span>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -205,7 +214,7 @@ const VeCysic = () => {
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-4 justify-between">
+            {/* <div className="flex-1 flex flex-col gap-4 justify-between">
               <img
                 className="size-10"
                 src={getImageUrl("@/assets/images/stake/star.svg")}
@@ -227,7 +236,7 @@ const VeCysic = () => {
                   </Button>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient gradient-sub-border relative">
             <div className="flex flex-col gap-6 justify-between">

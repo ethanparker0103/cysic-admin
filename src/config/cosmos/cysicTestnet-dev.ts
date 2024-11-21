@@ -1,6 +1,6 @@
   export const cysicTestnet_dev = {
-    "chainId": "cysicmint_9001-1",
-    "chainName": "Cysic Network Testnet",  
+    "chainId": "cysicmint_9000-1",
+    "chainName": "Cysic Network Devnet",  
     "chainSymbolImageUrl": "https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic/chain.png",
     // NOTE: local test connects to node 1
     // "rpc": "http://localhost:26668",
