@@ -3,7 +3,7 @@ import useAccount from "@/hooks/useAccount";
 import useModalState from "@/hooks/useModalState";
 import { referralLevel } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
-import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
+import InValidReferralRoleModal from "@/routes/components/modal/inValidReferralRoleModal";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import Valid from "@/routes/pages/Dashboard/Referral/Status/Valid";
 import { useRequest } from "ahooks";
@@ -105,6 +105,7 @@ const Referral = () => {
     const { dispatch } = useModalState({eventName: "modal_how_invite_work_visible"});
     return (
         <>
+            <InValidReferralRoleModal />
             <MainContainer
                 title={
                     <div className="flex items-center gap-2">
