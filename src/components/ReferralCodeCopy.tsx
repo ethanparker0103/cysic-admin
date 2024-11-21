@@ -1,10 +1,19 @@
 import { getReferralUrl } from "@/config";
+import useAccount from "@/hooks/useAccount";
 import useReferral from "@/models/_global/referral";
+import useUser from "@/models/_global/user";
 import { Snippet } from "@nextui-org/react";
 import clsx from "clsx";
 
 const ReferralCodeCopy = ({ className }: any) => {
   const { code } = useReferral();
+
+  const { address } = useAccount()
+  const { profile } = useUser()
+  const isPhase1Whitelist = profile?.[address as string]?.isPhase1Whitelist
+  console.log('profile_', isPhase1Whitelist)
+
+  
 
   return (
     <Snippet
