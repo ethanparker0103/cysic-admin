@@ -1,5 +1,5 @@
 import { getImageUrl } from "@/utils/tools";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Link, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,11 +45,12 @@ import Media from "@/components/Media";
 import useReferral from "@/models/_global/referral";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
-import useUser from "@/models/_global/user";
+import Joyride from 'react-joyride';
 import UserProfile from "@/components/UserProfile";
 import { enableCosmosUrl, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
+import { cosmosJoyRideSteps, joyRideStyleSheet } from "@/config/joyride";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -81,7 +82,7 @@ const Accordion_ = ({ origin, navs, children }: any) => {
                     lastPathname == i.link
                     ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] bg-bottom	bg-contain	bg-no-repeat rounded-[8px] bg-[url(@/assets/images/_global/nav-shadow.svg)]"
                     : // shadow-[0px_4px_0px_0px_#000000]
-                      ""
+                    ""
                 )}
                 onClick={() => navigate(i.link)}
               >
@@ -758,8 +759,27 @@ export default function App() {
   const { dispatch } = useModalState({
     eventName: "modal_cosmos_faucet_visible",
   });
+
+  // const [run, setRun] = useState(false);
+
+  // useEffect(()=>{
+  //   if(!cosmosAddress && enableCosmosUrl.includes(pathname)){
+  //     setTimeout(()=>{
+  //       setRun(true)
+  //     }, 500)
+  //   }
+  // }, [!cosmosAddress && enableCosmosUrl.includes(pathname)])
+
   return (
     <>
+      {/* {(!cosmosAddress && enableCosmosUrl.includes(pathname)) ? (<>
+        <Joyride
+          continuous
+          styles={joyRideStyleSheet}
+          run={run}
+          steps={cosmosJoyRideSteps} />
+      </>) : null} */}
+
       <HowInviteWorkModal />
       <ReferralRewardModal />
       <Phase1RewardModal />
@@ -853,7 +873,7 @@ export default function App() {
                           lastPathname == i.link
                           ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] border-[#000] "
                           : // shadow-[0px_4px_0px_0px_#000000]
-                            ""
+                          ""
                       )}
                     >
                       <>
@@ -993,8 +1013,9 @@ export default function App() {
               </div>
 
               <div className="flex items-center gap-3">
-                {cosmosAddress && enableCosmosUrl.includes(pathname) ? (
+                {enableCosmosUrl.includes(pathname) ? (
                   <div
+                    id="faucet-trigger-button"
                     onClick={() => dispatch({ visible: true })}
                     className="cursor-pointer rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"
                   >
@@ -1014,7 +1035,7 @@ export default function App() {
                 ) : null}
                 <ConnectButton />
                 {
-                  enableCosmosUrl.includes(pathname) ? (<ConnectCosmosButton />) : null 
+                  enableCosmosUrl.includes(pathname) ? (<ConnectCosmosButton />) : null
                 }
                 <UserProfile />
               </div>

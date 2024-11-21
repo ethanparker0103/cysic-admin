@@ -7,6 +7,11 @@ import { getImageUrl } from "@/utils/tools";
 import useAccount from "@/hooks/useAccount";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { checkKeplrWallet } from "@/utils/cosmos";
+import { useNavigate } from "react-router-dom";
+import confetti from 'canvas-confetti'
+import useCosmos from "@/models/_global/cosmos";
 
 const descList = [
   {
@@ -52,15 +57,46 @@ const Phase1RewardModal = () => {
       console.log("res", res);
 
       if (res?.data?.success) {
+        setHasClaimSubmitted(true)
         toast.success("Submit Claim success");
+        confetti({
+          particleCount: 100,
+          spread: 100,
+          origin: { x: 0.6, y: 0.8 },
+        })
       }
-      setVisible(false);
     } catch (e) {
       console.log("e", e);
     } finally {
       closeLoading?.();
     }
   };
+
+
+  const [hasClaimSubmitted, setHasClaimSubmitted] = useState(false)
+
+  useEffect(() => {
+    if (!visible && hasClaimSubmitted) {
+      setHasClaimSubmitted(false)
+    }
+  }, [visible, hasClaimSubmitted])
+
+
+  const { address: cosmosAddr } = useCosmos()
+  const navigate = useNavigate()
+  const handleCheckRewards = ()=>{
+    try{
+      checkKeplrWallet()
+    }catch(e){}
+  }
+
+  useEffect(()=>{
+    if(cosmosAddr && hasClaimSubmitted){
+      setVisible(false);
+      navigate('/my')
+    }
+  }, [cosmosAddr, hasClaimSubmitted])
+
   return (
     <Modal
       isOpen={visible}
@@ -91,15 +127,26 @@ const Phase1RewardModal = () => {
             </div>
           </div>
 
-          <Button
-            needLoading
-            className="rounded-full"
-            type="gradient"
-            onClick={handleClaim}
-          >
-            Claim {profile?.[address]?.reward_amount} $
-            {profile?.[address]?.reward_token}
-          </Button>
+          {
+            hasClaimSubmitted ? (<Button
+              className="rounded-full"
+              type="gradient"
+              onClick={handleCheckRewards}
+            >
+              Check My Rewards With Keplr
+            </Button>) : (
+              <Button
+                needLoading
+                className="rounded-full"
+                type="gradient"
+                onClick={handleClaim}
+              >
+                Claim {profile?.[address]?.reward_amount} $
+                {profile?.[address]?.reward_token}
+              </Button>
+            )
+          }
+
         </div>
       </div>
     </Modal>

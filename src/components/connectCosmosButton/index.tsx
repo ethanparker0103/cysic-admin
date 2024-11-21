@@ -95,6 +95,7 @@ export default function ConnectCosmosButton({ className, content }: any) {
 
   return (
     <Button
+      id="cosmos-connect-button"
       onClick={()=>dispatch({visible: true})}
       type="gradient"
       className={clsx(
