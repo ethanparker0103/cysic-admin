@@ -1,52 +1,62 @@
 import Button from "@/components/Button";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
-import useUser from "@/models/_global/user";
-import { blockTime, mediasLink, openTwitterLink } from "@/config";
+import { blockTime, openTwitterLink } from "@/config";
 import { getImageUrl, sleep } from "@/utils/tools";
 import useAccount from "@/hooks/useAccount";
 import axios from "axios";
 import { useEffect } from "react";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
-import { useLocalStorageState, useRequest } from "ahooks";
+import { useRequest } from "ahooks";
 import useReferral from "@/models/_global/referral";
+import useLocalStatusWithAddr from "@/models/_global/localStatusWithAddr";
 
 const ExclusiveCodModal = () => {
-  const [storage, setStorage] = useLocalStorageState('codeCreatedModalVisible', {
-    defaultValue: false
-  })
+  const { address } = useAccount();
+  const { statusMap, createAddress, updateAddress } = useLocalStatusWithAddr()
+
+  const storage = statusMap?.[address as string]?.codeCreatedModalVisible
+
+  useEffect(() => {
+    if (address && !statusMap?.[address as string]) {
+      createAddress(address)
+    }
+  }, [address, statusMap?.[address as string]])
+
+  // const [storage, setStorage] = useLocalStorageState('codeCreatedModalVisible', {
+  //   defaultValue: false
+  // })
 
   const { setState: setReferralState } = useReferral()
-  const { address } = useAccount();
   // const { setState, profile } = useUser();
   const { visible, setVisible } = useModalState({
     eventName: "modal_exclusive_code_visible",
   });
 
 
-  useEffect(()=>{
-    if(!storage){
-      setVisible(true)
-    }
-  }, [storage])
+  // useEffect(()=>{
+  //   if(!storage){
+  //     setVisible(true)
+  //   }
+  // }, [storage])
 
-  useRequest(()=>{
+  useRequest(() => {
     return axios.get(
       `/api/v1/referral/${address}/code`
     );
-
   }, {
-    async onSuccess(e){
+    async onSuccess(e) {
       const isPhase1Whitelist = e?.data?.isPhase1Whitelist
       const code = e?.data?.code
-      if(code && !isPhase1Whitelist){
-        setReferralState({code: code})
-        setStorage(true)
+      if (code && !isPhase1Whitelist) {
+        setReferralState({ code: code })
+        updateAddress(address, { codeCreatedModalVisible: true })
+
         await sleep(100)
         setVisible(true)
       }
     },
-    ready: address&&!storage,
+    ready: !!address && (storage == false),
     refreshDeps: [address, storage],
     pollingInterval: blockTime.long
   })
@@ -78,7 +88,7 @@ const ExclusiveCodModal = () => {
             </div>
           </div>
 
-          
+
           <div className="flex items-center gap-4">
             <ReferralCodeCopy className="rounded-full flex-1" />
             <Button
