@@ -124,7 +124,7 @@ Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase2_libs/releases/downl
       </div>,
             desc: `# run the verifier
 
-cd $env:USERPROFILE\cysic-verifier
+cd $env:USERPROFILE\\cysic-verifier
 
 .\\start.ps1`,
         },
