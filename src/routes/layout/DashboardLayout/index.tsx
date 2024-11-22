@@ -1014,11 +1014,11 @@ export default function App() {
               <div className="flex items-center gap-3">
                 {enableCosmosUrl.includes(pathname) ? (
                   <>
-                    {
+                    {/* {
                       isQa ? (
                         <div onClick={()=>dispatchEvent(new CustomEvent('modal_cosmos_transfer_visible', {detail:{visible: true}}))}>Transfer</div>
                       ) : null
-                    }
+                    } */}
                     <div
                       id="faucet-trigger-button"
                       onClick={() => dispatch({ visible: true })}
