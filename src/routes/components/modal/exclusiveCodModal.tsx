@@ -93,7 +93,6 @@ const ExclusiveCodModal = () => {
             <ReferralCodeCopy className="rounded-full flex-1" />
             <Button
               className="rounded-full flex-1 flex items-center"
-              disabled={!address}
               onClick={openTwitterLink}
               type="gradient"
             >

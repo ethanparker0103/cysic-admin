@@ -110,7 +110,7 @@ const HeaderNotice = () => {
         className="size-6"
         src={getImageUrl("@/assets/images/_global/logo.svg")}
       />
-      <span>Cysic phase ll is now live!</span>
+      <span>Upgrade in Progress: verifiers may experience some issues. Please check back soon!</span>
     </div>
   );
 };
