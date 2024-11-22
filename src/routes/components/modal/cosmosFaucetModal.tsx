@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import BigNumber from "bignumber.js";
 
 const CosmosFaucetModal = () => {
+    const [nextTimeSendAmount, setNextTimeSendAmount] = useState('')
     const { address } = useCosmos()
     const [toTime, setToTime] = useState<any>()
     const { visible, setVisible } = useModalState({eventName: "modal_cosmos_faucet_visible"});
@@ -41,7 +42,10 @@ const CosmosFaucetModal = () => {
             if(_v && _v != '0001-01-01 00:00:00'){
                 setToTime(+dayjs.utc(_v).add(24, 'hours'))
             }
-            
+
+            if(e?.data?.nextTimeSendAmount){
+                setNextTimeSendAmount(e?.data?.nextTimeSendAmount)
+            }
         }
     })
 
@@ -77,7 +81,7 @@ const CosmosFaucetModal = () => {
                             <span className="text-[#9C9C9C]">Wallet Address</span>
                             <Input type="solid" className="text-[#626365]" disabled value={address || '-'} />
                         </div>
-                        <Button type="gradient" loading={loading} onClick={handleClaim}>Claim 1 $CYS {countdownFormatted}</Button>
+                        <Button type="gradient" loading={loading} onClick={handleClaim}>Claim {nextTimeSendAmount} $CYS {countdownFormatted}</Button>
                     </div>
                 </ModalBody>
 

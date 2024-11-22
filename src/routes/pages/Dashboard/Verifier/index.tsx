@@ -1,7 +1,7 @@
 import Ad from "@/components/ad";
 import Tutorial from "@/components/tutorial";
-import VerifierStatus from "@/routes/pages/Dashboard/Verifier/VerifierStatus";
 import VerifierTable from "@/routes/pages/Dashboard/Verifier/table";
+import VerifierStatus from "@/routes/pages/Dashboard/Verifier/verifierStatus";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import clsx from "clsx";
 import { isMobile } from "react-device-detect";

@@ -4,7 +4,7 @@ import { Snippet } from "@nextui-org/react";
 import clsx from "clsx";
 
 const ReferralCodeCopy = ({ className }: any) => {
-  const { code } = useReferral();
+  const { code } = useReferral();  
 
   return (
     <Snippet

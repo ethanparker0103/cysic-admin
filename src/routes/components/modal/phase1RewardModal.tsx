@@ -122,7 +122,7 @@ const Phase1RewardModal = () => {
                 network.{" "}
               </div>
               <div>
-                Claim your $CGT bonus now and let’s step into the next phase!
+                Claim your $CGT bonus now and let's step into the next phase!
               </div>
             </div>
           </div>
@@ -141,8 +141,8 @@ const Phase1RewardModal = () => {
                 type="gradient"
                 onClick={handleClaim}
               >
-                Claim {profile?.[address]?.reward_amount} $
-                {profile?.[address]?.reward_token}
+                Claim {profile?.[address as string]?.reward_amount} $
+                {profile?.[address as string]?.reward_token}
               </Button>
             )
           }

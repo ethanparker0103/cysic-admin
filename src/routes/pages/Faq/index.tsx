@@ -12,11 +12,11 @@ const faqs = [
       },
       {
         q: "Why should I run a node on Cysic Network?",
-        a: "Be part of a revolution in decentralized, next-gen computing with Cysic. By sharing your computational power through our optimized node, you’re hyperscaling pioneering projects like Scroll and Aleo, strengthening the ZK ecosystem. As a contributor on Cysic Network, you’ll earn $CYS and $CGT for every task you verify, and veCompute tokens for the projects you help bring to a more decentralized life through proof generation. $CYS will be converted to token in the future.",
+        a: "Be part of a revolution in decentralized, next-gen computing with Cysic. By sharing your computational power through our optimized node, you're hyperscaling pioneering projects like Scroll and Aleo, strengthening the ZK ecosystem. As a contributor on Cysic Network, you'll earn $CYS and $CGT for every task you verify, and veCompute tokens for the projects you help bring to a more decentralized life through proof generation. $CYS will be converted to token in the future.",
       },
       {
         q: "How can I join Cysic Network Phase II, and who is eligible?",
-        a: "To join Phase II, you’ll need either a Genesis Code or an invite code, while Phase I contributors have direct access. Once signed in, simply follow the Verifier/Prover instructions to run the node in the terminal, and start earning rewards.",
+        a: "To join Phase II, you'll need either a Genesis Code or an invite code, while Phase I contributors have direct access. Once signed in, simply follow the Verifier/Prover instructions to run the node in the terminal, and start earning rewards.",
       },
       {
         q: "What is a Genesis Node?",
@@ -42,7 +42,7 @@ const faqs = [
       },
       {
         q: "What rewards can I earn by running a Verifier node?",
-        a: "Keep your Verifier node running in the background to complete ZK proof verification tasks, and you’ll earn $CYS and $CGT rewards. You can view your earnings on the “My Page” section.",
+        a: "Keep your Verifier node running in the background to complete ZK proof verification tasks, and you'll earn $CYS and $CGT rewards. You can view your earnings on the “My Page” section.",
       },
       {
         q: "What rewards can I earn by running a Prover node?",
@@ -55,7 +55,7 @@ const faqs = [
       {
         q: "What are $CYS, $CGT, and veCompute tokens?",
         a: (
-          <ul>
+          <ul className="list-inside list-disc">
             <li>$CYS: The native token for transactions and rewards.</li>
             <li>$CGT: A governance token for voting on network decisions.</li>
             <li>
@@ -67,7 +67,7 @@ const faqs = [
       },
       {
         q: "How do I stake CGT or delegate veCompute?",
-        a: "Follow the staking instructions on Cysic’s staking platform to stake CGT or delegate veCompute. Airdrops may also be available for community activities, testnet tasks, or events.",
+        a: "Follow the staking instructions on Cysic's staking platform to stake CGT or delegate veCompute. Airdrops may also be available for community activities, testnet tasks, or events.",
       },
     ],
   },
@@ -76,8 +76,32 @@ const faqs = [
     title: "Invites and Referrals",
     list: [
       {
+        q: "Who can participate in the referral program?",
+        a: (
+          <ul className="list-inside list-disc">
+            <li>
+              Genesis Node holders can participate immediately and share their
+              invite codes.
+            </li>
+            <li>
+              Non-Genesis Node holders can join by staking 12 $CGT to unlock
+              your referral code. This staking number is subject to change as
+              the network grows. You can earn $CGT by running a Cysic node.
+              Rewards are distributed based on your contribution to the network.
+            </li>
+          </ul>
+        ),
+      },
+      {
+        q: "What does the 15% reward sharing mean?",
+        a: <ul className="list-inside list-disc">
+          <li>As a Genesis Node holder, you hold the power to invite others and build the community. Share your invite code, run as a verifier and prover, and enjoy the full 15% rewards from those you bring into this journey.</li>
+          <li>For non-Genesis Node holders, 15% of your rewards will automatically go to your referrer as appreciation for introducing you to the community.</li>
+        </ul>
+      },
+      {
         q: "How do I invite team members to the Cysic Network?",
-        a: "Share your unique invite code to help grow the Cysic community and earn 15% of their Verifier/Prover rewards. Your code is permanently valid.",
+        a: "Share your unique invite code to help grow the Cysic community and earn 15% of their Verifier/Prover rewards, regardless of activation status. Your code is permanently valid and invite codes are limited to 50 uses per user. This limit is subject to change as the network grows. ",
       },
       {
         q: "How do I level up as a team leader, and what are the benefits?",
@@ -86,10 +110,6 @@ const faqs = [
       {
         q: "What qualifies as a successful invite?",
         a: "Only activated users count as successful invites. Verifiers must complete 10 verification tasks, and Provers need to complete 3 proof tasks. If the user has both roles, whichever task is completed first counts.",
-      },
-      {
-        q: "How much can I earn from my referrals?",
-        a: "You’ll receive 15% of the rewards from each Verifier/Prover you invite, regardless of activation status.",
       },
       {
         q: "Where can I view my level, bonuses, and referral details?",
@@ -106,16 +126,16 @@ const faqs = [
         a: "Connecting your Keplr wallet gives you access to Cysic Network features on Cosmos, including staking $CYS, converting $CYS to $CGT, and other actions.",
       },
       {
-        q: "How do I match my Keplr wallet with my account’s EVM wallet address?",
-        a: <>Import your account’s EVM wallet address as an existing wallet in Keplr. Follow the <a className="!underline" target="_blank" href="https://help.keplr.app/articles/import-recover-existing-wallet">Keplr Official Tutorial</a> for step-by-step guidance. Consistent wallet addresses ensure smooth integration.</>,
+        q: "How do I match my Keplr wallet with my account's EVM wallet address?",
+        a: <>Import your account's EVM wallet address as an existing wallet in Keplr. Follow the <a className="!underline" target="_blank" href="https://help.keplr.app/articles/import-recover-existing-wallet">Keplr Official Tutorial</a> for step-by-step guidance. Consistent wallet addresses ensure smooth integration.</>,
       },
       {
         q: "What is Cysic Gas Faucet, and what can I do with the gas?",
         a: <>Gas is used for network actions like staking and delegating. <span className="" onClick={()=>false && dispatchEvent(new CustomEvent('modal_cosmos_faucet_visible', {detail: {visible: true}}))}>The Gas Faucet</span> provides small amounts of $CYS for transaction fees on the Cysic Testnet. You can claim gas tokens every 24 hours. </>,
       },
       {
-        q: "My node is running on my terminal, but I can’t view the block height—where can I track my rewards?",
-        a: "The current version doesn’t display block height. You can track your rewards on the My Page.",
+        q: "My node is running on my terminal, but I can't view the block height—where can I track my rewards?",
+        a: "The current version doesn't display block height. You can track your rewards on the My Page.",
       },
       {
         q: "I participated in Phase I; how do I receive my airdrop?",

@@ -3,7 +3,6 @@ import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ModalBody, ModalHeader, Progress } from "@nextui-org/react";
 import useCosmos from "@/models/_global/cosmos";
-import Input from "@/components/Input";
 import { useState } from "react";
 import { getImageUrl } from "@/utils/tools";
 import BigNumber from "bignumber.js";
@@ -14,8 +13,19 @@ const descList = [
         title: 'Invites Team Members to Cysic Network',
         img: getImageUrl('@/assets/images/howInviteWorks/step-1.png'),
         desc: <div className="flex flex-col gap-2 text-[#A1A1AA] leading-[1.5]">
-            <span className="leading-[1.3]">Congratulations, you’re now the leader of your team! Share your invite code to grow the Cysic community and boost your rewards. </span>
-            <span className="leading-[1.3]">Your code is <span className="text-[#00F0FF]">permanently valid</span> and can be shared with up to <span className="text-[#00F0FF]">300 users</span>.</span>
+            <span className="leading-[1.3]">
+                Congratulations, you're now the leader of your team! Genesis Node holders can start exploring our network and referral program right away. Share your invite code to grow the Cysic community and boost your rewards.
+            </span>
+            <span className="leading-[1.3]">
+                For all non-Genesis Node holders, <span className="text-[#00F0FF]">15%</span> of your rewards will be shared with your referrer. To get your own referral code, you'll need to <span className="text-[#00F0FF]">stake 12 $CGT</span>. Earn $CGT by running our node!
+            </span>
+            <span className="leading-[1.3]">
+                Your invite code is <span className="text-[#00F0FF]">permanently valid</span> and can be shared with up to <span className="text-[#00F0FF]">50 users</span>.
+            </span>
+
+            <span className="leading-[1.3]">
+                *The limits of invite code use and staking restrictions are subject to change and may be adjusted as the network grows.
+            </span>
         </div>
     },
     {
@@ -45,7 +55,7 @@ const descList = [
 ]
 
 const HowInviteWorkModal = () => {
-    const { visible, setVisible } = useModalState({eventName: "modal_how_invite_work_visible"});
+    const { visible, setVisible } = useModalState({ eventName: "modal_how_invite_work_visible" });
     const { address } = useCosmos()
     const [activeIndex, setActiveIndex] = useState(0)
 
@@ -61,7 +71,7 @@ const HowInviteWorkModal = () => {
                 <ModalHeader>How Invite Works</ModalHeader>
                 <ModalBody className="pb-6">
                     <div className="flex flex-col gap-6">
-                        <Progress size="sm" value={activeList.progress} classNames={{indicator: "bg-gradient",}}/>
+                        <Progress size="sm" value={activeList.progress} classNames={{ indicator: "bg-gradient", }} />
                         {[activeList].map((i, index) => {
                             return <div key={index} className="flex flex-col gap-6">
                                 <img src={i.img} />

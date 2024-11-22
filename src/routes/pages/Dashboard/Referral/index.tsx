@@ -3,7 +3,6 @@ import useAccount from "@/hooks/useAccount";
 import useModalState from "@/hooks/useModalState";
 import { referralLevel } from "@/mock/referral";
 import useReferral from "@/models/_global/referral";
-import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import Valid from "@/routes/pages/Dashboard/Referral/Status/Valid";
 import { useRequest } from "ahooks";

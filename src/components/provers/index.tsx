@@ -33,7 +33,7 @@ const Provers = () => {
   const { profile } = useUser()
 
   const aleoAddress = profile?.[address as string]?.aleoAddress
-  const scrollProverStatus = profile?.[address as string] ? !!profile?.[address as string]?.provider?.find((i: any) => i?.ID) : undefined
+  const scrollProverStatus = profile?.[address as string] ? !!profile?.[address as string]?.provider?.find((i: any) => +i?.provider_id) : undefined
 
   const [aleoProverStatus, setAleoProverStatus] = useState<undefined | boolean>(undefined)
   useRequest(() => {
