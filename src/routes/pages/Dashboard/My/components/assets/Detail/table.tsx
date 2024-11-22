@@ -206,7 +206,7 @@ const UserTable = () => {
         <TableBody items={rows}>
           {(item: any) => {
             return (
-              <TableRow key={item?.Address}>
+              <TableRow key={item?.Address+'_'+item?.TxHash}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}

@@ -45,7 +45,7 @@ import useReferral from "@/models/_global/referral";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
 import UserProfile from "@/components/UserProfile";
-import { enableCosmosUrl, openTwitterLink } from "@/config";
+import { enableCosmosUrl, isQa, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
@@ -1013,24 +1013,31 @@ export default function App() {
 
               <div className="flex items-center gap-3">
                 {enableCosmosUrl.includes(pathname) ? (
-                  <div
-                    id="faucet-trigger-button"
-                    onClick={() => dispatch({ visible: true })}
-                    className="cursor-pointer rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"
-                  >
-                    <svg
-                      className="size-4"
-                      stroke="#fff"
-                      fill="#fff"
-                      strokeWidth="0"
-                      viewBox="0 0 512 512"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
+                  <>
+                    {
+                      isQa ? (
+                        <div onClick={()=>dispatchEvent(new CustomEvent('modal_cosmos_transfer_visible', {detail:{visible: true}}))}>Transfer</div>
+                      ) : null
+                    }
+                    <div
+                      id="faucet-trigger-button"
+                      onClick={() => dispatch({ visible: true })}
+                      className="cursor-pointer rounded-full gradient-border size-10 flex items-center justify-center rounded-[6px] border-[2px]"
                     >
-                      <path d="M352,256H313.39c-15.71-13.44-35.46-23.07-57.39-28V180.44l-32-3.38-32,3.38V228c-21.93,5-41.68,14.6-57.39,28H16A16,16,0,0,0,0,272v96a16,16,0,0,0,16,16h92.79C129.38,421.73,173,448,224,448s94.62-26.27,115.21-64H352a32,32,0,0,1,32,32,32,32,0,0,0,32,32h64a32,32,0,0,0,32-32A160,160,0,0,0,352,256ZM81.59,159.91l142.41-15,142.41,15c9.42,1,17.59-6.81,17.59-16.8V112.89c0-10-8.17-17.8-17.59-16.81L256,107.74V80a16,16,0,0,0-16-16H208a16,16,0,0,0-16,16v27.74L81.59,96.08C72.17,95.09,64,102.9,64,112.89v30.22C64,153.1,72.17,160.91,81.59,159.91Z"></path>
-                    </svg>
-                  </div>
+                      <svg
+                        className="size-4"
+                        stroke="#fff"
+                        fill="#fff"
+                        strokeWidth="0"
+                        viewBox="0 0 512 512"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M352,256H313.39c-15.71-13.44-35.46-23.07-57.39-28V180.44l-32-3.38-32,3.38V228c-21.93,5-41.68,14.6-57.39,28H16A16,16,0,0,0,0,272v96a16,16,0,0,0,16,16h92.79C129.38,421.73,173,448,224,448s94.62-26.27,115.21-64H352a32,32,0,0,1,32,32,32,32,0,0,0,32,32h64a32,32,0,0,0,32-32A160,160,0,0,0,352,256ZM81.59,159.91l142.41-15,142.41,15c9.42,1,17.59-6.81,17.59-16.8V112.89c0-10-8.17-17.8-17.59-16.81L256,107.74V80a16,16,0,0,0-16-16H208a16,16,0,0,0-16,16v27.74L81.59,96.08C72.17,95.09,64,102.9,64,112.89v30.22C64,153.1,72.17,160.91,81.59,159.91Z"></path>
+                      </svg>
+                    </div>
+                  </>
                 ) : null}
                 <ConnectButton />
                 {

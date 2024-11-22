@@ -7,6 +7,7 @@ import { connectWallet, updateProvider } from "@/utils/cosmos";
 import { ArrowRight } from "lucide-react";
 import useCosmos from "@/models/_global/cosmos";
 import { useEventListener } from "ahooks";
+import { sleep } from "@/utils/tools";
 
 const KeplrConnectModal = () => {
     const [unmatchedError, setUnmatchedError] = useState(false)
@@ -45,6 +46,10 @@ const KeplrConnectModal = () => {
 
     const reconnectWallet = async ()=>{
         await connector?.disable?.()
+
+        await sleep(500)
+        await connectWallet()
+
         setVisible(false)
     }
 
