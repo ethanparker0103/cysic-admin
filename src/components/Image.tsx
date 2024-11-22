@@ -15,7 +15,7 @@ const Image = ({ src, ...props }: any) => {
             <defs>
                 <linearGradient id="paint0_linear_2699_34684" x1="5" y1="37" x2="37.5954" y2="30.4825" gradientUnits="userSpaceOnUse">
                     <stop stopColor="#9D47FF" />
-                    <stop offset="0.796948" stop-color="#00F0FF" />
+                    <stop offset="0.796948" stopColor="#00F0FF" />
                 </linearGradient>
             </defs>
         </svg>
