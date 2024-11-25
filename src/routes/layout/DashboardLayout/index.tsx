@@ -50,6 +50,7 @@ import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 import Search from "@/routes/components/Search";
+import HeaderNotice from "@/components/headerNotice";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -94,25 +95,6 @@ const Accordion_ = ({ origin, navs, children }: any) => {
     </Accordion>
   ) : (
     <>{children}</>
-  );
-};
-
-const HeaderNotice = () => {
-  const { dispatch } = useModalState({
-    eventName: "modal_phase_2_desc_visible",
-  });
-
-  return (
-    <div
-      className="cursor-pointer py-4 px-10 mb-6 flex items-center gap-2 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]"
-      onClick={() => dispatch({ visible: true })}
-    >
-      <img
-        className="size-6"
-        src={getImageUrl("@/assets/images/_global/logo.svg")}
-      />
-      <span>Upgrade in Progress: verifiers may experience some issues. Please check back soon!</span>
-    </div>
   );
 };
 
