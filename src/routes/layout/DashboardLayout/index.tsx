@@ -1011,7 +1011,9 @@ export default function App() {
                   <span>FAQs</span>
                 </Button>
 
-                <Search />
+                {
+                  (address) ? <Search /> : null
+                }
               </div>
 
               <div className="flex items-center gap-3">
