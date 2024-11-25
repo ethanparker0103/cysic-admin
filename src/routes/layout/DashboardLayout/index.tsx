@@ -49,6 +49,7 @@ import { enableCosmosUrl, isQa, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
+import Search from "@/routes/components/Search";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -1009,6 +1010,8 @@ export default function App() {
                   <CircleHelp size={16} />
                   <span>FAQs</span>
                 </Button>
+
+                <Search />
               </div>
 
               <div className="flex items-center gap-3">
