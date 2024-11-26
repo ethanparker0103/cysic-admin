@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 const shouldScroll = activityRoller?.length > 1
 // 上下滚动的notice
-const timeout = 3_000
+const timeout = 8_000
 
 const HeaderNotice = () => {
     const messageIndex = useRef(0);
