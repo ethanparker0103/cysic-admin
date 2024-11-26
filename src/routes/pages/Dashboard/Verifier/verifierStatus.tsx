@@ -52,12 +52,14 @@ const VerifierStatus = () => {
             $CGT!
           </span>
           <span className="text-[#A3A3A3] text-sm">
-            Once the node runs seamlessly in the background, so you don't need
-            to take any manual action. Tasks are assigned randomly and
-            automatically. To stay active,{" "}
-            <span className="text-[#00F0FF]">ensure your node is running.</span>
-            &nbsp;Once a task is assigned and successfully completed as one of the top
-            6 verifiers, your $CYS and $CGT rewards will appear on "My Page".
+            Once your node is running, it works seamlessly in the background—no
+            manual actions required. Just{" "}
+            <span className="text-[#00F0FF]">
+              ensure your node stays active
+            </span>{" "}
+            to automatically receive tasks. When your node successfully
+            completes a task as one of the top 6 verifiers, your $CYS and $CGT
+            rewards will be credited directly to 'My Page'.
           </span>
           <span className="text-[#A3A3A3] text-sm">
             If you have any questions, find us in our{" "}

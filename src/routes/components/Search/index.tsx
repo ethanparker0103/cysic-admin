@@ -2,7 +2,7 @@ import Image from "@/components/Image";
 import Spinner from "@/components/spinner";
 import { mediasLink } from "@/config";
 import GradientContainer from "@/routes/components/GradientContainer";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, shortStr } from "@/utils/tools";
 import { Input } from "@nextui-org/input";
 import { useDebounce, useDebounceEffect } from "ahooks";
 import axios from "axios";
@@ -123,7 +123,7 @@ const Search = () => {
             {
                 searchContainerVisible ? (<div className="z-[1] w-full h-screen fixed top-0 left-0 bottom-0 right-0 bg-[#0000005a]" />) : null
             }
-            <div className="max-w-[32rem] flex-1 relative z-[2]">
+            <div className="max-w-[32rem] w-[20.75rem] flex-1 relative z-[2]">
                 <Input
                     onFocus={() => setSearchContainerVisible(true)}
                     onBlur={() => setSearchContainerVisible(false)}
@@ -139,6 +139,7 @@ const Search = () => {
                         ],
                         innerWrapper: "bg-transparent",
                         inputWrapper: [
+                            "gradient-border rounded-full",
                             "border border-[#FFFFFF33]",
                             "bg-[#FFFFFF0D]",
                             "dark:bg-[#FFFFFF0D]",
@@ -165,7 +166,7 @@ const Search = () => {
                             {
                                 (addr && (searchInfo?.needRegister || searchInfo?.notInWhitelist)) ? (<div className="text-xs flex items-center justify-between">
                                     <div className="flex flex-col ">
-                                        <span className="">{addr}</span>
+                                        <span className="">{shortStr(addr, 12)}</span>
                                         <div className="flex items-center gap-1">
                                             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_1042_15638" maskUnits="userSpaceOnUse" x="0" y="0" width="12" height="12">
