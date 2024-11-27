@@ -1,6 +1,6 @@
 export const activityRoller = [
     {
-        content: 'Phase II is now active!',
+        content: 'Phase II is now live!',
         action: ()=>dispatchEvent(new CustomEvent('modal_phase_2_desc_visible', { detail: {visible: true} }))
     },
     {
