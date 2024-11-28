@@ -36,8 +36,8 @@ const VerifierStatus = () => {
   const { profile } = useUser();
 
   const scrollProverStatus = profile?.[address as string]
-    ? !!profile?.[address as string]?.provider?.find(
-        (i: any) => +i?.provider_id
+    ? !!profile?.[address as string]?.verifier?.find(
+        (i: any) => +i?.verifier_id
       )
     : undefined;
 
