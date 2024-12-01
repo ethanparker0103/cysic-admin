@@ -192,7 +192,7 @@ const Dashboard = () => {
     // approved_verifier_num: overviewData?.data?.approved_verifier_num,
   };
   const overview2: any = {
-    total_task: format(overviewData?.data?.total_task),
+    total_task: (overviewData?.data?.total_task),
     running_task: format(overviewData?.data?.running_task),
     // total_reward: overviewData?.data?.total_task ? <div className="flex items-baseline gap-1"><span>{format(overviewData?.data?.total_task * 10)}</span> <span className="text-sm font-[500] text-[#A3A3A3]">{t('Points')}</span></div> : undefined,
   };
@@ -299,7 +299,7 @@ const Dashboard = () => {
                       <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
                       <span className="text-[#A3A3A3] text-sm font-[400]">CYS</span>
                     </div>
-                    <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
+                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50)}</div>
                   </div>
                   <div className="w-px h-10 bg-[#2B2B2B]" />
                   <div className="flex flex-col gap-1">
@@ -307,7 +307,7 @@ const Dashboard = () => {
                       <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
                       <span className="text-[#A3A3A3] text-sm font-[400]">CGT</span>
                     </div>
-                    <div className="text-[#fff] text-lg">{(overview2?.total_task || 0) * 50}</div>
+                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50)}</div>
                   </div>
                 </div>
               </div>
