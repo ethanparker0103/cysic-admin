@@ -578,3 +578,35 @@ export function calculateTransactionFee() {
 
   return feeInCYS.toString();
 }
+
+export const formatReward = (num: string, x: number) => {
+  const subscriptDigits = ['₀','₁','₂','₃','₄','₅','₆','₇','₈','₉'];
+
+  if (!num) return num;
+
+  const str = num.toString();
+  const parts = str.split('.');
+  if (parts.length < 2) {
+    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+  }
+
+  const integerPart = parts[0];
+  const decimalPart = parts[1];
+
+  if (parseInt(integerPart) >= 1) {
+    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+  }
+
+  const leadingZeros = decimalPart.match(/^0+/);
+  const leadingZeroCount = leadingZeros ? leadingZeros[0].length : 0;
+
+  if (leadingZeroCount < x) {
+    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+  }
+
+  const exponent = leadingZeroCount - x + 1;
+  const significantPart = decimalPart.slice(leadingZeroCount);
+
+  const exponentStr = exponent.toString().split('').map(digit => subscriptDigits[parseInt(digit)]).join('');
+  return `0.0${exponentStr}${significantPart}`;
+};
