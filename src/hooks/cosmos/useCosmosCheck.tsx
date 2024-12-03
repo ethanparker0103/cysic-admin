@@ -30,6 +30,10 @@ const useCosmosCheck = () => {
                     if(document.querySelectorAll('#unmathedAddressToast')?.[0]){
                         toast.dismiss('unmathedAddressToast'); 
                     }
+                    dispatchEvent(new CustomEvent('modal_download_keplr_visible', {detail:{
+                        type: 'unmathedAddress',
+                        visible: false
+                    }}))
                 }
             })
         }
