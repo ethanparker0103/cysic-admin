@@ -604,7 +604,8 @@ export const formatReward = (num: string, x: number) => {
     return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
   }
 
-  const exponent = leadingZeroCount - x + 1;
+  // const exponent = leadingZeroCount - x + 2;
+  const exponent = leadingZeroCount;
   const significantPart = decimalPart.slice(leadingZeroCount);
 
   const exponentStr = exponent.toString().split('').map(digit => subscriptDigits[parseInt(digit)]).join('');
