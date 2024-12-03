@@ -8,11 +8,18 @@ const basicDecimaal = 18
 const useCosmosStakeBalance = ()=>{
     const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
     const { run } = useRequest(()=>{
+        if(unmatchedAddressWithEVM){
+            setState({
+                stakeMap: undefined
+            })
+
+            throw new Error('Unmatched Address')
+        }
         // getDelegation
         return connector?.['getBalanceStaked']?.(address)
     }, {
         pollingInterval: blockTime.long,
-        ready: !!connector && !!address && unmatchedAddressWithEVM === false,
+        ready: !!connector && !!address,
         refreshDeps: [connector, address, unmatchedAddressWithEVM],
         onSuccess(e: any){
             const res = (Array.isArray(e) ? e : [e])?.reduce((prev, next)=>{

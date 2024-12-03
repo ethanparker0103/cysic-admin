@@ -45,6 +45,12 @@ const VeCysic = () => {
   const { myValidators, un_stake_amount, total_apr, setState } = useValidator();
 
   const queryRewards = async () => {
+    if(unmatchedAddressWithEVM){
+      setState(undefined)
+      return undefined
+    }
+
+
     const queryClient = QueryClient.withExtensions(
       connector.getQueryClient(),
       setupDistributionExtension
@@ -104,7 +110,7 @@ const VeCysic = () => {
   const { data: totalRewards, run: queryRewardsRun } = useRequest(
     () => queryRewards(),
     {
-      ready: !!address && !!connector && unmatchedAddressWithEVM === false,
+      ready: !!address && !!connector,
       refreshDeps: [address, connector, unmatchedAddressWithEVM],
       pollingInterval: blockTime.long,
       onError(e) {

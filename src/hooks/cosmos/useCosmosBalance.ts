@@ -8,9 +8,16 @@ const basicDecimaal = 18
 const useCosmosBalance = ()=>{
     const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
     const { run } = useRequest(()=>{
+        if(unmatchedAddressWithEVM){
+            setState({
+                balanceMap: undefined
+            })
+
+            throw new Error('Unmatched Address')
+        }
         return connector?.['getAllBalances']?.(address)
     }, {
-        ready: !!connector && !!address && unmatchedAddressWithEVM === false,
+        ready: !!connector && !!address,
         refreshDeps: [connector, address, unmatchedAddressWithEVM],
         pollingInterval: blockTime.long,
         onSuccess(e: any){
