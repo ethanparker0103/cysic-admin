@@ -6,14 +6,14 @@ import BigNumber from "bignumber.js"
 const basicDecimaal = 18
 
 const useCosmosStakeBalance = ()=>{
-    const { address, connector, setState } = useCosmos()
+    const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
     const { run } = useRequest(()=>{
         // getDelegation
         return connector?.['getBalanceStaked']?.(address)
     }, {
         pollingInterval: blockTime.long,
-        ready: !!connector && !!address,
-        refreshDeps: [connector, address],
+        ready: !!connector && !!address && unmatchedAddressWithEVM === false,
+        refreshDeps: [connector, address, unmatchedAddressWithEVM],
         onSuccess(e: any){
             const res = (Array.isArray(e) ? e : [e])?.reduce((prev, next)=>{
                 if(!prev?.[next?.denom]){

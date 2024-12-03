@@ -6,12 +6,12 @@ import BigNumber from "bignumber.js"
 const basicDecimaal = 18
 
 const useCosmosBalance = ()=>{
-    const { address, connector, setState } = useCosmos()
+    const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
     const { run } = useRequest(()=>{
         return connector?.['getAllBalances']?.(address)
     }, {
-        ready: !!connector && !!address,
-        refreshDeps: [connector, address],
+        ready: !!connector && !!address && unmatchedAddressWithEVM === false,
+        refreshDeps: [connector, address, unmatchedAddressWithEVM],
         pollingInterval: blockTime.long,
         onSuccess(e: any){
             const res = e?.reduce((prev, next)=>{

@@ -40,7 +40,7 @@ const sliceFormat = (value: string, decimal: number = 18) => {
 const token = cysicStCoin;
 
 const VeCysic = () => {
-  const { address, connector, stakeMap } = useCosmos();
+  const { address, connector, unmatchedAddressWithEVM, stakeMap } = useCosmos();
   const { dispatch }: any = useModalState({ eventName: "modal_stake_visible" });
   const { myValidators, un_stake_amount, total_apr, setState } = useValidator();
 
@@ -104,8 +104,8 @@ const VeCysic = () => {
   const { data: totalRewards, run: queryRewardsRun } = useRequest(
     () => queryRewards(),
     {
-      ready: !!address && !!connector,
-      refreshDeps: [address, connector],
+      ready: !!address && !!connector && unmatchedAddressWithEVM === false,
+      refreshDeps: [address, connector, unmatchedAddressWithEVM],
       pollingInterval: blockTime.long,
       onError(e) {
         console.log("error", e);

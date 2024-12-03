@@ -12,6 +12,7 @@ export const defaultInitState = {
   hasConnectedWithKeplr: false,
   balanceMap: undefined,
   stakeMap: undefined,
+  unmatchedAddressWithEVM: undefined,
 }
 
 const persistFields: any = ['hasConnectedWithKeplr'];

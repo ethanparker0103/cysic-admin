@@ -248,8 +248,10 @@ export async function signAndBroadcastDirect(
 }
 
 export const checkKeplrWallet = () => {
-    const status =
-        !!useCosmos.getState().address && !!useCosmos.getState().client;
+    const status = !!useCosmos.getState().address && !!useCosmos.getState().client;
+
+    const unmatchedAddressWithEVM = useCosmos.getState().unmatchedAddressWithEVM == true
+
     if (!status) {
         dispatchEvent(
             new CustomEvent("modal_download_keplr_visible", {
@@ -258,6 +260,18 @@ export const checkKeplrWallet = () => {
         );
 
         throw { message: "Invalid Cosmos Wallet" };
+    }
+
+    if(unmatchedAddressWithEVM){
+        if(!document.querySelectorAll('#unmathedAddressToast')?.[0]){
+            unmatchToastError()
+        }
+                     
+        dispatchEvent(new CustomEvent('modal_download_keplr_visible', {detail:{
+            type: 'unmathedAddress',
+            visible: true
+        }}))
+        throw { message: "Unmatched Cosmos/EVM Address" };
     }
 };
 
@@ -272,5 +286,15 @@ export const convertAddrByProvider = async ({ client }: { client: any }) => {
         bech32Address: accounts?.bech32Address
     }
 };
+
+export const unmatchToastError = ()=>{
+    toast.error(`Looks like your walletaddress doesn't match. Connect the right EVM address to keep going.`, {
+        hideProgressBar: true,
+        closeOnClick: false,
+        autoClose: false,
+        closeButton: false,
+        toastId: 'unmathedAddressToast'
+    })
+}
 
 export { connectWallet };
