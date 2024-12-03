@@ -609,5 +609,5 @@ export const formatReward = (num: string, x: number) => {
   const significantPart = decimalPart.slice(leadingZeroCount);
 
   const exponentStr = exponent.toString().split('').map(digit => subscriptDigits[parseInt(digit)]).join('');
-  return `0.0${exponentStr}${significantPart}`;
+  return `0.0${exponentStr}${significantPart.slice(0, x)}`;
 };

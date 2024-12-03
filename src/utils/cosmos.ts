@@ -247,7 +247,7 @@ export async function signAndBroadcastDirect(
     return result;
 }
 
-export const checkKeplrWallet = () => {
+export const checkKeplrWallet = (onlyClient?: boolean) => {
     const status = !!useCosmos.getState().address && !!useCosmos.getState().client;
 
     const unmatchedAddressWithEVM = useCosmos.getState().unmatchedAddressWithEVM == true
@@ -261,6 +261,8 @@ export const checkKeplrWallet = () => {
 
         throw { message: "Invalid Cosmos Wallet" };
     }
+
+    if(onlyClient) return;
 
     if(unmatchedAddressWithEVM){
         if(!document.querySelectorAll('#unmathedAddressToast')?.[0]){
@@ -276,7 +278,7 @@ export const checkKeplrWallet = () => {
 };
 
 export const convertAddrByProvider = async ({ client }: { client: any }) => {
-    checkKeplrWallet();
+    checkKeplrWallet(true);
 
     const chainId = cysicTestnet.chainId; // 替换为实际的 chainId
     const accounts = await client?.signer?.keplr?.getKey(chainId)
