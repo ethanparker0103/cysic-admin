@@ -290,7 +290,7 @@ export const convertAddrByProvider = async ({ client }: { client: any }) => {
 };
 
 export const unmatchToastError = ()=>{
-    toast.error(`Looks like your walletaddress doesn't match. Connect the right EVM address to keep going.`, {
+    toast.error(`Your Keplr and EVM addresses don’t match. Align them to access this page.`, {
         hideProgressBar: true,
         closeOnClick: false,
         autoClose: false,
