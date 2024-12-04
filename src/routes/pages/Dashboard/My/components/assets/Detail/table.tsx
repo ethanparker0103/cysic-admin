@@ -65,7 +65,7 @@ const defaultSortKey = sortKkey.sum;
 const UserTable = () => {
   const { t } = useTranslation();
   const { address } = useAccount();
-  const { address: cosmosAddress } = useCosmos()
+  const { address: cosmosAddress, unmatchedAddressWithEVM } = useCosmos()
 
   // 10.5 获取已经邀请人员列表
   const {
@@ -76,6 +76,10 @@ const UserTable = () => {
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);  
+      if (unmatchedAddressWithEVM) {
+        
+        return undefined
+      }
       return axios.get(`/api/v1/myPage/${cosmosAddress}/exchangeHistory`, {
         params: {
           pageNum: page,
@@ -85,7 +89,7 @@ const UserTable = () => {
     },
     {
       ready: !!cosmosAddress,
-      refreshDeps: [cosmosAddress],
+      refreshDeps: [cosmosAddress, unmatchedAddressWithEVM],
       pollingInterval: blockTime.long,
     }
   );
@@ -112,8 +116,8 @@ const UserTable = () => {
       case "ToToken":
         const token = getKeyValue(item, columnKey)
         const imgUrl = `@/assets/images/tokens/${token.toUpperCase()}.svg`
-        return  <div className="flex items-center gap-2">
-          <img className="size-6" src={getImageUrl(imgUrl)}/>
+        return <div className="flex items-center gap-2">
+          <img className="size-6" src={getImageUrl(imgUrl)} />
           <span>{token}</span>
         </div>
       case "UpdatedAt":
@@ -206,7 +210,7 @@ const UserTable = () => {
         <TableBody items={rows}>
           {(item: any) => {
             return (
-              <TableRow key={item?.Address+'_'+item?.TxHash}>
+              <TableRow key={item?.Address + '_' + item?.TxHash}>
                 {(columnKey) => (
                   <TableCell>{renderCell(item, columnKey)}</TableCell>
                 )}

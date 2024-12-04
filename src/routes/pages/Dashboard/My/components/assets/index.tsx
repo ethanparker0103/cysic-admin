@@ -40,6 +40,8 @@ const Assets = () => {
     }
   );
 
+  console.log('balanceMap', balanceMap)
+
   return (
     <>
       <div className="flex items-center gap-4 flex-wrap">

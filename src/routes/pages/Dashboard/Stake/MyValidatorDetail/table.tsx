@@ -45,7 +45,7 @@ const defaultSortKey = sortKkey.sum
 
 const UserTable = () => {
   const { t } = useTranslation();
-  const { address, } = useCosmos()
+  const { address, unmatchedAddressWithEVM } = useCosmos()
   const { setState } = useValidator()
   // const address = "0x9bf0355367907B42b4d1Fc397C969E1318bC6ca5";
 
@@ -62,6 +62,10 @@ const UserTable = () => {
   } = usePagnation(
     (page: number) => {
       // return Promise.resolve(mock);
+      if (unmatchedAddressWithEVM) {
+        
+        return undefined
+      }
       return axios.get(`/api/v1/validator/my/${address}`, {
         params: {
           pageNum: page,
@@ -72,7 +76,7 @@ const UserTable = () => {
     {
       pollingInterval: blockTime.long,
       ready: !!address,
-      refreshDeps: [address],
+      refreshDeps: [address, unmatchedAddressWithEVM],
       onSuccess(res) {
         const list = res?.data?.list?.map(i=>{
           return ({

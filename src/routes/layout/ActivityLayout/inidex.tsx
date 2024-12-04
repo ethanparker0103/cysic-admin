@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
 import { NextUIProvider } from "@nextui-org/react";

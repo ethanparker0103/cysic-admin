@@ -10,7 +10,7 @@ import StakeModal, {
 } from "@/routes/pages/Dashboard/Stake/Modal/stake";
 import MyValidatorDetail from "@/routes/pages/Dashboard/Stake/MyValidatorDetail";
 import ValidatorDesc from "@/routes/pages/Dashboard/Stake/ValidatorDesc";
-import { format, getImageUrl, sleep } from "@/utils/tools";
+import { format, formatReward, getImageUrl, sleep } from "@/utils/tools";
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import {
@@ -25,7 +25,7 @@ import {
   checkkTx,
   signAndBroadcastDirect,
 } from "@/utils/cosmos";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 const sliceFormat = (value: string, decimal: number = 18) => {
   if (value.length <= decimal) return value;
@@ -40,11 +40,17 @@ const sliceFormat = (value: string, decimal: number = 18) => {
 const token = cysicStCoin;
 
 const VeCysic = () => {
-  const { address, connector, stakeMap } = useCosmos();
+  const { address, connector, unmatchedAddressWithEVM, stakeMap } = useCosmos();
   const { dispatch }: any = useModalState({ eventName: "modal_stake_visible" });
   const { myValidators, un_stake_amount, total_apr, setState } = useValidator();
 
   const queryRewards = async () => {
+    if(unmatchedAddressWithEVM){
+      setState(undefined)
+      return undefined
+    }
+
+
     const queryClient = QueryClient.withExtensions(
       connector.getQueryClient(),
       setupDistributionExtension
@@ -105,7 +111,7 @@ const VeCysic = () => {
     () => queryRewards(),
     {
       ready: !!address && !!connector,
-      refreshDeps: [address, connector],
+      refreshDeps: [address, connector, unmatchedAddressWithEVM],
       pollingInterval: blockTime.long,
       onError(e) {
         console.log("error", e);
@@ -167,6 +173,16 @@ const VeCysic = () => {
       closeLoading?.();
     }
   };
+
+
+  const formattedTotalRewards = useMemo(()=>{
+    if(!totalRewards){
+      return '0'
+    }
+
+    return formatReward(totalRewards, 2)
+  }, [totalRewards])
+
 
   return (
     <MainContainer title="Stake CGT">
@@ -244,7 +260,7 @@ const VeCysic = () => {
                 <span className="">Claim Rewards</span>
                 <div className="flex gap-1">
                   <span className="text-[#fff] text-[24px]">
-                    {+totalRewards ? format(totalRewards as string, 3) : "-"}
+                    {Number(totalRewards) ? formattedTotalRewards : "-"}
                   </span>
                   <span className="self-end">{cysicBaseCoin}</span>
                 </div>
