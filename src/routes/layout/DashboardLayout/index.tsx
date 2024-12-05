@@ -70,17 +70,18 @@ const Accordion_ = ({ origin, navs, children }: any) => {
         title={children}
         className=""
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-1">
           {navs?.children?.map((i: any, index: number) => {
             return (
               <div
                 key={i?.text || index}
                 className={clsx(
-                  "text-base pl-12 cursor-pointer text-[#A3A3A3] py-2",
+                  "hover:bg-[#FFFFFF0D]",
+                  "text-base pl-12 cursor-pointer text-[#A3A3A3] py-2 rounded-[8px] ",
                   (lastPathname.includes(i.link) &&
                     i?.link != origin?.[0]?.link) ||
                     lastPathname == i.link
-                    ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] bg-bottom	bg-contain	bg-no-repeat rounded-[8px] bg-[url(@/assets/images/_global/nav-shadow.svg)]"
+                    ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] bg-bottom	bg-contain	bg-no-repeat bg-[url(@/assets/images/_global/nav-shadow.svg)]"
                     : // shadow-[0px_4px_0px_0px_#000000]
                     ""
                 )}
@@ -848,12 +849,13 @@ export default function App() {
                     <div
                       onClick={() => (i.link ? navigate(i.link) : null)}
                       className={clsx(
+                        i?.link ? "hover:bg-[#FFFFFF0D]" : "",
                         "nav-item",
-                        "!text-base flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[16px] relative border border-[transparent] text-[#A3A3A3]",
+                        "!text-base flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[8px] relative border border-[transparent] text-[#A3A3A3]",
                         (lastPathname.includes(i.link) &&
                           i?.link != dashboardNavs?.[0]?.link) ||
                           lastPathname == i.link
-                          ? "font-semibold !text-[#fff] bg-[#FFFFFF0D] border-[#000] "
+                          ? "font-semibold !text-[#fff] bg-[url(@/assets/images/_global/nav-shadow.svg)] bg-[rgba(255,255,255,0.05)] bg-bottom	bg-contain	bg-no-repeat"
                           : // shadow-[0px_4px_0px_0px_#000000]
                           ""
                       )}
