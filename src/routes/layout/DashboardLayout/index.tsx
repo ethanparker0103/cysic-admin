@@ -643,7 +643,7 @@ export const dashboardNavs_ = [
   },
   {
     prefix: <Hero className="size-4 scale-[1]" />,
-    text: "Dashboad",
+    text: "Dashboard",
     // link: "/dashboard/stake",
     children: [
       {
