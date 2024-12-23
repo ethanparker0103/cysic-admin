@@ -67,8 +67,8 @@
     "recharts": "^2.12.7",
     "rlp": "^3.0.0",
     "typewriter-effect": "^2.21.0",
-    "viem": "^2.9.6",
-    "wagmi": "^2.5.16",
+    "viem": "^2.21.57",
+    "wagmi": "^2.14.4",
     "zustand": "^4.5.2"
   },
   "devDependencies": {
