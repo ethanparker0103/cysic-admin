@@ -1,0 +1,59 @@
+diff --git a/node_modules/@wagmi/core/dist/esm/connectors/injected.js b/node_modules/@wagmi/core/dist/esm/connectors/injected.js
+index 0337c4a..429640a 100644
+--- a/node_modules/@wagmi/core/dist/esm/connectors/injected.js
++++ b/node_modules/@wagmi/core/dist/esm/connectors/injected.js
+@@ -134,6 +134,8 @@ export function injected(parameters = {}) {
+                     });
+                     currentChainId = chain?.id ?? currentChainId;
+                 }
++
++                console.log('connect', config)
+                 // Remove disconnected shim if it exists
+                 if (shimDisconnect)
+                     await config.storage?.removeItem(`${this.id}.disconnected`);
+@@ -186,6 +188,8 @@ export function injected(parameters = {}) {
+             if (shimDisconnect) {
+                 await config.storage?.setItem(`${this.id}.disconnected`, true);
+             }
++
++            console.log('disconnect')
+             if (!parameters.target)
+                 await config.storage?.removeItem('injected.connected');
+         },
+@@ -375,6 +379,7 @@ export function injected(parameters = {}) {
+             }
+         },
+         async onAccountsChanged(accounts) {
++            console.log('onAccountsChanged')
+             // Disconnect if there are no accounts
+             if (accounts.length === 0)
+                 this.onDisconnect();
+diff --git a/node_modules/@wagmi/core/dist/esm/createStorage.js b/node_modules/@wagmi/core/dist/esm/createStorage.js
+index b2d5a94..449518b 100644
+--- a/node_modules/@wagmi/core/dist/esm/createStorage.js
++++ b/node_modules/@wagmi/core/dist/esm/createStorage.js
+@@ -25,6 +25,8 @@ export function createStorage(parameters) {
+                 await unwrap(storage.setItem(storageKey, serialize(value)));
+         },
+         async removeItem(key) {
++            console.log('storage',this, storage, prefix, key)
++            console.log(unwrap)
+             await unwrap(storage.removeItem(`${prefix}.${key}`));
+         },
+     };
+@@ -42,7 +44,14 @@ export function getDefaultStorage() {
+     })();
+     return {
+         getItem: storage.getItem,
+-        removeItem: storage.removeItem,
++        removeItem(key) {
++            console.log('remove item')
++            try {
++                storage.removeItem(key, value);
++                // silence errors by default (QuotaExceededError, SecurityError, etc.)
++            }
++            catch { }
++        },
+         setItem(key, value) {
+             try {
+                 storage.setItem(key, value);
