@@ -42,7 +42,7 @@ i18n
 
 
 
-const projectId = "b7d32f395b889b7ec2e721ecb1cccb61";
+const projectId = "c3409365992fb110b8778d63a74b252b";
 const queryClient = new QueryClient();
 // const chains = [sepolia, arbitrumSepolia, mainnet, bsc, bscTestnet, arbitrum];
 const config = getDefaultConfig({
