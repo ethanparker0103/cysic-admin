@@ -10,7 +10,7 @@ const NotifyModal = () => {
   useEffect(() => {
     const checkTime = () => {
       const now = new Date();
-      const start = new Date("2024-12-31T10:00:00+08:00"); // SGT is UTC+8
+      const start = new Date("2025-01-01T10:00:00+08:00"); // SGT is UTC+8
       const end = new Date("2025-01-01T18:00:00+08:00");
 
       if (now >= start && now <= end) {
