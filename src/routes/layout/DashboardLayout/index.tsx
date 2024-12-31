@@ -52,6 +52,7 @@ import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 import Search from "@/routes/components/Search";
 import HeaderNotice from "@/components/headerNotice";
+import NotifyModal from "@/routes/components/modal/notifyModal";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -763,6 +764,7 @@ export default function App() {
           steps={cosmosJoyRideSteps} />
       </>) : null} */}
 
+      <NotifyModal />
       <ExclusiveCodModal />
       <HowInviteWorkModal />
       <ReferralRewardModal />
