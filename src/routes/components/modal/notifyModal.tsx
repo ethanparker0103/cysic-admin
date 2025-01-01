@@ -43,7 +43,7 @@ const NotifyModal = () => {
               <div className="Gemsbuck text-gradient text-[30px] font-[400]">
                 System Upgrade Announcement
               </div>
-              <div className="font-bold text-sm">Scheduled Downtime: January 1, 2025, 10:00 AM - 6:00 PM (SGT) </div>
+              <div className="font-bold text-sm">Scheduled Downtime: January 1, 2025, 10:00 AM - January 2, 2025, 6:00 AM (SGT) </div>
 
             </div>
 
