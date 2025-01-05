@@ -156,7 +156,7 @@ export const checkkTx = async (client: any, txHash: string) => {
 };
 
 // @ts-ignore
-window.__dangerous_cysic_keplr_checkTx = checkTx;
+window.__dangerous_cysic_keplr_checkTx = checkkTx;
 
 export async function signAndBroadcastDirect(
     address: any,
