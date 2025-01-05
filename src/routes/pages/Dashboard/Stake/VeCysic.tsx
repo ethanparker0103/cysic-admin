@@ -188,7 +188,7 @@ const VeCysic = () => {
     <MainContainer title="Stake CGT">
       <>
         <div className="flex items-stretch gap-4 flex-wrap">
-          <div className="flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative">
+          <div className="main-card-bg flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative">
             <div className="flex-1 flex flex-col gap-4 justify-between">
               <img
                 className="size-10"
@@ -254,7 +254,7 @@ const VeCysic = () => {
               </div>
             </div> */}
           </div>
-          <div className="min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient gradient-sub-border relative">
+          <div className="main-card-bg min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient gradient-sub-border relative">
             <div className="flex flex-col gap-6 justify-between">
               <div className="flex flex-col gap-2 text-[#A3A3A3] text-sm">
                 <span className="">Claim Rewards</span>

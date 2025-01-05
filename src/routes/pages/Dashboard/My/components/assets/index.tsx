@@ -43,7 +43,7 @@ const Assets = () => {
   return (
     <>
       <div className="flex items-center gap-4 flex-wrap">
-        <div className="min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
+        <div className="main-card-bg min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
           <div className="flex items-center justify-between relative">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ const Assets = () => {
           </div>
         </div>
 
-        <div className="min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
+        <div className="main-card-bg min-h-[8.375rem] flex-1 flex flex-col gap-6 p-6 rounded-[16px] bg-sub-gradient border border-[#192E33] ">
           <div className="flex items-center justify-between relative">
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">

@@ -12,7 +12,6 @@ import { isMobile } from "react-device-detect";
 import clsx from "clsx";
 import BigNumber from "bignumber.js";
 
-
 const fmt = {
   decimalSeparator: '.',
   groupSeparator: ',',
@@ -115,14 +114,8 @@ const MainCard = (props: any) => {
     <div
       className={clsx(
         isMobile ? "w-full px-5 py-4" : "h-[144px] flex-1 p-7",
-        " flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
+        "main-card-bg flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
       )}
-      style={{
-        backgroundColor: "#10141a",
-        // background: `url('/m/btn-bg.svg')`,
-        // backgroundRepeat: "no-repeat",
-        // backgroundSize: "auto",
-      }}
       {...props}
     >
       {props?.title ? <div className="flex items-center gap-1 text-[#A3A3A3]">
@@ -262,14 +255,14 @@ const Dashboard = () => {
               return (
                 <MainCard key={index} title={getKey(key, t)}>
                   {typeof value == "string"
-                    ? value
+                    ? (value || '-')
                     : <div className="flex items-center gap-8">
                       {
                         Object.entries(value || {})?.map(([key, value]: any, index) => {
                           return (
                             <div className={clsx("flex flex-col gap-1", index != 0 ? 'pl-8 border-l border-solid border-[#2B2B2B]' : '')} key={index}>
                               <span className="font-[500] text-sm text-[#A3A3A3]">{t(key)}</span>
-                              <span className="text-[24px] text-[#fff]">{value}</span>
+                              <span className="text-[24px] text-[#fff]">{value || '-'}</span>
                             </div>
                           );
                         })
@@ -283,7 +276,7 @@ const Dashboard = () => {
             {Object.entries(overview2)?.map(([key, value]: any, index) => {
               return (
                 <MainCard key={index} title={getKey(key, t)}>
-                  {value}
+                  {value || '-'}
                 </MainCard>
               );
             })}
@@ -299,7 +292,7 @@ const Dashboard = () => {
                       <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
                       <span className="text-[#A3A3A3] text-sm font-[400]">CYS</span>
                     </div>
-                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50)}</div>
+                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50) || '-'}</div>
                   </div>
                   <div className="w-px h-10 bg-[#2B2B2B]" />
                   <div className="flex flex-col gap-1">
@@ -307,7 +300,7 @@ const Dashboard = () => {
                       <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
                       <span className="text-[#A3A3A3] text-sm font-[400]">CGT</span>
                     </div>
-                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50)}</div>
+                    <div className="text-[#fff] text-lg">{format((overview2?.total_task || 0) * 50) || '-'}</div>
                   </div>
                 </div>
               </div>

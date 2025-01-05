@@ -27,6 +27,7 @@ import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
 import Phase1 from "@/routes/pages/Dashboard/My/page/phase1";
+import Phase1Convert from "@/routes/pages/Dashboard/My/page/phase1convert";
 import About from "@/routes/pages/About";
 import Faq from "@/routes/pages/Faq";
 
@@ -116,6 +117,11 @@ export const router = createBrowserRouter([
                         path: 'phase1',
                         element: <Phase1 />,
                     },
+                    {
+                        path: 'phase1Convert',
+                        element: <Phase1Convert />,
+                    },
+                    
                 ]
             },
             {
