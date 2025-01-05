@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useMatches, useNavigate } from "react-router-dom";
 import { router } from "@/router";
 
-const MainContainer = ({ noRoute, title, children, className }: any) => {
+const MainContainer = ({ titleClassName, noRoute, title, children, className }: any) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const matches = useMatches();
@@ -88,7 +88,7 @@ const MainContainer = ({ noRoute, title, children, className }: any) => {
             </svg>
           </div>
         ) : null}
-        <div className="Gemsbuck text-3xl font-semibold">
+        <div className={clsx("Gemsbuck text-3xl font-semibold", titleClassName)}>
           {typeof title === 'string' ? t(title) : title}
         </div>
       </div>

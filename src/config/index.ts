@@ -119,7 +119,7 @@ export const mediasLink = {
     twitterWhitePaper: 'https://x.com/cysic_xyz/status/1846960627878866984'
 }
 
-export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/']
+export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/', '/my/phase1Convert', '/my/phase1Convert/']
 
 
 export const loginSignContent = 'Welcome to Cysic！'

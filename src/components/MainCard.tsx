@@ -9,14 +9,8 @@ const MainCard = (props: any) => {
         <div
             className={clsx(
                 isMobile ? "w-full px-5 py-4" : "min-h-[152px] flex-1 px-6 py-6",
-                "relative flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
+                "main-card-bg relative flex flex-col gap-3 rounded-[24px] border border-[#192E33] shadow-[0px_4px_0px_0px_#000000]"
             )}
-            style={{
-                backgroundColor: "#10141a",
-                // background: `url('/m/btn-bg.svg')`,
-                // backgroundRepeat: "no-repeat",
-                // backgroundSize: "auto",
-            }}
             {...rest}
         >
             {rest?.title ? <div className="flex items-center gap-1 text-[#A3A3A3]">
