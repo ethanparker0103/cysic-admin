@@ -706,7 +706,6 @@ export default function App() {
   const { pathname } = useLocation()
   const { address: cosmosAddress } = useCosmos()
   const { code } = useReferral();
-  const { setState: setRewawrdPoints, phase1 } = useRewardPoints();
   const { t } = useTranslation();
   useCosmosUpdate();
   const matches = useMatches();
@@ -721,24 +720,6 @@ export default function App() {
   const dashboardNavs = dashboardNavs_?.filter((i: any) =>
     i?.needAccount ? !!address : true
   );
-
-  useRequest(() => axios.get(`/api/v1/myPage/${address}/v1/overview`), {
-    refreshDeps: [address],
-    ready: !!address,
-    onSuccess(e) {
-      const data = e?.data?.data || {};
-      setRewawrdPoints({
-        phase1: {
-          ...data,
-          total: BigNumber(data?.activity_points || 0)
-            .plus(data?.verifier_points || 0)
-            .plus(data?.prover_points || 0)
-            .plus(data?.reward_points || 0)
-            .toString(),
-        },
-      });
-    },
-  });
 
   const { dispatch } = useModalState({
     eventName: "modal_cosmos_faucet_visible",
