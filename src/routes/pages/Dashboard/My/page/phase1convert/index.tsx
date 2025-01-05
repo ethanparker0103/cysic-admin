@@ -25,7 +25,8 @@ const Phase1Convert = () => {
         ready: !!address,
         refreshDeps: [address],
             onSuccess(e) {
-              const data = e?.data?.data || {};
+              const data = e?.data || {};
+
               setTaskPoints(data?.verifierPoints)
               setActivityPoints(data?.activityPoints)
               setClaimed(data?.claimed)
@@ -46,6 +47,7 @@ const Phase1Convert = () => {
             await axios.get(`/api/v1/myPage/${address}/phase1/convert`)
             run()
             toast.success('Converted successfully')
+            setVisible(false)
         } catch (e: any) {
 
         } finally {
@@ -82,10 +84,10 @@ const Phase1Convert = () => {
                 className="relative z-[2]"
                 type="solidGradient"
                 onClick={() => setVisible(true)}
-                disabled={!(+taskPoints || +activityPoints)}
+                disabled={!(+taskPoints || +activityPoints) || claimed}
             >
                 <div className="flex items-center gap-1">
-                    <span>Convert Points</span>
+                    <span>{claimed ? 'Converted' : 'Convert Points'}</span>
                     <svg
                         width="20"
                         height="20"

@@ -115,6 +115,9 @@ async function connectWallet() {
             hasConnectedWithKeplr: true,
         });
 
+        // @ts-ignore
+        window.__dangerous_cysic_keplr_client = client
+
         return client;
     } catch (e) {
         useCosmos.getState().setState({
@@ -151,6 +154,9 @@ export const checkkTx = async (client: any, txHash: string) => {
 
     return result;
 };
+
+// @ts-ignore
+window.__dangerous_cysic_keplr_checkTx = checkTx;
 
 export async function signAndBroadcastDirect(
     address: any,
