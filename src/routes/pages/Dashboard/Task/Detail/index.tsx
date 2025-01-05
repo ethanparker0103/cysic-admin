@@ -2,7 +2,7 @@ import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { explorerUrl, ProofBackend, taskStatus, TaskStatus } from "@/config";
+import { explorerUrl, ProofBackend, rewardStatus, taskStatus, TaskStatus } from "@/config";
 import Image from "@/components/Image";
 import { getImageUrl } from "@/utils/tools";
 import {
@@ -189,6 +189,8 @@ const TaskDetail = () => {
             </MobileView>
           </Link>
         );
+        case '#':
+          return <div className="flex items-center justify-center font-semibold text-[#000] bg-[#00F0FF] size-5 rounded-full">{item?.[columnKey]}</div>;
       case "proverName":
         return (
           <Link
@@ -210,7 +212,8 @@ const TaskDetail = () => {
           <div className="flex items-center gap-1">
             {_list?.map((i: any, index: number) => {
               return (
-                <Tooltip content={i?.[0]} key={index}>
+                // i?.[0]
+                <Tooltip content={index+1} key={index}>
                   <div>
                     <StatusIcon status={i?.[1]} />
                   </div>
@@ -276,7 +279,22 @@ const TaskDetail = () => {
             />
           </div>
         );
+
+      case 'rewardStatus': 
+        return (
+          <div className="flex items-center gap-1">
+            <StatusIcon status={item?.['has_reward']} />
+            <span>{t(rewardStatus[item?.['has_reward']])}</span>
+          </div>
+        )
       case "provider":
+        const _provider_list = item?.provider_list?.length ? item?.provider_list?.map((i, index)=>{
+          return {
+            ...i,
+            '#': index + 1
+          }
+        }) : []
+
         return (
           <Table
             aria-label="provider_list"
@@ -293,8 +311,16 @@ const TaskDetail = () => {
             <TableHeader
               columns={[
                 {
+                  key: "#",
+                  label: "#",
+                },
+                {
                   key: "proverName",
                   label: "proverName",
+                },
+                {
+                  key: "rewardStatus",
+                  label: "Reward Status",
                 },
                 {
                   key: "proof_hash",
@@ -312,7 +338,7 @@ const TaskDetail = () => {
                 </TableColumn>
               )}
             </TableHeader>
-            <TableBody items={item?.provider_list || []}>
+            <TableBody items={_provider_list}>
               {(item: any) => (
                 <TableRow key={item?.id}>
                   {(columnKey) => (
@@ -339,12 +365,16 @@ const TaskDetail = () => {
           },
         ] : [
           {
+            key: "verify_result",
+            label: "verify_result",
+          },
+          {
             key: "verifierName",
             label: "verifierName",
           },
           {
-            key: "verify_result",
-            label: "verify_result",
+            key: "rewardStatus",
+            label: "Reward Status",
           },
           {
             key: "commit_tx",
