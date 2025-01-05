@@ -9,6 +9,12 @@ export const baseStatus: any = {
     '2': 'Reject'
 }
 
+export const rewardStatus: any = {
+    '0': 'Pending',
+    '1': 'Claimed',
+    '2': 'No Reward'
+}
+
 export const providerStatus = baseStatus
 
 export const projectStatus = baseStatus

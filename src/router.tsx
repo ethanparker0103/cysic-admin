@@ -31,193 +31,217 @@ import Phase1Convert from "@/routes/pages/Dashboard/My/page/phase1convert";
 import About from "@/routes/pages/About";
 import Faq from "@/routes/pages/Faq";
 
-
 /* eslint-enable react-refresh/only-export-components */
 
-export const router = createBrowserRouter([
+export const router = createBrowserRouter(
+  [
     {
-        path: "/",
-        element: <Root />,
-        children: [
+      path: "/",
+      element: <Root />,
+      children: [
+        {
+          path: "dashboard",
+          element: <DashboardLayout />,
+          children: [
             {
-                path: 'dashboard',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        loader: async ()=>redirect('/dashboard/overview')
-                        // element: <Dashboard />
-                    },
-                    {
-                        path: 'overview',
-                        element: <Dashboard />
-                    },
-                    {
-                        path: 'verifier',
-                        element: <Verifier />,
-                    },
-                    {
-                        path: 'verifier/:id',
-                        element: <VerifierDetail />,
-                    },
-                    {
-                        path: 'prover',
-                        element: <DashboardComputility />,
-                    },
-                    {
-                        path: 'prover/:id',
-                        element: <ComputilityDetail />,
-                    },
-                    {
-                        path: 'project',
-                        element: <DashboardProject />,
+              index: true,
+              loader: async () => redirect("/dashboard/overview"),
+              // element: <Dashboard />
+            },
+            {
+              path: "overview",
+              element: <Dashboard />,
+            },
+            {
+              path: "test",
+              element: <Test />,
+            },
+          ],
+        },
+        {
+            path: "dashboard/verifier",
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <Verifier />,
+              },
+              {
+                path: ":id",
+                element: <VerifierDetail />,
+              },
+            ],
+          },
+          {
+            path: "dashboard/prover",
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <DashboardComputility />,
+              },
+              {
+                path: ":id",
+                element: <ComputilityDetail />,
+              },
+            ],
+          },
+          {
+            path: "dashboard/project",
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <DashboardProject />,
+              },
+              {
+                path: ":id",
+                element: <ProjectDetail />,
+              },
+            ],
+          },
+          {
+            path: "dashboard/task",
+            element: <DashboardLayout />,
+            children: [
+              {
+                index: true,
+                element: <Task />,
+              },
+              {
+                path: ":id",
+                element: <TaskDetail />,
+              },
+            ],
+          },
+        {
+          path: "stake",
+          element: <DashboardLayout />,
+          children: [
+            {
+              path: "cgt",
+              element: <VeCysic />,
+            },
+            {
+              path: "vecompute",
+              element: <VeComputed />,
+            },
+          ],
+        },
+        {
+          path: "my",
+          element: <DashboardLayout />,
+          children: [
+            {
+              index: true,
+              element: <My />,
+            },
+            {
+              path: "phase1",
+              element: <Phase1 />,
+            },
+            {
+              path: "phase1Convert",
+              element: <Phase1Convert />,
+            },
+          ],
+        },
+        {
+          path: "leadingboard",
+          element: <DashboardLayout />,
+          children: [
+            {
+              index: true,
+              element: <Leadingboard />,
+            },
+          ],
+        },
+        {
+          path: "referral",
+          element: <DashboardLayout />,
+          children: [
+            {
+              index: true,
+              element: <Referral />,
+            },
+            {
+              path: "invite",
+              element: <FillReferralCode />,
+            },
+            {
+              path: "socialTasks",
+              element: <SocialTasks />,
+            },
+          ],
+        },
+        {
+          path: "faucet",
+          element: <DashboardLayout />,
+          children: [
+            {
+              index: true,
+              element: <Faucet />,
+            },
+          ],
+        },
 
-                    },
-                    {
-                        path: 'project/:id',
-                        element: <ProjectDetail />,
-                    },
-                    {
-                        path: 'task',
-                        element: <Task />,
-                    },
-                    {
-                        path: 'task/:id',
-                        element: <TaskDetail />,
-                    },
-                    {
-                        path: 'test',
-                        element: <Test />
-                    }
-                ]
-            },
+        {
+          path: "about",
+          element: <DashboardLayout />,
+          children: [
             {
-                path: 'stake',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        path: 'cgt',
-                        element: <VeCysic />,
-                    },
-                    {
-                        path: 'vecompute',
-                        element: <VeComputed />,
-                    },
-                ]
+              index: true,
+              element: <About />,
             },
+          ],
+        },
+        {
+          path: "faq",
+          element: <DashboardLayout />,
+          children: [
             {
-                path: 'my',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <My />,
-                    },
-                    {
-                        path: 'phase1',
-                        element: <Phase1 />,
-                    },
-                    {
-                        path: 'phase1Convert',
-                        element: <Phase1Convert />,
-                    },
-                    
-                ]
+              index: true,
+              element: <Faq />,
             },
-            {
-                path: 'leadingboard',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Leadingboard />,
-                    },
-                ]
-            },
-            {
-                path: 'referral',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Referral />,
-                    },
-                    {
-                        path: 'invite',
-                        element: <FillReferralCode />,
-                    },
-                    {
-                        path: 'socialTasks',
-                        element: <SocialTasks />,
-                    },
-                ]
-            },
-            {
-                path: 'faucet',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Faucet />,
-                    },
-                ]
-            },
+          ],
+        },
 
+        {
+          path: "/register",
+          element: <BasicLayout />,
+          children: [
             {
-                path: 'about',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <About />,
-                    },
-                ]
+              index: true,
+              element: <Home />,
             },
             {
-                path: 'faq',
-                element: <DashboardLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Faq />,
-                    },
-                ]
-            },
-
-            {
-                path: "/register",
-                element: <BasicLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Home />
-                    },
-                    {
-                        path: 'prover',
-                        element: <Computility />
-                    },
-                    {
-                        path: 'project',
-                        element: <Project />
-                    },
-                    {
-                        path: 'verifier',
-                        element: <Verify />
-                    },
-                ],
+              path: "prover",
+              element: <Computility />,
             },
             {
-                path: "/aleopool",
-                element: <ActivityLayout />,
-                children: [
-                    {
-                        index: true,
-                        element: <Aleo />
-                    },
-                ],
+              path: "project",
+              element: <Project />,
             },
-        ],
-    }
-], {
-    basename: '/m'
-});
+            {
+              path: "verifier",
+              element: <Verify />,
+            },
+          ],
+        },
+        {
+          path: "/aleopool",
+          element: <ActivityLayout />,
+          children: [
+            {
+              index: true,
+              element: <Aleo />,
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  {
+    basename: "/m",
+  }
+);
