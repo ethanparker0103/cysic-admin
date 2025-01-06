@@ -78,6 +78,30 @@ const mock = {
   },
 };
 
+const formatRank = (v: any)=>{
+
+  switch (v.toString()) {
+    case '1':
+      return '1st'
+    case '2':
+      return '2nd'
+    case '3':
+      return '3rd'
+  }
+}
+
+const formatRankImg = (v: any)=>{
+
+  switch (v.toString()) {
+    case '1':
+      return getImageUrl('@/assets/images/leadingboard/rank1.svg')
+    case '2':
+      return getImageUrl('@/assets/images/leadingboard/rank2.svg')
+    case '3':
+      return getImageUrl('@/assets/images/leadingboard/rank3.svg')
+  }
+}
+
 const TaskDetail = () => {
   const { t } = useTranslation();
   const params = useParams();
@@ -190,7 +214,13 @@ const TaskDetail = () => {
           </Link>
         );
         case '#':
-          return <div className="flex items-center justify-center font-semibold text-[#000] bg-[#00F0FF] size-5 rounded-full">{item?.[columnKey]}</div>;
+          if(item?.['has_reward'] != 1){
+            return <div className="flex items-center font-semibold text-[#fff] w-8">-</div>;
+          }
+          // return <div className="flex items-center font-semibold text-[#00F0FF] w-8">{formatRank(item?.[columnKey])}</div>;
+          return <div className="flex items-center font-semibold text-[#00F0FF] w-8">
+            <img className="size-5" src={formatRankImg(item?.[columnKey])}/>
+          </div>;
       case "proverName":
         return (
           <Link
