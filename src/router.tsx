@@ -138,12 +138,8 @@ export const router = createBrowserRouter(
             },
             {
               path: "phase1",
-              element: <Phase1 />,
-            },
-            {
-              path: "phase1Convert",
               element: <Phase1Convert />,
-            },
+            }
           ],
         },
         {

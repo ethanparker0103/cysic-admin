@@ -111,7 +111,7 @@ const Phase1Convert = () => {
                 </div>
             </Button>
         </div>}>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 flex-wrap">
                 <MainCard>
                     <div className="flex flex-col gap-6 text-[#fff]">
                         <div className="flex justify-between">
