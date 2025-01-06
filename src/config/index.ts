@@ -22,6 +22,7 @@ export const projectStatus = baseStatus
 export const verifierStatus = baseStatus
 
 export const taskStatus: any = {
+    "TaskStatusWaitSchedule": "Wait For Assign",
     "TaskStatusWaitVerifier": "Wait For Verifier",
     "TaskStatusFinishSuccess": "Success",
     "TaskStatusWaitProof": "Wait For Proof",
@@ -30,7 +31,7 @@ export const taskStatus: any = {
 
 export const TaskStatus: any = {
     '0': 'TaskStatusPublished',
-    '1': 'TaskStatusWaitSchedule',
+    '1': taskStatus['TaskStatusWaitSchedule'],
     '2': taskStatus['TaskStatusWaitProof'],
     '3': taskStatus['TaskStatusWaitVerifier'],
     '100': taskStatus['TaskStatusFinishSuccess'],
