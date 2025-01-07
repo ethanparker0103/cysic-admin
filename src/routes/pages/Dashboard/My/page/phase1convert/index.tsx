@@ -9,6 +9,7 @@ import { useRequest } from "ahooks"
 import axios from "axios"
 import BigNumber from "bignumber.js"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 
 
@@ -77,17 +78,24 @@ const Phase1Convert = () => {
     //     }
     // }
 
+    const navigate = useNavigate()
     return <>
         <MainContainer titleClassName={'flex-1'} title={<div className="flex-1 flex items-center justify-between">
             <span>Phase 1 POINTS</span>
             <Button
                 className="relative z-[2]"
                 type="solidGradient"
-                onClick={() => setVisible(true)}
-                disabled={!(+taskPoints || +activityPoints) || claimed}
+                onClick={() => {
+                    if(claimed){
+                        navigate('/my')
+                        return 
+                    }
+                    setVisible(true)
+                }}
+                disabled={!(+taskPoints || +activityPoints)}
             >
                 <div className="flex items-center gap-1">
-                    <span>{claimed ? 'Converted' : 'Convert Points'}</span>
+                    <span>{claimed ? 'My Assets' : 'Convert Points'}</span>
                     <svg
                         width="20"
                         height="20"
