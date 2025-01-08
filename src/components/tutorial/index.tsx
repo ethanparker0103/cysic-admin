@@ -263,7 +263,7 @@ const CodeTutorial = () => {
                             <div className="p-4 self-center mx-auto max-w-[20.625rem] min-w-[15rem] ">
                                 <div className="rounded-[12px] p-3 bg-[#FFFFFF33]">
                                     <video controls preload="auto" className="aspect-[240/520]" poster="/tutorial_poster.png" autoPlay muted>
-                                        <source src="/tutorial.mp4" type="video/mp4" />
+                                        <source src="https://api-testnet.prover.xyz/images/c603ee3e4d0f6bbd0b61eb06667bfb3339cc384020ff3708609114003c642460.mp4" type="video/mp4" />
                                     </video>
                                 </div>
                             </div>
