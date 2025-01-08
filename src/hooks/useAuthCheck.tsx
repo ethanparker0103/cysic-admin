@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAccount, useAccountEffect } from "wagmi";
 
-const whiteList = ['dashboard/overview', 'about', 'faq', 'aleopool', 'register']?.map(i => [i, '/' + i]).flat(Infinity)
+const whiteList = ['dashboard/overview', 'about', 'faq', 'aleopool', 'register', 'leadingboard']?.map(i => [i, '/' + i]).flat(Infinity)
 
 const useAuthCheck = () => {
     // const [from, setFrom] = useState<any>()
