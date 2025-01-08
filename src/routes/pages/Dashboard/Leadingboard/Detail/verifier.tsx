@@ -140,7 +140,7 @@ const VerifierTable = () => {
         const ifSelf = selfId == (item?.ID+'_'+item?.verifier_id)
         const imgName = `@/assets/images/leadingboard/rank${+item?.rank+1}.svg`
         return <div className="flex items-center">
-          <div>{[0, 1, 2].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank}`}</div>
+          <div>{[0, 1, 2].includes(+item?.rank) ? <img className="size-7" src={getImageUrl(imgName)} /> : `#${item?.rank+1}`}</div>
           {ifSelf ? <GradientContainer className="ml-1 px-1 rounded-[6px] basic-bg-gradient">
             <div className="text-xs italic">You</div>
           </GradientContainer> : null}
