@@ -59,7 +59,8 @@ import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 import Search from "@/routes/components/Search";
 import HeaderNotice from "@/components/headerNotice";
 import NotifyModal from "@/routes/components/modal/notifyModal";
-import DownloadAppModal from "@/routes/components/modal/downloadAPpModal";
+import DownloadAppModal from "@/routes/components/modal/appDownloadModal";
+
 
 
 const Accordion_ = ({ origin, navs, children }: any) => {
