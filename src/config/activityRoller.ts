@@ -1,5 +1,9 @@
 export const activityRoller = [
     {
+        content: 'Cysic Verifier App is now live! Download now!',
+        action: ()=>dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: {visible: true} }))
+    },
+    {
         content: 'Phase II is now live!',
         action: ()=>dispatchEvent(new CustomEvent('modal_phase_2_desc_visible', { detail: {visible: true} }))
     },

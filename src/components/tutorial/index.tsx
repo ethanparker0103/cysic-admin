@@ -15,6 +15,7 @@ import bash from "highlight.js/lib/languages/bash";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"; // 选择一个你喜欢的主题
 import toast from "react-simple-toasts";
+import { downloadLink } from "@/config";
 hljs.registerLanguage("bash", bash);
 // hljs.addPlugin(
 //   new CopyCode({
@@ -76,7 +77,7 @@ const Tutorial = () => {
     );
 };
 
-const tutorialList = {
+export const tutorialList = {
     android: [
         {
             title: "👉 Step 1: Install The APP",
@@ -84,7 +85,7 @@ const tutorialList = {
                 <span>Download the official Cysic Verifier App</span>
                 <div className="flex items-center gap-1">
                     <span>Android Version:</span>
-                    <a className="!text-[#00F0FF]" target="_blank" href="/">[Download]</a>
+                    <a className="!text-[#00F0FF]" target="_blank" href={downloadLink.andorid}>[Download]</a>
                 </div>
 
                 <div className="bg-[#10141A] p-6 rounded-[12px] flex items-cente justify-between">
@@ -260,11 +261,16 @@ const CodeTutorial = () => {
                                 })}
                             </div>
 
-                            <div className="p-4 self-center mx-auto max-w-[20.625rem] min-w-[15rem] ">
-                                <div className="rounded-[12px] p-3 bg-[#FFFFFF33]">
-                                    <video controls preload="auto" className="aspect-[240/520]" poster="/tutorial_poster.png" autoPlay muted>
-                                        <source src="https://api-testnet.prover.xyz/images/c603ee3e4d0f6bbd0b61eb06667bfb3339cc384020ff3708609114003c642460.mp4" type="video/mp4" />
-                                    </video>
+
+                            <div className="flex flex-col items-center gap-3">
+                                <div className="font-semibold">Cysic Verifier App Video Guide</div>
+
+                                <div className="p-4 self-center mx-auto max-w-[20.625rem] min-w-[15rem] ">
+                                    <div className="rounded-[12px] p-3 bg-[#FFFFFF33]">
+                                        <video controls preload="auto" className="aspect-[240/520]" poster="/tutorial_poster.png" muted>
+                                            <source src="https://api-testnet.prover.xyz/images/c603ee3e4d0f6bbd0b61eb06667bfb3339cc384020ff3708609114003c642460.mp4" type="video/mp4" />
+                                        </video>
+                                    </div>
                                 </div>
                             </div>
                         </div>

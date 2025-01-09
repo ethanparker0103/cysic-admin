@@ -1,6 +1,12 @@
 import { getImageUrl } from "@/utils/tools";
 import { Suspense, useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatches,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
@@ -46,13 +52,14 @@ import useReferral from "@/models/_global/referral";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
 import UserProfile from "@/components/UserProfile";
-import { enableCosmosUrl, isQa, openTwitterLink } from "@/config";
+import { downloadLink, enableCosmosUrl, isQa, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 import Search from "@/routes/components/Search";
 import HeaderNotice from "@/components/headerNotice";
 import NotifyModal from "@/routes/components/modal/notifyModal";
+import DownloadAppModal from "@/routes/components/modal/downloadAppModal";
 
 const Accordion_ = ({ origin, navs, children }: any) => {
   const matches = useMatches();
@@ -703,8 +710,8 @@ export const dashboardNavs_ = [
 ];
 
 export default function App() {
-  const { pathname } = useLocation()
-  const { address: cosmosAddress } = useCosmos()
+  const { pathname } = useLocation();
+  const { address: cosmosAddress } = useCosmos();
   const { code } = useReferral();
   const { t } = useTranslation();
   useCosmosUpdate();
@@ -759,6 +766,7 @@ export default function App() {
       <ExchangeModal />
       <SlippageModal />
       <CosmosTransferModal />
+      <DownloadAppModal />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
@@ -855,6 +863,28 @@ export default function App() {
             </div>
 
             <div className="w-full">
+              <Button
+                type="solidGradient"
+                className="mb-2 rounded-full h-fit min-h-fit py-2 px-3 w-full flex items-center justify-between"
+                onClick={()=>window.open(downloadLink.andorid, "_blank")}
+              >
+                <>
+                  <div className="flex items-center gap-1">
+                    <img
+                      className="size-4"
+                      src={getImageUrl("@/assets/images/_global/phone.svg")}
+                    />
+                    <div className="text-xs text-[#fff] font-[400]">
+                      Cysic Verifier App
+                    </div>
+                  </div>
+
+                  <img
+                    className="size-4"
+                    src={getImageUrl("@/assets/images/_global/download.svg")}
+                  />
+                </>
+              </Button>
               {address && code ? (
                 <div className="flex flex-col gap-2 pb-4">
                   <ReferralCodeCopy className="rounded-full text-xs [&_button]:!size-3 [&_svg]:size-full py-2" />
@@ -979,9 +1009,7 @@ export default function App() {
                   <span>FAQs</span>
                 </Button>
 
-                {
-                  (address) ? <Search /> : null
-                }
+                {address ? <Search /> : null}
               </div>
 
               <div className="flex items-center gap-3">
@@ -992,7 +1020,13 @@ export default function App() {
                         <div onClick={()=>dispatchEvent(new CustomEvent('modal_cosmos_transfer_visible', {detail:{visible: true}}))}>Transfer</div>
                       ) : null
                     } */}
-                    <Tooltip showArrow disableAnimation content={<div className="text-sm py-3 px-2">Claim Faucet</div>}>
+                    <Tooltip
+                      showArrow
+                      disableAnimation
+                      content={
+                        <div className="text-sm py-3 px-2">Claim Faucet</div>
+                      }
+                    >
                       <div
                         id="faucet-trigger-button"
                         onClick={() => dispatch({ visible: true })}
@@ -1015,9 +1049,9 @@ export default function App() {
                   </>
                 ) : null}
                 <ConnectButton />
-                {
-                  enableCosmosUrl.includes(pathname) ? (<ConnectCosmosButton />) : null
-                }
+                {enableCosmosUrl.includes(pathname) ? (
+                  <ConnectCosmosButton />
+                ) : null}
                 <UserProfile />
               </div>
             </BrowserView>
