@@ -127,7 +127,7 @@ export const mediasLink = {
 }
 
 export const downloadLink = {
-    andorid: '/'
+    andorid: 'https://statics.prover.xyz/app-release.apk'
 }
 
 export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/', '/my/phase1Convert', '/my/phase1Convert/']

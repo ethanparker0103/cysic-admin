@@ -102,7 +102,7 @@ export const tutorialList = {
                                 content: 'bg-[#2A313B]'
                             }}
                             content={<div className="p-5 rounded-[12px] bg-[#2A313B] flex flex-col items-center gap-3">
-                                <img src={getImageUrl('@/assets/images/tutorial/download_qrcode.svg')} />
+                                <img className="size-[16.25rem]" src={getImageUrl('@/assets/images/tutorial/cysic_prover_app.png')} />
                                 <div className="text-sm">Scan to Download</div>
                             </div>}>
                             <div className="p-2 rounded-[12px] cursor-pointer hover:bg-[#2A313B]"><img className="size-8" src={getImageUrl('@/assets/images/tutorial/qrcode_trigger.svg')} /></div>
