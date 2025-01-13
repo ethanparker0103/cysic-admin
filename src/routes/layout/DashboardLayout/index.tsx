@@ -60,6 +60,7 @@ import Search from "@/routes/components/Search";
 import HeaderNotice from "@/components/headerNotice";
 import NotifyModal from "@/routes/components/modal/notifyModal";
 import DownloadAppModal from "@/routes/components/modal/appDownloadModal";
+import AppDownloadNotify from "@/routes/components/notify/appDownloadNotify";
 
 
 
@@ -769,6 +770,7 @@ export default function App() {
       <SlippageModal />
       <CosmosTransferModal />
       <DownloadAppModal />
+      <AppDownloadNotify />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
@@ -877,7 +879,7 @@ export default function App() {
                       src={getImageUrl("@/assets/images/_global/phone.svg")}
                     />
                     <div className="text-xs text-[#fff] font-[400]">
-                      Cysic Verifier App
+                      Android Verifier App
                     </div>
                   </div>
 

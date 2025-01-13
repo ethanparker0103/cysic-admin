@@ -26,8 +26,14 @@
     .bg-gradient {
       @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF];
     }
+    .bg-light-gradient {
+      @apply bg-gradient-to-r from-[#FFFFFFED] to-[#5EE8FF];
+    }
     .text-gradient{
       @apply bg-gradient bg-clip-text	text-[transparent] w-fit;
+    }
+    .text-light-gradient{
+      @apply bg-light-gradient bg-clip-text	text-[transparent] w-fit;
     }
     .border-gradient{
       /* background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%); */
