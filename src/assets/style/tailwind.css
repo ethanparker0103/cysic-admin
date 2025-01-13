@@ -24,7 +24,8 @@
 
 @layer components {
     .bg-gradient {
-      @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF];
+      /* @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF]; */
+      @apply bg-[linear-gradient(to_right,#D99DFD_0%,#8A2AF7_11.41%,#1783E7_70%,#00F0FF_100%)]
     }
     .bg-light-gradient {
       @apply bg-gradient-to-r from-[#FFFFFFED] to-[#5EE8FF];
