@@ -39,9 +39,21 @@ const HeaderNotice = () => {
                 }, 500);
             }, timeout);
 
+            initEvents()
             return () => clearInterval(interval);
         }
     }, []);
+
+    const initEvents = () => {
+        activityRoller.forEach((message, index) => {
+            if (!!message.action) {
+                const el = document.querySelectorAll(`.${message?.key}`);
+                el.forEach((item) => {
+                    item.addEventListener('click', message.action)
+                })
+            }
+        })
+    }
 
 
     return <div className="relative h-12 px-10 mb-6 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]">
@@ -55,7 +67,7 @@ const HeaderNotice = () => {
             />
             <div className="text-sm flex flex-col h-full" ref={containerRef}>
                 {activityRoller.map((message, index) => (
-                    <div key={index} className={clsx("min-h-12 flex items-center", message?.action ? 'underline cursor-pointer ' : '')} onClick={() => message?.action?.()}>
+                    <div key={index} className={clsx(message?.key, "min-h-12 flex items-center", !!message?.action ? 'underline cursor-pointer ' : '')}>
                         <span>{message.content}</span>
                     </div>
                 ))}

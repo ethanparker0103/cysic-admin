@@ -15,7 +15,7 @@ const AppDownloadNotify = () => {
 
 
     if (!visible) return null
-    return <div className="z-[50] flex fixed bottom-3 right-3 bg-[#0B0C0F] border rounded-[12px] border-[#273345] pl-6">
+    return <div className="z-[50] flex fixed bottom-3 right-3 bg-[#0B0C0F] overflow-hidden border rounded-[12px] border-[#00F0FF] pl-6">
         <div className="z-[2] right-2 top-2 absolute size-5 cursor-pointer" onClick={() => { setVisible(false) }}>
             <img className="size-5" src={getImageUrl('@/assets/images/_global/close.svg')} />
         </div>
@@ -27,7 +27,7 @@ const AppDownloadNotify = () => {
             </div>
             <div className="flex flex-col gap-2">
                 <span className="text-[#A1A1AA] text-xs">Cysic Verifier Android Mobile App</span>
-                <Button className="!w-fit !min-h-fit h-10 rounded-full" type="gradient" onClick={() => {
+                <Button className="!w-fit !min-h-fit h-10 rounded-full !bg-[#E5199F]" type="normal" onClick={() => {
                     dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: { visible: true } }))
                 }}>
                     <div className="flex items-center gap-2">
