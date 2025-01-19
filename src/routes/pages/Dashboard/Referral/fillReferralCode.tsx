@@ -7,7 +7,9 @@ import useAuth from "@/models/_global/auth";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "axios";
+import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAccount as useWagmiAccount } from "wagmi";
@@ -185,7 +187,7 @@ const FillReferralCode = () => {
             </div>
 
             <div className="flex flex-col gap-12 pt-6 items-center">
-                <div className="flex items-center gap-3">
+                <div className={clsx("flex items-center gap-3", isMobile ? 'w-screen' : '')}>
                     <svg
                         width="121"
                         height="1"
@@ -214,7 +216,7 @@ const FillReferralCode = () => {
                             </linearGradient>
                         </defs>
                     </svg>
-                    <div className="text-[40px] uppercase">Investors</div>
+                    <div className={clsx(isMobile ? 'text-[32px]' : 'text-[40px]', "uppercase")}>Investors</div>
                     <svg
                         className="rotate-180"
                         width="121"
@@ -246,10 +248,13 @@ const FillReferralCode = () => {
                     </svg>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-10 w-full max-w-[1200px] mx-auto">
+                <div className={clsx(
+                    "flex flex-wrap items-center mx-auto",
+                    isMobile ? 'gap-6 w-full max-w-full px-4 justify-center' : 'justify-between gap-10 w-full max-w-[1200px]'
+                )}>
                     {investors.map((i, index) => {
                         return (
-                            <div key={i.name} className="w-[140px]">
+                            <div key={i.name} className="w-[8.75rem]">
                                 <img className="w-full" src={i.img} />
                             </div>
                         );

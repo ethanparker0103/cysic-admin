@@ -1,5 +1,8 @@
-const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] w-[80px] h-[110px] text-[32px] font-bold text-center'
+import clsx from 'clsx';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { isMobile } from 'react-device-detect';
+
+const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] text-[32px] font-bold text-center'
 
 function ensureArrayLength(value: any, n: any) {
     const splitArray = value.split('');
@@ -59,7 +62,7 @@ function DigitInputs({ n, value, onValueChange }: any) {
       <div className='flex items-center gap-4'>
         {digits.map((digit: any, index: number) => (
           <input
-            className={base}
+            className={clsx(base, isMobile ? 'w-[3.375rem] h-[5rem] ' : 'w-[5rem] h-[6.875rem] ')}
             key={index}
             type="text"
             value={digit}

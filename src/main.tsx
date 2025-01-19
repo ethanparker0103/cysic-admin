@@ -10,6 +10,9 @@ import {
     getDefaultConfig,
     RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
+// import {
+//     metaMaskWallet,
+//   } from '@rainbow-me/rainbowkit/wallets';
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import "@/assets/style/tailwind.css";
@@ -19,7 +22,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 import en from '@/lng/en.json'
 import BigNumber from "bignumber.js";
-BigNumber.config({ EXPONENTIAL_AT: 99  });
+BigNumber.config({ EXPONENTIAL_AT: 99 });
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
@@ -49,6 +52,10 @@ const config = getDefaultConfig({
     appName: 'Cysic',
     projectId,
     chains: Object.values(chains) as any,
+    // wallets: [{
+    //     groupName: 'Recommended',
+    //     wallets: [metaMaskWallet],
+    // }]
 });
 
 

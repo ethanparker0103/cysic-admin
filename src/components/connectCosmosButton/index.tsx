@@ -56,8 +56,8 @@ export default function ConnectCosmosButton({ className, content }: any) {
                 wordBreak: "break-word",
               }}
               className={clsx(
-                "w-fit break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex",
-                isMobile ? "px-2 h-8" : "px-3 py-1 h-10"
+                "break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex",
+                isMobile ? "justify-center size-8" : "w-fit px-3 py-1 h-10"
               )}
             >
               <img

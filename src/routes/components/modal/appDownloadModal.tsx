@@ -4,6 +4,8 @@ import Modal from "@/components/Modal";
 import useUser from "@/models/_global/user";
 import { downloadLink } from "@/config";
 import { getImageUrl } from "@/utils/tools";
+import { BrowserView, isMobile } from "react-device-detect";
+import clsx from "clsx";
 
 const features = [
   'Lightweight',
@@ -22,7 +24,7 @@ const DownloadAppModal = () => {
       onClose={() => setVisible(false)}
       className="[&_button]:z-[2] max-w-[670px] border border-[#FFFFFF33]"
     >
-      <div className="flex items-center pl-10">
+      <div className={clsx("flex items-center", isMobile ? "px-10" : "pl-10")}>
         <div className="flex flex-col gap-5 flex-1 py-10">
           <div className="flex flex-col gap-3">
             <div className="Gemsbuck text-[25px] font-semibold text-gradient">TRY THE NEW CYSIC MOBILE APP FOR Android</div>
@@ -56,9 +58,11 @@ const DownloadAppModal = () => {
             </div>
           </Button>
         </div>
-        <div className="w-[14.875rem] relaitve aspect-[286/356]">
-          <img className=" aspect-[286/356] absolute w-[17.875rem] top-0 right-0" src={getImageUrl('@/assets/images/download/mobile_download_modal_bg.png')} />
-        </div>
+        <BrowserView>
+          <div className="w-[14.875rem] relaitve aspect-[286/356]">
+            <img className=" aspect-[286/356] absolute w-[17.875rem] top-0 right-0" src={getImageUrl('@/assets/images/download/mobile_download_modal_bg.png')} />
+          </div>
+        </BrowserView>
       </div>
     </Modal>
   );

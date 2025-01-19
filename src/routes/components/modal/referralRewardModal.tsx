@@ -9,6 +9,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useEventListener } from "ahooks";
 import { useState } from "react";
+import clsx from "clsx";
+import { isMobile } from "react-device-detect";
 
 const descList = [
   {
@@ -81,7 +83,7 @@ const ReferralRewardModal = () => {
             src={getImageUrl("@/assets/images/_global/present.png")}
           />
         </div>
-        <div className="pt-6 pb-6 pt-10 px-10 flex flex-col gap-6">
+        <div className={clsx("pt-6 pb-6 pt-10 flex flex-col gap-6", isMobile ? "" : "px-10")}>
           <div className="text-lg text-[#fff] font-[500] flex flex-col gap-2 leading-[1.5]">
             <div>
               🎉 You've unlocked +{currentInvites} referral invites bonus! Just invite {nextLevel?.Require} more
@@ -99,13 +101,13 @@ const ReferralRewardModal = () => {
               Claim it
             </Button>
             <Button
-              className="rounded-full flex-1"
+              className={clsx("rounded-full flex-1", isMobile ? "flex flex-nowrap" : "")}
               disabled={!address}
               onClick={openTwitterLink}
               type="gradient"
             >
               <img src={getImageUrl("@/assets/images/media/twitter_light.svg")} />
-              Tweet for more points
+              <span>Tweet for more points</span>
             </Button>
           </div>
         </div>

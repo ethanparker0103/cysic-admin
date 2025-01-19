@@ -51,7 +51,7 @@ export const filterTime = (
  * @returns
  */
 export const filterTitleCase = (value: string) => {
-  return value.toLowerCase().replace(/^\S/, (s) => s.toUpperCase());
+  return value.toLowerCase().replace(/^\S/, (s) => s?.toUpperCase?.());
 };
 
 /**

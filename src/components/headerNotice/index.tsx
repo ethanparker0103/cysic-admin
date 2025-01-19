@@ -2,6 +2,7 @@ import { getImageUrl } from "@/utils/tools";
 import { useEffect, useRef, useState } from "react";
 import { activityRoller } from '@/config/activityRoller';
 import clsx from "clsx";
+import { isMobile } from "react-device-detect";
 
 const shouldScroll = activityRoller?.length > 1
 // 上下滚动的notice
@@ -56,7 +57,7 @@ const HeaderNotice = () => {
     }
 
 
-    return <div className="relative h-12 px-10 mb-6 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]">
+    return <div className={clsx("relative h-12 mb-6 bg-gradient-to-r from-[#9D47FF40] to-[#00F0FF40]", isMobile ? "px-3" : "px-10")}>
         <div
             className="overflow-y-hidden flex items-center gap-2 h-12"
         // onClick={handleClick}

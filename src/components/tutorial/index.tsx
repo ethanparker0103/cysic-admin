@@ -6,7 +6,6 @@ import {
     AccordionItem,
     Tab,
     Tabs,
-    Tooltip,
 } from "@nextui-org/react";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.min.css";
@@ -16,6 +15,9 @@ import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"; // 选择一个你喜欢的主题
 import toast from "react-simple-toasts";
 import { downloadLink } from "@/config";
+import clsx from "clsx";
+import { BrowserView, isMobile } from "react-device-detect";
+import Tooltip from "@/components/Tooltip";
 hljs.registerLanguage("bash", bash);
 // hljs.addPlugin(
 //   new CopyCode({
@@ -67,7 +69,7 @@ const Tutorial = () => {
                             </div>
                         }
                     >
-                        <div className="pl-6 leading-[1.4] pb-6">
+                        <div className={clsx("leading-[1.4] pb-6", isMobile ? '' : 'pl-6')}>
                             <CodeTutorial />
                         </div>
                     </AccordionItem>
@@ -98,6 +100,8 @@ export const tutorialList = {
                     </div>
                     <div>
                         <Tooltip
+                            closeDelay={0}
+                            disableAnimation
                             classNames={{
                                 content: 'bg-[#2A313B]'
                             }}
@@ -241,7 +245,7 @@ const CodeTutorial = () => {
                                     className="size-5"
                                     src={getImageUrl("@/assets/images/tutorial/android.svg")}
                                 />
-                                <span className="text-lg font-[500]">Android</span>
+                                <BrowserView><span className="text-lg font-[500]">Android</span></BrowserView>
                             </div>
                         }
                     >
@@ -283,7 +287,7 @@ const CodeTutorial = () => {
                                     className="size-5"
                                     src={getImageUrl("@/assets/images/tutorial/linux.png")}
                                 />
-                                <span className="text-lg font-[500]">Linux</span>
+                                <BrowserView><span className="text-lg font-[500]">Linux</span></BrowserView>
                             </div>
                         }
                     >
@@ -321,7 +325,7 @@ const CodeTutorial = () => {
                                     className="size-5"
                                     src={getImageUrl("@/assets/images/tutorial/windows.png")}
                                 />
-                                <span className="text-lg font-[500]">Windows</span>
+                                <BrowserView><span className="text-lg font-[500]">Windows</span></BrowserView>
                             </div>
                         }
                     >
@@ -359,7 +363,7 @@ const CodeTutorial = () => {
                                     className="size-5"
                                     src={getImageUrl("@/assets/images/tutorial/mac.png")}
                                 />
-                                <span className="text-lg font-[500]">Macos</span>
+                                <BrowserView><span className="text-lg font-[500]">Macos</span></BrowserView>
                             </div>
                         }
                     >
