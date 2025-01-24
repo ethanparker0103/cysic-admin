@@ -58,7 +58,7 @@ const metadata = {
     icons: ['https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic-testnet/chain.png']
 }
 
-const networks = Object.values(chains) as any
+const networks = [chains.arbitrumSepolia, chains.sepolia, chains.mainnet, chains.arbitrum]
 
 const wagmiAdapter = new WagmiAdapter({
     networks,
