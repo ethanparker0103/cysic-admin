@@ -53,7 +53,8 @@ const queryClient = new QueryClient();
 const metadata = {
     name: 'Cysic',
     description: 'Cysic is a real-time ZK Proof Generation Layer with State-of-the-Art hardware and prover network.',
-    url: 'https://cysic.xyz/', // origin must match your domain & subdomain
+    // url: 'https://cysic.xyz/',
+    url: 'https://feat-dowload.cysic-network-web.pages.dev'
     icons: ['https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic-testnet/chain.png']
 }
 
