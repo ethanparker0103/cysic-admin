@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import useAuth from "@/models/_global/auth";
 import { loginSignContent } from "@/config";
+import { useAppKit } from "@reown/appkit/react";
 // import useAccount from "@/hooks/useAccount";
 
 export default function ConnectButton({ className, content }: any) {
@@ -33,9 +34,13 @@ export default function ConnectButton({ className, content }: any) {
 
   // const { disconnect } = useDisconnect()
 
-  const { openConnectModal: open } = useConnectModal();
-  const { openAccountModal } = useAccountModal();
-  const { openChainModal } = useChainModal();
+  // const { openConnectModal: open } = useConnectModal();
+  // const { openAccountModal } = useAccountModal();
+  const { open } = useAppKit()
+  const openAccountModal = ()=>{
+    open({ view: 'Account' })
+  }
+
   const [tokenSelect, setTokenSelect] = useState<number>();
   const handleTokenChange = async (v: number) => {
     try {
