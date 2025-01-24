@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import VerifierTable from "@/routes/pages/Dashboard/Leadingboard/Detail/verifier";
 import { useState } from "react";
 import clsx from "clsx";
+import ProverTable from "@/routes/pages/Dashboard/Leadingboard/Detail/prover";
 
 const mock = {
   msg: "success",
@@ -64,7 +65,10 @@ const tabs = [
   },
   {
     name: "My Task List-Prover",
-    cmp: null,
+    cmp: ()=><ProverTable
+      key="prover"
+      // classNames={{ wrapper: "!border-0 !p-0" }}
+      />,
     disabled: true
   },
 ];
