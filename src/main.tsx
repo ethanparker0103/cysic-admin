@@ -62,7 +62,7 @@ const networks = Object.values(chains) as any
 const wagmiAdapter = new WagmiAdapter({
     networks,
     projectId,
-    ssr: true
+    // ssr: true
 })
 
 createAppKit({
