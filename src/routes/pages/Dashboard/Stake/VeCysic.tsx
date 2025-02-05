@@ -26,6 +26,8 @@ import {
   signAndBroadcastDirect,
 } from "@/utils/cosmos";
 import { useEffect, useMemo } from "react";
+import clsx from "clsx";
+import { isMobile } from "react-device-detect";
 
 const sliceFormat = (value: string, decimal: number = 18) => {
   if (value.length <= decimal) return value;
@@ -187,9 +189,14 @@ const VeCysic = () => {
   return (
     <MainContainer title="Stake CGT">
       <>
-        <div className="flex items-stretch gap-4 flex-wrap">
-          <div className="main-card-bg flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative">
-            <div className="flex-1 flex flex-col gap-4 justify-between">
+        <div className={clsx("flex items-stretch gap-4 flex-wrap",
+           isMobile ? "flex-col" : ""
+        )}>
+          <div className={clsx(
+            "main-card-bg flex-1 gap-10 min-h-[8.375rem] flex-1 flex justify-between px-6 py-8 rounded-[16px] bg-sub-gradient border border-[#192E33] relative",
+            isMobile ? "flex-col" : ''
+          )}>
+            <div className={clsx("flex-1 flex gap-4", isMobile ? "" : "flex-col justify-between")}>
               <img
                 className="size-10"
                 src={getImageUrl("@/assets/images/stake/lock.svg")}
@@ -198,7 +205,7 @@ const VeCysic = () => {
                 <span className="">Staking Amount</span>
                 <div className="flex gap-1 items-end">
                   <span className="text-[24px] text-[#fff]">
-                    {stakeMap?.[cysicStCoin]?.hm_amount || 0}
+                    {format(stakeMap?.[cysicStCoin]?.hm_amount) || 0}
                   </span>
                   <span className="">{token}</span>
                   <Button
@@ -214,7 +221,7 @@ const VeCysic = () => {
               </div>
             </div>
 
-            <div className="flex-1 flex flex-col gap-4 justify-between">
+            <div className={clsx("flex-1 flex gap-4", isMobile ? "" : "flex-col justify-between")}>
               <img
                 className="size-10"
                 src={getImageUrl("@/assets/images/stake/wallet.svg")}

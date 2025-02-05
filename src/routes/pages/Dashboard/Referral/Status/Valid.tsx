@@ -15,6 +15,7 @@ import { cysicStCoin, genTwitterLink } from "@/config";
 import ReferralCodeCopy from "@/components/ReferralCodeCopy";
 import useModalState from "@/hooks/useModalState";
 import { useEffect, useMemo } from "react";
+import { isMobile } from "react-device-detect";
 
 const Valid = () => {
     const { dispatch } = useModalState({ eventName: "modal_how_invite_work_visible" });
@@ -84,7 +85,7 @@ const Valid = () => {
     return (
         <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-3">
-                <div className="flex gap-3">
+                <div className={clsx("flex gap-3", isMobile ? "flex-col" : "")}>
                     <MainCard>
                         <div className="flex flex-col gap-6 justify-between h-full">
                             <div className="flex justify-between flex-wrap">

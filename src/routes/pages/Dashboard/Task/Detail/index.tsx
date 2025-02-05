@@ -21,75 +21,6 @@ import BigNumber from "bignumber.js";
 import { useTranslation } from "react-i18next";
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 
-const mock = {
-  msg: "success",
-  code: 10000,
-  data: {
-    ID: 2,
-    CreatedAt: "2024-06-12T23:39:17.224094+08:00",
-    UpdatedAt: "2024-06-12T23:39:17.224094+08:00",
-    DeletedAt: null,
-    project_worker: "0x1",
-    create_block: 123321,
-    create_tx: "0x1",
-    task_hash: "0x1",
-    prover_input_data:
-      "171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113",
-    reward_amount: 100,
-    latency: 123,
-    proof_type: 1,
-    task_status: 1,
-    reward_status: 1,
-    provider_ids: "1001,1002",
-    verifier_ids: "1001,1002",
-    failed_reason: "失败原因",
-    claim_reward_at: "2024-06-19T17:08:23.453216+08:00",
-    claim_reward_block: 123321,
-    claim_reward_tx: "0x1",
-    project_id: 1,
-    project_name: "项目方名称",
-    address: "0x123321",
-    provider_list: [
-      {
-        id: 1,
-        name: "算力方名称",
-        address: "0x123",
-        proof_hash:
-          "171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113",
-        commit_tx:
-          "171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113",
-      },
-    ],
-    verifier_list: [
-      {
-        id: 1,
-        name: "Verifier Name",
-        address:
-          "171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113",
-        verify_result: {
-          "1": 1,
-          "2": 2,
-          "3": 0,
-        },
-        commit_tx:
-          "171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113171786011317178601131717860113",
-      },
-    ],
-  },
-};
-
-const formatRank = (v: any)=>{
-
-  switch (v.toString()) {
-    case '1':
-      return '1st'
-    case '2':
-      return '2nd'
-    case '3':
-      return '3rd'
-  }
-}
-
 const formatRankImg = (v: any)=>{
 
   switch (v.toString()) {
@@ -318,7 +249,7 @@ const TaskDetail = () => {
           </div>
         )
       case "provider":
-        const _provider_list = item?.provider_list?.length ? item?.provider_list?.map((i, index)=>{
+        const _provider_list = item?.provider_list?.length ? item?.provider_list?.map((i: any, index: number)=>{
           return {
             ...i,
             '#': index + 1

@@ -4,6 +4,7 @@ import { ReactNode, useMemo, useState } from 'react'
 export enum BtnType {
     solidGradient = 'solidGradient',
     gradient = 'gradient',
+    colorGradient = 'colorGradient',
     normal = 'normal',
     solid = 'solid',
     dark = 'dark',
@@ -34,6 +35,8 @@ const Button = ({
     const _loading = interalLoading || loading
     const classNameWithType = useMemo(() => {
         switch (type) {
+            case BtnType.colorGradient: 
+                return 'gradient-color bg-[#1D2127] border-[#FFFFFF1F] border'
             case BtnType.solidGradient:
                 return 'gradient-border text-[#fff] hover:!border-[transparent]'
             case BtnType.gradient:

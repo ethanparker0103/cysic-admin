@@ -94,6 +94,12 @@ body {
     background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
 }
 
+.gradient-color {
+    background: linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 .gradient-sub-border {
     overflow: hidden;
     border: 1px solid transparent;

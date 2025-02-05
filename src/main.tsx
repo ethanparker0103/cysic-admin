@@ -10,6 +10,11 @@ import {
     getDefaultConfig,
     RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
+import { createAppKit } from '@reown/appkit/react'
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi'
+// import {
+//     metaMaskWallet,
+//   } from '@rainbow-me/rainbowkit/wallets';
 import i18n from "i18next";
 import { useTranslation, initReactI18next } from "react-i18next";
 import "@/assets/style/tailwind.css";
@@ -19,7 +24,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 import en from '@/lng/en.json'
 import BigNumber from "bignumber.js";
-BigNumber.config({ EXPONENTIAL_AT: 99  });
+BigNumber.config({ EXPONENTIAL_AT: 99 });
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
@@ -42,25 +47,58 @@ i18n
 
 
 
-const projectId = "c3409365992fb110b8778d63a74b252b";
+// const projectId = "c3409365992fb110b8778d63a74b252b";
+const projectId = "0311c63d54926ae045833d490f9cf369"
 const queryClient = new QueryClient();
-// const chains = [sepolia, arbitrumSepolia, mainnet, bsc, bscTestnet, arbitrum];
-const config = getDefaultConfig({
-    appName: 'Cysic',
+const metadata = {
+    name: 'Cysic',
+    description: 'Cysic is a real-time ZK Proof Generation Layer with State-of-the-Art hardware and prover network.',
+    url: 'https://cysic.xyz/',
+    // url: 'https://feat-dowload.cysic-network-web.pages.dev',
+    icons: ['https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic-testnet/chain.png']
+}
+
+const networks = [chains.arbitrumSepolia, chains.sepolia, chains.mainnet, chains.arbitrum]
+
+const wagmiAdapter = new WagmiAdapter({
+    networks,
     projectId,
-    chains: Object.values(chains) as any,
-});
+    // ssr: true
+})
+
+createAppKit({
+    adapters: [wagmiAdapter],
+    networks,
+    projectId,
+    metadata,
+    features: {
+        connectMethodsOrder: ['wallet'],
+        analytics: true // Optional - defaults to your Cloud configuration
+    }
+})
+
+// const chains = [sepolia, arbitrumSepolia, mainnet, bsc, bscTestnet, arbitrum];
+// const config = getDefaultConfig({
+//     appName: 'Cysic',
+//     projectId,
+//     chains: Object.values(chains) as any,
+//     // wallets: [{
+//     //     groupName: 'Recommended',
+//     //     wallets: [metaMaskWallet],
+//     // }]
+// });
 
 
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <>
         <Theme>
-            <WagmiProvider config={config}>
+            <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+                {/* <WagmiProvider config={config}> */}
                 <QueryClientProvider client={queryClient}>
-                    <RainbowKitProvider>
+                    {/* <RainbowKitProvider> */}
                         <RouterProvider router={router} />
-                    </RainbowKitProvider>
+                    {/* </RainbowKitProvider> */}
                 </QueryClientProvider>
             </WagmiProvider>
         </Theme>

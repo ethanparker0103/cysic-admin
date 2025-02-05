@@ -1,6 +1,12 @@
 import { getImageUrl } from "@/utils/tools";
 import { Suspense, useEffect, useState } from "react";
-import { Link, Outlet, useLocation, useMatches, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useMatches,
+  useNavigate,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
@@ -46,15 +52,19 @@ import useReferral from "@/models/_global/referral";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import useCosmos from "@/models/_global/cosmos";
 import UserProfile from "@/components/UserProfile";
-import { enableCosmosUrl, isQa, openTwitterLink } from "@/config";
+import { downloadLink, enableCosmosUrl, isQa, openTwitterLink } from "@/config";
 import Phase1RewardModal from "@/routes/components/modal/phase1RewardModal";
 import ReferralRewardModal from "@/routes/components/modal/referralRewardModal";
 import ExclusiveCodModal from "@/routes/components/modal/exclusiveCodModal";
 import Search from "@/routes/components/Search";
 import HeaderNotice from "@/components/headerNotice";
 import NotifyModal from "@/routes/components/modal/notifyModal";
+import DownloadAppModal from "@/routes/components/modal/appDownloadModal";
+import AppDownloadNotify from "@/routes/components/notify/appDownloadNotify";
 
-const Accordion_ = ({ origin, navs, children }: any) => {
+
+
+const Accordion_ = ({ onClick, origin, navs, children }: any) => {
   const matches = useMatches();
   const navigate = useNavigate();
   const lastPathname = JSON.parse(JSON.stringify(matches))?.reverse()?.[0]
@@ -87,7 +97,10 @@ const Accordion_ = ({ origin, navs, children }: any) => {
                     : // shadow-[0px_4px_0px_0px_#000000]
                     ""
                 )}
-                onClick={() => navigate(i.link)}
+                onClick={() => {
+                  navigate(i.link)
+                  onClick?.()
+                }}
               >
                 <div>{i?.text}</div>
               </div>
@@ -702,9 +715,9 @@ export const dashboardNavs_ = [
   },
 ];
 
-export default function App() {
-  const { pathname } = useLocation()
-  const { address: cosmosAddress } = useCosmos()
+
+
+const SideNav = ({ onClick }: any) => {
   const { code } = useReferral();
   const { t } = useTranslation();
   useCosmosUpdate();
@@ -712,38 +725,113 @@ export default function App() {
   const navigate = useNavigate();
   const lastPathname = JSON.parse(JSON.stringify(matches))?.reverse()?.[0]
     ?.pathname;
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   const { address } = useAccount();
 
   const dashboardNavs = dashboardNavs_?.filter((i: any) =>
     i?.needAccount ? !!address : true
   );
+  return (<>
+
+    <div className="flex-1 w-full flex flex-col gap-1 text-base overflow-y-auto">
+      {dashboardNavs?.map((i) => {
+        return (
+          <Accordion_ origin={dashboardNavs} navs={i} key={i.text} onClick={onClick}>
+            <div
+              onClick={() => {
+                if(i?.link){
+                  navigate(i.link); onClick?.();
+                }
+              }}
+              className={clsx(
+                i?.link ? "hover:bg-[#FFFFFF0D]" : "",
+                "nav-item",
+                "!text-base flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[8px] relative border border-[transparent] text-[#A3A3A3]",
+                (lastPathname.includes(i.link) &&
+                  i?.link != dashboardNavs?.[0]?.link) ||
+                  lastPathname == i.link
+                  ? "font-semibold !text-[#fff] bg-[url(@/assets/images/_global/nav-shadow.svg)] bg-[rgba(255,255,255,0.05)] bg-bottom	bg-contain	bg-no-repeat"
+                  : // shadow-[0px_4px_0px_0px_#000000]
+                  ""
+              )}
+            >
+              <>
+                {i.prefix}
+                <span>{t(i.text)}</span>
+              </>
+            </div>
+          </Accordion_>
+        );
+      })}
+    </div>
+
+    <div className="w-full">
+      <Button
+        type="solidGradient"
+        className="mb-2 rounded-full h-fit min-h-fit py-2 px-3 w-full flex items-center justify-between"
+        onClick={() => { window.open(downloadLink.andorid, "_blank"); onClick?.() }}
+      >
+        <>
+          <div className="flex items-center gap-1">
+            <img
+              className="size-4"
+              src={getImageUrl("@/assets/images/_global/phone.svg")}
+            />
+            <div className="text-xs text-[#fff] font-[400]">
+              Android Verifier App
+            </div>
+          </div>
+
+          <img
+            className="size-4"
+            src={getImageUrl("@/assets/images/_global/download.svg")}
+          />
+        </>
+      </Button>
+      {address && code ? (
+        <div className="flex flex-col gap-2 pb-4">
+          <ReferralCodeCopy className="rounded-full text-xs [&_button]:!size-3 [&_svg]:size-full py-2" />
+          <Button
+            type="gradient"
+            className="rounded-full h-fit min-h-fit py-2 px-1"
+            onClick={() => { openTwitterLink(); onClick?.() }}
+          >
+            <div className="w-full justify-center flex items-center gap-1 text-[#fff] text-xs">
+              <img
+                className="size-3"
+                src={getImageUrl(
+                  "@/assets/images/media/twitter_light.svg"
+                )}
+              />
+              <span>Tweet for more points</span>
+              <ArrowUpRight size={14} />
+            </div>
+          </Button>
+        </div>
+      ) : null}
+
+      <div className="w-full p-4 border-t border-[#FFFFFF33] flex">
+        <Media />
+      </div>
+    </div>
+  </>)
+}
+export default function App() {
+  const { pathname } = useLocation();
+  useCosmosUpdate();
+  const navigate = useNavigate();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { address } = useAccount();
+
+
 
   const { dispatch } = useModalState({
     eventName: "modal_cosmos_faucet_visible",
   });
 
-  // const [run, setRun] = useState(false);
-
-  // useEffect(()=>{
-  //   if(!cosmosAddress && enableCosmosUrl.includes(pathname)){
-  //     setTimeout(()=>{
-  //       setRun(true)
-  //     }, 500)
-  //   }
-  // }, [!cosmosAddress && enableCosmosUrl.includes(pathname)])
 
   return (
     <>
-      {/* {(!cosmosAddress && enableCosmosUrl.includes(pathname)) ? (<>
-        <Joyride
-          continuous
-          styles={joyRideStyleSheet}
-          run={run}
-          steps={cosmosJoyRideSteps} />
-      </>) : null} */}
 
       <NotifyModal />
       <ExclusiveCodModal />
@@ -759,6 +847,8 @@ export default function App() {
       <ExchangeModal />
       <SlippageModal />
       <CosmosTransferModal />
+      <DownloadAppModal />
+      <AppDownloadNotify />
 
       <NextUIProvider>
         <div className="text-[#fff] h-screen overflow-hidden bg-white flex dark bg-[#000]">
@@ -826,61 +916,7 @@ export default function App() {
               </svg>
             </div>
 
-            <div className="flex-1 w-full flex flex-col gap-1 text-base overflow-y-auto">
-              {dashboardNavs?.map((i) => {
-                return (
-                  <Accordion_ origin={dashboardNavs} navs={i} key={i.text}>
-                    <div
-                      onClick={() => (i.link ? navigate(i.link) : null)}
-                      className={clsx(
-                        i?.link ? "hover:bg-[#FFFFFF0D]" : "",
-                        "nav-item",
-                        "!text-base flex items-center gap-3 cursor-pointer py-2 px-2 rounded-[8px] relative border border-[transparent] text-[#A3A3A3]",
-                        (lastPathname.includes(i.link) &&
-                          i?.link != dashboardNavs?.[0]?.link) ||
-                          lastPathname == i.link
-                          ? "font-semibold !text-[#fff] bg-[url(@/assets/images/_global/nav-shadow.svg)] bg-[rgba(255,255,255,0.05)] bg-bottom	bg-contain	bg-no-repeat"
-                          : // shadow-[0px_4px_0px_0px_#000000]
-                          ""
-                      )}
-                    >
-                      <>
-                        {i.prefix}
-                        <span>{t(i.text)}</span>
-                      </>
-                    </div>
-                  </Accordion_>
-                );
-              })}
-            </div>
-
-            <div className="w-full">
-              {address && code ? (
-                <div className="flex flex-col gap-2 pb-4">
-                  <ReferralCodeCopy className="rounded-full text-xs [&_button]:!size-3 [&_svg]:size-full py-2" />
-                  <Button
-                    type="gradient"
-                    className="rounded-full h-fit min-h-fit py-2 px-1"
-                    onClick={openTwitterLink}
-                  >
-                    <div className="w-full justify-center flex items-center gap-1 text-[#fff] text-xs">
-                      <img
-                        className="size-3"
-                        src={getImageUrl(
-                          "@/assets/images/media/twitter_light.svg"
-                        )}
-                      />
-                      <span>Tweet for more points</span>
-                      <ArrowUpRight size={14} />
-                    </div>
-                  </Button>
-                </div>
-              ) : null}
-
-              <div className="w-full p-4 border-t border-[#FFFFFF33] flex">
-                <Media />
-              </div>
-            </div>
+            <SideNav />
           </BrowserView>
 
           <MobileView className="z-[100] bg-[#000] border-b border-[#FFFFFF1F] w-full fixed top-0 p-3 flex items-center justify-between">
@@ -891,6 +927,7 @@ export default function App() {
             {/* <div className="px-2 flex-1 [&>div]:ml-auto"><Search /></div> */}
 
             <div className="flex items-center gap-2">
+              <ConnectCosmosButton className="!py-0 !min-h-10 !h-10 [&>span]:!text-xs !px-4" />
               <ConnectButton className="!py-0 !min-h-10 !h-10 [&>span]:!text-xs !px-4" />
 
               <Navbar
@@ -918,36 +955,7 @@ export default function App() {
                 </NavbarContent>
 
                 <NavbarMenu className="flex flex-col gap-2 pt-8 bg-[#000]">
-                  {dashboardNavs.map((item, index) => (
-                    <NavbarMenuItem key={`${item}-${index}`}>
-                      <Link
-                        className="w-full flex items-center justify-between"
-                        to={item?.link || "/"}
-                        onClick={() => {
-                          setIsMenuOpen(false);
-                        }}
-                      >
-                        <div className="flex items-center gap-1 py-3">
-                          {item?.prefix}
-                          <span>{t(item?.text)}</span>
-                        </div>
-
-                        <svg
-                          className="size-5"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M15.54 11.29L9.87998 5.64001C9.78702 5.54628 9.67642 5.47188 9.55456 5.42111C9.4327 5.37035 9.30199 5.34421 9.16998 5.34421C9.03797 5.34421 8.90726 5.37035 8.78541 5.42111C8.66355 5.47188 8.55294 5.54628 8.45998 5.64001C8.27373 5.82737 8.16919 6.08082 8.16919 6.34501C8.16919 6.60919 8.27373 6.86264 8.45998 7.05001L13.41 12.05L8.45998 17C8.27373 17.1874 8.16919 17.4408 8.16919 17.705C8.16919 17.9692 8.27373 18.2226 8.45998 18.41C8.5526 18.5045 8.66304 18.5797 8.78492 18.6312C8.90679 18.6827 9.03767 18.7095 9.16998 18.71C9.30229 18.7095 9.43317 18.6827 9.55505 18.6312C9.67692 18.5797 9.78737 18.5045 9.87998 18.41L15.54 12.76C15.6415 12.6664 15.7225 12.5527 15.7779 12.4262C15.8333 12.2997 15.8619 12.1631 15.8619 12.025C15.8619 11.8869 15.8333 11.7503 15.7779 11.6238C15.7225 11.4973 15.6415 11.3836 15.54 11.29Z"
-                            fill="#FFFFFF73"
-                          />
-                        </svg>
-                      </Link>
-                    </NavbarMenuItem>
-                  ))}
+                  <SideNav onClick={() => { setIsMenuOpen(false) }} />
                 </NavbarMenu>
               </Navbar>
             </div>
@@ -956,7 +964,7 @@ export default function App() {
           <div
             className={clsx(
               "flex-[6] overflow-auto flex flex-col pb-12 text-lg pt-0",
-              isMobile ? "pt-20 px-4" : ""
+              isMobile ? "pt-20 " : ""
             )}
           >
             <BrowserView className="px-10 pt-4 pb-8 sticky top-0 right-0 left-0 w-full backdrop-blur bg-[#00000065] z-[1] flex items-center justify-between gap-1">
@@ -979,9 +987,7 @@ export default function App() {
                   <span>FAQs</span>
                 </Button>
 
-                {
-                  (address) ? <Search /> : null
-                }
+                {address ? <Search /> : null}
               </div>
 
               <div className="flex items-center gap-3">
@@ -992,7 +998,13 @@ export default function App() {
                         <div onClick={()=>dispatchEvent(new CustomEvent('modal_cosmos_transfer_visible', {detail:{visible: true}}))}>Transfer</div>
                       ) : null
                     } */}
-                    <Tooltip showArrow disableAnimation content={<div className="text-sm py-3 px-2">Claim Faucet</div>}>
+                    <Tooltip
+                      showArrow
+                      disableAnimation
+                      content={
+                        <div className="text-sm py-3 px-2">Claim Faucet</div>
+                      }
+                    >
                       <div
                         id="faucet-trigger-button"
                         onClick={() => dispatch({ visible: true })}
@@ -1015,15 +1027,15 @@ export default function App() {
                   </>
                 ) : null}
                 <ConnectButton />
-                {
-                  enableCosmosUrl.includes(pathname) ? (<ConnectCosmosButton />) : null
-                }
+                {enableCosmosUrl.includes(pathname) ? (
+                  <ConnectCosmosButton />
+                ) : null}
                 <UserProfile />
               </div>
             </BrowserView>
 
             <HeaderNotice />
-            <div className={clsx(isMobile ? "px-0" : "px-10")}>
+            <div className={clsx(isMobile ? "px-3" : "px-10")}>
               <Suspense>
                 <MiddlePage>
                   <Outlet />

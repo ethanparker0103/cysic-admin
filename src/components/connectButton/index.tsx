@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 import useAuth from "@/models/_global/auth";
 import { loginSignContent } from "@/config";
+import { useAppKit } from "@reown/appkit/react";
 // import useAccount from "@/hooks/useAccount";
 
 export default function ConnectButton({ className, content }: any) {
@@ -33,9 +34,13 @@ export default function ConnectButton({ className, content }: any) {
 
   // const { disconnect } = useDisconnect()
 
-  const { openConnectModal: open } = useConnectModal();
-  const { openAccountModal } = useAccountModal();
-  const { openChainModal } = useChainModal();
+  // const { openConnectModal: open } = useConnectModal();
+  // const { openAccountModal } = useAccountModal();
+  const { open } = useAppKit()
+  const openAccountModal = ()=>{
+    open({ view: 'Account' })
+  }
+
   const [tokenSelect, setTokenSelect] = useState<number>();
   const handleTokenChange = async (v: number) => {
     try {
@@ -133,7 +138,7 @@ export default function ConnectButton({ className, content }: any) {
           style={{
             wordBreak: 'break-word'
           }}
-          className={clsx("w-fit break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex", isMobile ? "px-2 h-8" : "px-3 py-1 h-10")}
+          className={clsx("break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex", isMobile ? "justify-center size-8" : "w-fit px-3 py-1 h-10")}
         >
           {auth ? <img
             className="size-5"

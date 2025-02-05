@@ -123,7 +123,11 @@ export const mediasLink = {
     discord: 'https://bit.ly/CysicDC',
     twitter: 'https://bit.ly/Cysic_xyz',
     medium: 'https://bit.ly/CysicMedium',
-    twitterWhitePaper: 'https://x.com/cysic_xyz/status/1846960627878866984'
+    twitterWhitePaper: 'https://x.com/cysic_xyz/status/1846960627878866984',
+}
+
+export const downloadLink = {
+    andorid: 'https://statics.prover.xyz/app-release.apk'
 }
 
 export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/', '/my/phase1Convert', '/my/phase1Convert/']

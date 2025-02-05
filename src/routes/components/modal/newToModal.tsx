@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 const FormItem = ({ title, children, errorMsg }: any) => {
   return (
@@ -116,9 +117,9 @@ const NewToModal = () => {
       className="[&_button]:none max-w-[820px] border border-[#FFFFFF33]"
     >
       {/* <ModalBody> */}
-      <div className="flex justify-between bg-[url(@/assets/images/_global/new_to_bg.png)] bg-cover">
-        <div className="w-[380px]" />
-        <div className="w-[440px] p-10 flex flex-col gap-10 bg-[#0B0C0F] relative z-1">
+      <div className={clsx("flex justify-between bg-[url(@/assets/images/_global/new_to_bg.png)]", isMobile ? "flex-col bg-contain bg-bottom" : "bg-cover" )}>
+        <div className={clsx("w-[380px]", isMobile ? "aspect-[380/140]" : "")} />
+        <div className={clsx("flex flex-col gap-10 bg-[#0B0C0F] relative z-1", isMobile ? "w-full p-3 " : "w-[440px] p-10 ")}>
           <div className="flex flex-col gap-3">
             <div className="uppercase text-[40px] Gemsbuck">New To Cysic</div>
             <div className="text-[#A1A1AA] text-lg">Sign up for free</div>

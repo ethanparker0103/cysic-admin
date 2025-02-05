@@ -8,6 +8,8 @@ import { ArrowRight } from "lucide-react";
 import useCosmos from "@/models/_global/cosmos";
 import { useEventListener } from "ahooks";
 import { sleep } from "@/utils/tools";
+import clsx from "clsx";
+import { isMobile } from "react-device-detect";
 
 const KeplrConnectModal = () => {
     const [unmatchedError, setUnmatchedError] = useState(false)
@@ -55,9 +57,9 @@ const KeplrConnectModal = () => {
 
 
     return <Modal isOpen={visible} onClose={() => setVisible(false)} className="[&_button]:z-[2] max-w-[820px] border border-[#FFFFFF33]">
-            <div className="flex justify-between bg-[url(@/assets/images/_global/keplr_download_bg.png)] bg-cover">
-                <div className="w-[380px]" />
-                <div className="w-[440px] p-10 flex flex-col gap-6 bg-[#0B0C0F] relative z-1">
+            <div className={clsx("flex justify-between bg-[url(@/assets/images/_global/keplr_download_bg.png)]", isMobile ? "flex-col bg-contain bg-norepeat" : "bg-cover")}>
+                <div className={clsx("w-[380px]", isMobile ? "aspect-[380/140]" : "")} />
+                <div className={clsx("flex flex-col gap-6 bg-[#0B0C0F] relative z-1", isMobile ? "w-full p-3 " : "w-[440px] p-10 ")}>
                     <div className="flex flex-col uppercase text-[32px]">
                         <div className="text-gradient Gemsbuck">Unlock Phase II Features</div>
                     </div>

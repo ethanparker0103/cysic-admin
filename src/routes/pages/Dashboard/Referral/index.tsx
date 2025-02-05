@@ -8,8 +8,10 @@ import MainContainer from "@/routes/pages/Dashboard/components/mainContainer";
 import Valid from "@/routes/pages/Dashboard/Referral/Status/Valid";
 import { useRequest } from "ahooks";
 import axios from "axios";
+import clsx from "clsx";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { useSearchParams } from "react-router-dom";
 
 export const mock = false;
@@ -107,8 +109,9 @@ const Referral = () => {
         <>
             <InValidReferralRoleModal />
             <MainContainer
+                titleClassName={isMobile ? "w-full" :""}
                 title={
-                    <div className="flex items-center gap-2">
+                    <div className={clsx("flex items-center gap-2", isMobile ? "justify-between w-full" : "")}>
                         <div>Referral</div>
                         <Button onClick={()=>dispatch({visible: true})} className="text-[#fff] p-0 rounded-full h-fit min-h-fit" type="solidGradient">
                             <div className="flex items-center gap-1 gradient-sub-bg text-xs px-2 py-1">

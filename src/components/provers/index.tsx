@@ -7,6 +7,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 
 const Status = ({ suc }: any) => {
@@ -67,7 +68,7 @@ const Provers = () => {
 
 
   return (
-    <div className="flex items-center gap-4">
+    <div className={clsx("flex items-center gap-4", isMobile ? "flex-col" : "")}>
       <MainCard className="flex flex-col gap-6 rounded-[16px]">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
