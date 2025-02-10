@@ -55,6 +55,23 @@ function ensureArrayLength(value: any, n: any) {
           }
         }
       }, [digits, onValueChange]);
+
+      const handlePaste = useCallback((e: React.ClipboardEvent<HTMLInputElement>, startIndex: number) => {
+        e.preventDefault();
+        const pasteData = e.clipboardData.getData('text').replace(/\D/g, ''); // 只保留数字
+        const newDigits = [...digits];
+        
+        // 从起始位置开始填充粘贴的数字
+        for (let i = 0; i < pasteData.length && startIndex + i < n; i++) {
+            newDigits[startIndex + i] = pasteData[i];
+        }
+        
+        onValueChange(newDigits.join(''));
+        
+        // 将焦点移动到最后一个填充的输入框
+        const lastFilledIndex = Math.min(startIndex + pasteData.length, n - 1);
+        inputsRef.current[lastFilledIndex].focus();
+    }, [digits, n, onValueChange]);
     
       return (
         <div className='flex items-center gap-4'>
@@ -66,6 +83,7 @@ function ensureArrayLength(value: any, n: any) {
               value={digit}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
+              onPaste={(e) => handlePaste(e, index)}
               maxLength={1}
               ref={(el) => (inputsRef.current[index] = el)}
             />
