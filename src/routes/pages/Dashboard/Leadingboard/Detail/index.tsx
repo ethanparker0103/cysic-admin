@@ -1,12 +1,14 @@
 
 import {
-  Tabs, Tab
+  Tabs, Tab,
+  cn
 } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import VerifierTable from "@/routes/pages/Dashboard/Leadingboard/Detail/verifier";
 import { useState } from "react";
 import clsx from "clsx";
 import ProverTable from "@/routes/pages/Dashboard/Leadingboard/Detail/prover";
+import { isMobile } from "react-device-detect";
 
 const mock = {
   msg: "success",
@@ -85,8 +87,8 @@ const Detail = () => {
           {/* <div className="text-lg font-[600]">My Task List</div> */}
           <Tabs
             classNames={{
-              tabList: '!p-0',
-              tab: "group-data-[selected=true]:border-none",
+              tabList: cn('!p-0', isMobile ? '!flex-wrap' : ''),
+              tab: cn("group-data-[selected=true]:border-none", isMobile ? '!justify-start' : ''),
               cursor: "!bg-[transparent]",
               tabContent:
                 "group-data-[selected=true]:text-[#fff] group-data-[selected=true]:font-semibold text-lg",
