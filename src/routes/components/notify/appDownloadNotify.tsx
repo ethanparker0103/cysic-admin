@@ -41,7 +41,7 @@ const AppDownloadNotify = () => {
                     </div>
                 </Button>
             </div>
-            <div className="text-xs text-[#A1A1AA]">*Only User completes 1 verifier Task is eligible</div>
+            <div className="text-xs text-[#A1A1AA]">*Only after completing 1 verifier task</div>
         </div>
         <div className="w-[12.25rem] aspect-[260/240] relative">
             <img src={getImageUrl('@/assets/images/download/cornor_b_r_download_bg.png')} className=" aspect-[260/240] min-w-[16.25rem] absolute right-0 top-0" />
