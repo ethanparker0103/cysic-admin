@@ -47,8 +47,11 @@ i18n
 
 
 
-// const projectId = "c3409365992fb110b8778d63a74b252b";
-const projectId = "0311c63d54926ae045833d490f9cf369"
+const projectId2 = "31f035438ae413926262557046ca933a";
+// @ts-ignore
+const projectId1 = "0311c63d54926ae045833d490f9cf369"
+
+const projectId = projectId2
 const queryClient = new QueryClient();
 const metadata = {
     name: 'Cysic',
