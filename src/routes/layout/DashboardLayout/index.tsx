@@ -768,13 +768,13 @@ const SideNav = ({ onClick }: any) => {
       <Button
         type="solidGradient"
         className="mb-2 rounded-full h-fit min-h-fit py-2 px-3 w-full flex items-center justify-between"
-        onClick={() => { window.open(downloadLink.andorid, "_blank"); onClick?.() }}
+        onClick={() => { window.open(downloadLink.googlePlay, "_blank"); onClick?.() }}
       >
         <>
           <div className="flex items-center gap-1">
             <img
               className="size-4"
-              src={getImageUrl("@/assets/images/_global/phone.svg")}
+              src={getImageUrl("@/assets/images/download/google-play_icon.svg")}
             />
             <div className="text-xs text-[#fff] font-[400]">
               Android Verifier App
