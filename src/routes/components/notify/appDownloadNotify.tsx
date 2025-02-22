@@ -27,19 +27,37 @@ const AppDownloadNotify = () => {
             </div>
             <div className="flex flex-col gap-2">
                 <span className="text-[#A1A1AA] text-xs">Cysic Verifier Android Mobile App</span>
-                <Button className="!w-fit !min-h-fit h-10 rounded-full !bg-[#E5199F]" type="normal" onClick={() => {
-                    dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: { visible: true } }))
-                }}>
-                    <div className="flex items-center gap-2">
-                        <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
-                            <img
-                                className="size-3"
-                                src={getImageUrl("@/assets/images/_global/download.svg")}
-                            />
+                <div className="flex items-center gap-1">
+
+                    <Button className="!flex-1 !min-h-fit h-10 rounded-full !bg-[#E5199F] !p-1 !px-2" type="normal" onClick={() => {
+                        dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: { visible: true } }))
+                    }}>
+                        <div className="flex items-center gap-1">
+                            <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
+                                <img
+                                    className="size-3"
+                                    src={getImageUrl("@/assets/images/_global/download.svg")}
+                                />
+                            </div>
+                            <div className="flex-1 text-[#fff] text-xs font-semibold text-left">Download APK</div>
                         </div>
-                        <span className="text-[#fff] text-sm font-semibold">APK Download</span>
-                    </div>
-                </Button>
+                    </Button>
+
+                    <Button className="flex-1 !border-[#fff] !min-h-fit h-10 rounded-full !bg-[transparent] !px-2 !py-1" type="solid" onClick={() => window.open(downloadLink.googlePlay, "_blank")}>
+                        <div className="flex items-center gap-1">
+                            <img
+                                className="w-5"
+                                src={getImageUrl("@/assets/images/download/google-play_icon.svg")}
+                            />
+                            <div className="flex flex-col gap-1 items-start text-xs font-[500]">
+                                <div className="text-[#C0C0C5]">GET IT ON</div>
+                                <div className="text-[#fff]">Google Play</div>
+                            </div>
+                        </div>
+                    </Button>
+
+
+                </div>
             </div>
             <div className="text-xs text-[#A1A1AA]">*Only after completing 1 verifier task</div>
         </div>

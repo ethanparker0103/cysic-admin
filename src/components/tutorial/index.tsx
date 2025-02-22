@@ -114,6 +114,17 @@ export const tutorialList = {
                     </div>
                 </div>
 
+                <div className="bg-[#10141A] p-6 rounded-[12px] flex items-cente justify-between">
+                    <div className="flex items-center gap-3">
+                        <img className="size-8" src={getImageUrl('@/assets/images/download/google-play_icon_white.svg')} />
+                        <div className="flex flex-col gap-1">
+                            <span className="text-sm">Download the APK</span>
+                            <div className="text-[#fff]">Google Play</div>
+                        </div>
+                    </div>
+                    <div onClick={() => window.open(downloadLink.googlePlay, "_blank")} className="flex items-center pr-2 cursor-pointer"><img className="w-[9.25rem]" src={getImageUrl('@/assets/images/download/google-play.svg')} /></div>
+                </div>
+
                 <div className="flex items-center gap-1">
                     <span>Google Play Version:</span>
                     <span className="text-[#fff]" >Coming Soon</span>

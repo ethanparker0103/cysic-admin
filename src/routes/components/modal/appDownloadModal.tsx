@@ -46,17 +46,32 @@ const DownloadAppModal = () => {
 
             </div>
           </div>
-          <Button className="rounded-full" type="gradient" onClick={() => window.open(downloadLink.andorid, "_blank")}>
-            <div className="flex items-center gap-2">
-              <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
-                <img
-                  className="size-4"
-                  src={getImageUrl("@/assets/images/_global/download.svg")}
-                />
+          <div className="flex items-center gap-3">
+            <Button className="!min-h-fit h-10 flex-1 rounded-full" type="gradient" onClick={() => window.open(downloadLink.andorid, "_blank")}>
+              <div className="flex items-center gap-2">
+                <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-1 rounded-full">
+                  <img
+                    className="size-3"
+                    src={getImageUrl("@/assets/images/_global/download.svg")}
+                  />
+                </div>
+                <span className="text-[#fff] font-semibold">APK Download</span>
               </div>
-              <span className="text-[#fff] font-semibold">APK Download</span>
-            </div>
-          </Button>
+            </Button>
+            <Button className="flex-1 !border-[#fff] !min-h-fit h-10 rounded-full !bg-[transparent] !px-2 !py-1" type="solid" onClick={() => window.open(downloadLink.googlePlay, "_blank")}>
+              <div className="flex items-center gap-2">
+                <img
+                  className="w-5"
+                  src={getImageUrl("@/assets/images/download/google-play_icon.svg")}
+                />
+                <div className="flex flex-col gap-1 items-start text-sm font-[500]">
+                  <div className="text-[#C0C0C5]">GET IT ON</div>
+                  <div className="text-[#fff]">Google Play</div>
+                </div>
+              </div>
+            </Button>
+
+          </div>
         </div>
         <BrowserView>
           <div className="w-[14.875rem] relaitve aspect-[286/356]">

@@ -61,7 +61,7 @@ const metadata = {
     icons: ['https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic-testnet/chain.png']
 }
 
-const networks = [chains.arbitrumSepolia, chains.sepolia, chains.mainnet, chains.arbitrum]
+const networks = [chains.arbitrumSepolia]
 
 const wagmiAdapter = new WagmiAdapter({
     networks,
@@ -76,6 +76,8 @@ createAppKit({
     metadata,
     features: {
         connectMethodsOrder: ['wallet'],
+        swaps: false,
+        email: false,
         analytics: true // Optional - defaults to your Cloud configuration
     }
 })
