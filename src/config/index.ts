@@ -127,7 +127,8 @@ export const mediasLink = {
 }
 
 export const downloadLink = {
-    andorid: 'https://statics.prover.xyz/app-release.apk'
+    andorid: 'https://statics.prover.xyz/app-release.apk',
+    googlePlay: 'https://play.google.com/store/apps/details?id=com.cysic.plus'
 }
 
 export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/', '/my/phase1Convert', '/my/phase1Convert/']

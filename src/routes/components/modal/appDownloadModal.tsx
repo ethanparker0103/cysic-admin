@@ -46,7 +46,7 @@ const DownloadAppModal = () => {
 
             </div>
           </div>
-          <Button className="rounded-full" type="gradient" onClick={() => window.open(downloadLink.andorid, "_blank")}>
+          <Button className="rounded-full" type="gradient" onClick={() => window.open(downloadLink.googlePlay, "_blank")}>
             <div className="flex items-center gap-2">
               <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
                 <img

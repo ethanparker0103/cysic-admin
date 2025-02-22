@@ -27,10 +27,14 @@ const AppDownloadNotify = () => {
             </div>
             <div className="flex flex-col gap-2">
                 <span className="text-[#A1A1AA] text-xs">Cysic Verifier Android Mobile App</span>
-                <Button className="!w-fit !min-h-fit h-10 rounded-full !bg-[#E5199F]" type="normal" onClick={() => {
+                <Button className="!w-fit !min-h-fit h-10 rounded-full !bg-[transparent] !p-0" type="normal" onClick={() => {
                     dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: { visible: true } }))
                 }}>
-                    <div className="flex items-center gap-2">
+                    <img
+                        className="w-full"
+                        src={getImageUrl("@/assets/images/download/google-play.svg")}
+                    />
+                    {/* <div className="flex items-center gap-2">
                         <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
                             <img
                                 className="size-3"
@@ -38,7 +42,7 @@ const AppDownloadNotify = () => {
                             />
                         </div>
                         <span className="text-[#fff] text-sm font-semibold">APK Download</span>
-                    </div>
+                    </div> */}
                 </Button>
             </div>
             <div className="text-xs text-[#A1A1AA]">*Only after completing 1 verifier task</div>
