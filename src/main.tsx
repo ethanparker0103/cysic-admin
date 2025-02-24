@@ -61,7 +61,7 @@ const metadata = {
     icons: ['https://raw.githubusercontent.com/chainapsis/keplr-chain-registry/main/images/cysic-testnet/chain.png']
 }
 
-const networks = [chains.arbitrumSepolia]
+const networks = [chains.mainnet, chains.arbitrum, chains.arbitrumSepolia]
 
 const wagmiAdapter = new WagmiAdapter({
     networks,
