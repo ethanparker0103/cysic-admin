@@ -56,7 +56,7 @@ const TaskTable = ({ classNames, status = 0 }: any) => {
     const { data, totalPage, currentPage, setCurrentPage } = usePagnation((page: number) => {
         // return Promise.resolve(mock);
 
-        return axios.get("/api/v1/task", {
+        return axios.get("/api/v1/task/simpleList", {
             params: {
                 status,
                 // limit: 100,
@@ -129,7 +129,7 @@ const TaskTable = ({ classNames, status = 0 }: any) => {
             case "action":
                 return (
                     <Link
-                        to={"/dashboard/task/" + item?.ID?.toString()}
+                        to={"/dashboard/task/" + item?.id?.toString()}
                         className="flex items-center gap-1"
                     >
                         <span className="text-[#21E9FA]">{t('detail')}</span>
