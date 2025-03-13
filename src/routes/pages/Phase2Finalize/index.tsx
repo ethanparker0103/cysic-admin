@@ -104,7 +104,7 @@ const Phase2Finalize = () => {
     }
 
     const handleSubscribe = async () => {
-        if (!email && !emailError) return;
+        if (!email || emailError || isSubscribed) return;
         try {
             await axios.post('/api/v1/phase2End/subscribe', {
                 email: email,
