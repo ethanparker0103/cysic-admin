@@ -48,7 +48,7 @@ const useAuthCheck = () => {
     useEffect(() => {
         // 如果处于 Phase2Finalize 模式，且当前路径不在白名单中，则重定向到 phase2Finalize 页面
         if (PHASE2_FINALIZE_MODE && !whiteList.some(path => pathname === path || pathname.startsWith(path + '/'))) {
-            navigate('/phase2Finalize');
+            navigate('/subscribe');
             return;
         }
 
