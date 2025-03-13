@@ -1,8 +1,9 @@
 import { mediasLink } from "@/config";
+import { cn } from "@nextui-org/react";
 
-const Media = () => {
+const Media = ({className}: {className?: string}) => {
   return (
-    <div className="flex items-center gap-2 justify-center w-full">
+    <div className={cn("flex items-center gap-2 justify-center w-full", className)}>
       <a href={mediasLink.discord} target="_blank" className="text-[white] hover:text-[#000] group/item cursor-pointer" >
         <svg
           width="32"

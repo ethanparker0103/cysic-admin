@@ -55,11 +55,12 @@ const Button = ({
             id={id}
             style={style}
             disabled={disabled || _loading}
-            onClick={()=>{
+            onClick={async ()=>{
                 if(needLoading){
                     setInternalLoading(true)
                 }
-                onClick?.(()=>setInternalLoading(false))
+                await onClick?.(()=>setInternalLoading(false))
+                setInternalLoading(false)
             }}
             className={clsx(
                 className,

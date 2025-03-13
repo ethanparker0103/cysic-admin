@@ -26,12 +26,24 @@ import VeComputed from "@/routes/pages/Dashboard/Stake/VeComputed";
 import VeCysic from "@/routes/pages/Dashboard/Stake/VeCysic";
 import SocialTasks from "@/routes/pages/Dashboard/SocialTasks";
 import FillReferralCode from "@/routes/pages/Dashboard/Referral/fillReferralCode";
-import Phase1 from "@/routes/pages/Dashboard/My/page/phase1";
 import Phase1Convert from "@/routes/pages/Dashboard/My/page/phase1convert";
+import Phase2Finalize from "@/routes/pages/Phase2Finalize";
 import About from "@/routes/pages/About";
 import Faq from "@/routes/pages/Faq";
+import Phase2FinalizeLayout from "@/routes/layout/Phase2FinalizeLayout";
 
 /* eslint-enable react-refresh/only-export-components */
+
+// 添加一个开关变量来控制是否启用重定向
+const PHASE2_FINALIZE_MODE = true; // 设置为 true 启用重定向，false 禁用重定向
+
+// 条件重定向函数
+const conditionalRedirect = () => {
+  if (PHASE2_FINALIZE_MODE) {
+    return redirect("/subscribe");
+  }
+  return null; // 不重定向时返回 null
+};
 
 export const router = createBrowserRouter(
   [
@@ -45,8 +57,10 @@ export const router = createBrowserRouter(
           children: [
             {
               index: true,
-              loader: async () => redirect("/dashboard/overview"),
-              // element: <Dashboard />
+              loader: async () => {
+                // 如果不需要重定向到 phase2Finalize，则执行原有的重定向逻辑
+                return redirect("/dashboard/overview");
+              },
             },
             {
               path: "overview",
@@ -59,64 +73,69 @@ export const router = createBrowserRouter(
           ],
         },
         {
-            path: "dashboard/verifier",
-            element: <DashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <Verifier />,
-              },
-              {
-                path: ":id",
-                element: <VerifierDetail />,
-              },
-            ],
-          },
-          {
-            path: "dashboard/prover",
-            element: <DashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <DashboardComputility />,
-              },
-              {
-                path: ":id",
-                element: <ComputilityDetail />,
-              },
-            ],
-          },
-          {
-            path: "dashboard/project",
-            element: <DashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <DashboardProject />,
-              },
-              {
-                path: ":id",
-                element: <ProjectDetail />,
-              },
-            ],
-          },
-          {
-            path: "dashboard/task",
-            element: <DashboardLayout />,
-            children: [
-              {
-                index: true,
-                element: <Task />,
-              },
-              {
-                path: ":id",
-                element: <TaskDetail />,
-              },
-            ],
-          },
+          path: "dashboard/verifier",
+          element: <DashboardLayout />,
+          loader: conditionalRedirect,
+          children: [
+            {
+              index: true,
+              element: <Verifier />,
+            },
+            {
+              path: ":id",
+              element: <VerifierDetail />,
+            },
+          ],
+        },
+        {
+          path: "dashboard/prover",
+          element: <DashboardLayout />,
+          loader: conditionalRedirect,
+          children: [
+            {
+              index: true,
+              element: <DashboardComputility />,
+            },
+            {
+              path: ":id",
+              element: <ComputilityDetail />,
+            },
+          ],
+        },
+        {
+          path: "dashboard/project",
+          element: <DashboardLayout />,
+          loader: conditionalRedirect,
+          children: [
+            {
+              index: true,
+              element: <DashboardProject />,
+            },
+            {
+              path: ":id",
+              element: <ProjectDetail />,
+            },
+          ],
+        },
+        {
+          path: "dashboard/task",
+          element: <DashboardLayout />,
+          loader: conditionalRedirect,
+          children: [
+            {
+              index: true,
+              element: <Task />,
+            },
+            {
+              path: ":id",
+              element: <TaskDetail />,
+            },
+          ],
+        },
         {
           path: "stake",
           element: <DashboardLayout />,
+          loader: conditionalRedirect,
           children: [
             {
               path: "cgt",
@@ -139,7 +158,7 @@ export const router = createBrowserRouter(
             {
               path: "phase1",
               element: <Phase1Convert />,
-            }
+            },
           ],
         },
         {
@@ -155,6 +174,7 @@ export const router = createBrowserRouter(
         {
           path: "referral",
           element: <DashboardLayout />,
+          loader: conditionalRedirect,
           children: [
             {
               index: true,
@@ -173,6 +193,7 @@ export const router = createBrowserRouter(
         {
           path: "faucet",
           element: <DashboardLayout />,
+          loader: conditionalRedirect,
           children: [
             {
               index: true,
@@ -180,7 +201,6 @@ export const router = createBrowserRouter(
             },
           ],
         },
-
         {
           path: "about",
           element: <DashboardLayout />,
@@ -201,10 +221,10 @@ export const router = createBrowserRouter(
             },
           ],
         },
-
         {
           path: "/register",
           element: <BasicLayout />,
+          loader: conditionalRedirect,
           children: [
             {
               index: true,
@@ -227,10 +247,21 @@ export const router = createBrowserRouter(
         {
           path: "/aleopool",
           element: <ActivityLayout />,
+          loader: conditionalRedirect,
           children: [
             {
               index: true,
               element: <Aleo />,
+            },
+          ],
+        },
+        {
+          path: "/subscribe",
+          element: <Phase2FinalizeLayout />,
+          children: [
+            {
+              index: true,
+              element: <Phase2Finalize />,
             },
           ],
         },
