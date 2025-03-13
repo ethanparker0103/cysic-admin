@@ -147,7 +147,7 @@ const Phase2Finalize = () => {
                     </h1>
 
                     <h3 className='max-w-[42rem] text-[#A1A1AA] text-[20px] Montserrat text-center'>
-                        190,887 Cysors powered the Genesis Node and we have now snapshot all Phase II data.
+                        <span className='text-gradient font-[500] Montserrat'>190,887 Cysors</span> powered the Genesis Node and we have now snapshot all Phase II data.
                     </h3>
                 </div>
 
@@ -256,7 +256,7 @@ const Phase2Finalize = () => {
                                         <div className='font-[500] text-[#fff]'>{phase2EndQuery?.phase2Cgt}</div>
                                     </div>
                                     <div className='flex items-start justify-between'>
-                                        <div className='font-[400] text-[#A1A1AA]'>Referrals</div>
+                                        <div className='font-[400] text-[#A1A1AA]'>Invited Users</div>
                                         <div className='font-[500] text-[#fff]'>{phase2EndQuery?.phase2Referral}</div>
                                     </div>
                                     <div className='flex items-start justify-between'>
