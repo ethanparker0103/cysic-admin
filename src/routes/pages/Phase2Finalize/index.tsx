@@ -85,6 +85,7 @@ const Phase2Finalize = () => {
     const [emailError, setEmailError] = useState('')
 
     const [phase2EndQuery, setPhase2EndQuery] = useState<IPhase2EndQuery | undefined>(undefined)
+    const [isSubscribed, setIsSubscribed] = useState(false)
 
     const handleSearch = async () => {
         if (!searchValue) return;
@@ -108,7 +109,8 @@ const Phase2Finalize = () => {
             await axios.post('/api/v1/phase2End/subscribe', {
                 email: email,
             })
-            toast.success('Thank you for your subscribe')
+            toast.success('Thank you for your subscription')
+            setIsSubscribed(true)
         } catch (e: any) {
             console.log(e)
             toast.error(e?.response?.data?.msg || e?.message)
@@ -188,13 +190,18 @@ const Phase2Finalize = () => {
                                 validate={validateEmail}
                                 placeholder="Email Address"
                                 value={email}
-                                onValueChange={setEmail}
+                                onValueChange={(e) => {
+                                    if(isSubscribed){
+                                        setIsSubscribed(false)
+                                    }
+                                    setEmail(e)
+                                }}
                                 classNames={{
                                     input: "flex-1 !pl-3 !pr-5 !py-[1.125rem]",
                                     innerWrapper: "bg-[#000]",
                                     inputWrapper: ['!rounded-[12px] overflow-hidden !h-fit !p-0 border border-[#ffffff23]']
                                 }}
-                                endContent={<Button needLoading onClick={handleSubscribe} className="hover:bg-[#15171D] mr-1 cursor-pointer !h-fit !bg-[#15171D] px-5 text-[#fff]" >Subscribe </Button>} />
+                                endContent={<Button needLoading onClick={handleSubscribe} className="hover:bg-[#15171D] mr-1 cursor-pointer !h-fit !bg-[#15171D] px-5 text-[#fff]" >{isSubscribed ? 'Subscribed' : 'Subscribe'}</Button>} />
                             {/* {(!email || email.length <= 2) ? (<div className='h-6' />) : null} */}
                         </div>
                     </div>
