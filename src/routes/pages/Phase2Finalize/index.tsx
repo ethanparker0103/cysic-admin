@@ -166,7 +166,7 @@ const Phase2Finalize = () => {
             </div>
 
 
-            <div className='px-3 w-full'>
+            <div className='px-3 w-full flex justify-center'>
                 <div className={cn(isMobile ? 'justify-center  mt-[2rem] px-2' : 'justify-between  mt-[4.5rem]', 'w-full backdrop-blur-md overflow-hidden border-[#213240] border rounded-[20px] relative z-[1] py-6 max-w-[63.75rem] bg-[#21324066] relative flex ')}>
 
 
