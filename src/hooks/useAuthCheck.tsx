@@ -12,7 +12,9 @@ const PHASE2_FINALIZE_MODE = true; // 设置为 true 启用 Phase2Finalize 模�
 
 // 白名单路径，这些路径不需要身份验证，同时在 Phase2Finalize 模式下也不会被重定向
 // const whiteList = ['subscribe', 'dashboard/overview', 'about', 'faq', 'aleopool', 'register', 'leadingboard']?.map(i => [i, '/' + i]).flat(Infinity)
-const whiteList = ['subscribe', 'dashboard/overview', 'about', 'faq', 'leadingboard', 'my']?.map(i => [i, '/' + i]).flat(Infinity)
+// const whiteList = ['subscribe', 'dashboard/overview', 'about', 'faq', 'leadingboard', 'my']?.map(i => [i, '/' + i]).flat(Infinity)
+
+const whiteList = ['subscribe', 'about', 'faq']?.map(i => [i, '/' + i]).flat(Infinity)
 
 const useAuthCheck = () => {
     // const [from, setFrom] = useState<any>()
