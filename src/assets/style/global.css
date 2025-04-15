@@ -30,6 +30,7 @@ body {
 
 #root{
     background-color: #090A09;
+    position: relative;
 }
 
 .basic-bg-gradient{

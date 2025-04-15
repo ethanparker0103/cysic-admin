@@ -8,6 +8,7 @@ export enum BtnType {
     normal = 'normal',
     solid = 'solid',
     dark = 'dark',
+    light = 'light'
 }
 const Button = ({
     children,
@@ -43,8 +44,10 @@ const Button = ({
                 return 'bg-gradient border-none !text-[#fff]';
             case BtnType.dark:
                 return 'bg-[#000] border-none text-[#fff]';
+            case BtnType.light:
+                return 'bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff]';
             case BtnType.solid:
-                return '!bg-[transparent] !border-[#fff] text-[#fff]';
+                return '!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]';
             default:
                 return '!bg-[transparent] !border-none text-[#fff]';
         }
@@ -65,8 +68,8 @@ const Button = ({
             className={clsx(
                 className,
                 classNameWithType,
-                disabled ? 'opacity-50 disabled:[--tw-text-opacity:0.5] disabled:[--tw-bg-opacity:0.5]' : '',
-                'btn',
+                'px-4 py-2 backdrop-blur-sm',
+                disabled ? 'pointer-events-none opacity-50 disabled:[--tw-text-opacity:0.5] disabled:[--tw-bg-opacity:0.5]' : '',
              )}
         >
             {_loading ? <span className="loading loading-dots loading-md" /> : children}

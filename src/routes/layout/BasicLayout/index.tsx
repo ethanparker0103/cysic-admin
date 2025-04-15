@@ -5,16 +5,31 @@ import "@arco-design/web-react/dist/css/arco.css";
 import { NextUIProvider } from "@nextui-org/react";
 import Header from "@/routes/layout/global/header";
 import Footer from "@/routes/layout/global/footer";
+import SignInModal from "@/routes/components/modal/signInModal";
+import useAccountBootstrap from "@/hooks/useAccountBootstrap";
+import ReserveModal from "@/routes/components/modal/reserveModal";
+import StakeModal from "@/routes/components/modal/stakeModal";
+import StatusModal from "@/routes/components/modal/statusModal";
+import PurchaseNftModal from "@/routes/components/modal/purchaseNftModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
+    useAccountBootstrap();
     return (
         <>
             <ToastContainer theme="dark" />
 
             <NextUIProvider>
                 <>
-                    <Header />
-                    <main>{children}</main>
+                    <SignInModal />
+                    <ReserveModal />
+                    <StakeModal />
+                    <StatusModal />
+                    <PurchaseNftModal />
+
+                    <div className="relative">
+                        <Header />
+                        <main>{children}</main>
+                    </div>
                     <Footer />
                 </>
             </NextUIProvider>

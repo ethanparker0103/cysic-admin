@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { isMobile } from 'react-device-detect';
 
-const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] text-[32px] font-bold text-center'
+const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] text-center'
 
 function ensureArrayLength(value: any, n: any) {
     const splitArray = value.split('');
@@ -14,7 +14,7 @@ function ensureArrayLength(value: any, n: any) {
     return splitArray.slice(0, n);
   }
 
-  function DigitInputs({ n, value, onValueChange }: any) {
+  function DigitInputs({ n, value, onValueChange, className }: any) {
       // 使用传入的value作为初始值
       // const [digits, setDigits] = useState(value ? value.split('') : new Array(n).fill(''));
 
@@ -74,10 +74,10 @@ function ensureArrayLength(value: any, n: any) {
     }, [digits, n, onValueChange]);
     
       return (
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-2'>
           {digits.map((digit: any, index: number) => (
             <input
-              className={clsx(base, isMobile ? 'w-[3.375rem] h-[5rem] ' : 'w-[5rem] h-[6.875rem] ')}
+              className={clsx(className, base)}
               key={index}
               type="text"
               value={digit}

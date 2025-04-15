@@ -17,7 +17,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
         return (
             <Button
                 as={Link}
-                href={item.href || "#"}
+                href={item.href || "/"}
                 variant="light"
                 className="uppercase font-[400] !text-sub"
             >
@@ -56,7 +56,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
                             key={child.content}
                             className="py-2 px-4 text-sm"
                             as={Link}
-                            href={child.href || "#"}
+                            href={child.href || "/"}
                         >
                             {child.content}
                         </DropdownItem>

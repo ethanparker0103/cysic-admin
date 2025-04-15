@@ -51,7 +51,7 @@ const navs = [
 
 export default function Footer() {
     return (
-        <div className="flex flex-col items-center gap-6 py-12 border-t border-[#fff]">
+        <div className="flex flex-col items-center gap-6 py-12 border-t border-[#fff] relative z-[1]">
             <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[6rem]" />
             <div className="flex items-center gap-6">
                 {

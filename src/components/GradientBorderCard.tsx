@@ -32,7 +32,9 @@ interface GradientBorderCardProps {
   borderWidth?: number;
   borderRadius?: number;
   padding?: number;
-  innerClassName?: string; 
+  innerClassName?: string;
+  style?: React.CSSProperties;
+  innerStyle?: React.CSSProperties;
 }
 
 const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
@@ -45,11 +47,13 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
   innerClassName = '',
   borderWidth = 1,
   borderRadius = 16,
+  style = {},
+  innerStyle = {},
 }) => {
   // 预设渐变颜色映射保持不变...
   const gradientPresets = useMemo(() => ({
     [GradientType.LIGHT]: ['#FFFFFF', 'rgba(255, 255, 255, 0.2)'],
-    [GradientType.DARK]: ['#333333', 'rgba(51, 51, 51, 0.2)'],
+    [GradientType.DARK]: ['#333333', 'rgba(9, 9, 9, 0.2)'],
     [GradientType.PRIMARY]: ['#3B82F6', 'rgba(59, 130, 246, 0.2)'],
     [GradientType.SUCCESS]: ['#10B981', 'rgba(16, 185, 129, 0.2)'],
     [GradientType.WARNING]: ['#F59E0B', 'rgba(245, 158, 11, 0.2)'],
@@ -79,6 +83,7 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
         overflow: 'hidden',
         // 使用伪元素前需要设置
         isolation: 'isolate',
+        ...style // 合并传入的样式
       }}
     >
       {/* 渐变边框效果 - 使用伪元素 */}
@@ -109,6 +114,7 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
           width: '100%',
           borderRadius: `${borderRadius - borderWidth}px`,
           zIndex: 1,
+          ...innerStyle // 合并传入的内部样式
         }}
       >
         {children}

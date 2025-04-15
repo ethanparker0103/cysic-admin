@@ -20,6 +20,8 @@ import {
 } from "@wagmi/core";
 import axios from "axios";
 import { cosmosFee, cysicTestnet } from "@/config";
+import useUser from "@/models/user";
+import { StatusModalProps } from "@/routes/components/modal/statusModal";
 
 
 dayjs.extend(UTC);
@@ -611,3 +613,70 @@ export const formatReward = (num: string, x: number) => {
   const exponentStr = exponent.toString().split('').map(digit => subscriptDigits[parseInt(digit)]).join('');
   return `0.0${exponentStr}${significantPart.slice(0, x)}`;
 };
+
+
+
+// 更新函数以接受步骤参数
+export const handleSignIn = () => {
+
+    const userStore = useUser.getState();
+    let targetStep = '';
+    
+    if (!targetStep) {
+        // 如果已注册但未完成个人资料
+        if (userStore.isRegistered && !userStore.registrationComplete) {
+            targetStep = 'profile';
+        } 
+        // 如果已连接但未注册（需要绑定邀请码）
+        else if (userStore.address && !userStore.isRegistered) {
+            targetStep = 'code';
+        }
+        // 其他情况使用默认步骤
+    }
+
+    // 触发自定义事件，带上步骤信息
+    const event = new CustomEvent('modal_signin_visible', { 
+        detail: { visible: true, step: targetStep } 
+    });
+    window.dispatchEvent(event);
+};
+
+export const handleReserveModal = () => {
+  const event = new CustomEvent('modal_reserve_visible', { 
+    detail: { visible: true } 
+  });
+  window.dispatchEvent(event);
+};
+
+export const handleStakeModal = () => {
+  const event = new CustomEvent('modal_stake_visible', { 
+    detail: { visible: true, tab: "stake" } 
+  });
+  window.dispatchEvent(event);
+};
+
+export const handleUnstakeModal = () => {
+  const event = new CustomEvent('modal_stake_visible', { 
+    detail: { visible: true, tab: "unstake" } 
+  });
+  window.dispatchEvent(event);
+};
+
+// 辅助函数 - 用于在组件外部触发状态模态框
+export const showStatusModal = (props: StatusModalProps) => {
+  const event = new CustomEvent("modal_status_visible", {
+    detail: {
+      visible: true,
+      ...props
+    }
+  });
+  window.dispatchEvent(event);
+};
+
+export const handlePurchaseNftModal = (props: any) => {
+  const event = new CustomEvent('modal_purchase_nft_visible', { 
+    detail: { visible: true, ...props } 
+  });
+  window.dispatchEvent(event);
+};
+
