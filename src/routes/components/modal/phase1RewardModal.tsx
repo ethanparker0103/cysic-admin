@@ -112,7 +112,7 @@ const Phase1RewardModal = () => {
         </div>
         <div className="max-w-[480px] py-10 pr-10 flex flex-col gap-10">
           <div className="flex flex-col gap-6 flex-1">
-            <div className="Gemsbuck text-gradient text-[30px] font-[400]">
+            <div className="  text-gradient text-[30px] font-[400]">
               YOUR EXCLUSIVE BONUS
             </div>
             <div className="text-lg text-[#fff] font-[500] flex flex-col gap-2 leading-[1.5]">

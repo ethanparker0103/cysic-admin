@@ -19,8 +19,8 @@ import {
   getWalletClient,
 } from "@wagmi/core";
 import axios from "axios";
-import { cosmosFee } from "@/config";
-import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
+import { cosmosFee, cysicTestnet } from "@/config";
+
 
 dayjs.extend(UTC);
 

@@ -1,0 +1,128 @@
+@import url(./font.css);
+@import url(./bootstrap.css);
+* {
+    margin: 0;
+    font-family: 'Montserrat';
+}
+/* fix 浏览器默认样式 */
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+    color: inherit;
+    backface-visibility: hidden;
+}
+img {
+    display: block;
+    outline: none;
+}
+/* 全局样式 */
+* {
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+/* 隐藏横向滚动条 */
+/* :root::-webkit-scrollbar {
+    height: 0;
+    background-color: transparent;
+} */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* w3m-button wui-connect-button > button{
+    background: linear-gradient(90deg, #395DF2 -2.05%, #2391F6 52.55%, #B072FF 100%)!important;
+} */
+
+:root{
+    /* --wui-border-radius-m: 12px!important;
+    --wui-border-radius-3xl: var(--wui-border-radius-m)!important;
+    --wui-gray-glass-002: rgba(0, 0, 0, 0.05)!important;
+
+    --w3m-font-family: 'Space Grotesk', sans-serif!important;
+    --wui-gray-glass-005: transparent !important;
+
+    --wui-color-accent-100: linear-gradient(90deg, #395DF2 -2.05%, #2391F6 52.55%, #B072FF 100%)!important;
+    --wui-gray-glass-015: #fff !important;
+    --local-color: #fff !important; */
+}
+
+.arco-upload-trigger, .arco-upload-trigger-picture-wrapper, .arco-upload-trigger-picture{
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.basic-bg-gradient{
+    position: relative;
+}
+.basic-bg-gradient:after{
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    /* background: linear-gradient(83.04deg, #9D47FF 5.44%, #00F0FF 54.92%); */
+    background: linear-gradient(106.25deg, rgba(154, 75, 254, 0.2) 0%, rgba(28, 214, 255, 0.2) 30.99%, rgba(27, 254, 223, 0.2) 97.85%);
+
+}
+
+.gradient-bg{
+    background: linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+}
+
+.gradient-sub-bg{
+    background: linear-gradient(83.04deg, rgba(157, 71, 255, 0.2) 5.44%, rgba(0, 240, 255, 0.2) 54.92%);
+}
+
+.gradient-border {
+    overflow: hidden;
+    border: 1px solid transparent;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+}
+
+.gradient-color {
+    background: linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-sub-border {
+    overflow: hidden;
+    border: 1px solid transparent;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image: linear-gradient(to right, #10141a, #10141a), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+}
+
+
+.Toastify__toast-container--top-right {
+    top: 3.825rem;
+ }
+
+ .Toastify__toast.Toastify__toast-theme--dark#unmathedAddressToast{
+    border: 2px solid transparent;
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+    background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+ }
+
+ .main-card-bg{
+    background-color: #10141a;
+    background: url('@/assets/images/_global/main_card_bg.svg');
+    background-repeat: no-repeat;
+    background-size: 100vmax;
+ }

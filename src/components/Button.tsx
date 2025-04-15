@@ -44,9 +44,9 @@ const Button = ({
             case BtnType.dark:
                 return 'bg-[#000] border-none text-[#fff]';
             case BtnType.solid:
-                return '!bg-[transparent] !border-[#21E9FA] text-[#21E9FA]';
+                return '!bg-[transparent] !border-[#fff] text-[#fff]';
             default:
-                return 'bg-[#21E9FA] border-none hover:bg-[#21E9FA] text-[#000]';
+                return '!bg-[transparent] !border-none text-[#fff]';
         }
     }, [type])
 

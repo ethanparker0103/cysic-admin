@@ -1,5 +1,5 @@
 import { cosmosHubTestnet } from "@/config/cosmos/cosmosHubTestnet";
-import { cysicTestnet } from "@/config/cosmos/cysicTestnet";
+
 import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
@@ -9,7 +9,7 @@ import {
     MsgExchangeToGovToken,
     MsgDelegate,
 } from "./cysic-msg";
-import { keplrDownloadLink } from "@/config";
+import { cysicTestnet, keplrDownloadLink } from "@/config";
 import * as bech32 from "bech32";
 import { toast } from "react-toastify";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";

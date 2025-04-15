@@ -1,3 +1,10 @@
+
+.arco-upload-trigger, .arco-upload-trigger-picture-wrapper, .arco-upload-trigger-picture{
+    height: 100%;
+    width: 100%;
+    border-radius: 8px;
+}
+
 .arco-upload-trigger-picture{
     position: relative;
     border: 1.5px solid #FFFFFF33;

@@ -1,4 +1,5 @@
-import useReferral from "@/models/_global/referral";
+import { cysicTestnet_testnet } from "@/config/cosmos/cysicTestnet";
+import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev";
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 
 export const defaultChainId = '9527';
@@ -50,6 +51,8 @@ export const isQa = import.meta.env.VITE_APP_ENV == 'qa'
 export const isProd = import.meta.env.VITE_APP_ENV == 'prod'
 
 
+export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev
+
 export const mainUrl = import.meta.env.VITE_APP_BASE_URL
 // isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
@@ -100,22 +103,6 @@ export const blockTime = {
 export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
     text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r ",
 })}`
-
-export const getReferralUrl = ()=>`${window.location.origin}/m/referral/invite${useReferral.getState().code ? `?code=${useReferral.getState().code}` : ''}`
-
-export const genTwitterLink = ()=>{
-    let link = twitterLink;
-    if(useReferral.getState().code){
-        link = twitterLink + '👇 Get started now: \n' + `&url=${getReferralUrl()}`
-    }
-    return link;
-}
-
-
-export const openTwitterLink = ()=>{
-    window.open(genTwitterLink(), '_blank')
-}
-
 
 
 export const mediasLink = {

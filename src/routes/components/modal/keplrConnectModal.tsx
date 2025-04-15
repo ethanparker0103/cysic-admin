@@ -61,7 +61,7 @@ const KeplrConnectModal = () => {
                 <div className={clsx("w-[380px]", isMobile ? "aspect-[380/140]" : "")} />
                 <div className={clsx("flex flex-col gap-6 bg-[#0B0C0F] relative z-1", isMobile ? "w-full p-3 " : "w-[440px] p-10 ")}>
                     <div className="flex flex-col uppercase text-[32px]">
-                        <div className="text-gradient Gemsbuck">Unlock Phase II Features</div>
+                        <div className="text-gradient  ">Unlock Phase II Features</div>
                     </div>
                     <div className="flex flex-col p-4 text-[#fff] text-sm gap-3 font-[500] bg-[#FFFFFF0D] rounded-[16px]">
                         <div>To fully unlock all the benefits of Phase II—such as staking $CGT, delegating VeCompute, and converting between tokens—follow these two easy steps:</div>

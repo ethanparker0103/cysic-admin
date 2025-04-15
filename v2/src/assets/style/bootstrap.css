@@ -1,0 +1,24 @@
+.arco-upload-trigger-picture{
+    position: relative;
+    border: 1.5px solid #FFFFFF33;
+}
+.arco-upload-trigger-picture:hover{
+    background: transparent;
+    border: 1.5px solid #21E9FA;
+}
+/* .arco-upload-trigger-picture::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: url(../images/_global/upload.svg);
+} */
+
+.arco-upload-trigger-picture, .arco-upload-list-item-picture {
+    background: transparent;
+    width: 96px;
+    height: 96px;
+}

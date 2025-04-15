@@ -27,7 +27,7 @@ const DownloadAppModal = () => {
       <div className={clsx("flex items-center", isMobile ? "px-10" : "pl-10")}>
         <div className="flex flex-col gap-5 flex-1 py-10">
           <div className="flex flex-col gap-3">
-            <div className="Gemsbuck text-[25px] font-semibold text-gradient">TRY THE NEW CYSIC MOBILE APP FOR Android</div>
+            <div className="  text-[25px] font-semibold text-gradient">TRY THE NEW CYSIC MOBILE APP FOR Android</div>
             <span className="text-sm font-semibold text-[#737373]">Verification Made Simple. Get it Now!</span>
           </div>
           <div className="bg-[#FFFFFF0D] rounded-[16px] p-4 flex flex-col gap-3">

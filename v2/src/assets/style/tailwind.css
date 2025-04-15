@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+    --toastify-color-light: var(--base-200);
+    --toastify-text-color-light: var(--secGray-900);
+
+    --brand: var(#00F0FF);
+    --sub-brand: var(#9D47FF);
+    --text-3: var(#A3A3A3);
+
+    .Toastify__close-button--light {
+        color: var(--secGray-900);
+        opacity: 1;
+    }
+
+    .Toastify__toast-icon{
+        width: 2rem;
+        height: 2rem;
+    }
+}
+
+
+@layer components {
+    .bg-gradient {
+      /* @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF]; */
+      @apply bg-[linear-gradient(to_right,#D99DFD_0%,#8A2AF7_11.41%,#1783E7_70%,#00F0FF_100%)]
+    }
+    .bg-light-gradient {
+      @apply bg-gradient-to-r from-[#FFFFFFED] to-[#5EE8FF];
+    }
+    .text-gradient{
+      @apply bg-gradient bg-clip-text	text-[transparent] w-fit;
+    }
+    .text-light-gradient{
+      @apply bg-light-gradient bg-clip-text	text-[transparent] w-fit;
+    }
+    .border-gradient{
+      /* background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%); */
+      /* @apply bg-gradient bg-clip-padding bg-origin-padding overflow-hidden border border-[transparent]; */
+      overflow: hidden;
+      border: 1px solid transparent;
+      background-clip: padding-box, border-box;
+      background-origin: padding-box, border-box;
+      background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
+    }
+
+    .bg-sub-gradient{
+      @apply bg-gradient-to-r from-[#10141a] to-[#10141a]; 
+    }
+  }

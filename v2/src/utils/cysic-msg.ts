@@ -1,0 +1,134 @@
+import { Coin } from "@cosmjs/proto-signing";
+import { Writer, Reader } from "protobufjs/minimal";
+
+export interface IMsgExchangeToGovToken {
+    sender: string;
+    amount: string;
+}
+
+export const MsgExchangeToGovToken = {
+    typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToGovToken",
+    encode(message: any, writer: Writer = Writer.create()): Writer {
+        writer.uint32(10).string(message.sender);
+        writer.uint32(18).string(message.amount);
+        return writer;
+    },
+    decode(input: Uint8Array | Reader, length?: number) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { sender: "", amount: "" } as IMsgExchangeToGovToken;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.sender = reader.string();
+                    break;
+                case 2:
+                    message.amount = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromPartial(object: any) {
+        const message = { sender: "", amount: "" };
+        message.sender = object.sender ?? "";
+        message.amount = object.amount ?? "";
+        return message;
+    },
+};
+
+export interface IMsgExchangeToPlatformToken {
+    sender: string;
+    amount: string;
+}
+
+export const MsgExchangeToPlatformToken = {
+    typeUrl: "/cysicmint.govtoken.v1.MsgExchangeToPlatformToken",
+    encode(message: any, writer: Writer = Writer.create()): Writer {
+        writer.uint32(10).string(message.sender);
+        writer.uint32(18).string(message.amount);
+        return writer;
+    },
+    decode(input: Uint8Array | Reader, length?: number): IMsgExchangeToPlatformToken {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { sender: "", amount: "" } as IMsgExchangeToPlatformToken;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.sender = reader.string();
+                    break;
+                case 2:
+                    message.amount = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromPartial(object: IMsgExchangeToPlatformToken): IMsgExchangeToPlatformToken {
+        const message = { sender: "", amount: "" } as IMsgExchangeToPlatformToken;
+        message.sender = object.sender ?? "";
+        message.amount = object.amount ?? "";
+        return message;
+    },
+};
+
+export interface IMsgDelegate {
+    worker: string;
+    validator: string;
+    token: string;
+    amount: string;
+}
+
+export const MsgDelegate = {
+    typeUrl: "/cysicmint.delegate.v1.MsgDelegate",
+    encode(message: IMsgDelegate, writer: Writer = Writer.create()): Writer {
+        writer.uint32(10).string(message.worker);
+        writer.uint32(18).string(message.validator);
+        writer.uint32(26).string(message.token);
+        writer.uint32(34).string(message.amount);
+        return writer;
+    },
+    decode(input: Uint8Array | Reader, length?: number): IMsgDelegate {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { worker: "", validator: "", token: "", amount: "" } as IMsgDelegate;
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.worker = reader.string();
+                    break;
+                case 2:
+                    message.validator = reader.string();
+                    break;
+                case 3:
+                    message.token = reader.string();
+                    break;
+                case 4:
+                    message.amount = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromPartial(object: IMsgDelegate): IMsgDelegate {
+        const message = { worker: "", validator: "", token: "", amount: "" } as IMsgDelegate;
+        message.worker = object.worker ?? "";
+        message.validator = object.validator ?? "";
+        message.token = object.token ?? "";
+        message.amount = object.amount ?? "";
+        return message;
+    },
+};

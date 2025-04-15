@@ -42,7 +42,7 @@ const Phase2DescModal = () => {
     >
       <div className="flex flex-col">
         <div className="border-b border-[#2B2B2B] flex flex-col gap-2">
-          <div className="Gemsbuck pt-4 px-6 text-gradient text-[40px] font-[400]">
+          <div className="  pt-4 px-6 text-gradient text-[40px] font-[400]">
             Cysic Phase II
           </div>
           <div className="pb-4 px-6 text-[#737373] text-lg font-[500]">

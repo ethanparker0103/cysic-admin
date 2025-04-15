@@ -1,8 +1,9 @@
-@import url(./font.css);
 @import url(./bootstrap.css);
 * {
     margin: 0;
-    font-family: 'Montserrat';
+    font-family: 'Teachers';
+    box-sizing: border-box;
+    line-height: 1;
 }
 /* fix 浏览器默认样式 */
 a,
@@ -18,17 +19,7 @@ img {
     display: block;
     outline: none;
 }
-/* 全局样式 */
-* {
-    box-sizing: border-box;
-    line-height: 1;
-}
 
-/* 隐藏横向滚动条 */
-/* :root::-webkit-scrollbar {
-    height: 0;
-    background-color: transparent;
-} */
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -37,27 +28,8 @@ body {
     touch-action: manipulation;
 }
 
-/* w3m-button wui-connect-button > button{
-    background: linear-gradient(90deg, #395DF2 -2.05%, #2391F6 52.55%, #B072FF 100%)!important;
-} */
-
-:root{
-    /* --wui-border-radius-m: 12px!important;
-    --wui-border-radius-3xl: var(--wui-border-radius-m)!important;
-    --wui-gray-glass-002: rgba(0, 0, 0, 0.05)!important;
-
-    --w3m-font-family: 'Space Grotesk', sans-serif!important;
-    --wui-gray-glass-005: transparent !important;
-
-    --wui-color-accent-100: linear-gradient(90deg, #395DF2 -2.05%, #2391F6 52.55%, #B072FF 100%)!important;
-    --wui-gray-glass-015: #fff !important;
-    --local-color: #fff !important; */
-}
-
-.arco-upload-trigger, .arco-upload-trigger-picture-wrapper, .arco-upload-trigger-picture{
-    height: 100%;
-    width: 100%;
-    border-radius: 8px;
+#root{
+    background-color: #090A09;
 }
 
 .basic-bg-gradient{
@@ -126,3 +98,72 @@ body {
     background-repeat: no-repeat;
     background-size: 100vmax;
  }
+
+
+.title{
+    font-family: Unbounded;
+    font-style: normal;
+    font-weight: 200;
+    text-transform: uppercase;
+}
+
+.sub-title{
+    font-family: Teachers;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 8.88px;
+    text-transform: uppercase;
+}
+
+.desc{
+    color: rgba(255, 255, 255, 0.80);
+    font-family: Teachers;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.code{
+    color: rgba(255, 255, 255, 0.80);
+    font-family: "Fira Code";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+/* 为下拉菜单项添加亮度更高的渐变 */
+.hover-bright-gradient[data-hover="true"] {
+    background: linear-gradient(90deg, 
+      rgba(23, 209, 178, 0.9) 0%, 
+      rgba(76, 31, 153, 0.9) 100%
+    );
+    /* 提高亮度的box-shadow */
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+    /* 确保文字清晰可见 */
+    color: white;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* 从上到下的透明到纯白渐变边框 */
+  .vertical-gradient-border {
+    position: relative;
+    z-index: 0;
+  }
+  
+  .vertical-gradient-border:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+  }

@@ -40,7 +40,7 @@ const NotifyModal = () => {
         <div className="py-10 px-10 flex flex-col gap-10">
           <div className="flex flex-col gap-6 flex-1">
             <div className="flex flex-col items-start gap-2">
-              <div className="Gemsbuck text-gradient text-[30px] font-[400]">
+              <div className="  text-gradient text-[30px] font-[400]">
                 System Upgrade Announcement
               </div>
               <div className="font-bold text-sm">Scheduled Downtime: January 1, 2025, 10:00 AM - January 2, 2025, 6:00 AM (SGT) </div>
