@@ -24,7 +24,7 @@ const Modal = ({
     classNames,
     hideCloseButton,
     title,
-    maxHeight = "80vh",
+    maxHeight = "90vh",
     ...props
 }: ModalProps) => {
     // 计算内容区域的最大高度（减去标题栏的64px高度）
