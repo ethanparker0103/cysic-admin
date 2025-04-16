@@ -53,7 +53,7 @@ export const isProd = import.meta.env.VITE_APP_ENV == 'prod'
 
 export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev
 
-export const mainUrl = import.meta.env.VITE_APP_BASE_URL
+export const mainUrl = 'http://localhost:3001' || import.meta.env.VITE_APP_BASE_URL
 // isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
 

@@ -4,12 +4,12 @@ import Modal from "@/components/Modal";
 import { ArrowRight, Upload } from "lucide-react";
 import DigitInputs from "@/components/DigitInputs";
 import Button from "@/components/Button";
-
 import Copy from "@/components/Copy";
 import { shortStr } from "@/utils/tools";
 import useUser from "@/models/user";
 import { useAppKit } from "@reown/appkit/react";
 import useAccount from "@/hooks/useAccount";
+import axios from "@/service";
 
 // 流程状态枚举
 enum SignInStep {
@@ -19,8 +19,8 @@ enum SignInStep {
 }
 
 const SignInModal = () => {
-    const { walletAddress, status, isConnectedOnly } = useAccount();
-    const { open } = useAppKit()
+    const { walletAddress, isConnectedOnly } = useAccount();
+    const { open } = useAppKit();
 
     // 获取模态框状态，包括可能传入的步骤信息
     const { visible, setVisible, data } = useModalState({
@@ -33,14 +33,18 @@ const SignInModal = () => {
         fetchUserInfo,
         registerUser,
         inviteCode: savedInviteCode,
-        userInfo,
         isRegistered,
-        isProfileCompleted
+        registrationComplete,
+        name: savedName,
+        avatarUrl: savedAvatarUrl
     } = useUser();
 
     // 控制当前步骤
     const [step, setStep] = useState<SignInStep>(SignInStep.INVITE_CODE);
-
+    
+    // 错误状态
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // 邀请码状态
     const [inviteCode, setInviteCode] = useState("");
@@ -52,16 +56,23 @@ const SignInModal = () => {
         agreeTerms: false
     });
 
-    // 在useEffect中检查是否有指定的步骤
+    // 在useEffect中检查是否有指定的步骤，并预填表单
     useEffect(() => {
-        if (visible && data?.step === 'profile' && walletAddress && isRegistered && !isProfileCompleted) {
-            // 如果指定了'profile'步骤且用户状态允许，直接跳到第二步
-            setStep(SignInStep.USER_INFO);
+        if (visible) {
+            if (data?.step === 'profile' && walletAddress && isRegistered && !registrationComplete) {
+                // 如果指定了'profile'步骤且用户状态允许，直接跳到第二步
+                setStep(SignInStep.USER_INFO);
+            }
+            
+            // 预填表单数据
+            if (savedName) {
+                setFormData(prev => ({...prev, name: savedName}));
+            }
         }
-    }, [visible, data, walletAddress, isRegistered, isProfileCompleted]);
+    }, [visible, data, walletAddress, isRegistered, registrationComplete, savedName]);
 
     // 当已连接钱包且输入了完整邀请码时，自动尝试绑定
-    useEffect(() => {
+  useEffect(() => {
         if (visible && walletAddress && inviteCode.length === 5 && step === SignInStep.INVITE_CODE) {
             bindWalletWithCode();
         }
@@ -70,15 +81,28 @@ const SignInModal = () => {
     // 处理邀请码改变
     const handleCodeChange = (code: string) => {
         setInviteCode(code);
+        setError(null);
     };
 
-    // 验证邀请码并连接钱包
+    // 连接钱包
     const handleConnectWallet = async () => {
-        open()
+        setError(null);
+        setLoading(true);
+        try {
+            open();
+        } catch (error) {
+            console.error("Error opening wallet:", error);
+            setError("Failed to open wallet connector");
+        } finally {
+            setLoading(false);
+        }
     };
 
+    // 验证邀请码
     const bindWalletWithCode = async () => {
         if (inviteCode.length !== 5) return;
+        setLoading(true);
+        setError(null);
 
         try {
             // 确保钱包地址可用
@@ -98,59 +122,115 @@ const SignInModal = () => {
                 } else {
                     setStep(SignInStep.USER_INFO);
                 }
+            } else {
+                setError("Invalid invite code or binding failed");
             }
         } catch (error) {
             console.error("Error connecting wallet or verifying:", error);
+            setError("Error while connecting wallet or verifying code");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     // 处理社交账号登录
     const handleSocialLogin = (provider: string) => {
-        console.log(`Login with ${provider}`);
+        setLoading(true);
+        setError(null);
+        
+        try {
+            // 这里应该接入社交登录API
+            console.log(`Login with ${provider}`);
+            
+            // TODO: 接入实际的社交登录API
+            // const response = await axios.post(`/api/v1/social/bind/${provider.toLowerCase()}`);
+            // if (response.data.code === 10000) {
+            //     // 登录成功，获取用户信息
+            //     if (walletAddress) {
+            //         await fetchUserInfo(walletAddress);
+            //     }
+            //     setStep(SignInStep.COMPLETED);
+            // }
+            
+            setError(`${provider} login not yet implemented`);
+        } catch (error) {
+            console.error(`Error logging in with ${provider}:`, error);
+            setError(`${provider} login failed`);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // 模拟Logo上传
+    // 上传头像图片到服务器
     const uploadLogo = async (file: File): Promise<string> => {
-        // 返回一个假的URL作为示例
-        return URL.createObjectURL(file);
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        try {
+            const response = await axios.post('/api/v1/upload', formData);
+            if (response?.data?.code === 10000) {
+                return response.data.data; // 服务器返回的图片URL
+            }
+            throw new Error('Upload failed');
+        } catch (error) {
+            console.error('Failed to upload avatar', error);
+            throw error;
+        }
     };
 
     // 处理表单提交
     const handleSubmit = async () => {
-        if (!formData.name || !formData.agreeTerms) return;
+        if (!formData.name || !formData.agreeTerms) {
+            setError("Please enter your name and agree to the terms");
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
 
         try {
             // 准备要上传的数据
-            const logoUrl = formData.logo ? await uploadLogo(formData.logo) : undefined;
+            let avatarUrl;
+            if (formData.logo) {
+                avatarUrl = await uploadLogo(formData.logo);
+            }
 
             // 注册/更新用户信息
-            const userData = {
-                name: formData.name,
-                logo: logoUrl,
-                address: walletAddress,
-                inviteCode: savedInviteCode || inviteCode
-            };
+            if (walletAddress) {
+                const userData = {
+                    name: formData.name,
+                    avatarUrl: avatarUrl,
+                    address: walletAddress,
+                    inviteCode: savedInviteCode || inviteCode,
+                    registrationComplete: true
+                };
 
-            await registerUser(userData);
-            setStep(SignInStep.COMPLETED);
+                const success = await registerUser(userData);
+                if (success) {
+                    setStep(SignInStep.COMPLETED);
 
-            // 自动关闭
-            setTimeout(() => {
-                setVisible(false);
-                resetState();
-            }, 2000);
+                    // 自动关闭
+                    setTimeout(() => {
+                        setVisible(false);
+                        resetState();
+                    }, 2000);
+                } else {
+                    setError("Failed to update profile. Please try again.");
+                }
+      } else {
+                setError("Wallet connection required");
+            }
         } catch (error) {
             console.error("Error updating profile:", error);
+            setError("Error updating profile. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
     // 处理跳过
     const handleSkip = async () => {
-        try {
-            setVisible(false);
-        } catch (error) {
-            console.error("Error skipping profile setup:", error);
-        }
+        setVisible(false);
     };
 
     // 处理图片上传
@@ -159,7 +239,6 @@ const SignInModal = () => {
         if(file){
             setFormData({ ...formData, logo: file });
         }
-        
     };
 
     // 关闭模态框并重置状态
@@ -177,16 +256,34 @@ const SignInModal = () => {
             name: "",
             agreeTerms: false
         });
+        setError(null);
+        setLoading(false);
     };
 
-    return (
-        <Modal
+    // 验证邀请码按钮处理
+    const handleVerifyInviteCode = () => {
+        if (inviteCode.length === 5) {
+            bindWalletWithCode();
+        } else {
+            setError("Please enter a complete 5-digit invite code");
+        }
+    };
+
+  return (
+    <Modal
             isDismissable={false}
-            isOpen={visible}
+      isOpen={visible}
             onClose={handleClose}
             title="SIGN IN"
             className="max-w-[600px]"
         >
+            {/* 错误提示 */}
+            {error && (
+                <div className="bg-red-900/20 border border-red-500 px-4 py-2 rounded mb-4 text-red-300">
+                    {error}
+              </div>
+            )}
+        
             {step === SignInStep.INVITE_CODE && (
                 // 第一步: 输入邀请码
                 <div className="flex flex-col items-center space-y-6">
@@ -231,6 +328,8 @@ const SignInModal = () => {
                                     type="solid"
                                     className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
                                     onClick={() => handleSocialLogin('Google')}
+                                    needLoading
+                                    loading={loading}
                                 >
                                     GOOGLE ACCOUNT
                                 </Button>
@@ -239,29 +338,45 @@ const SignInModal = () => {
                                     type="solid"
                                     className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
                                     onClick={() => handleSocialLogin('X')}
+                                    needLoading
+                                    loading={loading}
                                 >
                                     X ACCOUNT
                                 </Button>
                             </>
                         )}
 
-                        <Button
-                            type="light"
-                            className="font-[400] w-full h-16 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
-                            onClick={isConnectedOnly ? bindWalletWithCode : handleConnectWallet}
-                            needLoading
-                            disabled={!inviteCode || inviteCode.length < 5}
-                        >
-                            {isConnectedOnly ? "VERIFY INVITE CODE" : "CONNECT WALLET"}
-                        </Button>
-                    </div>
+                        {/* 连接钱包或验证邀请码按钮 */}
+                        {isConnectedOnly ? (
+                            <Button
+                                type="light"
+                                className="font-[400] w-full h-16 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+                                onClick={handleVerifyInviteCode}
+                                needLoading
+                                loading={loading}
+                                disabled={inviteCode.length < 5}
+                            >
+                                VERIFY INVITE CODE
+                            </Button>
+                        ) : (
+                            <Button
+                                type="light"
+                                className="font-[400] w-full h-16 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
+                                onClick={handleConnectWallet}
+                                needLoading
+                                loading={loading}
+                            >
+                                CONNECT WALLET
+                            </Button>
+                        )}
+            </div>
 
                     {/* 关于Cysic链接 */}
                     <div className="flex items-center text-sub mt-4 cursor-pointer hover:text-white transition-colors">
                         Read about Cysic
                         <ArrowRight size={16} className="ml-2" />
-                    </div>
-                </div>
+              </div>
+              </div>
             )}
 
             {step === SignInStep.USER_INFO && (
@@ -283,7 +398,18 @@ const SignInModal = () => {
                                     {/* 添加悬停时显示的"EDIT"层 */}
                                     <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 group-hover:backdrop-brightness-50 group-hover:opacity-100 transition-opacity duration-200 rounded">
                                         <span className="text-white font-medium">EDIT</span>
-                                    </div>
+              </div>
+                                </>
+                            ) : savedAvatarUrl ? (
+                                <>
+                                    <img
+                                        src={savedAvatarUrl}
+                                        alt="Saved logo"
+                                        className="w-full h-full object-cover rounded"
+                                    />
+                                    <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center opacity-0 group-hover:backdrop-brightness-50 group-hover:opacity-100 transition-opacity duration-200 rounded">
+                                        <span className="text-white font-medium">EDIT</span>
+            </div>
                                 </>
                             ) : (
                                 <Upload size={24} className="text-white" />
@@ -294,8 +420,8 @@ const SignInModal = () => {
                                 onChange={handleLogoUpload}
                                 className="absolute inset-0 opacity-0 cursor-pointer"
                             />
-                        </div>
-                    </div>
+          </div>
+        </div>
 
                     {/* 名称输入 */}
                     <div className="space-y-2">
@@ -333,6 +459,7 @@ const SignInModal = () => {
                             className="w-full h-14 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
                             onClick={handleSubmit}
                             needLoading
+                            loading={loading}
                             disabled={!formData.name || !formData.agreeTerms}
                         >
                             SUBMIT
@@ -343,6 +470,7 @@ const SignInModal = () => {
                             className="w-full h-14 bg-transparent border border-gray-600 text-white rounded hover:bg-gray-800 transition-colors"
                             onClick={handleSkip}
                             needLoading
+                            loading={loading}
                         >
                             SKIP FOR NOW
                         </Button>
@@ -359,7 +487,7 @@ const SignInModal = () => {
                 </div>
             )}
 
-            {step === SignInStep.COMPLETED && (
+            {/* {step === SignInStep.COMPLETED && (
                 // 完成状态
                 <div className="flex flex-col items-center justify-center py-10 space-y-6">
                     <div className="w-20 h-20 rounded-full bg-green-500 flex items-center justify-center">
@@ -378,10 +506,10 @@ const SignInModal = () => {
                     >
                         CONTINUE
                     </Button>
-                </div>
-            )}
-        </Modal>
-    );
+      </div>
+            )} */}
+    </Modal>
+  );
 };
 
 export default SignInModal;

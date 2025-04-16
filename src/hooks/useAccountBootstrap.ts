@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import useAccount from '@/hooks/useAccount';
 import useUser from '@/models/user';
+import useStatic from '@/models/_global';
 
 /**
  * 顶层账户权限查询Hook
@@ -9,6 +10,12 @@ import useUser from '@/models/user';
 const useAccountBootstrap = () => {
   const { walletAddress } = useAccount();
   const { fetchUserInfo } = useUser();
+
+  useEffect(() => {
+    if(walletAddress) {
+      useStatic.getState().setAddress(walletAddress);
+    }
+  }, [walletAddress])
   
   // 钱包地址变化时自动检查权限状态
   useEffect(() => {

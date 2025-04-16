@@ -4,37 +4,105 @@ import { Search, History } from "lucide-react";
 import { useState } from "react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
+import axios from "@/service";
+import { useRequest } from "ahooks";
 
-const validators = [
-  {
-    id: "tierSync",
-    abbr: "TS",
-    name: "TierSync",
-    color: "bg-blue-500",
-    votingPower: "2345.93",
-    votingPercentage: "9.87",
-    commissionRate: "10.31",
-  },
-  {
-    id: "pxerSync",
-    abbr: "PX",
-    name: "PXerSync",
-    color: "bg-purple-500",
-    votingPower: "2345.93",
-    votingPercentage: "9.87",
-    commissionRate: "10.31",
-  },
-];
+interface Validator {
+  id: string;
+  abbr: string;
+  name: string;
+  color: string;
+  votingPower: string;
+  votingPercentage: string;
+  commissionRate: string;
+}
 
-const hasStaked = true;
+interface ValidatorResponse {
+  validatorName: string;
+  stake?: {
+    amount: string;
+    symbol: string;
+  };
+  votingPower: {
+    amount: string;
+    symbol: string;
+  };
+  votingPowerPercent: string;
+  commissionRate: string;
+  apr?: string;
+}
+
 const StakePage = () => {
-  const [stakeAmount, setStakeAmount] = useState(hasStaked ? "1,234.56" : "0");
-  const [unstakeAmount, setUnstakeAmount] = useState(hasStaked ? "100.45" : "0");
-  const [apr, setApr] = useState(hasStaked ? "30.99" : "12.34");
-  const [rewardsAmount, setRewardsAmount] = useState(hasStaked ? "9.00" : "0");
-  
+  const [stakeAmount, setStakeAmount] = useState("0");
+  const [unstakeAmount, setUnstakeAmount] = useState("0");
+  const [apr, setApr] = useState("0");
+  const [rewardsAmount, setRewardsAmount] = useState("0");
+
+  // 获取质押验证者列表
+  const { data: stakeListData, loading: stakeLoading } = useRequest(
+    () => axios.get('/api/v1/stake/list'),
+    {
+      onSuccess: (res) => {
+        if (res?.data?.validatorList && res.data.validatorList.length > 0) {
+          // 计算总质押金额和平均APR
+          let totalStake = 0;
+          let totalApr = 0;
+
+          res.data.validatorList.forEach((validator: ValidatorResponse) => {
+            if (validator.stake) {
+              totalStake += parseFloat(validator.stake.amount);
+            }
+            if (validator.apr) {
+              totalApr += parseFloat(validator.apr.replace('%', ''));
+            }
+          });
+
+          // 设置状态
+          setStakeAmount(totalStake.toLocaleString('en-US', { maximumFractionDigits: 2 }));
+          setApr((totalApr / res.data.validatorList.length).toFixed(2));
+        }
+      }
+    }
+  );
+
+  // 转换API数据为表格数据
+  const transformValidators = (validatorList: ValidatorResponse[] = []): Validator[] => {
+    return validatorList.map((v, index) => ({
+      id: `validator-${index}`,
+      abbr: v.validatorName.substring(0, 2).toUpperCase(),
+      name: v.validatorName,
+      color: index % 2 === 0 ? "bg-blue-500" : "bg-purple-500",
+      votingPower: v.votingPower.amount,
+      votingPercentage: v.votingPowerPercent.replace('%', ''),
+      commissionRate: v.commissionRate.replace('%', '')
+    }));
+  };
+
+  // 获取验证者数据
+  const myValidators = stakeListData?.data?.validatorList
+    ? transformValidators(stakeListData.data.validatorList)
+    : [];
+
+  // 获取活跃验证者列表
+  const { data: activeListData, loading: activeLoading } = useRequest(
+    () => axios.get('/api/v1/validator/activeList'),
+    {
+      onSuccess: (res) => {
+        console.log('活跃验证者数据:', res?.data);
+      }
+    }
+  );
+
+  // 获取活跃验证者数据
+  const activeValidators = activeListData?.data?.validatorList
+    ? transformValidators(activeListData.data.validatorList)
+    : [];
+
+  // 判断用户是否已质押
+  const hasStaked = myValidators.length > 0 && parseFloat(stakeAmount.replace(/,/g, '')) > 0;
+
   // 定义验证者表格列
-  const myValidatorsColumns: CysicTableColumn<typeof validators[0]>[] = [
+  const myValidatorsColumns: CysicTableColumn<Validator>[] = [
     {
       key: "validator",
       label: "Validator",
@@ -65,12 +133,12 @@ const StakePage = () => {
     {
       key: "commissionRate",
       label: "Commission Rate",
-      renderCell: () => "10%"
+      renderCell: (validator) => `${validator.commissionRate}%`
     },
     {
       key: "expectedAPR",
       label: "Expected APR",
-      renderCell: (validator) => <span className="text-sub">{validator.commissionRate}%</span>
+      renderCell: () => <span className="text-sub">{apr}%</span>
     },
     {
       key: "action",
@@ -97,7 +165,7 @@ const StakePage = () => {
   ];
 
   // 活跃验证者表格列
-  const activeValidatorsColumns: CysicTableColumn<typeof validators[0]>[] = [
+  const activeValidatorsColumns: CysicTableColumn<Validator>[] = [
     {
       key: "validator",
       label: "Validator",
@@ -147,11 +215,11 @@ const StakePage = () => {
         <img
           src={getImageUrl('@/assets/images/_global/stake_landing_bg.png')}
           alt="Background"
-          className="absolute top-1/2 left-1/2 w-full h-full object-cover"
+          className="h-screen absolute top-0 left-1/2 w-full object-cover"
           style={{
             filter: 'grayscale(0%)',
-            transform: 'translate(-50%, -50%) scale(1)',
-            transformOrigin: 'center 0%',
+            transform: 'translate(-50%, 0%) scale(1)',
+            transformOrigin: 'center ',
             objectPosition: '50% 50%'
           }}
         />
@@ -233,11 +301,15 @@ const StakePage = () => {
                 </div>
               </div>
 
-              <CysicTable 
-                data={validators} 
-                columns={myValidatorsColumns}
-                keyExtractor={(validator) => validator.id}
-              />
+              {stakeLoading ? (
+                <div className="text-center py-6">加载验证者数据中...</div>
+              ) : (
+                <CysicTable
+                  data={myValidators}
+                  columns={myValidatorsColumns}
+                  keyExtractor={(validator) => validator.id}
+                />
+              )}
             </div>
           </GradientBorderCard>
         ) : (
@@ -248,17 +320,17 @@ const StakePage = () => {
             <div className="w-full py-4 px-6">
               <h2 className="title text-xl !font-[300] uppercase mb-2">YOUR VALIDATORS</h2>
               <div className="flex gap-2 items-start mb-3 ">
-                <span className="text-yellow-400 text-lg">✨</span>
-                <h3 className="text-xl !font-[400]">Wanna grow your assets? Start staking!</h3>
+                <div className="w-full">
+                  <p className="text-sub text-base mb-4">
+                    Your currently don't stake to any validators. Start staking now to select from the list of active validators below.
+                  </p>
+                </div>
               </div>
-              <p className="text-gray-300 text-sm !font-[400]">
-                In Proof-of-Stake networks, staking your assets with validators is essential to earn voting power and securing the network. To start staking, first deposit or buy CYS to your address and click on Stake.
-              </p>
             </div>
           </GradientBorderCard>
         )}
 
-        {/* 活跃验证者表格 */}
+        {/* 活跃验证者列表 */}
         <GradientBorderCard
           className="mt-6"
           borderRadius={8}
@@ -266,21 +338,25 @@ const StakePage = () => {
           <div className="w-full py-4 px-6">
             <div className="flex justify-between items-center mb-4">
               <h2 className="title text-xl uppercase !font-[300]">ACTIVE VALIDATORS</h2>
-              <div className="relative">
+              <div className="relative w-[20rem] flex items-center">
                 <input
                   type="text"
-                  placeholder="SEARCH VALIDATOR"
-                  className="bg-black/50 border border-white/20 rounded-lg pl-4 pr-10 py-2 text-sm w-64 focus:outline-none focus:border-white/40"
+                  className="w-full pl-12 pr-4 py-2 bg-[#FFFFFF0D] text-white border border-[#FFFFFF33] rounded-lg focus:outline-none focus:border-white"
+                  placeholder="Search"
                 />
-                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/60" size={16} />
+                <Search className="absolute left-4 text-[#FFFFFF99]" size={16} />
               </div>
             </div>
 
-            <CysicTable 
-              data={validators} 
-              columns={activeValidatorsColumns}
-              keyExtractor={(validator) => validator.id}
-            />
+            {activeLoading ? (
+              <div className="text-center py-6">加载活跃验证者数据中...</div>
+            ) : (
+              <CysicTable
+                data={activeValidators}
+                columns={activeValidatorsColumns}
+                keyExtractor={(validator) => validator.id}
+              />
+            )}
           </div>
         </GradientBorderCard>
       </div>

@@ -107,7 +107,7 @@ const ConnectInfo = () => {
                         <div onClick={handleCosmosDisconnect} className="">disconnect</div>
                     </DropdownItem>
 
-                    {isProfileCompleted && registeredInviteCode ? (
+                    {registeredInviteCode ? (
                         <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
                             <span className="">Referral Code</span>
                             <Copy value={registeredInviteCode}>

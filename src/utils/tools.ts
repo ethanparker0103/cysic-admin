@@ -614,14 +614,10 @@ export const formatReward = (num: string, x: number) => {
   return `0.0${exponentStr}${significantPart.slice(0, x)}`;
 };
 
-
-
-// 更新函数以接受步骤参数
-export const handleSignIn = () => {
-
+export const handleSignIn = (targetStep?: string) => {
     const userStore = useUser.getState();
-    let targetStep = '';
     
+    // 如果未指定步骤，则根据用户状态自动决定
     if (!targetStep) {
         // 如果已注册但未完成个人资料
         if (userStore.isRegistered && !userStore.registrationComplete) {

@@ -1,14 +1,15 @@
 import Button from "@/components/Button";
 import { getImageUrl, handleSignIn, shortStr } from "@/utils/tools";
-import { ArrowRight, CircleHelp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Copy from "@/components/Copy";
 import useUser from "@/models/user";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import { History } from 'lucide-react';
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import Tooltip from "@/components/Tooltip";
-
+import axios from "@/service";
+import { useRequest } from "ahooks";
 
 // 邀请等级数据
 const inviteTiers = [
@@ -24,29 +25,39 @@ const InvitePage = () => {
     const [memberData, setMemberData] = useState([]);
     const [leaderData, setLeaderData] = useState(null);
     const [rewards, setRewards] = useState({
-        cys: "123.45",
-        CGT: "900.90"
+        cys: "0",
+        CGT: "0"
     });
 
-    // 在实际应用中，这里会从API获取数据
-    useEffect(() => {
-        // 模拟获取团队成员数据
-        setMemberData([
-            { id: 1, address: "0x123...1234S", status: "Activated", referral: { CGT: "100.12", cys: "200.46" }, time: "2024-06-26 16:12:44" },
-            { id: 2, address: "0x22A5...CDE2f", status: "Not Activated", referral: { CGT: "100.12", cys: "200.46" }, time: "2024-06-26 16:12:44" },
-            { id: 3, address: "0x123...1234S", status: "Activated", referral: { CGT: "100.12", cys: "200.46" }, time: "2024-06-26 16:12:44" },
-            { id: 4, address: "0x123...1234S", status: "Activated", referral: { CGT: "100.12", cys: "200.46" }, time: "2024-06-26 16:12:44" },
-            { id: 5, address: "0x123...1234S", status: "Activated", referral: { CGT: "100.12", cys: "200.46" }, time: "2024-06-26 16:12:44" },
-        ]);
+    // 获取邀请概览信息
+    const { data: overviewData } = useRequest(
+        () => axios.get('/api/v1/referral/overview'),
+        {
+            onSuccess: (res) => {
+                if (res?.data) {
+                    // 设置邀请奖励数据
+                    const cysReward = res.data.referralEaringList.find((item: {symbol: string}) => item.symbol === "CYS")?.amount || "0";
+                    setRewards({
+                        cys: cysReward,
+                        CGT: res.data.upgradeEaring.amount
+                    });
+                }
+            }
+        }
+    );
 
-        // 模拟获取团队领导数据
-        setLeaderData({
-            id: 1,
-            address: "0x123...1234S",
-            status: "Activated",
-            time: "2024-06-26 16:12:44"
-        });
-    }, []);
+    // 获取团队列表
+    const { loading: teamLoading } = useRequest(
+        () => axios.get('/api/v1/referral/teamList'),
+        {
+            onSuccess: (res) => {
+                if (res?.data) {
+                    setLeaderData(res.data.leaderInfo);
+                    setMemberData(res.data.teamList);
+                }
+            }
+        }
+    );
 
     // 团队领导表格列定义
     const leaderColumns: CysicTableColumn<any>[] = [
@@ -67,8 +78,8 @@ const InvitePage = () => {
             width: "33%",
             renderCell: (leader) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${leader.status === "Activated" ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
-                    <span>{leader.status}</span>
+                    <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <span>{leader.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )
         },
@@ -77,7 +88,7 @@ const InvitePage = () => {
             label: "Time",
             width: "33%",
             renderCell: (leader) => (
-                <div className="">{leader.time}</div>
+                <div className="">{leader.joinAt}</div>
             )
         }
     ];
@@ -101,8 +112,8 @@ const InvitePage = () => {
             width: "15%",
             renderCell: (member) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${member.status === "Activated" ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
-                    <span>{member.status}</span>
+                    <div className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )
         },
@@ -112,7 +123,12 @@ const InvitePage = () => {
             width: "35%",
             renderCell: (member) => (
                 <div className="text-left">
-                    <span className="text-sm">{member.referral.CGT} CGT | {member.referral.cys} CYS</span>
+                    {member.referralRewardList.map((reward: {amount: string, symbol: string}, index: number) => (
+                        <span key={index} className="text-sm">
+                            {index > 0 && " | "}
+                            {reward.amount} {reward.symbol}
+                        </span>
+                    ))}
                 </div>
             )
         },
@@ -121,20 +137,23 @@ const InvitePage = () => {
             label: "Time",
             width: "25%",
             renderCell: (member) => (
-                <div className="text-left">{member.time}</div>
+                <div className="text-left">{member.joinAt}</div>
             )
         }
     ];
 
     // 分享到Twitter
     const shareToTwitter = () => {
-        if (!registeredInviteCode) return;
-
-        const text = `Join me on Cysic using my invite code: ${registeredInviteCode}`;
-        const url = `https://cysic.io/invite?code=${registeredInviteCode}`;
+        if (!overviewData?.data?.inviteCode && !registeredInviteCode) return;
+        
+        const inviteCode = overviewData?.data?.inviteCode || registeredInviteCode;
+        const text = `Join me on Cysic using my invite code: ${inviteCode}`;
+        const url = `https://cysic.io/invite?code=${inviteCode}`;
 
         window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
     };
+
+    const inviteCode = overviewData?.data?.inviteCode || registeredInviteCode || "-----";
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -205,8 +224,8 @@ const InvitePage = () => {
                                 <h2 className="title text-xl uppercase !font-[300]">YOUR<br />REFERRAL<br />CODE</h2>
                                 {/* 推荐码显示 */}
                                 <div className="flex items-center self-start">
-                                    <span className="title text-2xl !font-[400]">WZX2L3</span>
-                                    <Copy value={"WZX2L3"}>
+                                    <span className="title text-2xl !font-[400]">{inviteCode}</span>
+                                    <Copy value={inviteCode}>
                                     </Copy>
                                 </div>
                             </div>
@@ -248,114 +267,57 @@ const InvitePage = () => {
                                     type="solid"
                                     className="text-base !font-[400] !p-6"
                                 >
-                                    <span>CLICK HERE TO CHECK YOUR MULTIPLIER</span>
-                                    <ArrowRight size={16} className="ml-2 inline" />
+                                    <div className="flex items-center gap-2">
+                                        CLICK HERE TO CHECK YOUR MULTIPLIER
+                                    </div>
                                 </Button>
                             </div>
-
                         </div>
 
-
-                        {/* 等级显示 */}
-                        <div className="grid grid-cols-5 gap-[10.25rem]">
-                            {inviteTiers.map((tier, index) => {
-                                return (
-                                    <div key={index} className="relative">
-                                        <GradientBorderCard
-                                            key={index}
-                                            borderRadius={8}
-                                            borderWidth={1}
-                                            className="h-full"
-                                        >
-                                            <div className="w-full p-4 flex flex-col items-center">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="text-base !font-[300] title uppercase font-light tracking-wider">{tier.name}</h3>
-                                                    <Tooltip
-                                                        classNames={{
-                                                            content: '!p-0',
-                                                        }}
-                                                        content={<>
-                                                            <GradientBorderCard innerClassName="p-4 flex flex-col gap-1">
-                                                                <>
-                                                                <div className="w-full flex items-center justify-between text-sm">
-                                                                    <div className="!text-sub w-20">Reward</div>
-                                                                    <div>+10,000 CGT</div>
-                                                                </div>
-                                                                <div className="w-full flex items-center justify-between text-sm">
-                                                                    <div className="!text-sub w-20">Pool Fee</div>
-                                                                    <div>0.8%</div>
-                                                                </div>
-                                                                </>
-                                                            </GradientBorderCard>
-                                                        </>}
-                                                    >
-                                                        <div className="flex items-center"><CircleHelp width={12} height={12} /></div>
-                                                    </Tooltip>
-                                                </div>
-
-                                                {/* 宝石图标 */}
-                                                <div className="relative h-24 w-full flex items-center justify-center">
-                                                    <img src={tier.icon} alt={tier.name} className="h-full object-contain" />
-                                                </div>
-
-                                                {/* 用户数量指示器 */}
-                                                <div className="mt-4 flex items-center flex-col gap-1">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        <path d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <span className="text-base title !font-[300]">{tier.count}</span>
-                                                </div>
-                                            </div>
-                                        </GradientBorderCard>
-
-                                        {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
-                                        {index < 4 && (
-                                            <div className="absolute left-full top-1/2 w-[6.75rem] h-px bg-white translate-x-[calc(calc(10.25rem-6.75rem)/2)] -translate-y-1/2 z-[1]"></div>
-                                        )}
+                        {/* 邀请等级 */}
+                        <div className="grid grid-cols-5 gap-4">
+                            {inviteTiers.map((tier, index) => (
+                                <div key={index} className="flex flex-col items-center">
+                                    <img src={tier.icon} alt={tier.name} className="w-16 h-16 mb-2" />
+                                    <div className="text-center">
+                                        <div className="text-sm">{tier.name}</div>
+                                        <div className={`text-center ${index === 0 ? "text-green" : "text-white"}`}>{tier.count}</div>
                                     </div>
-                                );
-                            })}
-                        </div>
-                    </div>
-                </GradientBorderCard>
-
-                {/* 团队领导部分 */}
-                <GradientBorderCard
-                    className="mt-8"
-                    borderRadius={8}
-                >
-                    <div className="w-full px-6 py-4">
-                        <div className="flex justify-between items-center">
-                            <h2 className="title text-xl uppercase !font-[300]">TEAM LEADER</h2>
-                            <div className="flex items-center gap-2">
-                                <History size={16} />
-                                <span className="text-sm text-sub">Daily update at 2PM UTC</span>
-                            </div>
+                                </div>
+                            ))}
                         </div>
 
                         {/* 团队领导表格 */}
                         {leaderData && (
-                            <CysicTable
-                                data={[leaderData]}
-                                columns={leaderColumns}
-                                className="mb-6"
-                            />
+                            <div className="mt-4">
+                                <h2 className="title !font-[300] text-base uppercase mb-4">TEAM LEADER</h2>
+                                <CysicTable
+                                    data={[leaderData]}
+                                    columns={leaderColumns}
+                                    keyExtractor={() => "leader"}
+                                />
+                            </div>
                         )}
 
-                        <div className="flex justify-between items-center mt-4">
-                            <h2 className="title text-xl uppercase !font-[300]">TEAM MEMBER</h2>
-                            <div className="flex items-center gap-2">
-                                <History size={16} />
-                                <span className="text-sm text-sub">Daily update at 2PM UTC</span>
+                        {/* 团队列表表格 */}
+                        {memberData.length > 0 && (
+                            <div className="mt-4">
+                                <h2 className="title !font-[300] text-base uppercase mb-4">TEAM MEMBERS</h2>
+                                <CysicTable
+                                    data={memberData}
+                                    columns={memberColumns}
+                                    keyExtractor={(member) => member.address}
+                                />
                             </div>
-                        </div>
+                        )}
 
-                        {/* 团队成员表格 */}
-                        <CysicTable
-                            data={memberData}
-                            columns={memberColumns}
-                        />
+                        {teamLoading && (
+                            <div className="text-center py-4">加载团队数据中...</div>
+                        )}
+
+                        {!teamLoading && memberData.length === 0 && (
+                            <div className="text-center py-4 text-gray-400">暂无团队成员</div>
+                        )}
                     </div>
                 </GradientBorderCard>
             </div>
