@@ -1,20 +1,21 @@
 import { mainUrl } from '@/config';
-import useAuthCheck from '@/hooks/useAuthCheck';
-import useAuth from '@/models/_global/auth';
 import axios from 'axios'
 import { toast } from 'react-toastify';
+import { setupMockInterceptor } from './mockInterceptor';
 
 
 axios.defaults.baseURL = mainUrl;
 
+setupMockInterceptor();
+
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
 
-    const addr = useAuth.getState().currentAddr
-    const authMap = useAuth.getState().authMap
+    // const addr = useAuth.getState().currentAddr
+    // const authMap = useAuth.getState().authMap
 
-    config.headers['X-Cysic-Address'] = authMap?.[addr]?.address
-    config.headers['X-Cysic-Sign'] = authMap?.[addr]?.auth
+    // config.headers['X-Cysic-Address'] = authMap?.[addr]?.address
+    // config.headers['X-Cysic-Sign'] = authMap?.[addr]?.auth
 
     return config;
 }, function (error) {
@@ -31,8 +32,8 @@ axios.interceptors.response.use(function (response) {
     
     if (response?.data?.code != 10000) {
         if (response?.data?.code == 10199) {
-            const auth: any = useAuth.getState()
-            auth.updateAddress(auth.currentAddr, { valid: false, auth: '' })
+            // const auth: any = useAuth.getState()
+            // auth.updateAddress(auth.currentAddr, { valid: false, auth: '' })
             // toast.error('Invalid Sig, Plz reSign')
         }
         throw {
