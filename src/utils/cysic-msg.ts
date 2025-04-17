@@ -1,4 +1,4 @@
-import { Coin } from "@cosmjs/proto-signing";
+
 import { Writer, Reader } from "protobufjs/minimal";
 
 export interface IMsgExchangeToGovToken {
@@ -132,3 +132,138 @@ export const MsgDelegate = {
         return message;
     },
 };
+
+
+
+function createMsg(
+    typeUrl: string,
+    fields: Record<string, any>,
+    options?: any
+) {
+    return {
+        typeUrl,
+        encode(message: any, writer: Writer = Writer.create()): Writer {
+            Object.keys(fields).forEach((key, index) => {
+                const fnc = options?.encodeConfig?.[key] || "string";
+
+                writer.uint32(
+                    options?.wireTypeConfig?.[key] || (index == 0 ? 10 : 10 + index * 8)
+                );
+
+                const encodeFunction = writer[fnc as keyof Writer] as Function;
+                if (typeof encodeFunction === "function") {
+                    encodeFunction.call(writer, message[key]);
+                }
+            });
+
+            return writer;
+        },
+        decode(input: Uint8Array | Reader, length?: number) {
+            const reader = input instanceof Uint8Array ? new Reader(input) : input;
+            let end = length === undefined ? reader.len : reader.pos + length;
+            const message: Record<string, any> = fields;
+            while (reader.pos < end) {
+                const tag = reader.uint32();
+                const fieldIndex = tag >>> 3;
+
+                const fieldName = Object.keys(fields)?.[fieldIndex];
+                if (!fieldName) {
+                    reader.skipType(tag & 7);
+                    continue;
+                }
+
+                message[fieldName] = reader.string();
+            }
+            return message;
+        },
+        fromPartial(object: any) {
+            const message: Record<string, any> = fields;
+            Object.keys(fields).forEach((key) => {
+                message[key] = object[key] ?? "";
+            });
+            return message;
+        },
+    };
+}
+
+export enum DepositType {
+    UNKNOWN_DEPOSIT_TYPE = 0,
+    PROJECT_DEPOSIT_TYPE = 1,
+    PROVER_DEPOSIT_TYPE = 2,
+    VERIFIER_DEPOSIT_TYPE = 3,
+    TASK_REWARD_DEPOSIT_TYPE = 4,
+}
+
+
+
+export const MsgDeposit = createMsg(
+    "/cysicmint.cysic.v1.MsgDeposit",
+    {
+        depositType: "",
+        amount: "",
+        sender: "",
+    },
+    {
+        wireTypeConfig: {
+            depositType: 8,
+        },
+        encodeConfig: {
+            depositType: "int32",
+        },
+    }
+);
+
+export const MsgWithdraw = createMsg(
+    "/cysicmint.cysic.v1.MsgWithdraw",
+    {
+        depositType: "",
+        amount: "",
+        sender: "",
+    },
+    {
+        wireTypeConfig: {
+            depositType: 8,
+        },
+        encodeConfig: {
+            depositType: "int32",
+        },
+    }
+);
+
+export const MsgRegisterProver = createMsg(
+    "/cysicmint.cysic.v1.MsgProver",
+    {
+        id: "",
+        name: "",
+        domain: "",
+        logo: "",
+        description: "",
+        prover: "",
+        sender: "",
+        report: "",
+        reward_address: "",
+    },
+    {
+        wireTypeConfig: {
+            id: 8,
+        },
+    }
+);
+
+export const MsgRegisterVerifier = createMsg(
+    "/cysicmint.cysic.v1.MsgVerifier",
+    {
+        id: "",
+        name: "",
+        reward_address: "",
+        logo: "",
+        description: "",
+        verifier: "",
+        sender: "",
+    },
+    {
+        wireTypeConfig: {
+            id: 8,
+        },
+    }
+);

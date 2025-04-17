@@ -3,6 +3,8 @@ import { getImageUrl, handlePurchaseNftModal, handleSignIn } from "@/utils/tools
 import { ArrowRight } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
+import { baseHref } from "@/config";
 
 // NFT 卡片组件
 interface NFTCardProps {
@@ -93,9 +95,11 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
 interface FeatureCardProps {
     title: string;
     imageSrc: string;
+    href?: string;
 }
 
-const FeatureCard = ({ title, imageSrc }: FeatureCardProps) => {
+const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
+    const navigate = useNavigate    ()
     return (
         <GradientBorderCard borderRadius={8} className="h-64 overflow-hidden">
             <div className="relative h-full w-full group cursor-pointer overflow-hidden">
@@ -110,7 +114,7 @@ const FeatureCard = ({ title, imageSrc }: FeatureCardProps) => {
                 <div className="absolute inset-0 bg-black/30"></div>
 
                 {/* 内容区域，上下分布 */}
-                <div className="absolute inset-0 flex flex-col justify-between p-6 z-10">
+                <div className="absolute inset-0 flex flex-col justify-between p-6 z-10" onClick={() => { navigate(href || '/') }}>
                     <h3 className="title text-3xl !font-[300]">{title}</h3>
 
                     <div className="self-end">
@@ -196,11 +200,13 @@ const featureBlocks = [
         id: "zk",
         title: "CYSIC ZK",
         image: getImageUrl("@/assets/images/nft/preset1.png"),
+        href: '/zk'
     },
     {
         id: "ai",
         title: "CYSIC AI",
         image: getImageUrl("@/assets/images/nft/preset2.png"),
+        href: '/ai'
     }
 ];
 
@@ -268,6 +274,7 @@ const NftLanding = () => {
                             key={block.id}
                             title={block.title}
                             imageSrc={block.image}
+                            href={block.href}
                         />
                     ))}
                 </div>

@@ -1,6 +1,8 @@
 import { cysicTestnet_testnet } from "@/config/cosmos/cysicTestnet";
 import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev";
 import { generateQueryString, getImageUrl } from "@/utils/tools";
+import { coins } from "@cosmjs/proto-signing";
+
 
 export const defaultChainId = '9527';
 
@@ -56,7 +58,7 @@ export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev
 export const mainUrl = 'http://localhost:3001' || import.meta.env.VITE_APP_BASE_URL
 // isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
-
+export const baseHref = '/m'
 
 export const defaultRewardAmount = 100;
 
@@ -90,6 +92,11 @@ export const cosmosFee = {
     ],
     gas: "2000000", // gas amount
 };
+
+export const cosmosFee_lower = {
+    amount: coins(200000 / 2, cysicBaseCoin), // 5000 uatom
+    gas: 2000000 / 2, // 200000 gas
+}
 
 export const keplrDownloadLink = 'https://chromewebstore.google.com/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap'
 

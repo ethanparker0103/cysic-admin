@@ -3,8 +3,8 @@ import GradientBorderCard from "@/components/gradientBorderCard";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight, Search } from "lucide-react";
-
 import { useState, ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ShadowCardContainer = ({ children, className }: { children: ReactNode, className?: string }) => {
     return (
@@ -150,6 +150,7 @@ const investors1 = investors.slice(0, 6);
 const investors2 = investors.slice(6);
 
 const AiLanding = () => {
+    const navigate = useNavigate()
     // 状态管理
     const [activeCategory, setActiveCategory] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
@@ -337,7 +338,7 @@ const AiLanding = () => {
                                 <br />No coding required — Just buy and start EARNING immediately!
                             </p>
 
-                            <Button type="solid" className="!p-6">
+                            <Button type="solid" className="!p-6" onClick={() => { navigate('/nft') }}>
                                 <div className="flex items-center gap-2 uppercase">
                                     <span>PURCHASE COMPUTE BOX NOW</span>
                                     <ArrowRight width={12} height={12} />

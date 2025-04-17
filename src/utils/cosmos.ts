@@ -21,6 +21,7 @@ import {
 } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { PubKey } from "cosmjs-types/cosmos/crypto/secp256k1/keys";
 import { Buffer } from "buffer";
+import { checksumAddress } from "viem";
 
 declare global {
     interface Window {
@@ -118,7 +119,7 @@ export function cosmosToEthAddress(cosmosAddress: string) {
         const decoded = bech32.decode(cosmosAddress);
         const data = bech32.fromWords(decoded.words);
         const ethAddress = "0x" + Buffer.from(data).toString("hex");
-        return ethAddress;
+        return checksumAddress(ethAddress as `0x${string}`);
     } catch (error) {
         console.error("Incorrect Cosmos Address:", error);
         return null;
@@ -134,12 +135,12 @@ export const checkkTx = async (client: any, txHash: string) => {
     console.log("tx res", result);
 
     if (result && result.code === 0) {
-        toast.success(`Tx Success at ${result?.hash}`);
+        return result;
     } else {
-        toast.error(`Tx Failed at ${result?.hash}`);
+        throw { message: `Tx Failed at ${result?.hash}` };
     }
 
-    return result;
+    
 };
 
 // @ts-ignore

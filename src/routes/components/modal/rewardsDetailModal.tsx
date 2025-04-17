@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, handleConvertModal, handleReserveModal, handleStakeModal } from "@/utils/tools";
+import { useRequest } from "ahooks";
+import axios from "@/service";
 
 // 阶段枚举
 enum RewardPhase {
@@ -20,7 +22,7 @@ const RewardsDetailModal = () => {
     // 状态管理
     const [activePhase, setActivePhase] = useState<RewardPhase>(RewardPhase.PHASE_I);
 
-    // 在弹窗打开时初始化状态
+    // 初始化时设置正确的阶段
     useEffect(() => {
         if (visible && data?.phase) {
             switch (data.phase) {
@@ -38,6 +40,29 @@ const RewardsDetailModal = () => {
             }
         }
     }, [visible, data]);
+
+    // 使用 useRequest 获取奖励数据
+    const { data: phasesData, loading } = useRequest(
+        async () => {
+            const requests = [
+                axios.get('/api/v1/zkTask/reward/phase1'),
+                axios.get('/api/v1/zkTask/reward/phase2'),
+                axios.get('/api/v1/zkTask/reward/phase3')
+            ];
+            
+            const results = await Promise.allSettled(requests);
+            
+            return {
+                phase1: results[0].status === 'fulfilled' ? results[0].value.data : null,
+                phase2: results[1].status === 'fulfilled' ? results[1].value.data : null,
+                phase3: results[2].status === 'fulfilled' ? results[2].value.data : null
+            };
+        },
+        {
+            refreshDeps: [visible], // 仅当弹窗显示时刷新数据
+            ready: visible, // 仅当弹窗显示时才执行请求
+        }
+    );
 
     // 处理阶段切换
     const handlePhaseChange = (phase: RewardPhase) => {
@@ -61,10 +86,18 @@ const RewardsDetailModal = () => {
     };
 
     // 处理转换
-    const handleConvert = (from: string, to: string) => {
-        console.log(`Converting from ${from} to ${to}`);
-        // 这里添加转换逻辑
-    };
+    // const handleConvert = (from: string, to: string, amount?: string) => {
+    //     console.log(`Converting from ${from} to ${to}`, amount);
+    //     // 弹出转换弹窗
+    //     const event = new CustomEvent("modal_convert_visible", {
+    //         detail: {
+    //             fromToken: from,
+    //             toToken: to,
+    //             amount
+    //         }
+    //     });
+    //     dispatchEvent(event);
+    // };
 
     // 处理解除质押
     const handleUnstake = () => {
@@ -79,266 +112,292 @@ const RewardsDetailModal = () => {
     };
 
     // 渲染 Phase I 内容
-    const renderPhaseI = () => (
-        <div className="space-y-4">
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center">
-                    <span className="text-3xl title !font-[300]  uppercase">Total Points</span>
-                    <span className="text-3xl title !font-[300] ">100,000</span>
-                </div>
-                <div className="flex justify-between items-center mt-4 gap-6 text-sm">
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Activity</span>
-                        <span>8200</span>
+    const renderPhaseI = () => {
+        const phase1 = phasesData?.phase1;
+        
+        if (loading || !phase1) {
+            return <div className="text-center py-8">Loading...</div>;
+        }
+        
+        const totalPoints = parseInt(phase1.activity) + parseInt(phase1.staking);
+        
+        return (
+            <div className="space-y-4">
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center">
+                        <span className="text-3xl title !font-[300] uppercase">Total Points</span>
+                        <span className="text-3xl title !font-[300]">{totalPoints.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Staking</span>
-                        <span>200</span>
+                    <div className="flex justify-between items-center mt-4 gap-6 text-sm">
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Activity</span>
+                            <span>{parseInt(phase1.activity).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Staking</span>
+                            <span>{parseInt(phase1.staking).toLocaleString()}</span>
+                        </div>
                     </div>
                 </div>
+                <Button
+                    type="light"
+                    className="w-full py-4 rounded-lg text-base font-[400] mt-4"
+                    onClick={handleConfirm}
+                >
+                    CONFIRM
+                </Button>
             </div>
-            <Button
-                type="light"
-                className="w-full py-4 rounded-lg text-base font-[400] mt-4"
-                onClick={handleConfirm}
-            >
-                CONFIRM
-            </Button>
-        </div>
-    );
+        )
+    };
 
     // 渲染 Phase II 内容
-    const renderPhaseII = () => (
-        <div className="space-y-4">
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center">
-                    <span className="text-3xl title !font-[300] uppercase">Claimable</span>
-                    <span className="text-3xl title !font-[300]">1,000</span>
-                    <Button
-                        type="light"
-                        className="px-6 py-2 rounded-lg text-base font-[400]"
-                        onClick={handleClaim}
-                    >
-                        CLAIM
-                    </Button>
+    const renderPhaseII = () => {
+        const phase2 = phasesData?.phase2;
+        
+        if (loading || !phase2) {
+            return <div className="text-center py-8">Loading...</div>;
+        }
+        
+        return (
+            <div className="space-y-4">
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center">
+                        <span className="text-3xl title !font-[300] uppercase">Claimable</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase2.claimable).toLocaleString()}</span>
+                        <Button
+                            type="light"
+                            className="px-6 py-2 rounded-lg text-base font-[400]"
+                            onClick={handleClaim}
+                        >
+                            CLAIM
+                        </Button>
+                    </div>
                 </div>
-            </div>
 
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                    <span className="text-3xl title !font-[300] uppercase">Total CYS</span>
-                    <span className="text-3xl title !font-[300]">1,000</span>
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
+                        <span className="text-3xl title !font-[300] uppercase">Total CYS</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase2.cys.total).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Prover</span>
+                            <span>{parseInt(phase2.cys.prover).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Verifier</span>
+                            <span>{parseInt(phase2.cys.verifier).toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Activity</span>
+                            <span>{parseInt(phase2.cys.activity).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Staking</span>
+                            <span>{parseInt(phase2.cys.staking).toLocaleString()}</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Prover</span>
-                        <span>200</span>
-                    </div>
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Verifier</span>
-                        <span>200</span>
-                    </div>
-                </div>
-                <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Activity</span>
-                        <span>200</span>
-                    </div>
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Staking</span>
-                        <span>200</span>
-                    </div>
-                </div>
-            </div>
 
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                    <span className="text-3xl title !font-[300] uppercase">Total CGT</span>
-                    <span className="text-3xl title !font-[300]">1,000</span>
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
+                        <span className="text-3xl title !font-[300] uppercase">Total CGT</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase2.cgt.total).toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Prover</span>
+                            <span>{parseInt(phase2.cgt.prover).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Verifier</span>
+                            <span>{parseInt(phase2.cgt.verifier).toLocaleString()}</span>
+                        </div>
+                    </div>
+                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Activity</span>
+                            <span>{parseInt(phase2.cgt.activity).toLocaleString()}</span>
+                        </div>
+                        <div className="flex justify-between items-center flex-1">
+                            <span className="text-sub">Staking</span>
+                            <span>{parseInt(phase2.cgt.staking).toLocaleString()}</span>
+                        </div>
+                    </div>
                 </div>
-                <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Prover</span>
-                        <span>200</span>
-                    </div>
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Verifier</span>
-                        <span>200</span>
-                    </div>
-                </div>
-                <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Activity</span>
-                        <span>200</span>
-                    </div>
-                    <div className="flex justify-between items-center flex-1">
-                        <span className="text-sub">Staking</span>
-                        <span>200</span>
-                    </div>
-                </div>
-            </div>
 
-            <Button
-                type="light"
-                className="w-full py-4 rounded-lg text-base font-[400] mt-4"
-                onClick={handleConfirm}
-            >
-                CONFIRM
-            </Button>
-        </div>
-    );
+                <Button
+                    type="light"
+                    className="w-full py-4 rounded-lg text-base font-[400] mt-4"
+                    onClick={handleConfirm}
+                >
+                    CONFIRM
+                </Button>
+            </div>
+        );
+    };
 
     // 渲染 Phase III 内容
-    const renderPhaseIII = () => (
-        <div className="space-y-4">
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                    <span className="text-3xl title !font-[300] uppercase">Total CYS</span>
-                    <span className="text-3xl title !font-[300]">1,000</span>
-                </div>
-                <div className="mt-2">
-                    <div className="text-sub mb-2">Income</div>
-                    <div className="flex justify-between items-center gap-6 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Prover</span>
-                            <span>200</span>
+    const renderPhaseIII = () => {
+        const phase3 = phasesData?.phase3;
+        
+        if (loading || !phase3) {
+            return <div className="text-center py-8">Loading...</div>;
+        }
+        
+        return (
+            <div className="space-y-4">
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
+                        <span className="text-3xl title !font-[300] uppercase">Total CYS</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase3.CYS.total).toLocaleString()}</span>
+                    </div>
+                    <div className="mt-2">
+                        <div className="text-sub mb-2">Income</div>
+                        <div className="flex justify-between items-center gap-6 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Prover</span>
+                                <span>{parseInt(phase3.CYS.income.prover).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Verifier</span>
+                                <span>{parseInt(phase3.CYS.income.verifier).toLocaleString()}</span>
+                            </div>
                         </div>
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Verifier</span>
-                            <span>200</span>
+                        <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Activity</span>
+                                <span>{parseInt(phase3.CYS.income.activity).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Others</span>
+                                <span>{parseInt(phase3.CYS.income.others).toLocaleString()}</span>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Activity</span>
-                            <span>200</span>
-                        </div>
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Others</span>
-                            <span>200</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="border-t border-dashed border-[#333] my-4"></div>
-                <div>
-                    <div className="text-sub mb-2">Information</div>
-                    <div className="flex justify-between items-center text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub flex-1">Convertable CYS - CGT</span>
-                            <span className="flex-1 text-right mr-4">200</span>
-                        </div>
-                        <div className="flex-1 flex justify-end">
-                            <Button
-                                type="text"
-                                className=" text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                onClick={() => handleConvert("CYS", "CGT")}
-                            >
-                                CONVERT <span className="ml-1">→</span>
-                            </Button>
+                    <div className="border-t border-dashed border-[#333] my-4"></div>
+                    <div>
+                        <div className="text-sub mb-2">Information</div>
+                        <div className="flex justify-between items-center text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub flex-1">Convertable CYS - CGT</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CYS.information.convertable).toLocaleString()}</span>
+                            </div>
+                            <div className="flex-1 flex justify-end">
+                                <Button
+                                    type="text"
+                                    className=" text-sm flex items-center min-h-fit h-fit text-sub !p-0"
+                                    onClick={() => handleConvertModal()}
+                                >
+                                    CONVERT <span className="ml-1">→</span>
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="border border-[#333] rounded-lg px-6 py-4">
-                <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                    <span className="text-3xl title !font-[300] uppercase">Total CGT</span>
-                    <span className="text-3xl title !font-[300]">1,000</span>
+                <div className="border border-[#333] rounded-lg px-6 py-4">
+                    <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
+                        <span className="text-3xl title !font-[300] uppercase">Total CGT</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase3.CGT.total).toLocaleString()}</span>
+                    </div>
+                    <div className="mt-2">
+                        <div className="text-sub mb-2">Income</div>
+                        <div className="flex justify-between items-center gap-6 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Prover</span>
+                                <span>{parseInt(phase3.CGT.income.prover).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Verifier</span>
+                                <span>{parseInt(phase3.CGT.income.verifier).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Activity</span>
+                                <span>{parseInt(phase3.CGT.income.activity).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Others</span>
+                                <span>{parseInt(phase3.CGT.income.others).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="border-t border-dashed border-[#333] my-4"></div>
+                    <div>
+                        <div className="text-sub mb-1">Cost</div>
+                        <div className="flex justify-between items-center text-sm">
+                            <div className="flex-1 flex justify-between items-center">
+                                <span className="text-sub">Maintenance Fee</span>
+                                <span>{parseInt(phase3.CGT.cost.maintenanceFee).toLocaleString()}</span>
+                            </div>
+                            <div className="flex-1" />
+                        </div>
+                    </div>
+                    <div className="border-t border-dashed border-[#333] my-4"></div>
+                    <div>
+                        <div className="text-sub mb-2">Information</div>
+                        <div className="flex justify-between items-center mb-2 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub flex-1">Convertable CGT - CYS</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.convertable).toLocaleString()}</span>
+                            </div>
+                            <div className="flex-1 flex justify-end">
+                                <Button
+                                    type="text"
+                                    className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
+                                    onClick={() => handleConvertModal()}
+                                >
+                                    CONVERT <span className="ml-1">→</span>
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center mb-2 text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub flex-1">Staked Amount</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.stakedAmount).toLocaleString()}</span>
+                            </div>
+                            <div className="flex-1 flex justify-end">
+                                <Button
+                                    type="text"
+                                    className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
+                                    onClick={handleStakeModal}
+                                >
+                                    UNSTAKE <span className="ml-1">→</span>
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="flex justify-between items-center text-sm">
+                            <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub flex-1">Reserved Amount</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.reservedAmount).toLocaleString()}</span>
+                            </div>
+                            <div className="flex-1 flex justify-end">
+                                <Button
+                                    type="text"
+                                    className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
+                                    onClick={handleReserveModal}
+                                >
+                                    WITHDRAW <span className="ml-1">→</span>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="mt-2">
-                    <div className="text-sub mb-2">Income</div>
-                    <div className="flex justify-between items-center gap-6 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Prover</span>
-                            <span>200</span>
-                        </div>
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Verifier</span>
-                            <span>200</span>
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center mt-2 gap-6 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Activity</span>
-                            <span>200</span>
-                        </div>
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub">Others</span>
-                            <span>200</span>
-                        </div>
-                    </div>
-                </div>
-                <div className="border-t border-dashed border-[#333] my-4"></div>
-                <div>
-                    <div className="text-sub mb-1">Cost</div>
-                    <div className="flex justify-between items-center text-sm">
-                        <div className="flex-1 flex justify-between items-center">
-                            <span className="text-sub">Maintenance Fee</span>
-                            <span>300</span>
-                        </div>
-                        <div className="flex-1" />
-                    </div>
-                </div>
-                <div className="border-t border-dashed border-[#333] my-4"></div>
-                <div>
-                    <div className="text-sub mb-2">Information</div>
-                    <div className="flex justify-between items-center mb-2 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub flex-1">Convertable CGT - CYS</span>
-                            <span className="flex-1 text-right mr-4">200</span>
-                        </div>
-                        <div className="flex-1 flex justify-end">
-                        <Button
-                            type="text"
-                            className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                            onClick={() => handleConvert("CGT", "CYS")}
-                        >
-                            CONVERT <span className="ml-1">→</span>
-                        </Button>
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center mb-2 text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub flex-1">Staked Amount</span>
-                            <span className="flex-1 text-right mr-4">10,000</span>
-                        </div>
-                        <div className="flex-1 flex justify-end">
-                            <Button
-                                type="text"
-                                className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                            onClick={handleUnstake}
-                        >
-                            UNSTAKE <span className="ml-1">→</span>
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                        <div className="flex justify-between items-center flex-1">
-                            <span className="text-sub flex-1">Reserved Amount</span>
-                            <span className="flex-1 text-right mr-4">100</span>
-                        </div>
-                        <div className="flex-1 flex justify-end">
-                            <Button
-                                type="text"
-                                className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                            onClick={handleWithdraw}
-                        >
-                            WITHDRAW <span className="ml-1">→</span>
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <Button
-                type="light"
-                className="w-full py-4 rounded-lg text-base font-[400] mt-4"
-                onClick={handleConfirm}
-            >
-                CONFIRM
-            </Button>
-        </div>
-    );
+                <Button
+                    type="light"
+                    className="w-full py-4 rounded-lg text-base font-[400] mt-4"
+                    onClick={handleConfirm}
+                >
+                    CONFIRM
+                </Button>
+            </div>
+        );
+    };
 
     return (
         <Modal

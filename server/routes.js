@@ -452,4 +452,87 @@ module.exports = (app) => {
       code: 10000
     });
   });
+
+  // ZK任务奖励阶段1
+  app.get('/api/v1/zkTask/reward/phase1', (req, res) => {
+    res.json({
+      msg: "success",
+      code: 10000,
+      data: {
+        activity: (Math.random() * 10000).toFixed(0),
+        staking: (Math.random() * 500).toFixed(0)
+      }
+    });
+  });
+
+  // ZK任务奖励阶段2
+  app.get('/api/v1/zkTask/reward/phase2', (req, res) => {
+    res.json({
+      msg: "success",
+      code: 10000,
+      data: {
+        claimable: (Math.random() * 1000).toFixed(0),
+        cys: {
+          total: (Math.random() * 10000 + 5000).toFixed(0),
+          prover: (Math.random() * 1000).toFixed(0),
+          verifier: (Math.random() * 2000).toFixed(0),
+          activity: (Math.random() * 3000).toFixed(0),
+          staking: (Math.random() * 4000).toFixed(0)
+        },
+        cgt: {
+          total: (Math.random() * 10000 + 5000).toFixed(0),
+          prover: (Math.random() * 1000).toFixed(0),
+          verifier: (Math.random() * 2000).toFixed(0),
+          activity: (Math.random() * 3000).toFixed(0),
+          staking: (Math.random() * 4000).toFixed(0)
+        }
+      }
+    });
+  });
+
+  // ZK任务奖励阶段3
+  app.get('/api/v1/zkTask/reward/phase3', (req, res) => {
+    res.json({
+      msg: "success",
+      code: 10000,
+      data: {
+        CYS: {
+          total: (Math.random() * 15000 + 5000).toFixed(0),
+          income: {
+            prover: (Math.random() * 1000).toFixed(0),
+            verifier: (Math.random() * 2000).toFixed(0),
+            activity: (Math.random() * 3000).toFixed(0),
+            staking: (Math.random() * 4000).toFixed(0),
+            others: (Math.random() * 5000).toFixed(0)
+          },
+          information: {
+            convertable: (Math.random() * 1000).toFixed(0),
+            stakedAmount: (Math.random() * 2000).toFixed(0),
+            reservedAmount: (Math.random() * 3000).toFixed(0)
+          },
+          cost: {
+            maintenanceFee: (Math.random() * 500).toFixed(0)
+          }
+        },
+        CGT: {
+          total: (Math.random() * 15000 + 5000).toFixed(0),
+          income: {
+            prover: (Math.random() * 1000).toFixed(0),
+            verifier: (Math.random() * 2000).toFixed(0),
+            activity: (Math.random() * 3000).toFixed(0),
+            staking: (Math.random() * 4000).toFixed(0),
+            others: (Math.random() * 5000).toFixed(0)
+          },
+          information: {
+            convertable: (Math.random() * 1000).toFixed(0),
+            stakedAmount: (Math.random() * 2000).toFixed(0),
+            reservedAmount: (Math.random() * 3000).toFixed(0)
+          },
+          cost: {
+            maintenanceFee: (Math.random() * 500).toFixed(0)
+          }
+        }
+      }
+    });
+  });
 };

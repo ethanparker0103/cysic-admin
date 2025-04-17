@@ -7,6 +7,7 @@ import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
 import NFTProverCard from "@/components/NFTCard";
+import { useNavigate } from "react-router-dom";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
@@ -113,6 +114,8 @@ const ProverPage = () => {
     };
 
     const multiplierPercent = zkTaskOverview?.data?.multiplierPercent || 0;
+
+    const navigate = useNavigate()
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -264,6 +267,7 @@ const ProverPage = () => {
                                             <Button
                                                 type="light"
                                                 className="rounded-lg px-12 py-6"
+                                                onClick={() => { navigate('/nft') }}
                                             >
                                                 <div className="flex items-center gap-2 text-base !font-[400]">
                                                     <span>PURCHASE A DIGITAL HARVESTER</span>

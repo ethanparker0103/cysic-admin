@@ -1,9 +1,11 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import { ReactNode } from "react";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, handleConvertModal, handleStakeModal } from "@/utils/tools";
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
+import { Link, useNavigate } from "react-router-dom";
+import { baseHref } from "@/config";
 
 // 信息卡片组件
 interface InfoCardProps {
@@ -81,6 +83,8 @@ const SocialAccountItem = ({ icon, account, action }: SocialAccountItemProps) =>
 const UserPortal = () => {
     // 复制邀请码
 
+    const navigate = useNavigate()
+
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
             {/* 背景装饰 */}
@@ -140,9 +144,9 @@ const UserPortal = () => {
                             <InfoCard
                                 title="INVITE CODE"
                                 rightAction={
-                                    <a href="#" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <Link to='/zk/invite' className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         INVITE DETAILS <ArrowRight size={12} className="ml-1" />
-                                    </a>
+                                    </Link>
                                 }
                             >
 
@@ -155,9 +159,9 @@ const UserPortal = () => {
                             <InfoCard
                                 title="BALANCE"
                                 rightAction={
-                                    <a href="#" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <Link to="/nft/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         HISTORY <ArrowRight size={12} className="ml-1" />
-                                    </a>
+                                    </Link>
                                 }
                             >
                                 <div className="text-2xl !font-[300] text-right title w-full">10,000 USDC</div>
@@ -169,9 +173,9 @@ const UserPortal = () => {
                             <InfoCard
                                 title="VOUCHER"
                                 rightAction={
-                                    <a href="#" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <Link to="/nft/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         VIEW ALL <ArrowRight size={12} className="ml-1" />
-                                    </a>
+                                    </Link>
                                 }
                             >
                                 <div className="text-2xl !font-[300] text-right title w-full">27</div>
@@ -196,7 +200,7 @@ const UserPortal = () => {
                                 <div className="flex gap-6 justify-between">
                                     <div className="flex flex-col gap-6 pr-6 border-r border-white">
                                         <div className="title !text-3xl !font-[300]">999,999.99 CYS</div>
-                                        <Button type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
+                                        <Button onClick={handleConvertModal} type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
                                             CONVERT
                                         </Button>
                                     </div>
@@ -204,7 +208,7 @@ const UserPortal = () => {
                                     <div>
                                         <div className="flex flex-col gap-6">
                                             <div className="title !text-3xl !font-[300]">999,999.99 CGT</div>
-                                            <Button type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
+                                            <Button onClick={handleStakeModal} type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
                                                 STAKE
                                             </Button>
                                         </div>
@@ -249,9 +253,9 @@ const UserPortal = () => {
                                 </div>
 
                                 <div className="flex justify-end items-center">
-                                    <a href="#" className="flex items-center text-sub text-sm !font-[400] hover:text-white">
+                                    <Link to="/nft/serviceHub" className="flex items-center text-sub text-sm !font-[400] hover:text-white">
                                         CHECK DETAILS <ArrowRight size={12} className="ml-1" />
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </GradientBorderCard>
@@ -267,7 +271,7 @@ const UserPortal = () => {
                             <ServiceCard
                                 title="CYSIC ZK"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                                onClick={() => console.log("Navigate to ZK service")}
+                                onClick={() => { navigate('/zk') }}
                             />
                         </div>
 
@@ -275,7 +279,7 @@ const UserPortal = () => {
                             <ServiceCard
                                 title="CYSIC AI"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-                                onClick={() => console.log("Navigate to AI service")}
+                                onClick={() => { navigate('/ai') }}
                             />
                         </div>
 
@@ -283,7 +287,7 @@ const UserPortal = () => {
                             <ServiceCard
                                 title="CYSIC MINING"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                                onClick={() => console.log("Navigate to Mining service")}
+                                onClick={() => { navigate('/stake') }}
                             />
                         </div>
                     </div>

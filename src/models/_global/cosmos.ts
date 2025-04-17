@@ -11,6 +11,7 @@ export const defaultInitState = {
   isConnecting: false,
   hasConnectedWithKeplr: false,
   balanceMap: undefined,
+  depositMap: undefined,
   stakeMap: undefined,
   unmatchedAddressWithEVM: undefined,
 }

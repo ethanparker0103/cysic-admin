@@ -21,6 +21,7 @@
     "@cosmjs/crypto": "^0.32.4",
     "@cosmjs/proto-signing": "^0.32.4",
     "@cosmjs/stargate": "^0.32.4",
+    "@cosmjs/tendermint-rpc": "^0.32.4",
     "@eth-optimism/sdk": "^3.2.0",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/tabs": "^2.0.37",

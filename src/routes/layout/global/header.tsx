@@ -1,7 +1,7 @@
 import ConnectButton from "@/components/connectButton";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
-import { mediasLink } from "@/config";
+import { baseHref, mediasLink } from "@/config";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
 
 import { ArrowRight } from 'lucide-react';
@@ -18,19 +18,19 @@ const navs = [
         children: [
             {
                 content: 'Compute Box',
-                href: '/'
+                href: '/nft'
             },
             {
                 content: 'Cysic ZK',
-                href: '/'
+                href: '/zk'
             },
             {
                 content: 'Cysic AI',
-                href: '/'
+                href: '/ai'
             },
             {
                 content: 'Cysic Mining',
-                href: '/'
+                href: '/stake'
             },
         ]
     },
@@ -52,27 +52,27 @@ const navs = [
         children: [
             {
                 content: 'Staking',
-                href: '/'
+                href: '/stake'
             },
             {
                 content: 'Bridge',
-                href: '/'
+                href: 'https://testnet-bridge.prover.xyz/bridge'
             },
             {
                 content: 'swap',
-                href: '/'
+                href: 'https://dev-swap.prover.xyz/'
             },
             {
                 content: 'Social Tasks',
-                href: '/'
+                href: '/nft/socialTask'
             },
             {
                 content: 'Dashboard',
-                href: '/'
+                href: '/nft/userPortal'
             },
             {
                 content: 'Explorer',
-                href: '/'
+                href: 'https://cys-dev.prover.xyz/'
             },
         ]
     },
@@ -112,10 +112,13 @@ const zkNavs = [
     },
     {
         content: 'dashboard',
-        href: '/'
+        href: '/nft/userPortal'
+    },
+    {
+        content: 'prover',
+        href: '/zk/prover'
     },
 ]
-
 // /ai
 const aiNavs = [
     {
@@ -141,7 +144,7 @@ const aiNavs = [
     },
     {
         content: 'dashboard',
-        href: '/'
+        href: '/nft/userPortal'
     },
 ]
 
@@ -179,7 +182,7 @@ export default function Header() {
                 <GradientBorderCard className="h-20 flex items-center backdrop-blur-sm bg-black/10">
                     <div className="w-full h-full flex justify-between items-center">
                         <div className="flex items-center h-full">
-                            <img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" />
+                            <a href={baseHref}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" /></a>
 
                             {currentNavs.map((nav) => (
                                 <GradientNavDropdown key={nav.content} item={nav} />

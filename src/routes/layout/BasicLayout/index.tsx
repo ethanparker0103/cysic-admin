@@ -12,7 +12,6 @@ import StakeModal from "@/routes/components/modal/stakeModal";
 import StatusModal from "@/routes/components/modal/statusModal";
 import PurchaseNftModal from "@/routes/components/modal/purchaseNftModal";
 import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
-import useCosmos from "@/models/_global/cosmos";
 import RewardsDetailModal from "@/routes/components/modal/rewardsDetailModal";
 import ConvertModal from "@/routes/components/modal/convertModal";
 import ConvertHistoryModal from "@/routes/components/modal/convertHistoryModal";
@@ -21,8 +20,6 @@ export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
     useCosmosUpdate()
 
-    const { balanceMap } = useCosmos()
-    console.log('balanceMap', balanceMap)
     return (
         <>
             <ToastContainer theme="dark" />

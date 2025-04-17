@@ -5,17 +5,20 @@ import Button from "@/components/Button";
 import { getImageUrl } from "@/utils/tools";
 import useCosmos from "@/models/_global/cosmos";
 import dayjs from "dayjs";
-import { MsgExchangeToGovToken, MsgExchangeToPlatformToken } from "@/utils/cysic-msg";
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import {
     cosmosFee,
     cosmosReservedValue,
     cysicBaseCoin,
-
+    cysicStCoin,
+    blockTime,
+    cosmosFee_lower
 } from "@/config";
-import { checkKeplrWallet, signAndBroadcastDirect } from "@/utils/cosmos";
-
+import { checkKeplrWallet, signAndBroadcastDirect, checkkTx } from "@/utils/cosmos";
+import { useRequest } from "ahooks";
+import { DepositType, MsgDeposit, MsgWithdraw } from "@/utils/cysic-msg";
+import useAccount from "@/hooks/useAccount";
 
 // 操作类型枚举
 enum ReserveAction {
@@ -24,10 +27,10 @@ enum ReserveAction {
 }
 
 const ReserveModal = () => {
-    const { address, balanceMap, connector } = useCosmos()
-    const cgtBalance = balanceMap?.CGT?.hm_amount || 0
-    const cysBalance = balanceMap?.CYS?.hm_amount || 0
-
+    const { address, balanceMap, connector, depositMap } = useCosmos();
+    const { walletAddress: evmAddress } = useAccount();
+    const cgtBalance = balanceMap?.CGT?.hm_amount || 0;
+    const cysBalance = balanceMap?.CYS?.hm_amount || 0;
 
     // 获取模态框状态
     const { visible, setVisible, data } = useModalState({
@@ -37,8 +40,6 @@ const ReserveModal = () => {
     // 状态管理
     const [activeTab, setActiveTab] = useState<ReserveAction>(ReserveAction.RESERVE);
     const [amount, setAmount] = useState("");
-
-    // const [estimatedArrivalTime, setEstimatedArrivalTime] = useState("Nov 12 2024 08:00");
 
     // 在弹窗打开时初始化状态
     useEffect(() => {
@@ -58,6 +59,7 @@ const ReserveModal = () => {
     // 处理Tab切换
     const handleTabChange = (tab: ReserveAction) => {
         setActiveTab(tab);
+        setAmount('');
     };
 
     // 处理金额变更
@@ -67,66 +69,93 @@ const ReserveModal = () => {
         setAmount(value);
     };
 
-    // 处理预留操作
-    const handleReserve = async () => {
-        try {
-            checkKeplrWallet()
-            console.log(`Reserve ${amount} CGT`);
+    // 处理预留/存款操作
+    const { loading: reserveLoading, run: handleReserve } = useRequest(
+        async () => {
+            try {
+                checkKeplrWallet();
+                console.log(`Reserve ${amount} CYS`);
 
-            if (
-                BigNumber(balanceMap?.[cysicBaseCoin]?.hm_amount)
-                    .minus(amount)
-                    .lt(cosmosReservedValue)
-            ) {
-                throw { message: `Reserved Balance < ${cosmosReservedValue}` };
+                if (
+                    BigNumber(balanceMap?.[cysicBaseCoin]?.hm_amount)
+                        .minus(amount)
+                        .lt(cosmosReservedValue)
+                ) {
+                    throw { message: `Reserved Balance < ${cosmosReservedValue}` };
+                }
+                
+                // 构建存款参数
+                const msgContent = {
+                    depositType: DepositType.PROVER_DEPOSIT_TYPE,
+                    amount: BigNumber(amount || 0).multipliedBy(1e18).toString(),
+                    sender: evmAddress,
+                };
+
+                const msg = {
+                    typeUrl: MsgDeposit.typeUrl,
+                    value: MsgDeposit.encode(MsgDeposit.fromPartial(msgContent)).finish(),
+                };
+
+                const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector);
+                const tx = await checkkTx(connector, result?.transactionHash);
+
+                toast.success(`Tx Success at ${tx?.hash}`);
+                
+                // 重置状态
+                setAmount("");
+                
+                // 刷新余额
+                dispatchEvent(new CustomEvent("refresh_cosmosBalance"));
+            } catch (error: any) {
+                console.error("Error reserving:", error);
+                toast.error(error?.message || error?.msg || error);
+                throw error;
             }
-            // 1. 构建交易参数
-            const _amount = {
-                denom: "CYS",
-                amount: BigNumber(amount).multipliedBy(1e18).toString(),
-            };
-
-            const msg: any = {
-                typeUrl: MsgExchangeToGovToken.typeUrl,
-                value: MsgExchangeToGovToken.encode(MsgExchangeToGovToken.fromPartial({
-                    sender: address,
-                    amount: _amount.amount,
-                })).finish(),
-            };
-
-            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
-
-            toast.success(`Submit Success at ${result?.transactionHash}`)
-        } catch (error) {
-            console.error("Error reserving:", error);
+        },
+        {
+            manual: true,
         }
-    };
+    );
 
     // 处理提款操作
-    const handleWithdraw = async () => {
-        try {
-            checkKeplrWallet()
-            console.log(`Withdrawing ${amount} CGT`);
+    const { loading: withdrawLoading, run: handleWithdraw } = useRequest(
+        async () => {
+            try {
+                checkKeplrWallet();
+                console.log(`Withdrawing ${amount} CYS`);
 
-            const _amount = {
-                denom: "CGT",
-                amount: BigNumber(amount).multipliedBy(1e18).toString(),
-            };
-            const msg = {
-                typeUrl: MsgExchangeToPlatformToken.typeUrl,
-                value: MsgExchangeToPlatformToken.encode(MsgExchangeToPlatformToken.fromPartial({
-                    sender: address,
-                    amount: _amount.amount,
-                })).finish(),
-            };
-    
-            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
-    
-            toast.success(`Submit Success at ${result?.transactionHash}`)
-        } catch (error) {
-            console.error("Error withdrawing:", error);
+                // 构建提款参数
+                const msgContent = {
+                    depositType: DepositType.PROVER_DEPOSIT_TYPE,
+                    amount: BigNumber(amount || 0).multipliedBy(1e18).toString(),
+                    sender: evmAddress,
+                };
+
+                const msg = {
+                    typeUrl: MsgWithdraw.typeUrl,
+                    value: MsgWithdraw.encode(MsgWithdraw.fromPartial(msgContent)).finish(),
+                };
+
+                const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector);
+                const tx = await checkkTx(connector, result?.transactionHash);
+
+                toast.success(`Tx Success at ${tx?.hash}`);
+                
+                // 重置状态
+                setAmount("");
+                
+                // 刷新余额
+                dispatchEvent(new CustomEvent("refresh_cosmosBalance"));
+            } catch (error: any) {
+                console.error("Error withdrawing:", error);
+                toast.error(error?.message || error?.msg || error);
+                throw error;
+            }
+        },
+        {
+            manual: true,
         }
-    };
+    );
 
     // 关闭模态框并重置状态
     const handleClose = () => {
@@ -137,7 +166,6 @@ const ReserveModal = () => {
     // 重置所有状态
     const resetState = () => {
         setAmount("");
-        // 保留其他状态以便下次打开时显示
     };
 
     return (
@@ -172,7 +200,7 @@ const ReserveModal = () => {
             {/* 注意提示 - 仅在提款选项卡显示 */}
             {activeTab === ReserveAction.WITHDRAW && (
                 <div className="mb-6 text-white">
-                    Note: Reserving less than 100 CGT will deactivate your Verifier/Prover.
+                    Note: Reserving less than 100 CYS will deactivate your Verifier/Prover.
                 </div>
             )}
 
@@ -190,11 +218,11 @@ const ReserveModal = () => {
                     </div>
                     <div className="text-base flex items-center bg-[#222] p-2 rounded-full">
                         <img
-                            src={activeTab === ReserveAction.RESERVE ? getImageUrl('@/assets/images/tokens/CYS.svg') : getImageUrl('@/assets/images/tokens/CGT.svg')}
-                            alt={activeTab === ReserveAction.RESERVE ? "CYS" : "CGT"}
+                            src={activeTab === ReserveAction.RESERVE ? getImageUrl('@/assets/images/tokens/CYS.svg') : getImageUrl('@/assets/images/tokens/CYS.svg')}
+                            alt={activeTab === ReserveAction.RESERVE ? "CYS" : "CYS"}
                             className="w-6 h-6 mr-2"
                         />
-                        <span className="title !font-[500] text-base ">{activeTab === ReserveAction.RESERVE ? "CYS" : "CGT"}</span>
+                        <span className="title !font-[500] text-base ">{activeTab === ReserveAction.RESERVE ? "CYS" : "CYS"}</span>
                     </div>
                 </div>
 
@@ -203,7 +231,7 @@ const ReserveModal = () => {
                     <div className="text-white">
                         {activeTab === ReserveAction.RESERVE
                             ? `Amount ${cysBalance}`
-                            : `Reserved Amount ${cgtBalance}`
+                            : `Reserved Amount ${depositMap?.proverHmAmount || 0}`
                         }
                     </div>
                 </div>
@@ -218,7 +246,7 @@ const ReserveModal = () => {
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="text-[#777]">Estimated arrival time</span>
-                        <span className="text-white">{dayjs().add(2, 'M').format('YYYY-MM-DD')}</span>
+                        <span className="text-white">{dayjs().add(1, 'min').format('YYYY-MM-DD')}</span>
                     </div>
                 </div>
             )}
@@ -226,6 +254,7 @@ const ReserveModal = () => {
             {/* 操作按钮 */}
             <Button
                 needLoading
+                loading={activeTab === ReserveAction.RESERVE ? reserveLoading : withdrawLoading}
                 type="light"
                 className="w-full py-4 rounded-lg text-base font-medium"
                 onClick={activeTab === ReserveAction.RESERVE ? handleReserve : handleWithdraw}

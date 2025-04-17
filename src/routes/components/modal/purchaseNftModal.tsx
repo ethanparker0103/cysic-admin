@@ -62,17 +62,17 @@ const PurchaseNftModal = () => {
             id: "zk",
             title: "CYSIC ZK",
             description: "Become a Cysic ZK Prover (free of staking) and start earning CYS/CGT now.",
-            selected: true
+            selected: true,
         },
         {
             id: "ai",
             title: "CYSIC AI",
-            description: "Support Cysic AI and earn a share of future AI-generated rewards."
+            description: "Support Cysic AI and earn a share of future AI-generated rewards.",
         },
         {
             id: "mining",
             title: "CYSIC MINING",
-            description: "Support Cysic Mining and get extra token rewards after miner launches."
+            description: "Support Cysic Mining and get extra token rewards after miner launches.",
         }
     ]);
     

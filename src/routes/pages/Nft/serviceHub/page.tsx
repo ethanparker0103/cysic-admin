@@ -1,12 +1,13 @@
 import { ArrowRight, ChevronLeft, ChevronsUp, Info } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import Button from "@/components/Button";
-import { getImageUrl, handleConvertModal, handleRewardsDetailModal } from "@/utils/tools";
+import { getImageUrl, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { ReactNode } from "react";
 import Copy from "@/components/Copy";
 
 import NFTProverCard from "@/components/NFTCard";
 import { cn } from "@nextui-org/react";
+import { baseHref } from "@/config";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -127,7 +128,7 @@ const UserDetailsPage = () => {
 
             <div className="container mx-auto px-4 relative z-10 py-12">
                 {/* 返回按钮 */}
-                <a href="/nft/userPortal" className="flex items-center text-sub mb-6 hover:text-white">
+                <a href={baseHref+"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
                     <ChevronLeft size={20} />
                     <span>GENERAL</span>
                 </a>
@@ -137,11 +138,11 @@ const UserDetailsPage = () => {
                     {/* 总奖励 */}
                     <div className="flex-[3]">
                         <StatCard
-                            title={<div className="text-base title !font-[300] uppercase" onClick={() => handleRewardsDetailModal({ phase: "phase1" })}>TOTAL REWARDS</div>}
+                            title={<div className="text-base title !font-[300] uppercase" >TOTAL REWARDS</div>}
                             rightActions={[
-                                <a href="#" className="flex items-center text-sub text-sm hover:text-white">
+                                <div onClick={() => handleRewardsDetailModal({ phase: "phase1" })} className="cursor-pointer flex items-center text-sub text-sm hover:text-white">
                                     DETAILS <ArrowRight size={12} className="ml-1" />
-                                </a>
+                                </div>
                             ]}
                         >
                             <div className="flex flex-col gap-6">
@@ -156,7 +157,7 @@ const UserDetailsPage = () => {
 
                                 <div className="flex items-center justify-end gap-6">
                                     <div className="text-3xl !font-[300] title">3,000.00 CGT</div>
-                                    <Button type="light" className="rounded py-3 px-4">
+                                    <Button type="light" className="rounded py-3 px-4" onClick={() => { handleStakeModal() }}>
                                         STAKE
                                     </Button>
                                 </div>

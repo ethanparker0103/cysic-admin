@@ -1,5 +1,6 @@
 import React from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from "@nextui-org/react";
+import { baseHref } from "@/config";
 
 interface NavItem {
     content: string;
@@ -17,7 +18,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
         return (
             <Button
                 as={Link}
-                href={item.href || "/"}
+                href={item.href ? `${baseHref}${item.href}` : "/"}
                 variant="light"
                 className="uppercase font-[400] !text-sub"
             >
@@ -56,7 +57,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
                             key={child.content}
                             className="py-2 px-4 text-sm"
                             as={Link}
-                            href={child.href || "/"}
+                            href={child.href ? `${baseHref}${child.href}` : "/"}
                         >
                             {child.content}
                         </DropdownItem>
