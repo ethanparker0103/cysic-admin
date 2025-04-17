@@ -669,10 +669,30 @@ export const showStatusModal = (props: StatusModalProps) => {
   window.dispatchEvent(event);
 };
 
-export const handlePurchaseNftModal = (props: any) => {
+export const handlePurchaseNftModal = (props: any={}) => {
   const event = new CustomEvent('modal_purchase_nft_visible', { 
     detail: { visible: true, ...props } 
   });
   window.dispatchEvent(event);
 };
 
+export const handleRewardsDetailModal = (props: any={}) => {
+  const event = new CustomEvent('modal_rewards_detail_visible', { 
+    detail: { visible: true, ...props } 
+  });
+  window.dispatchEvent(event);
+};
+
+export const handleConvertModal = (props: any={}) => {
+  const event = new CustomEvent('modal_convert_visible', { 
+    detail: { visible: true, ...props } 
+  });
+  window.dispatchEvent(event);
+};
+
+export const handleConvertHistoryModal = (props: any={}) => {
+  const event = new CustomEvent('modal_convert_history_visible', { 
+    detail: { visible: true, ...props } 
+  });
+  window.dispatchEvent(event);
+};

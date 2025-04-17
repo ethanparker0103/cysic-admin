@@ -292,6 +292,42 @@ module.exports = (app) => {
     });
   });
   
+  // 添加代币转换历史接口
+  app.get('/api/v1/zkTask/convertHistory', (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    
+    // 生成模拟数据
+    const historyList = Array.from({ length: 10 }, (_, i) => {
+      // 随机生成 CYS->CGT 或 CGT->CYS 的记录
+      const fromCoin = Math.random() > 0.5 ? "CYS" : "CGT";
+      const toCoin = fromCoin === "CYS" ? "CGT" : "CYS";
+      
+      // 生成随机金额，保留两位小数
+      const amount = (1000 + Math.random() * 4000).toFixed(2);
+      
+      // 生成随机时间，最近1个月内
+      const date = new Date();
+      date.setDate(date.getDate() - Math.floor(Math.random() * 30));
+      const convertTime = date.toISOString().replace('T', ' ').slice(0, 19);
+      
+      return {
+        fromCoin,
+        toCoin,
+        amount,
+        convertTime
+      };
+    });
+    
+    res.json({
+      msg: `success, page: ${page}, pageSize: ${pageSize}`,
+      code: 10000,
+      data: {
+        historyList
+      }
+    });
+  });
+  
   // 质押相关接口
   app.get('/api/v1/stake/list', (req, res) => {
     const validators = Array.from({ length: 5 }, (_, i) => {

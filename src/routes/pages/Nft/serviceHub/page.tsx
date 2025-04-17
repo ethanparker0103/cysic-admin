@@ -1,7 +1,7 @@
 import { ArrowRight, ChevronLeft, ChevronsUp, Info } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import Button from "@/components/Button";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, handleConvertModal, handleRewardsDetailModal } from "@/utils/tools";
 import { ReactNode } from "react";
 import Copy from "@/components/Copy";
 
@@ -10,7 +10,7 @@ import { cn } from "@nextui-org/react";
 
 // 统计卡片组件
 interface StatCardProps {
-    title: string;
+    title: string | ReactNode;
     children: ReactNode;
     rightActions?: ReactNode[];
     className?: string;
@@ -137,7 +137,7 @@ const UserDetailsPage = () => {
                     {/* 总奖励 */}
                     <div className="flex-[3]">
                         <StatCard
-                            title="TOTAL REWARDS"
+                            title={<div className="text-base title !font-[300] uppercase" onClick={() => handleRewardsDetailModal({ phase: "phase1" })}>TOTAL REWARDS</div>}
                             rightActions={[
                                 <a href="#" className="flex items-center text-sub text-sm hover:text-white">
                                     DETAILS <ArrowRight size={12} className="ml-1" />
@@ -147,7 +147,7 @@ const UserDetailsPage = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="flex items-center justify-end gap-6">
                                     <div className="text-3xl !font-[300] title">3,000.00 CYS</div>
-                                    <Button type="light" className="rounded py-3 px-4">
+                                    <Button type="light" className="rounded py-3 px-4" onClick={handleConvertModal}>
                                         CONVERT
                                     </Button>
                                 </div>

@@ -43,9 +43,9 @@ const Button = ({
             case BtnType.gradient:
                 return 'bg-gradient border-none !text-[#fff]';
             case BtnType.dark:
-                return 'bg-[#000] border-none text-[#fff]';
+                return 'bg-[#000] border-none text-[#fff] ';
             case BtnType.light:
-                return 'bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff]';
+                return 'bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff] ';
             case BtnType.solid:
                 return '!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]';
             default:
@@ -68,7 +68,7 @@ const Button = ({
             className={clsx(
                 className,
                 classNameWithType,
-                'px-4 py-2 backdrop-blur-sm',
+                'px-4 py-2 backdrop-blur-sm rounded !font-[400]',
                 disabled ? 'pointer-events-none opacity-50 disabled:[--tw-text-opacity:0.5] disabled:[--tw-bg-opacity:0.5]' : '',
              )}
         >

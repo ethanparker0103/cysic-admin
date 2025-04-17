@@ -62,7 +62,7 @@ const StakePage = () => {
       onSuccess: (res) => {
         // 存储原始响应到store
         setState({ stakeList: res });
-        
+
         if (res?.data?.validatorList && res.data.validatorList.length > 0) {
           // 计算总质押金额和平均APR
           let totalStake = 0;
@@ -273,31 +273,31 @@ const StakePage = () => {
       // onClose?.()
     } catch (e: any) {
       console.log("error", e);
-    } 
+    }
   };
-    return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden">
+  return (
+    <div className="min-h-screen w-full pb-12 overflow-hidden ">
       {/* 背景图片 */}
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
+      <div className="absolute inset-0 z-0 overflow-hidden ">
+        <img
           src={getImageUrl('@/assets/images/_global/stake_landing_bg.png')}
-                    alt="Background"
+          alt="Background"
           className="h-screen absolute top-0 left-1/2 w-full object-cover"
-                    style={{
-                        filter: 'grayscale(0%)',
+          style={{
+            filter: 'grayscale(0%)',
             transform: 'translate(-50%, 0%) scale(1)',
             transformOrigin: 'center ',
             objectPosition: '50% 50%'
-                    }}
-                />
-            </div>
+          }}
+        />
+      </div>
 
       {/* 主标题 */}
-            <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
-                <div className="flex flex-col items-center">
+      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
+        <div className="flex flex-col items-center">
           <span className="title text-[4rem] !text-[#fff] text-center">STAKE CGTS</span>
         </div>
-                </div>
+      </div>
 
       {/* 主要内容部分 */}
       <div className="container mx-auto px-4 md:px-8 mt-8 relative z-[2]">
@@ -317,17 +317,17 @@ const StakePage = () => {
                 >
                   STAKE
                 </Button>
-            </div>
+              </div>
 
               <div className="grid grid-cols-3 ">
                 <div className="col-span-1 border-r border-white pr-6">
                   <div className=" uppercase title text-base mb-2 !font-[300]">STAKING AMOUNT</div>
                   <div className="text-2xl text-right title !font-[400]">{stakeAmount} CGT</div>
-                                    </div>
+                </div>
                 <div className="col-span-1 border-r border-white px-6">
                   <div className=" uppercase title text-base mb-2 !font-[300]">UNSTAKING AMOUNT</div>
                   <div className="text-2xl text-right title !font-[400]">{unstakeAmount} CGT</div>
-                    </div>
+                </div>
                 <div className="col-span-1 pl-4">
                   <div className=" uppercase title text-base mb-2 !font-[300]">APR</div>
                   <div className="text-2xl text-right title !font-[400]">{apr}%</div>
@@ -428,9 +428,9 @@ const StakePage = () => {
             )}
           </div>
         </GradientBorderCard>
-            </div>
-        </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default StakePage;

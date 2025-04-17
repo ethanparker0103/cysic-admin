@@ -1,8 +1,104 @@
 import Button from "@/components/Button";
+import GradientBorderCard from "@/components/gradientBorderCard";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
-import { ArrowRight } from "lucide-react";
+import { cn } from "@nextui-org/react";
+import { ArrowRight, Search } from "lucide-react";
 
+import { useState, ReactNode } from "react";
 
+const ShadowCardContainer = ({ children, className }: { children: ReactNode, className?: string }) => {
+    return (
+        <div className="relative ">
+            <div className="absolute rounded-xl inset-0 bg-white -translate-y-[1px] z-[1] scale-x-[0.999]"></div>
+            <div className={cn(className, "relative z-[2] rounded-xl bg-[#090A09]")}>
+                {children}
+            </div>
+        </div>
+    )
+}
+
+// 项目服务分类
+const serviceCategories = [
+    { id: "all", name: "ALL" },
+    { id: "chat", name: "CHAT" },
+    { id: "image", name: "IMAGE" },
+    { id: "vision", name: "VISION" },
+    { id: "audio", name: "AUDIO" },
+    { id: "language", name: "LANGUAGE" },
+    { id: "code", name: "CODE" },
+    { id: "embeddings", name: "EMBEDDINGS" },
+    { id: "rerank", name: "RERANK" },
+];
+
+// 项目卡片数据
+const projectCards = [
+    {
+        id: 1,
+        name: "DEEPSEEK R1",
+        category: "chat",
+        tag: "chat",
+        tagColor: "bg-blue-500/30 border border-blue-500/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 2,
+        name: "DEEPSEEK R1",
+        category: "embeddings",
+        tag: "embeddings",
+        tagColor: "bg-yellow-600/30 border border-yellow-600/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 3,
+        name: "DEEPSEEK R1",
+        category: "vision",
+        tag: "vision",
+        tagColor: "bg-purple-600/30 border border-purple-600/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 4,
+        name: "DEEPSEEK R1",
+        category: "code",
+        tag: "code",
+        tagColor: "bg-green-500/30 border border-green-500/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 5,
+        name: "DEEPSEEK R1",
+        category: "image",
+        tag: "image",
+        tagColor: "bg-[#FF13A599]/30 border border-[#FF13A599]/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 6,
+        name: "DEEPSEEK R1",
+        category: "code",
+        tag: "code",
+        tagColor: "bg-cyan-500/30 border border-cyan-500/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 7,
+        name: "DEEPSEEK R1",
+        category: "audio",
+        tag: "audio",
+        tagColor: "bg-[#FFFF134D]/30 border border-[#FFFF134D]/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+    {
+        id: 8,
+        name: "DEEPSEEK R1",
+        category: "language",
+        tag: "language",
+        tagColor: "bg-[#1362FF4D]/30 border border-[#1362FF4D]/60",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
+    },
+];
+
+// 投资者数据
 const investors = [
     {
         name: "polycain",
@@ -49,44 +145,62 @@ const investors = [
         img: getImageUrl("@/assets/images/investors/A&T.png"),
     },
 ];
-const investors1 = investors.slice(0, 6)
-const investors2 = investors.slice(6)
+
+const investors1 = investors.slice(0, 6);
+const investors2 = investors.slice(6);
 
 const AiLanding = () => {
-    return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden">
+    // 状态管理
+    const [activeCategory, setActiveCategory] = useState("all");
+    const [searchQuery, setSearchQuery] = useState("");
 
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                {/* 背景图片使用scale变换 */}
+    // 过滤项目卡片
+    const filteredProjects = projectCards.filter(project => {
+        // 如果搜索框有内容，过滤名称中包含搜索内容的项目
+        const matchesSearch = searchQuery === "" ||
+            project.name.toLowerCase().includes(searchQuery.toLowerCase());
+
+        // 如果选择了特定分类，过滤该分类的项目
+        const matchesCategory = activeCategory === "all" || project.category === activeCategory;
+
+        return matchesSearch && matchesCategory;
+    });
+
+    return (
+        <div className="min-h-screen w-full pb-12 overflow-hidden bg-gradient-to-b from-[#090A09] to-[#090A09]">
+            {/* 背景图片 */}
+            <div className="absolute top-0 inset-0 z-0 overflow-hidden">
                 <img
-                    src={getImageUrl('@/assets/images/_global/zk_landing_bg.png')}
+                    src={getImageUrl('@/assets/images/_global/ai_landing_bg.png')}
                     alt="Background"
-                    className="absolute top-1/2 left-1/2 w-full h-full object-cover"
+                    className="absolute top-0 left-1/2 w-full h-[150vh] object-cover"
                     style={{
                         filter: 'grayscale(0%)',
-                        transform: 'translate(-50%, -50%) scale(1.3)', // 使用scale放大图片
-                        transformOrigin: 'center 0%',  // 确保从中心点缩放
-                        objectPosition: '50% 50%'  // 调整图片在视窗中的位置
+                        transform: 'translate(-50%, 0%) scale(1)',
+                        transformOrigin: 'center 0%',
+                        objectPosition: '50% 50%'
                     }}
                 />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#090A09]/30 to-[#090A09]"></div>
             </div>
 
-            <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
+            {/* 主标题部分 */}
+            <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] mt-20">
                 <div className="flex flex-col items-center">
-                    <span className="sub-title">Simple in Form, Infinite in Power.</span>
-                    <span className="title text-[11.25rem] !text-[#fff] text-center">Cysic ZK</span>
+                    <span className="sub-title">INTELLIGENCE SIMPLIFIED, POTENTIAL UNLEASHED</span>
+                    <span className="title text-[11.25rem] !text-[#fff] text-center">CYSIC AI</span>
                 </div>
 
-
-                <Button type="solid" className="backdrop-blur-sm mt-[8.25rem] mb-[4rem]">
-                    <div className="flex items-center gap-2 " onClick={handleSignIn}>
+                <Button type="solid" className="backdrop-blur-sm mt-[3.25rem] mb-[4rem]" onClick={handleSignIn}>
+                    <div className="flex items-center gap-2">
                         <span className="text-sm font-[400] uppercase">Sign In</span>
                         <ArrowRight width={12} height={12} />
                     </div>
                 </Button>
             </div>
 
-            <div className="mt-[40vh] flex flex-col items-center gap-12 relative z-[2]">
+            {/* 投资者部分 */}
+            <div className="mt-[30vh] flex flex-col items-center gap-12 relative z-[2]">
                 <span className="title !font-[300] uppercase text-center text-[2.25rem]">investors</span>
                 <div className="flex flex-wrap gap-10 justify-center">
                     <div className="flex flex-wrap gap-10 justify-center">
@@ -94,7 +208,7 @@ const AiLanding = () => {
                             investors1?.map(i => {
                                 return (
                                     <div className="min-w-12 h-8" key={i.name}>
-                                        <img src={i.img} className="object-contain h-full" />
+                                        <img src={i.img} className="object-contain h-full" alt={i.name} />
                                     </div>
                                 )
                             })
@@ -105,13 +219,133 @@ const AiLanding = () => {
                             investors2?.map(i => {
                                 return (
                                     <div className="min-w-12 h-8" key={i.name}>
-                                        <img src={i.img} className="object-contain h-full" />
+                                        <img src={i.img} className="object-contain h-full" alt={i.name} />
                                     </div>
                                 )
                             })
                         }
                     </div>
                 </div>
+            </div>
+
+            {/* SERVICE标题 */}
+            <div className="mt-[20vh] flex flex-col items-center gap-6 relative z-[2]">
+                <span className="title !font-[300] uppercase text-center text-[4.5rem]">SERVICE</span>
+            </div>
+
+            {/* Project Based Service 部分 */}
+            <div className="mt-12 relative z-[2] container mx-auto px-[3rem]">
+                <ShadowCardContainer className="pt-12">
+                    <>
+                        <h2 className="title !font-[300] text-3xl uppercase text-center">PROJECT BASED SERVICE</h2>
+                        <p className="text-gray-300 text-center text-sm mt-2 mb-8">
+                            Access 700+ AI Agents & Models directly through our Playground or integrate via API calls.
+                        </p>
+
+                        <div className="flex items-center justify-between mb-12 gap-6">
+                            {/* 分类标签 */}
+                            <div className="flex overflow-x-auto pb-4 gap-6 text-center border-b border-sub flex-1">
+                                {serviceCategories.map(category => (
+                                    <button
+                                        key={category.id}
+                                        onClick={() => setActiveCategory(category.id)}
+                                        className={`text-sm uppercase ${activeCategory === category.id ? 'text-white' : 'text-gray-500'} min-w-max`}
+                                    >
+                                        {category.name}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* 搜索框 */}
+                            <div className="relative w-[18rem]">
+                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <Search size={16} className="text-gray-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    className="bg-transparent border border-gray-700 rounded-md py-2 pl-10 pr-4 w-full text-sm"
+                                    placeholder="SEARCH"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                />
+                            </div>
+
+                        </div>
+
+                        {/* 项目卡片列表 */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {filteredProjects.map(project => (
+                                <GradientBorderCard key={project.id} innerClassName="relative flex flex-col gap-4 p-4 !bg-[#090A09]">
+                                    <>
+
+                                        <div className="w-full flex gap-4">
+                                            <img src={getImageUrl('@/assets/images/icon/deepseek.png')} alt="Provider" className="w-[3.75rem] h-[3.75rem]" />
+
+                                            <div className="flex flex-col gap-2 w-full">
+                                                <div className="flex items-center gap-2 justify-between w-full">
+                                                    <div className="title !font-[300] uppercase text-base">{project.name}</div>
+
+                                                    <div className={`text-xs px-2 py-1 rounded ${project.tagColor}`}>
+                                                        {project.tag}
+                                                    </div>
+
+                                                </div>
+                                                <div className="flex items-center gap-1 text-sub">
+                                                    <div className="text-sm text-sub">TRY</div>
+                                                    <ArrowRight size={12} />
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div className="text-base line-clamp-6">
+                                            {project.description}
+                                        </div>
+
+
+                                    </>
+                                </GradientBorderCard>
+                            ))}
+                        </div>
+                    </>
+                </ShadowCardContainer>
+            </div>
+
+            {/* 计算力服务部分 */}
+            <div className="mx-auto !px-[3rem] mt-20 mb-10 ">
+                <ShadowCardContainer className="relative z-[2] ">
+                    <div className="relative py-20 overflow-hidden aspect-[1344/640]">
+                        {/* 紫色背景光晕 */}
+                        <div className="absolute z-[4] inset-0 shadow-[inset_0px_0px_100px_100px_rgba(9,10,9,1)] rounded-xl"></div>
+
+                        <div
+                            className="absolute inset-0 z-[0] rounded-xl overflow-hidden -bottom-[50%]"
+                        >
+                            <img
+                                src={getImageUrl('@/assets/images/_global/ai_landing_bg_bottom.png')}
+                                alt="Computational Power Background"
+                                className="w-full h-full object-cover"
+                            />
+
+                        </div>
+
+
+                        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+                            <h2 className="title !font-[300] text-4xl uppercase mb-4">COMPUTATIONAL POWER SERVICE</h2>
+                            <p className="mb-6 max-w-3xl mx-auto text-base">
+                                Share in the profits generated from Cysic AI's computing power by purchasing Cysic AI Compute Boxes!
+                                <br />No coding required — Just buy and start EARNING immediately!
+                            </p>
+
+                            <Button type="solid" className="!p-6">
+                                <div className="flex items-center gap-2 uppercase">
+                                    <span>PURCHASE COMPUTE BOX NOW</span>
+                                    <ArrowRight width={12} height={12} />
+                                </div>
+                            </Button>
+                        </div>
+                    </div>
+                </ShadowCardContainer>
             </div>
         </div>
     );
