@@ -49,7 +49,7 @@ const Button = ({
             case BtnType.solid:
                 return '!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]';
             default:
-                return '!bg-[transparent] !border-none text-[#fff]';
+                return '!backdrop-blur-none !bg-[transparent] !border-none text-[#fff]';
         }
     }, [type])
 
@@ -72,7 +72,7 @@ const Button = ({
                 disabled ? 'pointer-events-none opacity-50 disabled:[--tw-text-opacity:0.5] disabled:[--tw-bg-opacity:0.5]' : '',
              )}
         >
-            {_loading ? <span className="loading loading-dots loading-md" /> : children}
+            {_loading ? <span className="loading loading-sm" /> : children}
         </button>
     )
 }

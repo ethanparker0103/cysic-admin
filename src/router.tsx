@@ -7,6 +7,9 @@ import Nft from "@/routes/pages/Nft/page";
 import Stake from "@/routes/pages/Stake/page";
 import ZkInvite from "@/routes/pages/Zk/invite/page";
 import ZkProver from "@/routes/pages/Zk/prover/page"; 
+import NftUserPortal from "@/routes/pages/Nft/userPortal/page";
+import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
+import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
 
 
 export const router = createBrowserRouter(
@@ -43,7 +46,24 @@ export const router = createBrowserRouter(
         },
         {
           path: "/nft",
-          element: <Nft />,
+          children: [
+            {
+              index: true,
+              element: <Nft />,
+            },
+            {
+              path: "userPortal",
+              element: <NftUserPortal />,
+            },
+            {
+              path: "socialTask",
+              element: <NftSocialTask />,
+            },
+            {
+              path: "serviceHub",
+              element: <NftServiceHub />,
+            },
+          ]
         },
         {
           path: "/stake",

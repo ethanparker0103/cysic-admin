@@ -644,16 +644,16 @@ export const handleReserveModal = () => {
   window.dispatchEvent(event);
 };
 
-export const handleStakeModal = () => {
+export const handleStakeModal = (props: any = {}) => {
   const event = new CustomEvent('modal_stake_visible', { 
-    detail: { visible: true, tab: "stake" } 
+    detail: { visible: true, tab: "stake", ...props } 
   });
   window.dispatchEvent(event);
 };
 
-export const handleUnstakeModal = () => {
+export const handleUnstakeModal = (props: any = {}) => {
   const event = new CustomEvent('modal_stake_visible', { 
-    detail: { visible: true, tab: "unstake" } 
+    detail: { visible: true, tab: "unstake", ...props } 
   });
   window.dispatchEvent(event);
 };

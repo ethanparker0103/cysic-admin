@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
 import Button from "@/components/Button";
-import { getImageUrl, showStatusModal } from "@/utils/tools";
+import { showStatusModal } from "@/utils/tools";
 import { Slider } from "@nextui-org/react";
 import { StatusType } from "./statusModal"; // 导入状态类型枚举
+import useCosmos from "@/models/_global/cosmos";
+import useStake from "@/models/stake"; // 引入stake store
+import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
+import { cosmosFee, cysicTestnet } from "@/config";
+import { MsgDelegate, MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
+import BigNumber from "bignumber.js";
 
 // 操作类型枚举
 enum StakeAction {
@@ -19,13 +25,20 @@ enum ValidatorTab {
     OTHERS = "OTHERS"
 }
 
-// 验证人数据接口
-interface IValidator {
-    id: string;
-    name: string;
-    logo: string;
-    shortName: string;
-    apr: string;
+// 直接使用接口数据类型，确保与API响应一致
+interface ValidatorResponse {
+    validatorName: string;
+    stake?: {
+        amount: string;
+        symbol: string;
+    };
+    votingPower: {
+        amount: string;
+        symbol: string;
+    };
+    votingPowerPercent: string;
+    commissionRate: string;
+    apr?: string;
 }
 
 // 自定义滚动条组件
@@ -62,77 +75,45 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         />
                     )}
                 />
-                
-         
+
+
             </div>
         </div>
     );
 };
 
-// 自定义下拉框组件
-const ValidatorDropdown = ({ 
-    selectedValidator, 
+// 修改下拉框组件以直接使用store中的数据
+const ValidatorDropdown = ({
+    selectedValidator,
     onSelect,
     isOpen,
     onOpenChange
-}: { 
-    selectedValidator: IValidator | null, 
-    onSelect: (validator: IValidator) => void,
+}: {
+    selectedValidator: ValidatorResponse | null,
+    onSelect: (validator: ValidatorResponse) => void,
     isOpen: boolean,
     onOpenChange: (isOpen: boolean) => void
 }) => {
     const [validatorTab, setValidatorTab] = useState<ValidatorTab>(ValidatorTab.MY_VALIDATORS);
-    const [validators, setValidators] = useState<IValidator[]>([]);
-    const [isLoadingValidators, setIsLoadingValidators] = useState(false);
+    const { stakeList, activeList } = useStake(); // 使用stake store
 
-    // 模拟验证人数据加载
-    const fetchValidators = (tab: ValidatorTab) => {
-        setIsLoadingValidators(true);
-        
-        // 模拟请求延迟
-        setTimeout(() => {
-            if (tab === ValidatorTab.MY_VALIDATORS) {
-                // 假设我的验证人为空
-                setValidators([]);
-            } else {
-                // 其他验证人有数据
-                setValidators([
-                    {
-                        id: "1",
-                        name: "TierSync",
-                        logo: "TG",
-                        shortName: "TG",
-                        apr: "10.34%"
-                    },
-                    {
-                        id: "2",
-                        name: "PXerSync",
-                        logo: "PX",
-                        shortName: "PX",
-                        apr: "10.34%"
-                    }
-                ]);
-            }
-            setIsLoadingValidators(false);
-        }, 500);
-    };
-
-    // 初始加载
-    useEffect(() => {
-        if (isOpen) {
-            fetchValidators(validatorTab);
+    // 直接从store获取验证者数据，不再使用本地状态和请求
+    const validators = useMemo(() => {
+        if (validatorTab === ValidatorTab.MY_VALIDATORS) {
+            return stakeList?.data?.validatorList || [];
+        } else {
+            return activeList?.data?.validatorList || [];
         }
-    }, [isOpen]);
+    }, [validatorTab, stakeList, activeList]);
 
-    // 处理验证人Tab切换
+    // 选项卡切换处理
     const handleValidatorTabChange = (tab: ValidatorTab) => {
         setValidatorTab(tab);
-        fetchValidators(tab);
     };
 
     return (
         <div className="relative">
-            <div 
+            <div
                 className="flex justify-between items-center bg-transparent border border-[#333] rounded-lg p-4 cursor-pointer"
                 onClick={() => onOpenChange(!isOpen)}
             >
@@ -140,12 +121,12 @@ const ValidatorDropdown = ({
                     {selectedValidator ? (
                         <>
                             <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                                {selectedValidator.shortName}
+                                {selectedValidator.validatorName.substring(0, 2).toUpperCase()}
                             </div>
-                            <span className="text-white">{selectedValidator.name}</span>
+                            <span className="text-white">{selectedValidator.validatorName}</span>
                         </>
                     ) : (
-                        <span className="text-[#777]">ASDFGHJKL</span>
+                        <span className="text-[#777]">Select Validator</span>
                     )}
                 </div>
                 <div>
@@ -157,84 +138,76 @@ const ValidatorDropdown = ({
                 <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-black border border-[#333] rounded-lg overflow-hidden">
                     <div className="p-4">
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
-                        
+
                         {/* 验证人选项卡 */}
                         <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4">
                             <button
-                                className={`py-3 uppercase text-center text-base ${
-                                    validatorTab === ValidatorTab.MY_VALIDATORS
+                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.MY_VALIDATORS
                                         ? "bg-white text-black"
                                         : "bg-[#1E1E1E] text-[#777]"
-                                }`}
+                                    }`}
                                 onClick={(e) => {
-                                    e.stopPropagation(); // 阻止事件冒泡
+                                    e.stopPropagation();
                                     handleValidatorTabChange(ValidatorTab.MY_VALIDATORS);
                                 }}
                             >
                                 MY VALIDATORS
                             </button>
                             <button
-                                className={`py-3 uppercase text-center text-base ${
-                                    validatorTab === ValidatorTab.OTHERS
+                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.OTHERS
                                         ? "bg-white text-black"
                                         : "bg-[#1E1E1E] text-[#777]"
-                                }`}
+                                    }`}
                                 onClick={(e) => {
-                                    e.stopPropagation(); // 阻止事件冒泡
+                                    e.stopPropagation();
                                     handleValidatorTabChange(ValidatorTab.OTHERS);
                                 }}
                             >
                                 OTHERS
                             </button>
                         </div>
-                        
-                        {/* 加载状态 */}
-                        {isLoadingValidators ? (
-                            <div className="text-center text-white py-8">
-                                Loading validators...
-                            </div>
-                        ) : (
+
+                        {/* 验证人列表或空状态 */}
+                        {validators.length > 0 ? (
                             <>
-                                {/* 验证人列表头部 - 仅在有数据时显示 */}
-                                {validators.length > 0 && (
-                                    <div className="flex justify-between items-center bg-[#111] p-3 rounded-md mb-2">
-                                        <div className="text-white">Validator</div>
-                                        <div className="text-white">Expected APR</div>
-                                    </div>
-                                )}
-                                
-                                {/* 验证人列表或空状态 */}
-                                {validators.length > 0 ? (
-                                    <div className="max-h-[200px] overflow-y-auto">
-                                        {validators.map((validator) => (
-                                            <div 
-                                                key={validator.id}
-                                                className="flex justify-between items-center p-3 cursor-pointer hover:bg-[#111] rounded-md"
-                                                onClick={(e) => {
-                                                    e.stopPropagation(); // 阻止事件冒泡
-                                                    onSelect(validator);
-                                                }}
-                                            >
-                                                <div className="flex items-center gap-2">
-                                                    <div className={`w-8 h-8 rounded-full ${validator.shortName === 'TG' ? 'bg-blue-500' : 'bg-purple-500'} flex items-center justify-center text-white`}>
-                                                        {validator.shortName}
-                                                    </div>
-                                                    <span className="text-white">{validator.name}</span>
+                                {/* 验证人列表头部 */}
+                                <div className="flex justify-between items-center bg-[#111] p-3 rounded-md mb-2">
+                                    <div className="text-white">Validator</div>
+                                    <div className="text-white">Expected APR</div>
+                                </div>
+
+                                {/* 验证人列表 */}
+                                <div className="max-h-[200px] overflow-y-auto">
+                                    {validators.map((validator, index) => (
+                                        <div
+                                            key={`${validator.validatorName}-${index}`}
+                                            className="flex justify-between items-center p-3 cursor-pointer hover:bg-[#111] rounded-md"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                onSelect(validator);
+                                            }}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <div className={`w-8 h-8 rounded-full ${index % 2 === 0 ? 'bg-blue-500' : 'bg-purple-500'} flex items-center justify-center text-white`}>
+                                                    {validator.validatorName.substring(0, 2).toUpperCase()}
                                                 </div>
-                                                <div className="text-white">{validator.apr}</div>
+                                                <span className="text-white">{validator.validatorName}</span>
                                             </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    // 空状态显示
-                                    <div className="text-center text-white py-10">
-                                        My Validators not found
-                                    </div>
-                                )}
+                                            <div className="text-white">{validator.apr || "0%"}</div>
+                                        </div>
+                                    ))}
+                                </div>
                             </>
+                        ) : (
+                            // 空状态显示
+                            <div className="text-center text-white py-10">
+                                {validatorTab === ValidatorTab.MY_VALIDATORS
+                                    ? "My Validators not found"
+                                    : "No active validators found"}
+                            </div>
                         )}
                     </div>
-                    
+
                     <div className="flex justify-between items-center px-4 py-2 border-t border-[#333]">
                         <div className="text-[#777]">Unbonding period</div>
                         <div className="text-white">21 Days</div>
@@ -250,61 +223,76 @@ const StakeModal = () => {
     const { visible, setVisible, data }: any = useModalState({
         eventName: "modal_stake_visible",
     });
+    const { stakeList, activeList } = useStake(); // 使用stake store
+
 
     // 状态管理
     const [activeTab, setActiveTab] = useState<StakeAction>(StakeAction.STAKE);
-    const [selectedValidator, setSelectedValidator] = useState<IValidator | null>(null);
+    const [selectedValidator, setSelectedValidator] = useState<ValidatorResponse | null>(null);
     const [showValidatorList, setShowValidatorList] = useState(false);
     const [amount, setAmount] = useState("");
-    const [balance, setBalance] = useState("1,000");
     const [stakePercentage, setStakePercentage] = useState(0);
     const [redemptionAmount, setRedemptionAmount] = useState("1,000.00 CYS");
     const [totalEarnings, setTotalEarnings] = useState("123.00 CYS");
     const [estimatedArrivalTime, setEstimatedArrivalTime] = useState("Nov 12, 2025 08:00");
+    const { balanceMap, address, connector } = useCosmos()
+    const cgtBalance = balanceMap?.CGT?.hm_amount || 0
+    const balance = cgtBalance.toString();
+
+    // 通过名称查找验证者
+    const findValidatorByName = (name: string): ValidatorResponse | null => {
+        // 在我的验证者列表中查找
+        const myValidatorMatch = stakeList?.data?.validatorList?.find(
+            v => v.validatorName === name
+        );
+        if (myValidatorMatch) return myValidatorMatch;
+
+        // 在活跃验证者列表中查找
+        const activeValidatorMatch = activeList?.data?.validatorList?.find(
+            v => v.validatorName === name
+        );
+        if (activeValidatorMatch) return activeValidatorMatch;
+
+        // 如果未找到，返回null
+        return null;
+    };
 
     // 在弹窗打开时初始化状态
     useEffect(() => {
         if (visible) {
-            // 如果有指定的初始选项卡
+            // 设置选项卡
             if (data?.tab && (data.tab === "stake" || data.tab === "unstake")) {
                 setActiveTab(data.tab === "stake" ? StakeAction.STAKE : StakeAction.UNSTAKE);
             }
-            
-            // 如果有指定的初始验证人
+
+            // 设置验证者
             if (data?.validator) {
-                const mockValidators = [
-                    {
-                        id: "1",
-                        name: "TierSync",
-                        logo: "TG",
-                        shortName: "TG",
-                        apr: "10.34%"
-                    },
-                    {
-                        id: "2",
-                        name: "PXerSync",
-                        logo: "PX",
-                        shortName: "PX",
-                        apr: "10.34%"
-                    }
-                ];
-                const validator = mockValidators.find(v => v.id === data.validator);
-                if (validator) {
-                    setSelectedValidator(validator);
+                const foundValidator = findValidatorByName(data.validator);
+                if (foundValidator) {
+                    setSelectedValidator(foundValidator);
+                } else if (stakeList?.data?.validatorList?.length) {
+                    // 如果找不到指定验证者但有验证者列表，使用第一个
+                    setSelectedValidator(stakeList.data.validatorList[0]);
+                } else if (activeList?.data?.validatorList?.length) {
+                    // 否则使用活跃验证者列表的第一个
+                    setSelectedValidator(activeList.data.validatorList[0]);
                 }
             }
-            
-            // 如果有指定的初始金额
+
+            // 设置金额
             if (data?.amount) {
                 setAmount(data.amount.toString());
                 calculatePercentage(data.amount.toString());
             }
         }
-    }, [visible, data]);
+    }, [visible, data, stakeList, activeList]);
 
     // 处理Tab切换
     const handleTabChange = (tab: StakeAction) => {
         setActiveTab(tab);
+        // 切换选项卡时清空输入数据
+        setAmount("");
+        setStakePercentage(0);
     };
 
     // 处理金额变更
@@ -314,67 +302,114 @@ const StakeModal = () => {
         calculatePercentage(value);
     };
 
-    // 计算质押百分比
+    // 计算质押百分比 - 需要根据不同模式使用不同的基准值
     const calculatePercentage = (amountStr: string) => {
         const cleanAmount = parseFloat(amountStr.replace(/,/g, "")) || 0;
-        const cleanBalance = parseFloat(balance.replace(/,/g, "")) || 1;
-        const percentage = Math.min(Math.max((cleanAmount / cleanBalance) * 100, 0), 100);
-        setStakePercentage(percentage);
+
+        if (activeTab === StakeAction.STAKE) {
+            // 质押模式：基于用户余额计算百分比
+            const cleanBalance = parseFloat(balance.replace(/,/g, "")) || 1;
+            const percentage = Math.min(Math.max((cleanAmount / cleanBalance) * 100, 0), 100);
+            setStakePercentage(percentage);
+        } else {
+            // 取消质押模式：基于已质押金额计算百分比
+            if (selectedValidator?.stake?.amount) {
+                const stakeAmount = parseFloat(selectedValidator.stake.amount.replace(/,/g, "")) || 1;
+                const percentage = Math.min(Math.max((cleanAmount / stakeAmount) * 100, 0), 100);
+                setStakePercentage(percentage);
+            } else {
+                setStakePercentage(0);
+            }
+        }
     };
 
     // 设置最大金额
     const handleSetMax = () => {
-        setAmount(balance);
-        setStakePercentage(100);
+        if (activeTab === StakeAction.STAKE) {
+            // 质押模式下使用账户余额
+            setAmount(balance);
+            setStakePercentage(100);
+        } else {
+            // 取消质押模式下使用验证人的质押金额
+            if (selectedValidator?.stake?.amount) {
+                setAmount(selectedValidator.stake.amount);
+                // 在取消质押模式下，百分比应该基于验证人已质押的金额
+                setStakePercentage(100);
+            }
+        }
     };
 
-    // 处理百分比选择
+    // 处理百分比选择 - 同样需要根据不同模式使用不同的基准值
     const handlePercentageSelect = (value: number) => {
         setStakePercentage(value);
-        const cleanBalance = parseFloat(balance.replace(/,/g, "")) || 0;
-        const newAmount = (cleanBalance * (value / 100)).toFixed(2);
-        setAmount(newAmount);
+
+        if (activeTab === StakeAction.STAKE) {
+            // 质押模式：基于用户余额计算金额
+            const cleanBalance = parseFloat(balance.replace(/,/g, "")) || 0;
+            const newAmount = (cleanBalance * (value / 100)).toFixed(2);
+            setAmount(newAmount);
+        } else {
+            // 取消质押模式：基于已质押金额计算金额
+            if (selectedValidator?.stake?.amount) {
+                const stakeAmount = parseFloat(selectedValidator.stake.amount.replace(/,/g, "")) || 0;
+                const newAmount = (stakeAmount * (value / 100)).toFixed(2);
+                setAmount(newAmount);
+            }
+        }
     };
 
     // 处理质押操作
     const handleStake = async () => {
         if (!selectedValidator) return;
-        
+
         try {
-            console.log(`Staking ${amount} CGT to ${selectedValidator.name}`);
-            
-            // 先显示加载状态
+            console.log(`Staking ${amount} CGT to ${selectedValidator.validatorName}`);
+
+            // 显示加载状态
             showStatusModal({
                 type: StatusType.LOADING,
-                message: `Staking ${amount} CGT to ${selectedValidator.name}, Confirm this tx in your wallet`
+                message: `Staking ${amount} CGT to ${selectedValidator.validatorName}, Confirm this tx in your wallet`
             });
-            
-            // 模拟交易过程（实际场景中这里应该是真实的交易）
-            setTimeout(() => {
-                // 模拟交易成功
-                const mockTxHash = "0x" + Math.random().toString(16).substr(2, 64);
-                
-                // 显示成功状态
-                showStatusModal({
-                    type: StatusType.SUCCESS,
-                    title: "Transaction Submitted",
-                    chainName: "CYSIC CHAIN",
-                    txHash: mockTxHash
-                });
-                
-                // 关闭质押模态框
-                setVisible(false);
-                resetState();
-            }, 3000);
+
+
+
+            checkKeplrWallet()
+            const msg = {
+                typeUrl: "/cosmos.staking.v1beta1.MsgDelegate",
+                value: MsgDelegate.encode(MsgDelegate.fromPartial({
+                    delegatorAddress: address,
+                    // TODO 需要根据验证人列表的地址来选择
+                    validatorAddress: address,
+                    amount: {
+                        denom: "CGT", // 代币的denom
+                        amount: BigNumber(amount).multipliedBy(1e18).toString(), // 委托的数量
+                    },
+                })).finish(),
+            };
+
+            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
+            const tx = await checkkTx(connector, result?.transactionHash)
+            console.log('tx', tx)
+
+            showStatusModal({
+                type: StatusType.SUCCESS,
+                title: "Transaction Submitted",
+                chainName: cysicTestnet.chainName,
+                txHash: tx
+            });
+
+            // 关闭质押模态框
+            setVisible(false);
+            resetState();
         } catch (error) {
             console.error("Error staking:", error);
-            
+
             // 显示错误状态
             showStatusModal({
                 type: StatusType.ERROR,
                 title: "Transaction Failed",
                 message: "The transaction was not processed correctly. Please try again.",
-                onRetry: () => handleStake() // 重试时重新执行质押操作
+                onRetry: () => handleStake()
             });
         }
     };
@@ -382,55 +417,52 @@ const StakeModal = () => {
     // 处理取消质押操作
     const handleUnstake = async () => {
         if (!selectedValidator) return;
-        
+
         try {
-            console.log(`Unstaking ${amount} CGT from ${selectedValidator.name}`);
-            
-            // 先显示加载状态
+            console.log(`Unstaking ${amount} CGT from ${selectedValidator.validatorName}`);
+
+            // 显示加载状态
             showStatusModal({
                 type: StatusType.LOADING,
-                message: `Unstaking ${amount} CGT from ${selectedValidator.name}, Confirm this tx in your wallet`
+                message: `Unstaking ${amount} CGT from ${selectedValidator.validatorName}, Confirm this tx in your wallet`
             });
-            
-            // 模拟交易过程
-            setTimeout(() => {
-                // 随机模拟成功或失败
-                const isSuccess = Math.random() > 0.5;
-                
-                if (isSuccess) {
-                    // 模拟交易成功
-                    const mockTxHash = "0x" + Math.random().toString(16).substr(2, 64);
-                    
-                    // 显示成功状态
-                    showStatusModal({
-                        type: StatusType.SUCCESS,
-                        title: "Unstake Successful",
-                        chainName: "CYSIC CHAIN",
-                        txHash: mockTxHash
-                    });
-                } else {
-                    // 模拟用户取消签名
-                    showStatusModal({
-                        type: StatusType.ERROR,
-                        title: "User Cancel Signature",
-                        message: "You have cancelled the transaction signature.",
-                        onRetry: () => handleUnstake() // 重试时重新执行取消质押操作
-                    });
-                }
-                
-                // 关闭质押模态框
-                setVisible(false);
-                resetState();
-            }, 3000);
+
+
+            checkKeplrWallet()
+            const msg = {
+                typeUrl: "/cosmos.staking.v1beta1.MsgUndelegate",
+                value: MsgUndelegate.encode(MsgUndelegate.fromPartial({
+                    delegatorAddress: address,
+                    // TODO 需要根据验证人列表的地址来选择
+                    validatorAddress: address,
+                    amount: {
+                        denom: "CGT", // 代币的denom
+                        amount: BigNumber(amount).multipliedBy(1e18).toString(), // 委托的数量
+                    },
+                })).finish(),
+            };
+
+            const result = await signAndBroadcastDirect(address, msg, cosmosFee, connector)
+            const tx = await checkkTx(connector, result?.transactionHash)
+
+            showStatusModal({
+                type: StatusType.SUCCESS,
+                title: "Unstake Successful",
+                chainName: "CYSIC CHAIN",
+                txHash: tx
+            });
+
+            setVisible(false);
+            resetState();
         } catch (error) {
             console.error("Error unstaking:", error);
-            
+
             // 显示错误状态
             showStatusModal({
                 type: StatusType.ERROR,
                 title: "Transaction Failed",
                 message: "The transaction was not processed correctly. Please try again.",
-                onRetry: () => handleUnstake() // 重试时重新执行取消质押操作
+                onRetry: () => handleUnstake()
             });
         }
     };
@@ -446,8 +478,16 @@ const StakeModal = () => {
         setAmount("");
         setStakePercentage(0);
         setShowValidatorList(false);
-        // 保留其他状态以便下次打开时显示
     };
+
+    // 当选择验证人变化时，如果是在取消质押模式，需要重新计算进度条
+    useEffect(() => {
+        if (activeTab === StakeAction.UNSTAKE && selectedValidator) {
+            // 清空当前输入，确保进度条与新选择的验证人保持一致
+            setAmount("");
+            setStakePercentage(0);
+        }
+    }, [selectedValidator, activeTab]);
 
     return (
         <Modal
@@ -459,21 +499,19 @@ const StakeModal = () => {
             {/* 选项卡头部 */}
             <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6">
                 <button
-                    className={`py-4 uppercase text-center text-base ${
-                        activeTab === StakeAction.STAKE
+                    className={`py-4 uppercase text-center text-base ${activeTab === StakeAction.STAKE
                             ? "bg-white text-black"
                             : "bg-[#1E1E1E] text-[#777]"
-                    }`}
+                        }`}
                     onClick={() => handleTabChange(StakeAction.STAKE)}
                 >
                     STAKE
                 </button>
                 <button
-                    className={`py-4 uppercase text-center text-base ${
-                        activeTab === StakeAction.UNSTAKE
+                    className={`py-4 uppercase text-center text-base ${activeTab === StakeAction.UNSTAKE
                             ? "bg-white text-black"
                             : "bg-[#1E1E1E] text-[#777]"
-                    }`}
+                        }`}
                     onClick={() => handleTabChange(StakeAction.UNSTAKE)}
                 >
                     UNSTAKE
@@ -489,7 +527,7 @@ const StakeModal = () => {
             {/* 验证人选择 - 使用自定义下拉框组件 */}
             <div className="mb-4">
                 <div className="text-white text-base mb-2">Validator</div>
-                <ValidatorDropdown 
+                <ValidatorDropdown
                     selectedValidator={selectedValidator}
                     onSelect={(validator) => {
                         setSelectedValidator(validator);
@@ -508,7 +546,7 @@ const StakeModal = () => {
                             <div className="text-white">Staking Amount</div>
                             <div className="flex items-center text-white">
                                 <Wallet size={16} className="mr-2" />
-                                Balance: {balance}
+                                Balance: {cgtBalance}
                             </div>
                         </div>
                         <div className="flex justify-between items-center bg-transparent border border-[#333] rounded-lg p-4">
@@ -528,8 +566,8 @@ const StakeModal = () => {
                         </div>
                     </div>
 
-                    {/* 质押百分比选择器 - 使用自定义滚动条组件 */}
-                    <PercentageSlider 
+                    {/* 质押百分比选择器 */}
+                    <PercentageSlider
                         value={stakePercentage}
                         onChange={handlePercentageSelect}
                     />
@@ -538,15 +576,15 @@ const StakeModal = () => {
                     <div className="space-y-3 mb-6">
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">APR</div>
-                            <div className="text-white">12.34%</div>
+                            <div className="text-white">{selectedValidator?.apr || "0%"}</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Voting Power</div>
-                            <div className="text-white">5%</div>
+                            <div className="text-white">{selectedValidator?.votingPowerPercent || "0%"}</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Commission rate</div>
-                            <div className="text-white">10%</div>
+                            <div className="text-white">{selectedValidator?.commissionRate || "0%"}</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Unbonding period</div>
@@ -562,7 +600,7 @@ const StakeModal = () => {
                             <div className="text-white">Amount</div>
                             <div className="flex items-center text-white">
                                 <Wallet size={16} className="mr-2" />
-                                Amount to unstake: {balance}
+                                Amount to unstake: {selectedValidator?.stake?.amount || '-'}
                             </div>
                         </div>
                         <div className="flex justify-between items-center bg-transparent border border-[#333] rounded-lg p-4">
@@ -582,8 +620,8 @@ const StakeModal = () => {
                         </div>
                     </div>
 
-                    {/* 质押百分比选择器 - 使用自定义滚动条组件 */}
-                    <PercentageSlider 
+                    {/* 质押百分比选择器 */}
+                    <PercentageSlider
                         value={stakePercentage}
                         onChange={handlePercentageSelect}
                     />
@@ -611,7 +649,7 @@ const StakeModal = () => {
                 type="light"
                 className="w-full py-4 rounded-lg text-base"
                 onClick={activeTab === StakeAction.STAKE ? handleStake : handleUnstake}
-                disabled={!amount || !selectedValidator}
+                disabled={!Number(amount) || !selectedValidator}
             >
                 {activeTab === StakeAction.STAKE ? "STAKE" : "UNSTAKE"}
             </Button>

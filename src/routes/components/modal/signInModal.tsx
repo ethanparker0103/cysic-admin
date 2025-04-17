@@ -7,9 +7,11 @@ import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { shortStr } from "@/utils/tools";
 import useUser from "@/models/user";
-import { useAppKit } from "@reown/appkit/react";
 import useAccount from "@/hooks/useAccount";
 import axios from "@/service";
+
+// import { useAppKit } from "@reown/appkit/react";
+import { usePrivy } from "@privy-io/react-auth";
 
 // 流程状态枚举
 enum SignInStep {
@@ -20,7 +22,8 @@ enum SignInStep {
 
 const SignInModal = () => {
     const { walletAddress, isConnectedOnly } = useAccount();
-    const { open } = useAppKit();
+    const { login } = usePrivy()
+    // const { open } = useAppKit();
 
     // 获取模态框状态，包括可能传入的步骤信息
     const { visible, setVisible, data } = useModalState({
@@ -89,7 +92,7 @@ const SignInModal = () => {
         setError(null);
         setLoading(true);
         try {
-            open();
+            await login();
         } catch (error) {
             console.error("Error opening wallet:", error);
             setError("Failed to open wallet connector");

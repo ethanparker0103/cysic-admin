@@ -1,10 +1,11 @@
+import { cn } from "@nextui-org/react";
 import copy from "copy-to-clipboard";
 import toast from "react-simple-toasts";
 
-const Copy = ({ value, children }: any) => {
+const Copy = ({ className, value, children }: any) => {
   return (
     <div
-     className="cursor-pointer flex gap-1 items-center"
+     className={cn("cursor-pointer flex gap-1 items-center", className)}
       onClick={() => {
         copy(value);
         toast("Copied");

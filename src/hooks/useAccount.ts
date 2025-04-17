@@ -1,6 +1,7 @@
 import { useAccount as useWagmiAccount } from 'wagmi';
 import useUser from '@/models/user';
 import { useMemo } from 'react';
+import useCosmos from '@/models/_global/cosmos';
 
 // 定义账户类型，区分不同的权限状态
 export enum AccountStatus {
@@ -17,6 +18,7 @@ export enum AccountStatus {
 const useAccount = () => {
     // 获取原始钱包连接状态
     const wagmiAccount = useWagmiAccount();
+    const { address: cosmosAddress } = useCosmos()
     
     // 获取用户状态
     const { 
@@ -99,7 +101,10 @@ const useAccount = () => {
       walletAddress: wagmiAccount.address,
       
       // 注册后的地址，只在已注册状态下有效
-      registeredAddress: isRegistered ? registeredAddress : undefined
+      registeredAddress: isRegistered ? registeredAddress : undefined,
+
+      // cosmos
+      cosmosAddress,
     };
 };
 

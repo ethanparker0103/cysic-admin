@@ -8,8 +8,8 @@ import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 
-import { useAppKit } from "@reown/appkit/react";
-// import useAccount from "@/hooks/useAccount";
+// import { useAppKit } from "@reown/appkit/react";
+import { usePrivy } from "@privy-io/react-auth";
 
 export default function ConnectButton({ className, content }: any) {
   const { address, isConnected, isConnecting, chain, chainId, connector } = useAccount();
@@ -23,9 +23,12 @@ export default function ConnectButton({ className, content }: any) {
     [chain?.id, chains]
   );
 
-  const { open } = useAppKit()
+
+  const { login } = usePrivy()
+  // const { open } = useAppKit()
   const openAccountModal = () => {
-    open({ view: 'Account' })
+    // open({ view: 'Account' })
+    // login()
   }
 
   const [tokenSelect, setTokenSelect] = useState<number>();
@@ -53,7 +56,7 @@ export default function ConnectButton({ className, content }: any) {
       openAccountModal?.();
       return;
     }
-    open?.();
+    login?.();
   };
 
   const setupDefaultNetwork = () => {

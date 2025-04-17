@@ -6,7 +6,21 @@ import GradientBorderCard from "@/components/gradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import axios from "@/service";
 import { useRequest } from "ahooks";
+import useCosmos from "@/models/_global/cosmos";
+import useStake from "@/models/stake"; // 引入stake store
+import { cosmosFee } from "@/config";
 
+import {
+  GasPrice,
+  QueryClient,
+  setupDistributionExtension,
+} from "@cosmjs/stargate";
+import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx"
+import {
+  checkKeplrWallet,
+  checkkTx,
+  signAndBroadcastDirect,
+} from "@/utils/cosmos";
 interface Validator {
   id: string;
   abbr: string;
@@ -33,8 +47,11 @@ interface ValidatorResponse {
 }
 
 const StakePage = () => {
+  const { balanceMap } = useCosmos()
+  const { setState, stakeList, activeList } = useStake(); // 使用stake store
+
+  const unstakeAmount = balanceMap?.CGT?.hm_amount || 0
   const [stakeAmount, setStakeAmount] = useState("0");
-  const [unstakeAmount, setUnstakeAmount] = useState("0");
   const [apr, setApr] = useState("0");
   const [rewardsAmount, setRewardsAmount] = useState("0");
 
@@ -43,6 +60,9 @@ const StakePage = () => {
     () => axios.get('/api/v1/stake/list'),
     {
       onSuccess: (res) => {
+        // 存储原始响应到store
+        setState({ stakeList: res });
+        
         if (res?.data?.validatorList && res.data.validatorList.length > 0) {
           // 计算总质押金额和平均APR
           let totalStake = 0;
@@ -78,9 +98,9 @@ const StakePage = () => {
     }));
   };
 
-  // 获取验证者数据
-  const myValidators = stakeListData?.data?.validatorList
-    ? transformValidators(stakeListData.data.validatorList)
+  // 获取验证者数据 - 优先使用store中的数据
+  const myValidators = (stakeList?.data?.validatorList || stakeListData?.data?.validatorList)
+    ? transformValidators(stakeList?.data?.validatorList || stakeListData?.data?.validatorList)
     : [];
 
   // 获取活跃验证者列表
@@ -88,14 +108,16 @@ const StakePage = () => {
     () => axios.get('/api/v1/validator/activeList'),
     {
       onSuccess: (res) => {
+        // 存储原始响应到store
+        setState({ activeList: res });
         console.log('活跃验证者数据:', res?.data);
       }
     }
   );
 
-  // 获取活跃验证者数据
-  const activeValidators = activeListData?.data?.validatorList
-    ? transformValidators(activeListData.data.validatorList)
+  // 获取活跃验证者数据 - 优先使用store中的数据
+  const activeValidators = (activeList?.data?.validatorList || activeListData?.data?.validatorList)
+    ? transformValidators(activeList?.data?.validatorList || activeListData?.data?.validatorList)
     : [];
 
   // 判断用户是否已质押
@@ -118,14 +140,14 @@ const StakePage = () => {
     {
       key: "myStakes",
       label: "My Stakes",
-      renderCell: (validator) => <>{validator.votingPower} <span className='text-sm text-sub'>CYS</span></>
+      renderCell: (validator) => <>{validator.votingPower} <span className='text-sm text-sub'>CGT</span></>
     },
     {
       key: "votingPower",
       label: "Voting Power",
       renderCell: (validator) => (
         <div>
-          <div>{validator.votingPower} <span className="text-sm text-sub">CYS</span></div>
+          <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
           <div className="text-sm text-sub">{validator.votingPercentage}%</div>
         </div>
       )
@@ -143,17 +165,17 @@ const StakePage = () => {
     {
       key: "action",
       label: "Action",
-      renderCell: () => (
+      renderCell: (validator) => (
         <div className="flex gap-2">
           <Button
-            onClick={handleStakeModal}
+            onClick={() => handleStakeModal({ validator: validator.name })}
             type={BtnType.light}
             className="rounded-lg w-[6.5rem] py-3 text-sm"
           >
             STAKE
           </Button>
           <Button
-            onClick={handleUnstakeModal}
+            onClick={() => handleUnstakeModal({ validator: validator.name })}
             type={BtnType.solid}
             className="rounded-lg w-[6.5rem] py-3 text-sm"
           >
@@ -183,7 +205,7 @@ const StakePage = () => {
       label: "Voting Power",
       renderCell: (validator) => (
         <div>
-          <div>{validator.votingPower} <span className="text-sm text-sub">CYS</span></div>
+          <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
           <div className="text-sm text-sub">{validator.votingPercentage}%</div>
         </div>
       )
@@ -196,9 +218,9 @@ const StakePage = () => {
     {
       key: "action",
       label: "Action",
-      renderCell: () => (
+      renderCell: (validator) => (
         <Button
-          onClick={handleStakeModal}
+          onClick={() => handleStakeModal({ validator: validator.name })}
           type={BtnType.light}
           className="rounded-lg px-6 py-3 w-full text-base"
         >
@@ -208,29 +230,74 @@ const StakePage = () => {
     }
   ];
 
-  return (
-    <div className="min-h-screen w-full pb-12 overflow-hidden">
+
+  const { address, connector } = useCosmos()
+  const handleClaim = async (closeLoading?: any) => {
+    try {
+      checkKeplrWallet();
+      // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
+      // toast.success(`Submit Success at ${result?.transactionHash}`)
+
+      const queryClient = QueryClient.withExtensions(
+        connector.getQueryClient(),
+        setupDistributionExtension
+      );
+      const result = await queryClient.distribution.delegatorValidators(
+        address
+      );
+      console.log("Delegator's Validators:", result);
+      const withdrawMsgs = [];
+      for (const validator of result.validators) {
+        const withdrawMsg = {
+          typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+          value: tx_1.MsgWithdrawDelegatorReward.encode(
+            tx_1.MsgWithdrawDelegatorReward.fromPartial({
+              delegatorAddress: address,
+              // TODO 
+              validatorAddress: address,
+            })
+          ).finish(),
+        };
+        withdrawMsgs.push(withdrawMsg);
+      }
+
+      const result2 = await signAndBroadcastDirect(
+        address,
+        withdrawMsgs,
+        { ...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString() },
+        connector
+      );
+
+      await checkkTx(connector, result2?.transactionHash);
+
+      // onClose?.()
+    } catch (e: any) {
+      console.log("error", e);
+    } 
+  };
+    return (
+        <div className="min-h-screen w-full pb-12 overflow-hidden">
       {/* 背景图片 */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        <img
+            <div className="absolute inset-0 z-0 overflow-hidden">
+                <img
           src={getImageUrl('@/assets/images/_global/stake_landing_bg.png')}
-          alt="Background"
+                    alt="Background"
           className="h-screen absolute top-0 left-1/2 w-full object-cover"
-          style={{
-            filter: 'grayscale(0%)',
+                    style={{
+                        filter: 'grayscale(0%)',
             transform: 'translate(-50%, 0%) scale(1)',
             transformOrigin: 'center ',
             objectPosition: '50% 50%'
-          }}
-        />
-      </div>
+                    }}
+                />
+            </div>
 
       {/* 主标题 */}
-      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
-        <div className="flex flex-col items-center">
+            <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
+                <div className="flex flex-col items-center">
           <span className="title text-[4rem] !text-[#fff] text-center">STAKE CGTS</span>
         </div>
-      </div>
+                </div>
 
       {/* 主要内容部分 */}
       <div className="container mx-auto px-4 md:px-8 mt-8 relative z-[2]">
@@ -250,17 +317,17 @@ const StakePage = () => {
                 >
                   STAKE
                 </Button>
-              </div>
+            </div>
 
               <div className="grid grid-cols-3 ">
                 <div className="col-span-1 border-r border-white pr-6">
                   <div className=" uppercase title text-base mb-2 !font-[300]">STAKING AMOUNT</div>
                   <div className="text-2xl text-right title !font-[400]">{stakeAmount} CGT</div>
-                </div>
+                                    </div>
                 <div className="col-span-1 border-r border-white px-6">
                   <div className=" uppercase title text-base mb-2 !font-[300]">UNSTAKING AMOUNT</div>
                   <div className="text-2xl text-right title !font-[400]">{unstakeAmount} CGT</div>
-                </div>
+                    </div>
                 <div className="col-span-1 pl-4">
                   <div className=" uppercase title text-base mb-2 !font-[300]">APR</div>
                   <div className="text-2xl text-right title !font-[400]">{apr}%</div>
@@ -275,8 +342,10 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-6">
               <h2 className="title text-xl uppercase !font-[300] mb-4">CLAIM REWARDS</h2>
-              <div className="text-2xl !font-[400] title mb-4 text-center text-right">{rewardsAmount} CYS</div>
+              <div className="text-2xl !font-[400] title mb-4 text-center text-right">{rewardsAmount} CGT</div>
               <Button
+                needLoading
+                onClick={handleClaim}
                 type={BtnType.light}
                 className="rounded-lg w-full py-3 text-base"
               >
@@ -359,9 +428,9 @@ const StakePage = () => {
             )}
           </div>
         </GradientBorderCard>
-      </div>
-    </div>
-  );
+            </div>
+        </div>
+    );
 };
 
 export default StakePage;

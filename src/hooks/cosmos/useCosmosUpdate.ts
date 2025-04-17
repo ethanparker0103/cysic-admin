@@ -1,13 +1,24 @@
 import useCosmosBalance from "@/hooks/cosmos/useCosmosBalance"
-import useCosmosStakeBalance from "@/hooks/cosmos/useCosmosStakeBalance"
-import useGasInfo from "@/hooks/cosmos/useGasInfo"
-import useCosmosCheck from "@/hooks/cosmos/useCosmosCheck"
+import useCosmos from "@/models/_global/cosmos"
+import { useEffect } from "react"
+import { connectWallet } from "@/utils/cosmos"
 
 const useCosmosUpdate = ()=>{
-    useCosmosCheck()
-    useGasInfo()
+
+    const {
+        hasConnectedWithKeplr,
+      } = useCosmos();
+    
+      useEffect(() => {
+        if (hasConnectedWithKeplr) {
+          connectWallet();
+        }
+      }, [hasConnectedWithKeplr]);
+
+    // useCosmosCheck()
+    // useGasInfo()
     useCosmosBalance()
-    useCosmosStakeBalance()
+    // useCosmosStakeBalance()
 }
 
 export default useCosmosUpdate

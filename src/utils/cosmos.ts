@@ -47,19 +47,6 @@ async function connectWallet() {
 
     // 检查是否安装了 Keplr
     if (!provider) {
-        // console.log('dispatch')
-        // dispatchEvent(new CustomEvent('basicDoubleconfirmModalVisible', {
-        //     detail: {
-        //         callback: (closeLoading?: any) => {
-        //             window.open(keplrDownloadLink, '_blank');
-        //             closeLoading?.()
-        //         },
-        //         title: 'Download Keplr',
-        //         desc: 'Keplr is not available, Please download first.',
-        //         btnText: 'Go'
-        //     }
-        // }))
-
         checkKeplrWallet();
         throw { message: "Keplr is not available" };
         return;
@@ -178,15 +165,6 @@ export async function signAndBroadcastDirect(
 
     // 获取账户信息
     const accounts = await offlineSigner.getAccounts();
-
-    // 构建消息
-    // const msg: any = {
-    //     typeUrl: '/cysicmint.govtoken.v1.MsgExchangeToGovToken',
-    //     value: MsgExchangeToGovToken.encode(MsgExchangeToGovToken.fromPartial({
-    //         sender: address,
-    //         amount: amount.amount,
-    //     })).finish(),
-    // };
 
     // 获取链上账户数据，例如 accountNumber 和 sequence
     const account = await client.getAccount(address);

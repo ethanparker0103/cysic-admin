@@ -294,18 +294,18 @@ module.exports = (app) => {
   
   // 质押相关接口
   app.get('/api/v1/stake/list', (req, res) => {
-    const validators = Array.from({ length: 20 }, (_, i) => {
+    const validators = Array.from({ length: 5 }, (_, i) => {
       const stakeAmount = Math.floor(Math.random() * 100000);
       const votingPowerPercent = (Math.random() * 15).toFixed(2);
       return {
         validatorName: `Validator ${i + 1}`,
         stake: {
           amount: stakeAmount.toString(),
-          symbol: "CYS"
+          symbol: "CGT"
         },
         votingPower: {
           amount: stakeAmount.toString(),
-          symbol: "CYS"
+          symbol: "CGT"
         },
         votingPowerPercent: `${votingPowerPercent}%`,
         commissionRate: `${Math.floor(Math.random() * 10)}%`,
@@ -323,14 +323,14 @@ module.exports = (app) => {
   });
   
   app.get('/api/v1/validator/activeList', (req, res) => {
-    const validators = Array.from({ length: 15 }, (_, i) => {
+    const validators = Array.from({ length: 10 }, (_, i) => {
       const votingPower = Math.floor(Math.random() * 100000);
       const votingPowerPercent = (Math.random() * 15).toFixed(2);
       return {
         validatorName: `Active Validator ${i + 1}`,
         votingPower: {
           amount: votingPower.toString(),
-          symbol: "CYS"
+          symbol: "CGT"
         },
         votingPowerPercent: `${votingPowerPercent}%`,
         commissionRate: `${Math.floor(Math.random() * 10)}%`
@@ -349,7 +349,7 @@ module.exports = (app) => {
   app.post('/api/v1/referral/bind', (req, res) => {
     const { code } = req.body;
     const address = req.body.address || req.headers['x-cysic-address'];
-    
+
     // 验证邀请码是否有效
     if (!code || code.length !== 5) {
       return res.status(400).json({

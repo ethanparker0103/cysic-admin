@@ -2,15 +2,19 @@ import { getImageUrl, shortStr, handleSignIn } from "@/utils/tools"
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from "@nextui-org/react";
 import Copy from "@/components/Copy";
-import { useDisconnect } from "@reown/appkit/react";
+// import { useDisconnect } from "@reown/appkit/react";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
 import { useState, useEffect } from "react";
+import ConnectCosmosButton from "@/components/connectCosmosButton";
+import { usePrivy } from "@privy-io/react-auth";
+import { useDisconnect } from "wagmi";
 
 const ConnectInfo = () => {
-    const { address, connector, registeredInviteCode, isProfileCompleted, isRegistered, isConnectedOnly } = useAccount()
+    const { cosmosAddress, address, connector, registeredInviteCode, isProfileCompleted, isRegistered, isConnectedOnly } = useAccount()
 
-    const { disconnect } = useDisconnect()
+    const { logout } = usePrivy()
+    const { disconnectAsync } = useDisconnect()
 
     // 状态：已注册但未完成资料填写
     const [needCompleteProfile, setNeedCompleteProfile] = useState(false);
@@ -25,11 +29,9 @@ const ConnectInfo = () => {
         }
     }, [isRegistered, isProfileCompleted, isConnectedOnly]);
 
-    const handleEVMDisconnect = () => {
-        disconnect()
-    }
-    const handleCosmosDisconnect = () => {
-        disconnect()
+    const handleEVMDisconnect = async () => {
+        await logout()
+        await disconnectAsync()
     }
 
     // 处理打开完善资料弹窗
@@ -100,11 +102,11 @@ const ConnectInfo = () => {
 
                     <DropdownItem key="cosmos-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
                         <div className="flex items-center gap-2">
-                            <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
-                            <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
+                            <img src={getImageUrl('@/assets/images/wallet/keplr.png')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <span className="text-sm text-sub font-[400] uppercase">{shortStr(cosmosAddress || '-', 10)}</span>
                         </div>
 
-                        <div onClick={handleCosmosDisconnect} className="">disconnect</div>
+                        <ConnectCosmosButton />
                     </DropdownItem>
 
                     {registeredInviteCode ? (
