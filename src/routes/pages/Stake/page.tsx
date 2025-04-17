@@ -1,4 +1,5 @@
 // @ts-nocheck
+
 import Button, { BtnType } from "@/components/Button";
 import { getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
 import { Search, History } from "lucide-react";
@@ -9,7 +10,7 @@ import axios from "@/service";
 import { useRequest } from "ahooks";
 import useCosmos from "@/models/_global/cosmos";
 import useStake from "@/models/stake"; // 引入stake store
-import { cosmosFee } from "@/config";
+import { blockTime, cosmosFee } from "@/config";
 
 import {
   GasPrice,
@@ -22,6 +23,7 @@ import {
   checkkTx,
   signAndBroadcastDirect,
 } from "@/utils/cosmos";
+import BigNumber from "bignumber.js";
 interface Validator {
   id: string;
   abbr: string;
@@ -46,6 +48,17 @@ interface ValidatorResponse {
   commissionRate: string;
   apr?: string;
 }
+
+const sliceFormat = (value: string, decimal: number = 18) => {
+  if (value.length <= decimal) return value;
+
+  const decimalPosition = value.length - decimal; // 小数点前 18 位
+
+  const formattedValue =
+    value.slice(0, decimalPosition) + "." + value.slice(decimalPosition);
+  return formattedValue;
+};
+
 
 const StakePage = () => {
   const { balanceMap } = useCosmos()
@@ -276,6 +289,71 @@ const StakePage = () => {
       console.log("error", e);
     }
   };
+
+
+
+  const queryRewards = async () => {
+    const queryClient = QueryClient.withExtensions(
+      connector.getQueryClient(),
+      setupDistributionExtension
+    );
+    const result_ = await queryClient.distribution.delegationTotalRewards(
+      address
+    );
+
+    const result = {
+      rewards: result_.rewards.map((reward) => {
+        return {
+          validatorAddress: reward.validatorAddress,
+          reward: reward.reward.map((r) => ({
+            denom: r.denom,
+            amount: sliceFormat(r.amount, 18),
+            amount_hm: BigNumber(sliceFormat(r.amount, 18))
+              .div(1e18)
+              .toString(),
+          })),
+        };
+      }),
+      total: result_.total.map((t) => ({
+        denom: t.denom,
+        amount: sliceFormat(t.amount, 18),
+      })),
+    };
+
+    // setRewardsAmount({
+    //   stakeRewardsMap: result?.rewards?.reduce((prev: any, next: any) => {
+    //     if (!prev?.[next?.validatorAddress]) {
+    //       prev[next?.validatorAddress] = {};
+    //     }
+    //     prev[next?.validatorAddress] = next;
+
+    //     return prev;
+    //   }, {}),
+    // });
+
+    const res = result?.total
+      ?.reduce((prev, next) => {
+        return BigNumber(next?.amount).plus(prev);
+      }, BigNumber(0))
+      .div(1e18)
+      .toString();
+
+    setRewardsAmount(res)
+    return res
+  };
+
+  useRequest(
+    () => queryRewards(),
+    {
+      ready: !!address && !!connector,
+      refreshDeps: [address, connector],
+      pollingInterval: blockTime.long,
+      onError(e) {
+        console.log("error", e);
+      },
+    }
+  );
+
   return (
     <div className="min-h-screen w-full pb-12 overflow-hidden ">
       {/* 背景图片 */}
