@@ -93,13 +93,6 @@ body {
     background-image: linear-gradient(to right, #000, #000), linear-gradient(90deg, #D99DFD 0%, #8A2AF7 11.41%, #1783E7 70%, #01F0FF 100%);
  }
 
- .main-card-bg{
-    background-color: #10141a;
-    background: url('@/assets/images/_global/main_card_bg.svg');
-    background-repeat: no-repeat;
-    background-size: 100vmax;
- }
-
 
 .title{
     font-family: Unbounded;
