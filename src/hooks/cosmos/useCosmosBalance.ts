@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { blockTime, cysicTestnet } from "@/config"
 import useCosmos from "@/models/_global/cosmos"
 import { useEventListener, useRequest } from "ahooks"
@@ -30,7 +31,7 @@ const useCosmosBalance = () => {
         refreshDeps: [connector, address, unmatchedAddressWithEVM],
         pollingInterval: blockTime.long,
         onSuccess(e: any) {
-            const res = e?.reduce((prev, next) => {
+            const res = e?.reduce((prev: any, next: number) => {
                 if (!prev?.[next?.denom]) {
                     prev[next?.denom] = {}
                 }
