@@ -201,35 +201,71 @@ const UserDetailsPage = () => {
                 <h2 className="title text-3xl !font-[300] title uppercase my-12 text-center">DETAILS</h2>
 
                 <div className="flex flex-col gap-4 w-full">
-                    {/* 详情卡片 */}
+                    {/* 第一行 details 部分 */}
                     <div className="flex gap-4 w-full">
-                        {/* 邀请码 */}
-                        <DetailCard
-                            title="INVITE CODE"
-                            subtitle="SUCCESSFUL INVITES"
-                            value={<div className="flex items-center justify-between w-full">
-                                <Copy className="text-2xl !font-[300]" value="WZX2L3">WZX2L3</Copy>
-                                <span className="text-2xl !font-[300]">76</span>
-                            </div>}
-                        />
+                        {/* 邀请码卡片 */}
+                        <GradientBorderCard borderRadius={8} className="flex-[4] w-full">
+                            <div className="w-full px-6 py-4 h-full flex flex-col justify-between">
+                                <div className="flex justify-between items-start w-full">
+                                    <div className="uppercase text-base title !font-[300]">INVITE<br />CODE</div>
+                                    <div className="uppercase text-base title !font-[300]">SUCCESSFUL<br />INVITES</div>
+                                </div>
 
-                        {/* 乘数 */}
-                        <DetailCard
-                            title="MULTIPLIER"
-                            subtitle="ⓘ"
-                            value={<SpeedIndicator />}
-                        />
+                                <div className="flex justify-between items-center w-full mt-8">
+                                    <div className="flex items-center gap-2">
+                                        <Copy value="WZX2L3" className="text-2xl title !font-[300]">
+                                            WZX2L3
+                                        </Copy>
+                                    </div>
+                                    <div className="title text-2xl !font-[300]">76</div>
+                                </div>
+                            </div>
+                        </GradientBorderCard>
 
-                        {/* 任务完成度 */}
-                        <DetailCard
-                            title="MY TASK COMPLETION"
-                            value={<div className="text-right text-3xl !font-[300] title">{taskCompletionData.total}</div>}
-                            status={taskCompletionData.breakdown.map(item => ({
-                                label: item.label,
-                                value: item.value,
-                                color: "bg-blue-500"
-                            }))}
-                        />
+                        {/* 乘数卡片 */}
+                        <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
+                            <div className="w-full px-6 py-4 h-full flex flex-col justify-between">
+                                <div className="flex items-center gap-1">
+                                    <div className="uppercase text-base !font-[300] title">MULTIPLIER</div>
+                                    <div className="text-sub text-xs">ⓘ</div>
+                                </div>
+
+                                {/* 进度条 */}
+                                <div className="relative w-full h-3 bg-gray-500 rounded-full overflow-hidden">
+                                    <div className="absolute inset-0 left-0 w-3/4 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300"></div>
+                                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3 h-3 bg-white rounded-full"></div>
+                                </div>
+
+                                {/* HIGH SPEED 指示器 */}
+                                <div className="flex items-center gap-2 self-end">
+                                    <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                                    <span className="text-sm title">HIGH SPEED</span>
+                                </div>
+                                <div className="ml-4 flex items-center gap-1 self-end">
+                                    <span className="text-sm text-sub text-sub">SPEED UP</span>
+                                    <ArrowRight size={12} />
+                                </div>
+                            </div>
+                        </GradientBorderCard>
+
+                        {/* 任务完成度卡片 */}
+                        <GradientBorderCard borderRadius={8} className="flex-[2] w-full">
+                            <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-4">
+                                <div className="uppercase text-base !font-[300] title">MY TASK COMPLETION</div>
+                                <div className="text-2xl !font-[300] title text-right">2500</div>
+
+                                <div className="flex flex-col gap-2 w-full">
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className="text-sm">Prover</div>
+                                        <div className="text-sm text-sub">1000</div>
+                                    </div>
+                                    <div className="flex justify-between items-center w-full">
+                                        <div className="text-sm">Verifier</div>
+                                        <div className="text-sm text-sub">1500</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </GradientBorderCard>
                     </div>
 
                     {/* 验证器和证明者状态 */}
