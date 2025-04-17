@@ -5,7 +5,6 @@ import { getImageUrl, handleConvertModal, handleStakeModal } from "@/utils/tools
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
-import { baseHref } from "@/config";
 
 // 信息卡片组件
 interface InfoCardProps {

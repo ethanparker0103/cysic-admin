@@ -178,7 +178,7 @@ const ValidatorDropdown = ({
 
                                 {/* 验证人列表 */}
                                 <div className="max-h-[200px] overflow-y-auto">
-                                    {validators.map((validator, index) => (
+                                    {validators.map((validator: ValidatorResponse, index: number) => (
                                         <div
                                             key={`${validator.validatorName}-${index}`}
                                             className="flex justify-between items-center p-3 cursor-pointer hover:bg-[#111] rounded-md"

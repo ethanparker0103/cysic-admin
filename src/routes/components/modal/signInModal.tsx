@@ -69,7 +69,7 @@ const SignInModal = () => {
             
             // 预填表单数据
             if (savedName) {
-                setFormData(prev => ({...prev, name: savedName}));
+                setFormData((prev: any) => ({...prev, name: savedName}));
             }
         }
     }, [visible, data, walletAddress, isRegistered, registrationComplete, savedName]);

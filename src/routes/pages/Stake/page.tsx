@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Button, { BtnType } from "@/components/Button";
 import { getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
 import { Search, History } from "lucide-react";

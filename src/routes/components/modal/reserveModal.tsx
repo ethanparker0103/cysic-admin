@@ -246,7 +246,7 @@ const ReserveModal = () => {
                     </div>
                     <div className="flex justify-between items-center">
                         <span className="text-[#777]">Estimated arrival time</span>
-                        <span className="text-white">{dayjs().add(1, 'min').format('YYYY-MM-DD')}</span>
+                        <span className="text-white">{dayjs().add(1, 'm').format('YYYY-MM-DD')}</span>
                     </div>
                 </div>
             )}

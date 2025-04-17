@@ -1,4 +1,3 @@
-import ConnectButton from "@/components/connectButton";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
 import { baseHref, mediasLink } from "@/config";
@@ -9,7 +8,6 @@ import ConnectInfo from "@/components/ConnectInfo";
 import { useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import useAccount from "@/hooks/useAccount";
-import { AccountStatus } from "@/hooks/useAccount";
 
 
 const navs = [
@@ -184,7 +182,7 @@ export default function Header() {
                         <div className="flex items-center h-full">
                             <a href={baseHref}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" /></a>
 
-                            {currentNavs.map((nav) => (
+                            {currentNavs.map((nav: any) => (
                                 <GradientNavDropdown key={nav.content} item={nav} />
                             ))}
                         </div>

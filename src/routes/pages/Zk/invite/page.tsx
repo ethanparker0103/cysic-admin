@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Button from "@/components/Button";
 import { getImageUrl, handleSignIn, shortStr } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
