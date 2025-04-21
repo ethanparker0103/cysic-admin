@@ -66,7 +66,7 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
                             <Button
                                 onClick={() => handlePurchaseNftModal({
                                     nft: {
-                                        id: name.replace(/\s+/g, '-').toLowerCase(), // 从名称生成ID
+                                        id: 1,
                                         name: name,
                                         rewards: rewards.split(' ')[0], // 只取数字部分
                                         lock: lock,

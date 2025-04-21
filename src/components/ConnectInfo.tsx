@@ -10,12 +10,17 @@ import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { usePrivy } from "@privy-io/react-auth";
 import { useDisconnect } from "wagmi";
 import { useNavigate } from "react-router-dom";
+import useUser from "@/models/user";
+import { useWriteContract } from "@/hooks/useWriteContract";
+import { purchaseChainId, USDC, usdcFacuetAbi } from "@/config";
+import { toast } from "react-toastify";
 
 const ConnectInfo = () => {
     const { cosmosAddress, address, connector, registeredInviteCode, isProfileCompleted, isRegistered, isConnectedOnly } = useAccount()
 
     const { logout } = usePrivy()
     const { disconnectAsync } = useDisconnect()
+    const { reset } = useUser()
 
     // 状态：已注册但未完成资料填写
     const [needCompleteProfile, setNeedCompleteProfile] = useState(false);
@@ -33,6 +38,7 @@ const ConnectInfo = () => {
     const handleEVMDisconnect = async () => {
         await logout()
         await disconnectAsync()
+        reset()
     }
 
     // 处理打开完善资料弹窗
@@ -43,9 +49,22 @@ const ConnectInfo = () => {
 
     const navigate = useNavigate()
 
+    const {writeContractAsync} = useWriteContract()
+    const handleFaucet = async () => {
+        const tx = await writeContractAsync({
+            chainId: purchaseChainId,
+            address: USDC[purchaseChainId],
+            abi: usdcFacuetAbi,
+            functionName: 'mint',
+            args: [address, 1e22],
+        })
+
+        toast.success('Claimed')
+    }
+
     return (
         <>
-            <Button className="!p-0">
+            <Button needLoading className="!p-0" onClick={()=>{handleFaucet()}}>
                 <img src={getImageUrl('@/assets/images/icon/faucet.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
             </Button>
             <Dropdown classNames={{

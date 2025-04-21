@@ -2,6 +2,7 @@ import { cysicTestnet_testnet } from "@/config/cosmos/cysicTestnet";
 import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev";
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
+import { arbitrumSepolia } from "viem/chains";
 
 
 export const defaultChainId = '9527';
@@ -129,3 +130,61 @@ export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt'
 
 
 export const loginSignContent = 'Welcome to Cysic！'
+
+export const CHAIN_ID_MAP = {
+    [arbitrumSepolia.id]: arbitrumSepolia
+}
+
+export const purchaseChainId = arbitrumSepolia.id
+export const USDC = {
+    [arbitrumSepolia.id]: '0x1e6e1C6BcCD8b8B9ec82ee8863cD53D640D36b76'
+}
+export const purchaseNftContract = {
+    [arbitrumSepolia.id]: '0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC',
+}
+export const purchaseNftAbi = [
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "id",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "userMint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]
+
+export const usdcFacuetAbi = [
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "mint",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

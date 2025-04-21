@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/gradientBorderCard";
+import SignInButton from "@/routes/components/SignInButton";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight, Search } from "lucide-react";
@@ -192,12 +193,7 @@ const AiLanding = () => {
                     <span className="title text-[11.25rem] !text-[#fff] text-center">CYSIC AI</span>
                 </div>
 
-                <Button type="solid" className="backdrop-blur-sm mt-[3.25rem] mb-[4rem]" onClick={handleSignIn}>
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-[400] uppercase">Sign In</span>
-                        <ArrowRight width={12} height={12} />
-                    </div>
-                </Button>
+                <SignInButton className="backdrop-blur-sm mt-[3.25rem] mb-[4rem]"/>
             </div>
 
             {/* 投资者部分 */}

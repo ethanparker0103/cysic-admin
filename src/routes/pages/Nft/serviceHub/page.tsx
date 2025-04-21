@@ -1,13 +1,15 @@
 import { ArrowRight, ChevronLeft, ChevronsUp, Info } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import Button from "@/components/Button";
-import { getImageUrl, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
+import { formatReward, getImageUrl, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { ReactNode } from "react";
 import Copy from "@/components/Copy";
 
 import NFTProverCard from "@/components/NFTCard";
 import { cn } from "@nextui-org/react";
 import { baseHref } from "@/config";
+import useCosmos from "@/models/_global/cosmos";
+import useUser from "@/models/user";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -103,14 +105,21 @@ const SpeedIndicator = () => (
 
 // 用户详情页面
 const UserDetailsPage = () => {
-    // 任务完成度数据
-    const taskCompletionData = {
-        total: 2500,
-        breakdown: [
-            { label: "Prover", value: "1000" },
-            { label: "Verifier", value: "1500" }
-        ]
-    };
+    const { balanceMap } = useCosmos()
+    const cgtBalance = balanceMap?.CGT?.hm_amount || 0
+    const cysBalance = balanceMap?.CYS?.hm_amount || 0
+
+    const { 
+        name, 
+        avatarUrl, 
+        inviteCode, 
+        balance,
+        rewardList = [],
+        socialAccountList,
+        voucherCnt = 0,  // 添加代金券数量
+        nftCnt = 0       // 添加NFT数量
+    } = useUser();
+
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
@@ -147,7 +156,7 @@ const UserDetailsPage = () => {
                         >
                             <div className="flex flex-col gap-6">
                                 <div className="flex items-center justify-end gap-6">
-                                    <div className="text-3xl !font-[300] title">3,000.00 CYS</div>
+                                    <div className="text-3xl !font-[300] title">{formatReward(cysBalance, 4)} CYS</div>
                                     <Button type="light" className="rounded py-3 px-4" onClick={handleConvertModal}>
                                         CONVERT
                                     </Button>
@@ -156,7 +165,7 @@ const UserDetailsPage = () => {
                                 <div className="h-px w-full bg-white"></div>
 
                                 <div className="flex items-center justify-end gap-6">
-                                    <div className="text-3xl !font-[300] title">3,000.00 CGT</div>
+                                    <div className="text-3xl !font-[300] title">{formatReward(cgtBalance, 4)} CGT</div>
                                     <Button type="light" className="rounded py-3 px-4" onClick={() => { handleStakeModal() }}>
                                         STAKE
                                     </Button>
@@ -170,7 +179,7 @@ const UserDetailsPage = () => {
                         <StatCard
                             title="CYSIC BALANCE"
                             rightActions={[
-                                <a href="#" className="flex items-center text-sub text-xs hover:text-white">
+                                <a href="https://testnet-bridge.prover.xyz/bridge" target="_blank" className="flex items-center text-sub text-xs hover:text-white">
                                     BRIDGE <ArrowRight size={12} className="ml-1" />
                                 </a>,
                                 <a href="#" className="flex items-center text-sub text-xs hover:text-white">
@@ -178,7 +187,7 @@ const UserDetailsPage = () => {
                                 </a>
                             ]}
                         >
-                            <div className="text-3xl !font-[300] title text-right">10,000 USDC</div>
+                            <div className="text-3xl !font-[300] title text-right">{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
                         </StatCard>
 
                         {/* 代金券 */}
@@ -193,7 +202,7 @@ const UserDetailsPage = () => {
                                 </a>
                             ]}
                         >
-                            <div className="text-3xl !font-[300] title text-right">27</div>
+                            <div className="text-3xl !font-[300] title text-right">{voucherCnt}</div>
                         </StatCard>
                     </div>
                 </div>
@@ -214,8 +223,8 @@ const UserDetailsPage = () => {
 
                                 <div className="flex justify-between items-center w-full mt-8">
                                     <div className="flex items-center gap-2">
-                                        <Copy value="WZX2L3" className="text-2xl title !font-[300]">
-                                            WZX2L3
+                                        <Copy value={inviteCode} className="text-2xl title !font-[300]">
+                                            {inviteCode}
                                         </Copy>
                                     </div>
                                     <div className="title text-2xl !font-[300]">76</div>

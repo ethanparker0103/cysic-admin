@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import SignInButton from "@/routes/components/SignInButton";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
 
@@ -78,12 +79,7 @@ const ZkLanding = () => {
                 </div>
 
 
-                <Button type="solid" className="backdrop-blur-sm mt-[8.25rem] mb-[4rem]" onClick={handleSignIn}>
-                    <div className="flex items-center gap-2 " >
-                        <span className="text-sm font-[400] uppercase">Sign In</span>
-                        <ArrowRight width={12} height={12} />
-                    </div>
-                </Button>
+                <SignInButton className="backdrop-blur-sm mt-[8.25rem] mb-[4rem]" />
             </div>
 
             <div className="mt-[40vh] flex flex-col items-center gap-12 relative z-[2]">

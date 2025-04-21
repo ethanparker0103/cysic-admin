@@ -1,6 +1,8 @@
 import React from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from "@nextui-org/react";
-import { baseHref } from "@/config";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as NextUILink } from "@nextui-org/react";
+
 
 interface NavItem {
     content: string;
@@ -13,57 +15,106 @@ interface GradientNavDropdownProps {
 }
 
 export default function GradientNavDropdown({ item }: GradientNavDropdownProps) {
+    const navigate = useNavigate();
+
+    // 判断是否为外部链接
+    const isExternalLink = (url?: string) => {
+        return url?.startsWith('http://') || url?.startsWith('https://');
+    };
+
+    // 处理导航逻辑
+    const handleNavigation = (url?: string) => {
+        if (!url) return;
+        
+        if (isExternalLink(url)) {
+            window.open(url, "_blank", "noopener,noreferrer");
+        } else {
+            navigate(url);
+        }
+    };
+
     // 如果没有子菜单且有链接，则直接创建一个链接按钮
     if (!item?.children || item?.children?.length == 0) {
-        return (
-            <Button
-                as={Link}
-                href={item.href ? `${baseHref}${item.href}` : "/"}
-                variant="light"
-                className="uppercase font-[400] !text-sub"
-            >
-                {item.content}
-            </Button>
-        );
+        if (isExternalLink(item.href)) {
+            // 外部链接使用NextUI Link
+            return (
+                <Button
+                    as={NextUILink}
+                    href={item.href}
+                    variant="light"
+                    className="uppercase font-[400] !text-sub"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {item.content}
+                </Button>
+            );
+        } else {
+            // 内部链接使用React Router Link
+            return (
+                <Button
+                    as={RouterLink}
+                    to={item.href || "/"}
+                    variant="light"
+                    className="uppercase font-[400] !text-sub"
+                >
+                    {item.content}
+                </Button>
+            );
+        }
     }
 
     // 有子菜单时创建下拉菜单
     return (
-        <>
-
-            <Dropdown classNames={{
-                content: 'p-0 mt-6',
-            }}>
-                <DropdownTrigger>
-                    <Button
-                        variant="light"
-                        className="uppercase font-[400] text-sub"
-                    >
-                        {item.content}
-                    </Button>
-                </DropdownTrigger>
-
-                <DropdownMenu
-                    aria-label={`${item.content} submenu`}
-                    className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur-md vertical-gradient-border rounded-lg overflow-hidden"
-                    variant="flat"
-
-                    itemClasses={{
-                        base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
-                    }}
+        <Dropdown classNames={{
+            content: 'p-0 mt-6',
+        }}>
+            <DropdownTrigger>
+                <Button
+                    variant="light"
+                    className="uppercase font-[400] text-sub"
                 >
-                    {item.children.map((child) => (
-                        <DropdownItem
-                            key={child.content}
-                            className="py-2 px-4 text-sm"
-                            as={Link}
-                            href={child.href ? `${baseHref}${child.href}` : "/"}
-                        >
-                            {child.content}
-                        </DropdownItem>
-                    ))}
-                </DropdownMenu>
-            </Dropdown>
-        </>
+                    {item.content}
+                </Button>
+            </DropdownTrigger>
+
+            <DropdownMenu
+                aria-label={`${item.content} submenu`}
+                className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur-md vertical-gradient-border rounded-lg overflow-hidden"
+                variant="flat"
+                itemClasses={{
+                    base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
+                }}
+            >
+                {item.children.map((child) => {
+                    if (isExternalLink(child.href)) {
+                        // 外部链接
+                        return (
+                            <DropdownItem
+                                key={child.content}
+                                className="py-2 px-4 text-sm"
+                                as={NextUILink}
+                                href={child.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {child.content}
+                            </DropdownItem>
+                        );
+                    } else {
+                        // 内部链接
+                        return (
+                            <DropdownItem
+                                key={child.content}
+                                className="py-2 px-4 text-sm"
+                                onPress={() => handleNavigation(child.href)}
+                            >
+                                {child.content}
+                            </DropdownItem>
+                        );
+                    }
+                })}
+            </DropdownMenu>
+        </Dropdown>
     );
 }

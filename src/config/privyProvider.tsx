@@ -4,7 +4,7 @@ import { PrivyProvider } from '@privy-io/react-auth';
 import { WagmiProvider, createConfig } from '@privy-io/wagmi';
 import type { PrivyClientConfig } from '@privy-io/react-auth';
 import { cysicTestnet } from './evm/cysicTestnet';
-import { mainnet, sepolia } from 'viem/chains';
+import { arbitrumSepolia, mainnet, sepolia } from 'viem/chains';
 import { http } from 'viem';
 
 const queryClient = new QueryClient();
@@ -22,10 +22,11 @@ const privyConfig: PrivyClientConfig = {
 };
 
 export const config = createConfig({
-    chains: [mainnet, sepolia, cysicTestnet],
+    chains: [mainnet, sepolia, arbitrumSepolia, cysicTestnet],
     transports: {
         [mainnet.id]: http(),
         [sepolia.id]: http(),
+        [arbitrumSepolia.id]: http(),
         [cysicTestnet.id]: http()
     },
 });

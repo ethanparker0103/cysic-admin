@@ -23,6 +23,8 @@ export interface UserInfo {
     x?: {name: string} | null;
     discord?: {name: string} | null;
   };
+  nftCnt?: number;
+  voucherCnt?: number;
 }
 
 export const defaultInitState: UserInfo = {
@@ -67,7 +69,7 @@ const useUser = create<UserState>()(
         try {
           const data: any = await axios.post('/api/v1/referral/bind', { code });
           
-          if (data.code === 10000) {
+          if (data.code == 0) {
             // 绑定成功，更新状态
             set((state) => ({
               ...state,
@@ -91,7 +93,7 @@ const useUser = create<UserState>()(
           // 获取用户概览信息
           const data: any = await axios.get('/api/v1/user/overview');
           
-          if (data.code === 10000) {
+          if (data.code == 0) {
             const userInfo = data.data;
             
             // 用户已注册，更新状态
@@ -141,7 +143,7 @@ const useUser = create<UserState>()(
           // 调用API更新资料
           const { data } = await axios.post('/api/v1/user/updateProfile', apiData);
           
-          if (data.code === 10000) {
+          if (data.code == 0) {
             // 准备要更新的状态字段
             const updatedState: Partial<UserInfo> = {};
             

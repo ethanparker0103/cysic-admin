@@ -1,10 +1,13 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { getImageUrl, handleConvertModal, handleStakeModal } from "@/utils/tools";
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
+import useUser from "@/models/user";
+import useAccount from "@/hooks/useAccount";
+import useCosmos from "@/models/_global/cosmos";
 
 // 信息卡片组件
 interface InfoCardProps {
@@ -80,9 +83,27 @@ const SocialAccountItem = ({ icon, account, action }: SocialAccountItemProps) =>
 
 // 主要组件
 const UserPortal = () => {
-    // 复制邀请码
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { balanceMap } = useCosmos()
+    const { 
+        name, 
+        avatarUrl, 
+        inviteCode, 
+        balance,
+        rewardList = [],
+        socialAccountList,
+        voucherCnt = 0,  // 添加代金券数量
+        nftCnt = 0       // 添加NFT数量
+    } = useUser();
+    
+    // 格式化CYS和CGT余额
+    const cysReward = rewardList?.find(item => item.symbol === "CYS")?.amount || "0";
+    const cgtReward = rewardList?.find(item => item.symbol === "CGT")?.amount || "0";
+    
+    // 格式化社交账号
+    const googleAccount = socialAccountList?.google?.name || "";
+    const xAccount = socialAccountList?.x?.name || "";
+    const discordAccount = socialAccountList?.discord?.name || "";
 
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
@@ -114,7 +135,7 @@ const UserPortal = () => {
                                 <>
                                     <div className="absolute right-6 top-4 flex items-start">
                                         <img
-                                            src={getImageUrl("@/assets/images/nft/preset1.png")}
+                                            src={avatarUrl || getImageUrl("@/assets/images/nft/preset1.png")}
                                             alt="Profile"
                                             className="w-[6.25rem] h-[6.25rem] rounded-md object-cover"
                                         />
@@ -122,9 +143,9 @@ const UserPortal = () => {
 
                                     <div className="flex justify-between gap-4 w-full">
                                         <div className="flex flex-col gap-1 justify-end">
-                                            <div className="text-base text-sub ">NAME</div>
+                                            <div className="text-base text-sub">NAME</div>
                                             <div className="flex items-center gap-2 text-base">
-                                                <span className="text-white">cysicpioneer_01</span>
+                                                <span className="text-white">{name || "Unknown"}</span>
                                                 <button className="text-sub p-0 bg-transparent border-0">
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
@@ -148,8 +169,9 @@ const UserPortal = () => {
                                     </Link>
                                 }
                             >
-
-                                <Copy className="text-2xl !font-[300] justify-end title w-full" value={'WZX2L3'}>WZX2L3</Copy>
+                                <Copy className="text-2xl !font-[300] justify-end title w-full" value={inviteCode || ''}>
+                                    {inviteCode || '未获取邀请码'}
+                                </Copy>
                             </InfoCard>
                         </div>
 
@@ -163,7 +185,9 @@ const UserPortal = () => {
                                     </Link>
                                 }
                             >
-                                <div className="text-2xl !font-[300] text-right title w-full">10,000 USDC</div>
+                                <div className="text-2xl !font-[300] text-right title w-full">
+                                    {balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}
+                                </div>
                             </InfoCard>
                         </div>
 
@@ -177,7 +201,7 @@ const UserPortal = () => {
                                     </Link>
                                 }
                             >
-                                <div className="text-2xl !font-[300] text-right title w-full">27</div>
+                                <div className="text-2xl !font-[300] text-right title w-full">{voucherCnt}</div>
                             </InfoCard>
                         </div>
                     </div>
@@ -197,8 +221,8 @@ const UserPortal = () => {
                                 </div>
 
                                 <div className="flex gap-6 justify-between">
-                                    <div className="flex flex-col gap-6 pr-6 border-r border-white">
-                                        <div className="title !text-3xl !font-[300]">999,999.99 CYS</div>
+                                    <div className="min-w-[13.75rem] flex flex-col gap-6 pr-6 border-r border-white">
+                                        <div className="title !text-3xl !font-[300]">{cysReward} CYS</div>
                                         <Button onClick={handleConvertModal} type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
                                             CONVERT
                                         </Button>
@@ -206,7 +230,7 @@ const UserPortal = () => {
 
                                     <div>
                                         <div className="flex flex-col gap-6">
-                                            <div className="title !text-3xl !font-[300]">999,999.99 CGT</div>
+                                            <div className="title !text-3xl !font-[300]">{cgtReward} CGT</div>
                                             <Button onClick={handleStakeModal} type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
                                                 STAKE
                                             </Button>
@@ -223,21 +247,33 @@ const UserPortal = () => {
                             <div className="py-4 px-6 w-full h-full">
                                 <div className="text-base !font-[300] uppercase mb-2">SOCIAL ACCOUNT</div>
 
-                                <SocialAccountItem
-                                    icon={<span className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">G</span>}
-                                    account="gg@gmail.com"
-                                />
+                                {googleAccount && (
+                                    <SocialAccountItem
+                                        icon={<span className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center text-xs text-white">G</span>}
+                                        account={googleAccount}
+                                    />
+                                )}
 
-                                <SocialAccountItem
-                                    icon={<span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">X</span>}
-                                    account="@pppi"
-                                />
+                                {xAccount && (
+                                    <SocialAccountItem
+                                        icon={<span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-xs text-white">X</span>}
+                                        account={`@${xAccount}`}
+                                    />
+                                )}
 
-                                <SocialAccountItem
-                                    icon={<span className="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center text-xs text-white">D</span>}
-                                    account="BOND DISCORD"
-                                    action={<ArrowRight size={12} className="text-sub ml-2" />}
-                                />
+                                {discordAccount ? (
+                                    <SocialAccountItem
+                                        icon={<span className="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center text-xs text-white">D</span>}
+                                        account={discordAccount}
+                                        action={<ArrowRight size={12} className="text-sub ml-2" />}
+                                    />
+                                ) : (
+                                    <SocialAccountItem
+                                        icon={<span className="w-6 h-6 bg-indigo-500 rounded-full flex items-center justify-center text-xs text-white">D</span>}
+                                        account="BIND DISCORD"
+                                        action={<ArrowRight size={12} className="text-sub ml-2" />}
+                                    />
+                                )}
                             </div>
                         </GradientBorderCard>
                     </div>
@@ -248,7 +284,7 @@ const UserPortal = () => {
                             <div className="py-4 px-6 h-full w-full flex flex-col justify-between">
                                 <div className="flex justify-between items-center w-full">
                                     <div className="title !font-[300] text-base">MY NFTS</div>
-                                    <div className="title !font-[300] !text-2xl">999</div>
+                                    <div className="title !font-[300] !text-2xl">{nftCnt}</div>
                                 </div>
 
                                 <div className="flex justify-end items-center">
