@@ -97,8 +97,25 @@ const navs = [
 // /zk
 const zkNavs = [
     {
-        content: 'Cysic zk',
-        href: '/zk'
+        content: 'Cysic ZK',
+        children: [
+            {
+                content: 'Service',
+                href: '/'
+            },
+            {
+                content: 'Compute Box',
+                href: '/nft'
+            },
+            {
+                content: 'Cysic AI',
+                href: '/ai'
+            },
+            {
+                content: 'Cysic Mining',
+                href: '/stake'
+            },
+        ]
     },
     {
         content: 'Invite',
@@ -120,7 +137,7 @@ const zkNavs = [
 // /ai
 const aiNavs = [
     {
-        content: 'Cysic ai',
+        content: 'Cysic AI',
         children: [
             {
                 content: 'Project',
@@ -146,12 +163,65 @@ const aiNavs = [
     },
 ]
 
+const computeNavs = navs.map((i, index) => {
+    if (index == 0) {
+        return {
+            content: 'Compute Box',
+            children: [
+                {
+                    content: 'Service',
+                    href: '/'
+                },
+                {
+                    content: 'Cysic ZK',
+                    href: '/zk'
+                },
+                {
+                    content: 'Cysic AI',
+                    href: '/ai'
+                },
+                {
+                    content: 'Cysic Mining',
+                    href: '/stake'
+                },
+            ]
+        }
+    }
+    return i
+})
+
+const stakeeNavs = navs.map((i, index) => {
+    if (index == 0) {
+        return {
+            content: 'Cysic Mining',
+            children: [
+                {
+                    content: 'Service',
+                    href: '/'
+                },
+                {
+                    content: 'Compute Box',
+                    href: '/nft'
+                },
+                {
+                    content: 'Cysic ZK',
+                    href: '/zk'
+                },
+                {
+                    content: 'Cysic AI',
+                    href: '/ai'
+                },
+            ]
+        }
+    }
+    return i
+})
 
 
 export default function Header() {
     const { address, status, needBindInviteCode } = useAccount();
     const location = useLocation();
-    
+
     const handleConnect = () => {
         handleSignIn();
     };
@@ -162,15 +232,22 @@ export default function Header() {
 
     const currentNavs = useMemo(() => {
         const path = location.pathname;
-        
+
         if (path === '/zk' || path.startsWith('/zk/')) {
             return zkNavs;
         }
-        
+
         if (path === '/ai' || path.startsWith('/ai/')) {
             return aiNavs;
         }
-        
+
+        if (path === '/nft' || path.startsWith('/nft/')) {
+            return computeNavs
+        }
+
+        if (path === '/stake' || path.startsWith('/stake/')) {
+            return stakeeNavs
+        }
         return navs;
     }, [location.pathname]);
 

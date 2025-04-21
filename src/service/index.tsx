@@ -24,7 +24,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
     
-    if (response?.data?.code != 10000) {
+    if (response?.data?.code != 0) {
         if (response?.data?.code == 10199) {
             // const auth: any = useAuth.getState()
             // auth.updateAddress(auth.currentAddr, { valid: false, auth: '' })

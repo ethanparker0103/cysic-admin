@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { usePrivy } from "@privy-io/react-auth";
 import { useDisconnect } from "wagmi";
+import { useNavigate } from "react-router-dom";
 
 const ConnectInfo = () => {
     const { cosmosAddress, address, connector, registeredInviteCode, isProfileCompleted, isRegistered, isConnectedOnly } = useAccount()
@@ -39,6 +40,8 @@ const ConnectInfo = () => {
         // 调用打开SignIn弹窗的方法，让它显示第二步(资料填写)
         handleSignIn('profile'); // 假设handleSignIn可以接受参数指定打开的步骤
     }
+
+    const navigate = useNavigate()
 
     return (
         <>
@@ -84,7 +87,7 @@ const ConnectInfo = () => {
                     ) : null}
 
                     <DropdownItem key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" onClick={()=>{navigate('/nft/userPortal')}}>
                             <img src={''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                             <span>User Portal</span>
                         </div>

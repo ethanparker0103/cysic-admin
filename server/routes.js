@@ -6,7 +6,7 @@ module.exports = (app) => {
   app.get('/health', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: "OK"
     });
   });
@@ -14,8 +14,42 @@ module.exports = (app) => {
   app.post('/api/v1/upload', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: `/images/mock-image-${Date.now()}.png`
+    });
+  });
+  
+  // 添加地址转换接口
+  app.get('/api/v1/convertAddr', (req, res) => {
+    const { addr } = req.query;
+    
+    if (!addr) {
+      return res.status(400).json({
+        msg: "Missing address parameter",
+        code: 40001
+      });
+    }
+    
+    // 简单的模拟转换逻辑
+    let eth_addr, cosmos_addr;
+    
+    if (addr.startsWith('0x')) {
+      // 输入的是以太坊地址，生成对应的Cosmos地址
+      eth_addr = addr;
+      cosmos_addr = "cosmos" + Math.random().toString(36).substring(2, 15);
+    } else {
+      // 输入的是Cosmos地址，生成对应的以太坊地址
+      cosmos_addr = addr;
+      eth_addr = "0x" + Math.random().toString(36).substring(2, 15);
+    }
+    
+    res.json({
+      msg: "success",
+      code: 0,
+      data: {
+        eth_addr,
+        cosmos_addr
+      }
     });
   });
   
@@ -37,7 +71,7 @@ module.exports = (app) => {
     if (!userData) {
       return res.json({
         msg: "success",
-        code: 10000,
+        code: 0,
         data: {
           name: "Test User",
           avatarUrl: generateMockData.avatar()
@@ -48,7 +82,7 @@ module.exports = (app) => {
     // 只返回profile接口需要的字段
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         name: userData.name,
         avatarUrl: userData.avatarUrl
@@ -93,7 +127,7 @@ module.exports = (app) => {
     
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         name: userData.name,
         avatarUrl: userData.avatarUrl
@@ -127,8 +161,92 @@ module.exports = (app) => {
     // 返回完整的用户数据
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: userData
+    });
+  });
+  
+  // 添加社交媒体相关接口
+  app.get('/api/v1/social/task/group/list', (req, res) => {
+    res.json({
+      msg: "success",
+      code: 0,
+      data: {
+        taskGroupList: [
+          {
+            id: 1,
+            name: "EARN CGT REWARDS",
+            sort: 1
+          },
+          {
+            id: 2,
+            name: "DIGITAL HARVESTER",
+            sort: 2
+          },
+          {
+            id: 3,
+            name: "ZK MULTIPLIER",
+            sort: 3
+          }
+        ]
+      }
+    });
+  });
+
+  app.get('/api/v1/social/task/list', (req, res) => {
+    const groupId = parseInt(req.query.groupId) || 1;
+    const pageNum = parseInt(req.query.pageNum) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    
+    // 生成模拟任务数据
+    const taskList = Array.from({ length: pageSize }, (_, i) => ({
+      id: (pageNum - 1) * pageSize + i + 1,
+      title: `Task Title ${(pageNum - 1) * pageSize + i + 1}`,
+      description: `Task in group: ${groupId}, pageNum: ${pageNum}, pageSize: ${pageSize}`,
+      status: Math.floor(Math.random() * 3).toString() // 随机状态 0, 1, 2
+    }));
+    
+    res.json({
+      msg: "success",
+      code: 0,
+      data: {
+        taskList
+      }
+    });
+  });
+
+  app.post('/api/v1/social/bind/google', (req, res) => {
+    const address = req.body.address || req.headers['x-cysic-address'];
+    const { token } = req.body; // Google认证token
+    
+    if (!address) {
+      return res.status(400).json({
+        msg: "Missing user address",
+        code: 40001
+      });
+    }
+    
+    // 获取用户数据
+    let userData = jsonDb.getUser(address);
+    if (!userData) {
+      return res.status(404).json({
+        msg: "User not found",
+        code: 40004
+      });
+    }
+    
+    // 模拟验证Google令牌并更新用户数据
+    userData.socialAccountList = userData.socialAccountList || {};
+    userData.socialAccountList.google = {
+      name: `user${Math.floor(Math.random() * 1000)}@gmail.com`
+    };
+    
+    // 保存到数据库
+    jsonDb.saveUser(address, userData);
+    
+    res.json({
+      msg: "success",
+      code: 0
     });
   });
   
@@ -136,7 +254,7 @@ module.exports = (app) => {
   app.get('/api/v1/referral/overview', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         inviteCode: "CYSIC" + Math.floor(Math.random() * 10000),
         referralEaringList: [
@@ -161,7 +279,7 @@ module.exports = (app) => {
   app.get('/api/v1/referral/teamList', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         leaderInfo: {
           address: generateMockData.address(),
@@ -191,7 +309,7 @@ module.exports = (app) => {
   app.get('/api/v1/referral/levelList', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         levelList: [
           {
@@ -210,7 +328,7 @@ module.exports = (app) => {
             level: 2,
             name: "Silver",
             reward: {
-              amount: "200",
+              amount: "10",
               symbol: "CYS"
             },
             needInviteCnt: 10,
@@ -221,7 +339,7 @@ module.exports = (app) => {
             level: 3,
             name: "Gold",
             reward: {
-              amount: "500",
+              amount: "100",
               symbol: "CYS"
             },
             needInviteCnt: 20,
@@ -258,7 +376,7 @@ module.exports = (app) => {
   app.get('/api/v1/zkTask/overview', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         rewardList: [
           {
@@ -321,7 +439,7 @@ module.exports = (app) => {
     
     res.json({
       msg: `success, page: ${page}, pageSize: ${pageSize}`,
-      code: 10000,
+      code: 0,
       data: {
         historyList
       }
@@ -351,7 +469,7 @@ module.exports = (app) => {
     
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         validatorList: validators
       }
@@ -375,7 +493,7 @@ module.exports = (app) => {
     
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         validatorList: validators
       }
@@ -436,7 +554,7 @@ module.exports = (app) => {
           symbol: "CYS"
         }
       ],
-      socialAccountList: {
+      socialAccountList: {  // 修改为与api.md一致的字段名
         google: null,
         x: null,
         discord: null
@@ -449,7 +567,7 @@ module.exports = (app) => {
     
     res.json({
       msg: "success",
-      code: 10000
+      code: 0
     });
   });
 
@@ -457,7 +575,7 @@ module.exports = (app) => {
   app.get('/api/v1/zkTask/reward/phase1', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         activity: (Math.random() * 10000).toFixed(0),
         staking: (Math.random() * 500).toFixed(0)
@@ -469,7 +587,7 @@ module.exports = (app) => {
   app.get('/api/v1/zkTask/reward/phase2', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         claimable: (Math.random() * 1000).toFixed(0),
         cys: {
@@ -494,7 +612,7 @@ module.exports = (app) => {
   app.get('/api/v1/zkTask/reward/phase3', (req, res) => {
     res.json({
       msg: "success",
-      code: 10000,
+      code: 0,
       data: {
         CYS: {
           total: (Math.random() * 15000 + 5000).toFixed(0),
