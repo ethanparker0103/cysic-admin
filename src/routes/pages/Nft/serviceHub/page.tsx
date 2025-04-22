@@ -10,6 +10,7 @@ import { cn } from "@nextui-org/react";
 import { baseHref } from "@/config";
 import useCosmos from "@/models/_global/cosmos";
 import useUser from "@/models/user";
+import { Link } from "react-router-dom";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -137,10 +138,10 @@ const UserDetailsPage = () => {
 
             <div className="container mx-auto px-4 relative z-10 py-12">
                 {/* 返回按钮 */}
-                <a href={baseHref+"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
+                <Link to={"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
                     <ChevronLeft size={20} />
                     <span>GENERAL</span>
-                </a>
+                </Link>
 
                 {/* 第一行：奖励和余额 */}
                 <div className="flex gap-4 ">

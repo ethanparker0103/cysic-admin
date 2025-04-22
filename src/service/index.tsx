@@ -3,7 +3,7 @@ import useStatic from '@/models/_global';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = 'http://localhost:3001' ;
+axios.defaults.baseURL = 'https://api-dev.prover.xyz';
 
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
@@ -13,6 +13,7 @@ axios.interceptors.request.use(function (config) {
     // const authMap = useAuth.getState().authMap
 
     config.headers['X-Cysic-Address'] = address
+    config.headers['X-Cysic-Admin'] = 'admin'
     // config.headers['X-Cysic-Sign'] = authMap?.[addr]?.auth
 
     return config;

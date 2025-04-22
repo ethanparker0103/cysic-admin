@@ -1,7 +1,7 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 import GradientBorderCard from "@/components/gradientBorderCard";
 import { ReactNode, useEffect } from "react";
-import { getImageUrl, handleConvertModal, handleStakeModal } from "@/utils/tools";
+import { getImageUrl, handleConvertModal, handleSignIn, handleStakeModal } from "@/utils/tools";
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
@@ -105,6 +105,10 @@ const UserPortal = () => {
     const xAccount = socialAccountList?.x?.name || "";
     const discordAccount = socialAccountList?.discord?.name || "";
 
+    const handleEditName = ()=>{
+        handleSignIn('profile')
+    }
+
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
             {/* 背景装饰 */}
@@ -146,7 +150,7 @@ const UserPortal = () => {
                                             <div className="text-base text-sub">NAME</div>
                                             <div className="flex items-center gap-2 text-base">
                                                 <span className="text-white">{name || "Unknown"}</span>
-                                                <button className="text-sub p-0 bg-transparent border-0">
+                                                <button onClick={handleEditName} className="text-sub p-0 bg-transparent border-0">
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
