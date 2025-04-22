@@ -70,9 +70,7 @@ const useCosmosBalance = () => {
                 depositExtension.distribution.prover(address),
                 // depositExtension.distribution.verifier(address)
             ]);
-
-            console.log('proverResult', proverResult)
-            
+                        
             // 处理存款结果
             const depositMap: any = {};
             
