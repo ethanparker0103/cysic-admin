@@ -1,4 +1,4 @@
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
 import { baseHref, mediasLink } from "@/config";
 import { getImageUrl, handleSignIn } from "@/utils/tools";

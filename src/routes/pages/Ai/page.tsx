@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import SignInButton from "@/routes/components/SignInButton";
-import { getImageUrl, handleSignIn } from "@/utils/tools";
+import { getImageUrl } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight, Search } from "lucide-react";
 import { useState, ReactNode } from "react";

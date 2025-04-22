@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import { getImageUrl, handlePurchaseNftModal, handleSignIn } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { baseHref } from "@/config";

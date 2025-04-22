@@ -1,4 +1,4 @@
-import GradientBorderCard, { GradientDirection } from "@/components/gradientBorderCard";
+import GradientBorderCard, { GradientDirection } from "@/components/GradientBorderCard";
 import { Modal as NextModal, ModalContent, cn } from "@nextui-org/react"
 import clsx from "clsx"
 import { X } from "lucide-react"

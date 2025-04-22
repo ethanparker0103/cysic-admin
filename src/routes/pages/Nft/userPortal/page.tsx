@@ -1,5 +1,5 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import { ReactNode, useEffect } from "react";
 import { getImageUrl, handleConvertModal, handleSignIn, handleStakeModal } from "@/utils/tools";
 import Button from "@/components/Button";

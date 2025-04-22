@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
 import { getImageUrl } from "@/utils/tools";
 import { ReactNode, useState, useEffect } from "react";

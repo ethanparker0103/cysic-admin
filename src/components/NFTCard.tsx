@@ -1,4 +1,4 @@
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
 import { Pencil } from "lucide-react";
 import { getImageUrl } from "@/utils/tools";

@@ -4,7 +4,7 @@ import Button, { BtnType } from "@/components/Button";
 import { getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
 import { Search, History } from "lucide-react";
 import { useState } from "react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import axios from "@/service";
 import { useRequest } from "ahooks";

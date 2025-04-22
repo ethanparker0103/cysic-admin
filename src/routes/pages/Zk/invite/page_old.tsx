@@ -4,7 +4,7 @@ import { ArrowRight, CircleHelp } from "lucide-react";
 import Copy from "@/components/Copy";
 import useUser from "@/models/user";
 import { useEffect, useState } from "react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import { History } from 'lucide-react';
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import Tooltip from "@/components/Tooltip";

@@ -1,5 +1,5 @@
 import { ArrowRight, ChevronLeft, ChevronsUp, Info } from "lucide-react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
 import { formatReward, getImageUrl, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { ReactNode } from "react";

@@ -3,7 +3,7 @@ import Button from "@/components/Button";
 import { getImageUrl, handleReserveModal } from "@/utils/tools";
 import { ArrowRight, CircleHelp, Pencil } from "lucide-react";
 import { useState } from "react";
-import GradientBorderCard from "@/components/gradientBorderCard";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
