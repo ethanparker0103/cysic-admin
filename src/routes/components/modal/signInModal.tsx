@@ -145,8 +145,6 @@ const SignInModal = () => {
         code: inviteCode,
       });
 
-
-      console.log('bindWalletWithCode response', response)
       // 检查响应是否成功 - 处理两种成功情况
       const isSuccess = response.code === responseSuccessCode || response.code === 10024;
 

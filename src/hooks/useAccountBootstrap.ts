@@ -34,7 +34,6 @@ const useAccountBootstrap = () => {
     }
   }, [address, isSigned, needsBindCheck, isBinded]);
 
-  console.log('address, isSigned, needsBindCheck, isBinded', address, isSigned, needsBindCheck, isBinded)
 
   // 跟踪上一个钱包地址
   const lastWalletAddress = useRef<string | null>(null);
@@ -51,6 +50,7 @@ const useAccountBootstrap = () => {
       // 保存签名结果
       userStore.setSignature(address, signature as string);
 
+      await sleep(1000)
       // 签名后获取用户基础信息
       userStore.fetchUserInfo(address).catch(console.error);
     } catch (error) {
