@@ -11,6 +11,7 @@ import CysicTable, { CysicTableColumn } from "@/components/Table";
 import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
+import useAccount from "@/hooks/useAccount";
 
 // 邀请等级类型定义
 interface InviteTier {
@@ -48,6 +49,7 @@ interface TeamLeader {
 }
 
 const InvitePage = () => {
+    const { isRegistered, walletAddress } = useAccount()
     const { registeredInviteCode } = useUser();
     const [memberData, setMemberData] = useState<TeamMember[]>([]);
     const [leaderData, setLeaderData] = useState<TeamLeader | null>(null);
@@ -73,6 +75,8 @@ const InvitePage = () => {
     const { data: overviewData } = useRequest(
         () => axios.get('/api/v1/referral/overview'),
         {
+            ready: isRegistered && walletAddress,
+            refreshDeps: [isRegistered, walletAddress],
             onSuccess: (res) => {
                 if (res?.data) {
                     // 设置邀请奖励数据
@@ -90,6 +94,8 @@ const InvitePage = () => {
     const { loading: teamLoading } = useRequest(
         () => axios.get('/api/v1/referral/teamList'),
         {
+            ready: isRegistered && walletAddress,
+            refreshDeps: [isRegistered, walletAddress],
             onSuccess: (res) => {
                 if (res?.data) {
                     setLeaderData(res.data.leaderInfo);
@@ -163,7 +169,7 @@ const InvitePage = () => {
             width: "35%",
             renderCell: (member) => (
                 <div className="text-left">
-                    {member.referralRewardList.map((reward: {amount: string, symbol: string}, index: number) => (
+                    {member?.referralRewardList?.map((reward: {amount: string, symbol: string}, index: number) => (
                         <span key={index} className="text-sm">
                             {index > 0 && " | "}
                             {reward.amount} {reward.symbol}
@@ -374,7 +380,10 @@ const InvitePage = () => {
                                                         <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                         <path d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
-                                                    <span className="text-base title !font-[300]">{tier.needInviteCnt}</span>
+                                                    {/* <span className="text-base title !font-[300]">{tier.needInviteCnt}</span> */}
+                                                    <span className="text-base title !font-[300]">
+                                                        {(tiers[index-1]?.needInviteCnt || 0)}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </GradientBorderCard>

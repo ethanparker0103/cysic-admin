@@ -1,9 +1,9 @@
 // @ts-nocheck
 
 import Button, { BtnType } from "@/components/Button";
-import { getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
+import { formatReward, getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
 import { Search, History } from "lucide-react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import axios from "@/service";
@@ -24,6 +24,11 @@ import {
   signAndBroadcastDirect,
 } from "@/utils/cosmos";
 import BigNumber from "bignumber.js";
+import { showStatusModal } from "@/utils/tools";
+import { StatusType } from "@/routes/components/modal/statusModal";
+import { cysicTestnet } from "@/config";
+import useAccount from "@/hooks/useAccount";
+
 interface Validator {
   id: string;
   abbr: string;
@@ -61,18 +66,69 @@ const sliceFormat = (value: string, decimal: number = 18) => {
 
 
 const StakePage = () => {
+  const { isRegistered, walletAddress } = useAccount()
   const { balanceMap } = useCosmos()
   const { setState, stakeList, activeList } = useStake(); // 使用stake store
 
   const unstakeAmount = balanceMap?.CGT?.hm_amount || 0
   const [stakeAmount, setStakeAmount] = useState("0");
-  const [apr, setApr] = useState("0");
   const [rewardsAmount, setRewardsAmount] = useState("0");
+
+
+  const apr = useMemo(() => {
+    // 检查数据是否都已加载
+    if (!stakeList?.data?.validatorList || !activeList?.data?.validatorList) {
+      return "0";
+    }
+
+    const userValidators = stakeList.data.validatorList;
+    const networkValidators = activeList.data.validatorList;
+
+    // 创建网络验证者映射，便于查找
+    const networkValidatorMap = {};
+    networkValidators.forEach(validator => {
+      networkValidatorMap[validator.validatorName] = validator;
+    });
+
+    // 计算用户质押的加权 APR
+    let totalUserStake = 0;
+    let totalWeightedApr = 0;
+
+    userValidators.forEach(validator => {
+      if (validator.stake) {
+        const userStakeAmount = parseFloat(validator.stake.amount) || 0;
+        totalUserStake += userStakeAmount;
+
+        // 找到对应的网络验证者
+        const networkValidator = networkValidatorMap[validator.validatorName];
+
+        if (networkValidator && networkValidator.apr) {
+          const aprValue = parseFloat(networkValidator.apr.replace('%', '')) || 0;
+          totalWeightedApr += (userStakeAmount * aprValue);
+        } else if (validator.apr) {
+          // 如果找不到网络数据，使用用户数据中的 APR
+          const aprValue = parseFloat(validator.apr.replace('%', '')) || 0;
+          totalWeightedApr += (userStakeAmount * aprValue);
+        }
+      }
+    });
+
+    // 计算加权平均 APR
+    if (totalUserStake > 0) {
+      return (totalWeightedApr / totalUserStake).toFixed(2);
+    }
+
+    // 如果用户没有质押，返回 0
+    return "0";
+  }, [stakeList, activeList]);
+
 
   // 获取质押验证者列表
   const { data: stakeListData, loading: stakeLoading } = useRequest(
     () => axios.get('/api/v1/stake/list'),
     {
+      ready: isRegistered && walletAddress,
+      refreshDeps: [isRegistered, walletAddress],
       onSuccess: (res) => {
         // 存储原始响应到store
         setState({ stakeList: res });
@@ -80,20 +136,15 @@ const StakePage = () => {
         if (res?.data?.validatorList && res.data.validatorList.length > 0) {
           // 计算总质押金额和平均APR
           let totalStake = 0;
-          let totalApr = 0;
 
           res.data.validatorList.forEach((validator: ValidatorResponse) => {
             if (validator.stake) {
               totalStake += parseFloat(validator.stake.amount);
             }
-            if (validator.apr) {
-              totalApr += parseFloat(validator.apr.replace('%', ''));
-            }
           });
 
           // 设置状态
           setStakeAmount(totalStake.toLocaleString('en-US', { maximumFractionDigits: 2 }));
-          setApr((totalApr / res.data.validatorList.length).toFixed(2));
         }
       }
     }
@@ -227,7 +278,7 @@ const StakePage = () => {
     {
       key: "commissionRate",
       label: "Commission Rate",
-      renderCell: (validator) => <span className="text-sub">{validator.commissionRate}%</span>
+      renderCell: (validator) => <span className="text-sub">{(validator.commissionRate * 100) || 0}%</span>
     },
     {
       key: "action",
@@ -249,9 +300,12 @@ const StakePage = () => {
   const handleClaim = async (closeLoading?: any) => {
     try {
       checkKeplrWallet();
-      // const result = await connector?.withdrawRewards(params.delegatorAddress, params.validatorAddress, cosmosFee, 'claim reawrds')
-      // toast.success(`Submit Success at ${result?.transactionHash}`)
 
+
+      showStatusModal({
+        type: StatusType.LOADING,
+        message: `Claiming rewards, please confirm this transaction in your wallet`
+      });
       const queryClient = QueryClient.withExtensions(
         connector.getQueryClient(),
         setupDistributionExtension
@@ -267,8 +321,7 @@ const StakePage = () => {
           value: tx_1.MsgWithdrawDelegatorReward.encode(
             tx_1.MsgWithdrawDelegatorReward.fromPartial({
               delegatorAddress: address,
-              // TODO 
-              validatorAddress: address,
+              validatorAddress: validator,
             })
           ).finish(),
         };
@@ -282,11 +335,30 @@ const StakePage = () => {
         connector
       );
 
-      await checkkTx(connector, result2?.transactionHash);
+      const tx = await checkkTx(connector, result2?.transactionHash);
+      console.log('tx', tx);
 
-      // onClose?.()
-    } catch (e: any) {
-      console.log("error", e);
+      // 显示成功状态
+      showStatusModal({
+        type: StatusType.SUCCESS,
+        title: "Rewards Claimed Successfully",
+        chainName: cysicTestnet.chainName,
+        txHash: tx
+      });
+
+      // 刷新奖励数据
+      queryRewards();
+
+    } catch (error) {
+      console.error("Error claiming rewards:", error);
+
+      // 显示错误状态
+      showStatusModal({
+        type: StatusType.ERROR,
+        title: "Transaction Failed",
+        message: "Failed to claim rewards. Please try again.",
+        onRetry: () => handleClaim()
+      });
     }
   };
 
@@ -421,7 +493,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-6">
               <h2 className="title text-xl uppercase !font-[300] mb-4">CLAIM REWARDS</h2>
-              <div className="text-2xl !font-[400] title mb-4 text-center text-right">{rewardsAmount} CGT</div>
+              <div className="text-2xl !font-[400] title mb-4 text-center text-right">{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
                 onClick={handleClaim}

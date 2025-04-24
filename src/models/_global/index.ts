@@ -6,7 +6,7 @@ export const defaultInitState = {
   address: undefined
 }
 
-const persistFields: any = [];
+const persistFields: any = ['address'];
 
 const useStatic = create(
   persist(

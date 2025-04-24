@@ -2,10 +2,8 @@ import { getImageUrl, shortStr, handleSignIn } from "@/utils/tools"
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from "@nextui-org/react";
 import Copy from "@/components/Copy";
-// import { useDisconnect } from "@reown/appkit/react";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
-import { useState, useEffect } from "react";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { usePrivy } from "@privy-io/react-auth";
 import { useDisconnect } from "wagmi";
@@ -16,55 +14,65 @@ import { purchaseChainId, USDC, usdcFacuetAbi } from "@/config";
 import { toast } from "react-toastify";
 
 const ConnectInfo = () => {
-    const { cosmosAddress, address, connector, registeredInviteCode, isProfileCompleted, isRegistered, isConnectedOnly } = useAccount()
+    // 使用新的useAccount获取状态
+    const { 
+        cosmosAddress, 
+        address, 
+        connector, 
+        isSigned,
+        isRegistered,
+        isBinded, 
+        hasCompleteProfile,
+        name,
+        avatarUrl,
+        inviteCode 
+    } = useAccount();
 
-    const { logout } = usePrivy()
-    const { disconnectAsync } = useDisconnect()
-    const { reset } = useUser()
+    const { logout } = usePrivy();
+    const { disconnectAsync } = useDisconnect();
+    const { reset } = useUser();
 
     // 状态：已注册但未完成资料填写
-    const [needCompleteProfile, setNeedCompleteProfile] = useState(false);
+    const needCompleteProfile = !name || !avatarUrl;
 
-    // 检查用户是否需要完成资料填写
-    useEffect(() => {
-        // 如果已注册但未完成资料填写
-        if (isRegistered && !isProfileCompleted && !isConnectedOnly) {
-            setNeedCompleteProfile(true);
-        } else {
-            setNeedCompleteProfile(false);
-        }
-    }, [isRegistered, isProfileCompleted, isConnectedOnly]);
-
+    // 处理断开连接
     const handleEVMDisconnect = async () => {
-        await logout()
-        await disconnectAsync()
-        reset()
-    }
+        await logout();
+        await disconnectAsync();
+        reset();
+    };
 
     // 处理打开完善资料弹窗
     const handleCompleteProfile = () => {
-        // 调用打开SignIn弹窗的方法，让它显示第二步(资料填写)
-        handleSignIn('profile'); // 假设handleSignIn可以接受参数指定打开的步骤
-    }
+        handleSignIn('profile');
+    };
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const {writeContractAsync} = useWriteContract()
+    // 处理测试代币领取
+    const {writeContractAsync} = useWriteContract();
     const handleFaucet = async () => {
-        const tx = await writeContractAsync({
-            chainId: purchaseChainId,
-            address: USDC[purchaseChainId],
-            abi: usdcFacuetAbi,
-            functionName: 'mint',
-            args: [address, 1e22],
-        })
-
-        toast.success('Claimed')
-    }
+        if (!address) return;
+        
+        try {
+            const tx = await writeContractAsync({
+                chainId: purchaseChainId,
+                address: USDC[purchaseChainId],
+                abi: usdcFacuetAbi,
+                functionName: 'mint',
+                args: [address, 1e22],
+            });
+            
+            toast.success('Claimed');
+        } catch (error) {
+            toast.error('Failed to claim tokens');
+            console.error(error);
+        }
+    };
 
     return (
         <>
-            <Button needLoading className="!p-0" onClick={()=>{handleFaucet()}}>
+            <Button needLoading className="!p-0" onClick={handleFaucet}>
                 <img src={getImageUrl('@/assets/images/icon/faucet.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
             </Button>
             <Dropdown classNames={{
@@ -77,15 +85,13 @@ const ConnectInfo = () => {
                             <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
                         </div>
 
-                        <img src={''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
-
+                        <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                     </div>
                 </DropdownTrigger>
 
                 <DropdownMenu
                     className="p-0 min-w-[330px] bg-[#090A09B2] backdrop-blur-md vertical-gradient-border rounded-lg overflow-hidden"
                     variant="flat"
-
                     itemClasses={{
                         base: "hover:!opacity-100 text-sub uppercase transition-colors ",
                     }}
@@ -107,7 +113,7 @@ const ConnectInfo = () => {
 
                     <DropdownItem key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
                         <div className="flex items-center gap-2" onClick={()=>{navigate('/nft/userPortal')}}>
-                            <img src={''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
+                            <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                             <span>User Portal</span>
                         </div>
                     </DropdownItem>
@@ -119,7 +125,6 @@ const ConnectInfo = () => {
                         </div>
 
                         <div onClick={handleEVMDisconnect} className="">disconnect</div>
-
                     </DropdownItem>
 
                     <DropdownItem key="cosmos-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
@@ -131,21 +136,19 @@ const ConnectInfo = () => {
                         <ConnectCosmosButton />
                     </DropdownItem>
 
-                    {registeredInviteCode ? (
+                    {inviteCode ? (
                         <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
                             <span className="">Referral Code</span>
-                            <Copy value={registeredInviteCode}>
-                                {registeredInviteCode}
+                            <Copy value={inviteCode}>
+                                {inviteCode}
                             </Copy>
                         </DropdownItem>
                     ) : null}
 
                 </DropdownMenu>
             </Dropdown>
-
         </>
+    );
+};
 
-    )
-}
-
-export default ConnectInfo
+export default ConnectInfo;

@@ -252,28 +252,28 @@ const RewardsDetailModal = () => {
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className="text-3xl title !font-[300] uppercase">Total CYS</span>
-                        <span className="text-3xl title !font-[300]">{parseInt(phase3.CYS.total).toLocaleString()}</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase3?.CYS?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
                         <div className="flex justify-between items-center gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Prover</span>
-                                <span>{parseInt(phase3.CYS.income.prover).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CYS?.income?.prover).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Verifier</span>
-                                <span>{parseInt(phase3.CYS.income.verifier).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CYS?.income?.verifier).toLocaleString()}</span>
                             </div>
                         </div>
                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Activity</span>
-                                <span>{parseInt(phase3.CYS.income.activity).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CYS?.income?.activity).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Others</span>
-                                <span>{parseInt(phase3.CYS.income.others).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CYS?.income?.others).toLocaleString()}</span>
                             </div>
                         </div>
                     </div>
@@ -283,7 +283,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Convertable CYS - CGT</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CYS.information.convertable).toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.CYS?.information?.convertable).toLocaleString()}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
@@ -301,28 +301,28 @@ const RewardsDetailModal = () => {
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className="text-3xl title !font-[300] uppercase">Total CGT</span>
-                        <span className="text-3xl title !font-[300]">{parseInt(phase3.CGT.total).toLocaleString()}</span>
+                        <span className="text-3xl title !font-[300]">{parseInt(phase3?.CGT?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
                         <div className="flex justify-between items-center gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Prover</span>
-                                <span>{parseInt(phase3.CGT.income.prover).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CGT?.income?.prover).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Verifier</span>
-                                <span>{parseInt(phase3.CGT.income.verifier).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CGT?.income?.verifier).toLocaleString()}</span>
                             </div>
                         </div>
                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Activity</span>
-                                <span>{parseInt(phase3.CGT.income.activity).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CGT?.income?.activity).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Others</span>
-                                <span>{parseInt(phase3.CGT.income.others).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CGT?.income?.others).toLocaleString()}</span>
                             </div>
                         </div>
                     </div>
@@ -332,7 +332,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex-1 flex justify-between items-center">
                                 <span className="text-sub">Maintenance Fee</span>
-                                <span>{parseInt(phase3.CGT.cost.maintenanceFee).toLocaleString()}</span>
+                                <span>{parseInt(phase3?.CGT?.cost?.maintenanceFee).toLocaleString()}</span>
                             </div>
                             <div className="flex-1" />
                         </div>
@@ -343,7 +343,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center mb-2 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Convertable CGT - CYS</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.convertable).toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.CGT?.information?.convertable).toLocaleString()}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
@@ -358,7 +358,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center mb-2 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Staked Amount</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.stakedAmount).toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.CGT?.information?.stakedAmount).toLocaleString()}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
@@ -373,7 +373,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Reserved Amount</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3.CGT.information.reservedAmount).toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.CGT?.information?.reservedAmount).toLocaleString()}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button

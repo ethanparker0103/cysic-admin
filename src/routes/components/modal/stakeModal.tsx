@@ -3,15 +3,17 @@ import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
 import Button from "@/components/Button";
-import { showStatusModal } from "@/utils/tools";
+import { showStatusModal, sleep } from "@/utils/tools";
 import { Slider } from "@nextui-org/react";
 import { StatusType } from "./statusModal"; // 导入状态类型枚举
 import useCosmos from "@/models/_global/cosmos";
 import useStake from "@/models/stake"; // 引入stake store
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
-import { cosmosFee, cysicTestnet } from "@/config";
+import { blockTime, cosmosFee, cysicTestnet } from "@/config";
 import { MsgDelegate, MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import BigNumber from "bignumber.js";
+import { useRequest } from "ahooks";
+import axios from "@/service";
 
 // 操作类型枚举
 enum StakeAction {
@@ -143,8 +145,8 @@ const ValidatorDropdown = ({
                         <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4">
                             <button
                                 className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.MY_VALIDATORS
-                                        ? "bg-white text-black"
-                                        : "bg-[#1E1E1E] text-[#777]"
+                                    ? "bg-white text-black"
+                                    : "bg-[#1E1E1E] text-[#777]"
                                     }`}
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -155,8 +157,8 @@ const ValidatorDropdown = ({
                             </button>
                             <button
                                 className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.OTHERS
-                                        ? "bg-white text-black"
-                                        : "bg-[#1E1E1E] text-[#777]"
+                                    ? "bg-white text-black"
+                                    : "bg-[#1E1E1E] text-[#777]"
                                     }`}
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -173,7 +175,13 @@ const ValidatorDropdown = ({
                                 {/* 验证人列表头部 */}
                                 <div className="flex justify-between items-center bg-[#111] p-3 rounded-md mb-2">
                                     <div className="text-white">Validator</div>
-                                    <div className="text-white">Expected APR</div>
+                                    {
+                                        validatorTab === ValidatorTab.MY_VALIDATORS ? (
+                                            <div className="text-white">Expected APR</div>
+                                        ) : (
+                                            <div className="text-white">Commission Rate</div>
+                                        )
+                                    }
                                 </div>
 
                                 {/* 验证人列表 */}
@@ -193,7 +201,12 @@ const ValidatorDropdown = ({
                                                 </div>
                                                 <span className="text-white">{validator.validatorName}</span>
                                             </div>
-                                            <div className="text-white">{validator.apr || "0%"}</div>
+                                            <div className="text-white">
+                                                {validatorTab === ValidatorTab.MY_VALIDATORS
+                                                    ? validator.apr || "0%"
+                                                    : `${(Number(validator.commissionRate) * 100).toFixed(2)}%` || "0%"
+                                                }
+                                            </div>
                                         </div>
                                     ))}
                                 </div>
@@ -223,8 +236,7 @@ const StakeModal = () => {
     const { visible, setVisible, data }: any = useModalState({
         eventName: "modal_stake_visible",
     });
-    const { stakeList, activeList } = useStake(); // 使用stake store
-
+    const { stakeList, activeList, setState } = useStake(); // 使用stake store
 
     // 状态管理
     const [activeTab, setActiveTab] = useState<StakeAction>(StakeAction.STAKE);
@@ -238,6 +250,54 @@ const StakeModal = () => {
     const { balanceMap, address, connector } = useCosmos()
     const cgtBalance = balanceMap?.CGT?.hm_amount || 0
     const balance = cgtBalance.toString();
+
+    // 在弹窗打开时，如果store中没有数据，则获取数据
+    // 获取质押验证者列表
+    const { loading: stakeLoading, run: runStakeList } = useRequest(
+        () => axios.get('/api/v1/stake/list'),
+        {
+            ready: visible && (!stakeList || !stakeList.data),
+            onSuccess: (res) => {
+                // 存储原始响应到store
+                setState({ stakeList: res });
+                console.log('质押验证者数据获取成功:', res?.data);
+
+                // 如果已设置了验证者名称但未找到验证者对象，尝试使用新获取的数据
+                if (data?.validator && !selectedValidator) {
+                    const foundValidator = res?.data?.validatorList?.find(
+                        (v: ValidatorResponse) => v.validatorName === data.validator
+                    );
+                    if (foundValidator) {
+                        setSelectedValidator(foundValidator);
+                    }
+                }
+            }
+        }
+    );
+
+    // 获取活跃验证者列表
+    const { loading: activeLoading, run: runActiveList } = useRequest(
+        () => axios.get('/api/v1/validator/activeList'),
+        {
+            ready: visible && (!activeList || !activeList.data),
+            onSuccess: (res) => {
+                // 存储原始响应到store
+                setState({ activeList: res });
+                console.log('活跃验证者数据获取成功:', res?.data);
+
+                // 如果已设置了验证者名称但未找到验证者对象，尝试使用新获取的数据
+                if (data?.validator && !selectedValidator &&
+                    (!stakeList || !stakeList.data || !stakeList.data.validatorList)) {
+                    const foundValidator = res?.data?.validatorList?.find(
+                        (v: ValidatorResponse) => v.validatorName === data.validator
+                    );
+                    if (foundValidator) {
+                        setSelectedValidator(foundValidator);
+                    }
+                }
+            }
+        }
+    );
 
     // 通过名称查找验证者
     const findValidatorByName = (name: string): ValidatorResponse | null => {
@@ -277,6 +337,7 @@ const StakeModal = () => {
                     // 否则使用活跃验证者列表的第一个
                     setSelectedValidator(activeList.data.validatorList[0]);
                 }
+                // 注意：如果这时候没有找到验证者，接口请求成功后会再次尝试设置
             }
 
             // 设置金额
@@ -379,7 +440,7 @@ const StakeModal = () => {
                 value: MsgDelegate.encode(MsgDelegate.fromPartial({
                     delegatorAddress: address,
                     // TODO 需要根据验证人列表的地址来选择
-                    validatorAddress: address,
+                    validatorAddress: selectedValidator?.validatorAddress,
                     amount: {
                         denom: "CGT", // 代币的denom
                         amount: BigNumber(amount).multipliedBy(1e18).toString(), // 委托的数量
@@ -397,6 +458,11 @@ const StakeModal = () => {
                 chainName: cysicTestnet.chainName,
                 txHash: tx
             });
+
+            sleep(blockTime.long).then(() => {
+                runStakeList()
+                runActiveList()
+            })
 
             // 关闭质押模态框
             setVisible(false);
@@ -434,7 +500,7 @@ const StakeModal = () => {
                 value: MsgUndelegate.encode(MsgUndelegate.fromPartial({
                     delegatorAddress: address,
                     // TODO 需要根据验证人列表的地址来选择
-                    validatorAddress: address,
+                    validatorAddress: selectedValidator?.validatorAddress,
                     amount: {
                         denom: "CGT", // 代币的denom
                         amount: BigNumber(amount).multipliedBy(1e18).toString(), // 委托的数量
@@ -451,6 +517,11 @@ const StakeModal = () => {
                 chainName: "CYSIC CHAIN",
                 txHash: tx
             });
+
+            sleep(blockTime.long).then(() => {
+                runStakeList()
+                runActiveList()
+            })
 
             setVisible(false);
             resetState();
@@ -496,12 +567,19 @@ const StakeModal = () => {
             title="STAKE"
             className="max-w-[600px]"
         >
+            {/* 加载状态显示 */}
+            {(stakeLoading || activeLoading) && (
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="text-white">加载验证者数据中...</div>
+                </div>
+            )}
+
             {/* 选项卡头部 */}
             <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6">
                 <button
                     className={`py-4 uppercase text-center text-base ${activeTab === StakeAction.STAKE
-                            ? "bg-white text-black"
-                            : "bg-[#1E1E1E] text-[#777]"
+                        ? "bg-white text-black"
+                        : "bg-[#1E1E1E] text-[#777]"
                         }`}
                     onClick={() => handleTabChange(StakeAction.STAKE)}
                 >
@@ -509,8 +587,8 @@ const StakeModal = () => {
                 </button>
                 <button
                     className={`py-4 uppercase text-center text-base ${activeTab === StakeAction.UNSTAKE
-                            ? "bg-white text-black"
-                            : "bg-[#1E1E1E] text-[#777]"
+                        ? "bg-white text-black"
+                        : "bg-[#1E1E1E] text-[#777]"
                         }`}
                     onClick={() => handleTabChange(StakeAction.UNSTAKE)}
                 >

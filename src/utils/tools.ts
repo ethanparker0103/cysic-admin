@@ -615,16 +615,28 @@ export const formatReward = (num: string, x: number) => {
 };
 
 export const handleSignIn = (targetStep?: string) => {
+    // 从当前store获取状态
     const userStore = useUser.getState();
+    const { getActiveUser, activeAddress } = userStore;
+    
+    // 获取当前活跃用户信息
+    const activeUser = getActiveUser();
+    const address = activeAddress;
     
     // 如果未指定步骤，则根据用户状态自动决定
     if (!targetStep) {
+        // 获取多地址架构下的状态
+        const isSigned = !!activeUser?.isSigned;
+        const isRegistered = !!activeUser?.isRegistered;
+        const isBinded = !!activeUser?.isBinded || !!activeUser?.inviteCode;
+        const profileCompleted = !!activeUser?.name && !!activeUser?.avatarUrl;
+        
         // 如果已注册但未完成个人资料
-        if (userStore.isRegistered && !userStore.registrationComplete) {
+        if (isRegistered && !profileCompleted) {
             targetStep = 'profile';
         } 
-        // 如果已连接但未注册（需要绑定邀请码）
-        else if (userStore.address && !userStore.isRegistered) {
+        // 如果已连接并已签名但未绑定或未注册
+        else if (address && isSigned && (!isBinded || !isRegistered)) {
             targetStep = 'code';
         }
         // 其他情况使用默认步骤
@@ -694,5 +706,10 @@ export const handleConvertHistoryModal = (props: any={}) => {
   const event = new CustomEvent('modal_convert_history_visible', { 
     detail: { visible: true, ...props } 
   });
+  window.dispatchEvent(event);
+};
+
+export const handleLoginPersonalMessage = () => {
+  const event = new CustomEvent('login_personal_message');
   window.dispatchEvent(event);
 };

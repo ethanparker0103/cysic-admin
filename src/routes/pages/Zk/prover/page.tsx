@@ -9,6 +9,7 @@ import axios from "@/service";
 import { useRequest } from "ahooks";
 import NFTProverCard from "@/components/NFTCard";
 import { useNavigate } from "react-router-dom";
+import useAccount from "@/hooks/useAccount";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
@@ -93,13 +94,17 @@ const ProverCard = ({ icon, name, description, isActive, btnText }: ProverCardPr
 const ProverPage = () => {
     const [selectedTab, setSelectedTab] = useState("nft");
 
+    const { address, isRegistered } = useAccount()
+
     // 获取ZK任务概览信息
     const { data: zkTaskOverview, loading: zkTaskLoading } = useRequest(
         () => axios.get('/api/v1/zkTask/overview'),
         {
             onSuccess: (res) => {
                 console.log('ZK任务概览数据:', res?.data);
-            }
+            },
+            ready: !!address && !!isRegistered,
+            refreshDeps: [address, isRegistered],
         }
     );
 
@@ -207,7 +212,7 @@ const ProverPage = () => {
                                             content: '!p-0',
                                         }}
                                         content={<>
-                                            desc
+                                            {multiplierPercent + '%'}
                                         </>}
                                     >
                                         <div className="flex items-center"><CircleHelp width={12} height={12} /></div>

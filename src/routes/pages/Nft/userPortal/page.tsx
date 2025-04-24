@@ -85,6 +85,9 @@ const SocialAccountItem = ({ icon, account, action }: SocialAccountItemProps) =>
 const UserPortal = () => {
     const navigate = useNavigate();
     const { balanceMap } = useCosmos()
+
+
+    const { user } = useAccount()
     const { 
         name, 
         avatarUrl, 
@@ -94,7 +97,7 @@ const UserPortal = () => {
         socialAccountList,
         voucherCnt = 0,  // 添加代金券数量
         nftCnt = 0       // 添加NFT数量
-    } = useUser();
+    } = user || {};
     
     // 格式化CYS和CGT余额
     const cysReward = rewardList?.find(item => item.symbol === "CYS")?.amount || "0";
@@ -174,7 +177,7 @@ const UserPortal = () => {
                                 }
                             >
                                 <Copy className="text-2xl !font-[300] justify-end title w-full" value={inviteCode || ''}>
-                                    {inviteCode || '未获取邀请码'}
+                                    {inviteCode || '-'}
                                 </Copy>
                             </InfoCard>
                         </div>

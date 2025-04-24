@@ -4,6 +4,7 @@ import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 import { arbitrumSepolia } from "viem/chains";
 
+export const BIND_CHECK_PATHS = ['/zk', '/ai'];
 
 export const defaultChainId = '9527';
 
@@ -130,6 +131,7 @@ export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt'
 
 
 export const loginSignContent = 'Welcome to Cysic！'
+export const responseSuccessCode = 0
 
 export const CHAIN_ID_MAP = {
     [arbitrumSepolia.id]: arbitrumSepolia

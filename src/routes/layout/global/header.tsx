@@ -1,21 +1,32 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
-import { baseHref, mediasLink } from "@/config";
-import { getImageUrl, handleSignIn } from "@/utils/tools";
+import { baseHref, BIND_CHECK_PATHS } from "@/config";
+import { getImageUrl, handleLoginPersonalMessage, handleSignIn } from "@/utils/tools";
 
 import { ArrowRight } from 'lucide-react';
 import ConnectInfo from "@/components/ConnectInfo";
-import { useLocation } from "react-router-dom";
-import { useMemo } from "react";
 import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
-
-
-
+import { useLocation } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import useUser from "@/models/user";
 
 export default function Header() {
-    const { address, status, needBindInviteCode } = useAccount();
-    const { currentNavs } = useNav()
+    const { walletAddress, address, isSigned, isRegistered, isBinded } = useAccount();
+    const { currentNavs } = useNav();
+    const location = useLocation();
+    const userStore = useUser();
+    
+    // 检查当前路径是否需要绑定邀请码
+    const needsBindCheck = useMemo(() => {
+        const path = location.pathname;
+        // 使用 includes 检查路径是否包含特定字符串
+        return BIND_CHECK_PATHS.some(checkPath => path.includes(checkPath));
+    }, [location.pathname]);
+    
+    // 需要显示绑定提示的条件
+    const shouldShowBindPrompt = isSigned && needsBindCheck && !isBinded;
+
 
     const handleConnect = () => {
         handleSignIn();
@@ -26,6 +37,7 @@ export default function Header() {
     };
 
 
+    console.log('isSigned', isSigned)
     return (
         <div className="relative z-[1] ">
             <div className="relative px-[3rem] py-6">
@@ -39,8 +51,13 @@ export default function Header() {
                             ))}
                         </div>
                         <div className="h-full flex items-center">
-                            {address ? (
-                                needBindInviteCode ? (
+                            {walletAddress ? (
+                                !isSigned ? (
+                                    <div onClick={handleLoginPersonalMessage} className="px-10 w-full h-full flex items-center gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                        <span className="text-sub font-[400] uppercase text-sm">SIGN MESSAGE</span>
+                                        <ArrowRight width={16} height={16} />
+                                    </div>
+                                ) : shouldShowBindPrompt ? (
                                     <div onClick={handleBindInviteCode} className="px-10 w-full h-full flex items-center gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                         <span className="text-sub font-[400] uppercase text-sm">BIND INVITE CODE</span>
                                         <ArrowRight width={16} height={16} />
