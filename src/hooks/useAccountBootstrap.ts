@@ -8,6 +8,7 @@ import { useSignMessage } from '@/hooks/useSignMessage';
 import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
+import { sleep } from '@/utils/tools';
 
 /**
  * 账户状态初始化Hook
