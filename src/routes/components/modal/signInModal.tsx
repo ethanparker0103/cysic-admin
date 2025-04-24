@@ -98,12 +98,6 @@ const SignInModal = () => {
     }
   }, [visible, walletAddress, isSigned, isBinded, needsBindCheck, savedName]);
 
-  console.log("needsBinding", {
-    needsBinding,
-    isRegistered,
-    isSigned,
-    isBinded,
-  });
 
   // 当已连接钱包且输入了完整邀请码时，自动尝试绑定
   useEffect(() => {

@@ -9,13 +9,11 @@ import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
 import { useLocation } from "react-router-dom";
 import { useEffect, useMemo } from "react";
-import useUser from "@/models/user";
 
 export default function Header() {
-    const { walletAddress, address, isSigned, isRegistered, isBinded } = useAccount();
+    const { walletAddress, isSigned, isBinded } = useAccount();
     const { currentNavs } = useNav();
     const location = useLocation();
-    const userStore = useUser();
     
     // 检查当前路径是否需要绑定邀请码
     const needsBindCheck = useMemo(() => {

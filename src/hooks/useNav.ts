@@ -1,4 +1,5 @@
 import { mediasLink } from "@/config"
+import useAccount from "@/hooks/useAccount"
 import useUser from "@/models/user"
 import { useMemo } from "react"
 import { useLocation } from "react-router-dom"
@@ -209,7 +210,7 @@ const stakeeNavs = navs.map((i, index) => {
 
 const useNav = ()=>{
     const location = useLocation();
-    const { isRegistered } = useUser()
+    const { isRegistered } = useAccount()
 
 
     const zkNavs = useMemo(()=>{
