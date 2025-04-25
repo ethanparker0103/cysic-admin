@@ -394,17 +394,6 @@ const StakePage = () => {
       })),
     };
 
-    // setRewardsAmount({
-    //   stakeRewardsMap: result?.rewards?.reduce((prev: any, next: any) => {
-    //     if (!prev?.[next?.validatorAddress]) {
-    //       prev[next?.validatorAddress] = {};
-    //     }
-    //     prev[next?.validatorAddress] = next;
-
-    //     return prev;
-    //   }, {}),
-    // });
-
     const res = result?.total
       ?.reduce((prev, next) => {
         return BigNumber(next?.amount).plus(prev);

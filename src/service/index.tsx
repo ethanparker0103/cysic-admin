@@ -37,7 +37,7 @@ axios.interceptors.request.use(function (config) {
 // Add a response interceptor
 axios.interceptors.response.use(function (response: any) {
     console.log('axios response', response);
-    if(response.request.responseURL.includes('/api/v1/upload')) {
+    if(response?.request?.responseURL?.includes('/api/v1/upload')) {
         return response?.data;
     }
     if (![responseSuccessCode, 10024].includes(response?.data?.code)) {

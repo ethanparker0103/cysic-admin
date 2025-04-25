@@ -89,16 +89,24 @@ const ValidatorDropdown = ({
     selectedValidator,
     onSelect,
     isOpen,
-    onOpenChange
+    onOpenChange,
+    activeTab
 }: {
     selectedValidator: ValidatorResponse | null,
     onSelect: (validator: ValidatorResponse) => void,
     isOpen: boolean,
-    onOpenChange: (isOpen: boolean) => void
+    onOpenChange: (isOpen: boolean) => void,
+    activeTab: StakeAction
 }) => {
     const [validatorTab, setValidatorTab] = useState<ValidatorTab>(ValidatorTab.MY_VALIDATORS);
     const { stakeList, activeList } = useStake(); // 使用stake store
 
+    // 当activeTab变化时，确保在Unstake模式下默认选择MY_VALIDATORS
+    useEffect(() => {
+        if (activeTab === StakeAction.UNSTAKE) {
+            setValidatorTab(ValidatorTab.MY_VALIDATORS);
+        }
+    }, [activeTab]);
     // 直接从store获取验证者数据，不再使用本地状态和请求
     const validators = useMemo(() => {
         if (validatorTab === ValidatorTab.MY_VALIDATORS) {
@@ -141,7 +149,7 @@ const ValidatorDropdown = ({
                     <div className="p-4">
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
 
-                        {/* 验证人选项卡 */}
+                        {/* 验证人选项卡 - 在Unstake模式下禁用Others选项卡 */}
                         <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4">
                             <button
                                 className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.MY_VALIDATORS
@@ -156,13 +164,21 @@ const ValidatorDropdown = ({
                                 MY VALIDATORS
                             </button>
                             <button
-                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.OTHERS
-                                    ? "bg-white text-black"
-                                    : "bg-[#1E1E1E] text-[#777]"
+                                className={`py-3 uppercase text-center text-base ${
+                                    validatorTab === ValidatorTab.OTHERS
+                                        ? "bg-white text-black"
+                                        : "bg-[#1E1E1E] text-[#777]"
+                                    } ${
+                                        activeTab === StakeAction.UNSTAKE 
+                                        ? "opacity-50 cursor-not-allowed" 
+                                        : ""
                                     }`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    handleValidatorTabChange(ValidatorTab.OTHERS);
+                                    // 只有在Stake模式下才能切换到Others
+                                    if (activeTab !== StakeAction.UNSTAKE) {
+                                        handleValidatorTabChange(ValidatorTab.OTHERS);
+                                    }
                                 }}
                             >
                                 OTHERS
@@ -351,9 +367,10 @@ const StakeModal = () => {
     // 处理Tab切换
     const handleTabChange = (tab: StakeAction) => {
         setActiveTab(tab);
-        // 切换选项卡时清空输入数据
+        // 切换选项卡时清空输入数据和选择的验证者
         setAmount("");
         setStakePercentage(0);
+        setSelectedValidator(null); // 清空验证者选择
     };
 
     // 处理金额变更
@@ -560,6 +577,8 @@ const StakeModal = () => {
         }
     }, [selectedValidator, activeTab]);
 
+
+    console.log('selectedValidator', selectedValidator)
     return (
         <Modal
             isOpen={visible}
@@ -613,6 +632,7 @@ const StakeModal = () => {
                     }}
                     isOpen={showValidatorList}
                     onOpenChange={setShowValidatorList}
+                    activeTab={activeTab}
                 />
             </div>
 
@@ -658,11 +678,11 @@ const StakeModal = () => {
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Voting Power</div>
-                            <div className="text-white">{selectedValidator?.votingPowerPercent || "0%"}</div>
+                            <div className="text-white">{selectedValidator?.votingPower?.amount || "0"}</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Commission rate</div>
-                            <div className="text-white">{selectedValidator?.commissionRate || "0%"}</div>
+                            <div className="text-white">{selectedValidator?.commissionRate ? (Number(selectedValidator?.commissionRate) * 100) : "0"}%</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Unbonding period</div>
@@ -708,12 +728,12 @@ const StakeModal = () => {
                     <div className="space-y-3 mb-6">
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Redemption Amount</div>
-                            <div className="text-white">{redemptionAmount}</div>
+                            <div className="text-white">{amount || '0'}</div>
                         </div>
-                        <div className="flex justify-between items-center">
+                        {/* <div className="flex justify-between items-center">
                             <div className="text-[#777]">Total Earnings</div>
                             <div className="text-white">{totalEarnings}</div>
-                        </div>
+                        </div> */}
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Estimated Arrival Time</div>
                             <div className="text-white">{estimatedArrivalTime}</div>
