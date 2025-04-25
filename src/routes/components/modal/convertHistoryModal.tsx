@@ -4,6 +4,7 @@ import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import { getImageUrl, handleConvertModal } from "@/utils/tools";
 import axios from "axios";
+import { Pagination } from "@nextui-org/react";
 
 // 转换记录类型
 interface ConvertRecord {
@@ -31,6 +32,7 @@ const ConvertHistoryModal = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [pageSize] = useState<number>(10);
+  const [total, setTotal] = useState<number>(0);
 
   // 在弹窗打开时加载转换历史
   useEffect(() => {
@@ -52,8 +54,9 @@ const ConvertHistoryModal = () => {
         }
       });
       
-      // 获取历史记录列表
-      const { historyList } = response.data;
+      // 获取历史记录列表和总数
+      const { historyList, total } = response.data;
+      setTotal(total || historyList.length);
 
       // 根据当前排序方向排序
       const sortedRecords = [...historyList].sort((a, b) => {
@@ -84,6 +87,11 @@ const ConvertHistoryModal = () => {
     setSortDirection(newDirection);
   };
 
+  // 处理页码变化
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
   // 关闭模态框
   const handleClose = () => {
     setVisible(false);
@@ -108,11 +116,11 @@ const ConvertHistoryModal = () => {
         <div>Token</div>
         <div className="flex items-center justify-center cursor-pointer" onClick={handleSort}>
           Convert Time 
-          <img 
+          {/* <img 
             src={getImageUrl(`@/assets/images/icons/${sortDirection === SortDirection.DESC ? 'down' : 'up'}.svg`)} 
             alt="sort" 
             className="w-4 h-4 ml-1"
-          />
+          /> */}
         </div>
         <div className="text-right">Amount</div>
       </div>
@@ -145,6 +153,20 @@ const ConvertHistoryModal = () => {
               <div className="text-right text-sub text-sm">{record.amount}</div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* 添加 NextUI 分页组件 */}
+      {total > pageSize && (
+        <div className="flex justify-center mb-4">
+          <Pagination
+            total={Math.ceil(total / pageSize)}
+            initialPage={1}
+            page={page}
+            onChange={handlePageChange}
+            color="primary"
+            size="sm"
+          />
         </div>
       )}
 

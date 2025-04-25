@@ -18,7 +18,7 @@ import { MsgExchangeToGovToken, MsgExchangeToPlatformToken } from "@/utils/cysic
 import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import { calculateTransactionFee, format, sleep } from "@/utils/tools";
-import { checkKeplrWallet, signAndBroadcastDirect } from "@/utils/cosmos";
+import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
 
 // 代币类型枚举
 enum TokenType {
@@ -154,6 +154,8 @@ const ConvertModal = () => {
     };
 
     const result = await signAndBroadcastDirect(address, msg, cosmosFee, client);
+    const tx = await checkkTx(connector, result?.transactionHash);
+
     toast.success(`Submit Success at ${result?.transactionHash}`);
   };
 
@@ -183,6 +185,7 @@ const ConvertModal = () => {
     };
 
     const result = await signAndBroadcastDirect(address, msg, cosmosFee, client);
+    const tx = await checkkTx(connector, result?.transactionHash);
     toast.success(`Submit Success at ${result?.transactionHash}`);
   };
 

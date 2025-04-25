@@ -254,7 +254,7 @@ const SignInModal = () => {
 
         // 只有当上传了新头像时才包含avatarUrl
         if (avatarUrl) {
-          userData.avatarUrl = avatarUrl;
+          userData.avatarUrl = 'https://statics.prover.xyz/' + avatarUrl;
         }
 
         console.log("更新用户资料:", userData);

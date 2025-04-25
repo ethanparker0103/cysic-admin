@@ -11,9 +11,6 @@ import {
     cosmosFee,
     cosmosReservedValue,
     cysicBaseCoin,
-    cysicStCoin,
-    blockTime,
-    cosmosFee_lower
 } from "@/config";
 import { checkKeplrWallet, signAndBroadcastDirect, checkkTx } from "@/utils/cosmos";
 import { useRequest } from "ahooks";
@@ -258,9 +255,9 @@ const ReserveModal = () => {
                 type="light"
                 className="w-full py-4 rounded-lg text-base font-medium"
                 onClick={activeTab === ReserveAction.RESERVE ? handleReserve : handleWithdraw}
-                disabled={!Number(amount)}
+                disabled={!Number(amount) || Number(amount) < 100}
             >
-                {activeTab === ReserveAction.RESERVE ? "RESERVE" : "WITHDRAW"}
+                {activeTab === ReserveAction.RESERVE ? (Number(amount) < 100 ? "Amount must be greater than 100 CYS" : "RESERVE") : "WITHDRAW"}
             </Button>
         </Modal>
     );
