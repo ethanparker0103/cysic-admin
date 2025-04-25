@@ -331,7 +331,7 @@ const ConvertModal = () => {
               alt="network" 
               className="w-4 h-4 mr-1"
             />
-            <span>{calculateTransactionFee()} {fromToken === TokenType.CYS ? "CYS" : "CGT"}</span>
+            <span>{calculateTransactionFee()} CYS</span>
           </div>
         </div>
       </div>
