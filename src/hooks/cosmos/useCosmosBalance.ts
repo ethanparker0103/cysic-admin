@@ -22,7 +22,7 @@ const useCosmosBalance = () => {
     const depositExtension = useRef(null)
 
     const initDepositExtension = async () => {
-        if (depositExtension.current) return;
+        if (depositExtension.current) return depositExtension.current;
         const tmClient = await connectComet(cysicTestnet.rpc);
         const client = new QueryClient(tmClient);
         const _depositExtension = setupDepositExtension(client);
