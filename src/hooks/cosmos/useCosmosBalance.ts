@@ -7,19 +7,28 @@ import { setupDepositExtension } from "@/utils/cysic-query"
 import { DepositType } from "@/utils/cysic-msg"
 import { QueryClient } from "@cosmjs/stargate"
 import { CometClient, connectComet, Tendermint34Client } from "@cosmjs/tendermint-rpc";
+import { useMemo } from "react"
 
 
 
 const basicDecimaal = 18
 
-const tmClient = await connectComet(cysicTestnet.rpc);
-const client = new QueryClient(tmClient);
 
-const depositExtension = setupDepositExtension(client);
 
 
 const useCosmosBalance = () => {
     const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
+
+    const depositExtension = useMemo(async () => {
+        const tmClient = await connectComet(cysicTestnet.rpc);
+        const client = new QueryClient(tmClient);
+        const depositExtension = setupDepositExtension(client);
+        return depositExtension
+    }, [])
+
+
+
+
 
     // 获取余额信息
     const { run } = useRequest(() => {
@@ -65,7 +74,6 @@ const useCosmosBalance = () => {
         try {
             // 创建扩展
             // const tmClient = await Tendermint34Client.connect(cysicTestnet.rpc);
-
 
             // 获取验证者和证明者的存款
             const [proverResult] = await Promise.allSettled([

@@ -17,7 +17,7 @@ const SignInButton = ({
   customText
 }: SignInButtonProps) => {
   // 获取用户账户状态 - 使用新的多地址架构
-  const { address, isSigned, isBinded, isRegistered, user } = useAccount();
+  const { address, isSigned, isBinded, user } = useAccount();
   const location = useLocation();
   
   // 从当前活跃用户获取信息

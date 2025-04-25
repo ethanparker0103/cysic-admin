@@ -1,7 +1,7 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { ReactNode, useEffect } from "react";
-import { getImageUrl, handleConvertModal, handleSignIn, handleStakeModal } from "@/utils/tools";
+import { formatReward, getImageUrl, handleConvertModal, handleSignIn, handleStakeModal } from "@/utils/tools";
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
@@ -100,8 +100,12 @@ const UserPortal = () => {
     } = user || {};
     
     // 格式化CYS和CGT余额
-    const cysReward = rewardList?.find(item => item.symbol === "CYS")?.amount || "0";
-    const cgtReward = rewardList?.find(item => item.symbol === "CGT")?.amount || "0";
+    // const cysReward = rewardList?.find(item => item.symbol === "CYS")?.amount || "0";
+    // const cgtReward = rewardList?.find(item => item.symbol === "CGT")?.amount || "0";
+
+    const cysReward = formatReward(balanceMap?.CYS?.hm_amount || "0", 2);
+    const cgtReward = formatReward(balanceMap?.CGT?.hm_amount || "0", 2);
+
     
     // 格式化社交账号
     const googleAccount = socialAccountList?.google?.name || "";
@@ -222,13 +226,13 @@ const UserPortal = () => {
                             <div className="py-4 px-6 w-full h-full">
                                 <div className="flex justify-between items-center mb-4">
                                     <div className="text-base !font-[300] title">TOTAL REWARDS</div>
-                                    <a href="#" className="flex items-center text-sub text-sm hover:text-white">
+                                    <Link to="/nft/serviceHub" className="flex items-center text-sub text-sm hover:text-white">
                                         DETAILS <ArrowRight size={12} className="ml-1" />
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 <div className="flex gap-6 justify-between">
-                                    <div className="min-w-[13.75rem] flex flex-col gap-6 pr-6 border-r border-white">
+                                    <div className="min-w-[18.75rem] flex flex-col gap-6 pr-6 border-r border-white">
                                         <div className="title !text-3xl !font-[300]">{cysReward} CYS</div>
                                         <Button onClick={handleConvertModal} type="light" className="min-w-fit w-[8.125rem] self-end text-base py-2 px-3 rounded-md">
                                             CONVERT

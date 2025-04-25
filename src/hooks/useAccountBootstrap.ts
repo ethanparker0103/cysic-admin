@@ -9,13 +9,13 @@ import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
 import { sleep } from '@/utils/tools';
-
+import { connectWallet } from "@/utils/cosmos"
 /**
  * 账户状态初始化Hook
  * 只处理基础的钱包连接、切换和签名
  */
 const useAccountBootstrap = () => {
-  const { address, isSigned, isRegistered, isBinded  } = useAccount()
+  const { address, isSigned, isBinded  } = useAccount()
   const { signMessageAsync } = useSignMessage();
   const userStore = useUser();
   const { setAddress } = useStatic();
@@ -50,14 +50,16 @@ const useAccountBootstrap = () => {
 
       // 保存签名结果
       userStore.setSignature(address, signature as string);
-
-      await sleep(1000)
-      // 签名后获取用户基础信息
-      userStore.fetchUserInfo(address).catch(console.error);
     } catch (error) {
       console.error("签名失败", error);
     }
   });
+
+  useEffect(()=>{
+    if(address && isSigned){
+      userStore.fetchUserInfo(address).catch(console.error);
+    }
+  }, [address, isSigned])
 
   // 清理函数
   useEffect(() => {
@@ -65,6 +67,7 @@ const useAccountBootstrap = () => {
 
     setAddress(address);
     userStore.setActiveAddress(address);
+
 
     const unwatch = watchAccount(config, {
       onChange(account: any) {
@@ -75,6 +78,8 @@ const useAccountBootstrap = () => {
             // 连接了新钱包地址
             setAddress(newAddress);
             userStore.setActiveAddress(newAddress);
+
+            connectWallet()
           } else {
             // 断开了钱包连接
             userStore.setActiveAddress(undefined);

@@ -66,7 +66,7 @@ const sliceFormat = (value: string, decimal: number = 18) => {
 
 
 const StakePage = () => {
-  const { isRegistered, walletAddress } = useAccount()
+  const { isSigned, walletAddress } = useAccount()
   const { balanceMap } = useCosmos()
   const { setState, stakeList, activeList } = useStake(); // 使用stake store
 
@@ -127,8 +127,8 @@ const StakePage = () => {
   const { data: stakeListData, loading: stakeLoading } = useRequest(
     () => axios.get('/api/v1/stake/list'),
     {
-      ready: isRegistered && walletAddress,
-      refreshDeps: [isRegistered, walletAddress],
+      ready: isSigned && walletAddress,
+      refreshDeps: [isSigned, walletAddress],
       onSuccess: (res) => {
         // 存储原始响应到store
         setState({ stakeList: res });
@@ -145,6 +145,8 @@ const StakePage = () => {
 
           // 设置状态
           setStakeAmount(totalStake.toLocaleString('en-US', { maximumFractionDigits: 2 }));
+        } else {
+          setStakeAmount("0");
         }
       }
     }

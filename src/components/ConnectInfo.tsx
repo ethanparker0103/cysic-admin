@@ -19,10 +19,6 @@ const ConnectInfo = () => {
         cosmosAddress, 
         address, 
         connector, 
-        isSigned,
-        isRegistered,
-        isBinded, 
-        hasCompleteProfile,
         name,
         avatarUrl,
         inviteCode 

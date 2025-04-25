@@ -11,6 +11,7 @@ import { baseHref } from "@/config";
 import useCosmos from "@/models/_global/cosmos";
 import useUser from "@/models/user";
 import { Link } from "react-router-dom";
+import { useRequest } from "ahooks";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -121,7 +122,6 @@ const UserDetailsPage = () => {
         nftCnt = 0       // 添加NFT数量
     } = useUser();
 
-
     return (
         <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
             {/* 背景装饰 */}
@@ -157,7 +157,7 @@ const UserDetailsPage = () => {
                         >
                             <div className="flex flex-col gap-6">
                                 <div className="flex items-center justify-end gap-6">
-                                    <div className="text-3xl !font-[300] title">{formatReward(cysBalance, 4)} CYS</div>
+                                    <div className="text-3xl !font-[300] title">{formatReward(cysBalance, 2)} CYS</div>
                                     <Button type="light" className="rounded py-3 px-4" onClick={handleConvertModal}>
                                         CONVERT
                                     </Button>
@@ -166,7 +166,7 @@ const UserDetailsPage = () => {
                                 <div className="h-px w-full bg-white"></div>
 
                                 <div className="flex items-center justify-end gap-6">
-                                    <div className="text-3xl !font-[300] title">{formatReward(cgtBalance, 4)} CGT</div>
+                                    <div className="text-3xl !font-[300] title">{formatReward(cgtBalance, 2)} CGT</div>
                                     <Button type="light" className="rounded py-3 px-4" onClick={() => { handleStakeModal() }}>
                                         STAKE
                                     </Button>
@@ -225,10 +225,10 @@ const UserDetailsPage = () => {
                                 <div className="flex justify-between items-center w-full mt-8">
                                     <div className="flex items-center gap-2">
                                         <Copy value={inviteCode} className="text-2xl title !font-[300]">
-                                            {inviteCode}
+                                            {inviteCode || '-'}
                                         </Copy>
                                     </div>
-                                    <div className="title text-2xl !font-[300]">76</div>
+                                    <div className="title text-2xl !font-[300]">-</div>
                                 </div>
                             </div>
                         </GradientBorderCard>

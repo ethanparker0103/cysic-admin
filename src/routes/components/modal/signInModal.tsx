@@ -24,7 +24,7 @@ enum SignInStep {
 }
 
 const SignInModal = () => {
-  const { walletAddress, activeAddress, isSigned, isRegistered, isBinded } =
+  const { walletAddress, activeAddress, isSigned, isBinded } =
     useAccount();
   const { login } = usePrivy();
   // const { open } = useAppKit();
