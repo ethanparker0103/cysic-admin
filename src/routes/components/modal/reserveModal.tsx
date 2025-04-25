@@ -103,6 +103,7 @@ const ReserveModal = () => {
                 
                 // 刷新余额
                 dispatchEvent(new CustomEvent("refresh_cosmosBalance"));
+                dispatchEvent(new CustomEvent("refresh_depositInfo"));
             } catch (error: any) {
                 console.error("Error reserving:", error);
                 toast.error(error?.message || error?.msg || error);
@@ -143,6 +144,7 @@ const ReserveModal = () => {
                 
                 // 刷新余额
                 dispatchEvent(new CustomEvent("refresh_cosmosBalance"));
+                dispatchEvent(new CustomEvent("refresh_depositInfo"));
             } catch (error: any) {
                 console.error("Error withdrawing:", error);
                 toast.error(error?.message || error?.msg || error);
