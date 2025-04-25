@@ -155,13 +155,14 @@ const StakePage = () => {
   // 转换API数据为表格数据
   const transformValidators = (validatorList: ValidatorResponse[] = []): Validator[] => {
     return validatorList.map((v, index) => ({
+      ...v,
       id: `validator-${index}`,
       abbr: v.validatorName.substring(0, 2).toUpperCase(),
       name: v.validatorName,
       color: index % 2 === 0 ? "bg-blue-500" : "bg-purple-500",
       votingPower: v.votingPower.amount,
       votingPercentage: v.votingPowerPercent.replace('%', ''),
-      commissionRate: v.commissionRate.replace('%', '')
+      commissionRate: v.commissionRate.replace('%', ''),
     }));
   };
 
@@ -207,7 +208,7 @@ const StakePage = () => {
     {
       key: "myStakes",
       label: "My Stakes",
-      renderCell: (validator) => <>{validator.votingPower} <span className='text-sm text-sub'>CGT</span></>
+      renderCell: (validator) => <>{validator?.stake?.amount || 0} <span className='text-sm text-sub'>CGT</span></>
     },
     {
       key: "votingPower",
@@ -222,7 +223,7 @@ const StakePage = () => {
     {
       key: "commissionRate",
       label: "Commission Rate",
-      renderCell: (validator) => `${validator.commissionRate}%`
+      renderCell: (validator) => `${validator.commissionRate * 100 || 0}%`
     },
     {
       key: "expectedAPR",

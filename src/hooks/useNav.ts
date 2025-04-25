@@ -9,7 +9,7 @@ const navs = [
         content: 'Service',
         children: [
             {
-                content: 'Compute Box',
+                content: 'Cysic NFT',
                 href: '/nft'
             },
             {
@@ -98,7 +98,7 @@ const _zkNavs = [
                 href: '/'
             },
             {
-                content: 'Compute Box',
+                content: 'Cysic NFT',
                 href: '/nft'
             },
             {
@@ -157,7 +157,7 @@ const aiNavs = [
 const computeNavs = navs.map((i, index) => {
     if (index == 0) {
         return {
-            content: 'Compute Box',
+            content: 'Cysic NFT',
             children: [
                 {
                     content: 'Service',
@@ -191,7 +191,7 @@ const stakeeNavs = navs.map((i, index) => {
                     href: '/'
                 },
                 {
-                    content: 'Compute Box',
+                    content: 'Cysic NFT',
                     href: '/nft'
                 },
                 {

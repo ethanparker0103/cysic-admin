@@ -200,7 +200,7 @@ const featureBlocks = [
         id: "zk",
         title: "CYSIC ZK",
         image: getImageUrl("@/assets/images/nft/preset1.png"),
-        href: '/zk'
+        href: '/zk/serviceHub'
     },
     {
         id: "ai",
