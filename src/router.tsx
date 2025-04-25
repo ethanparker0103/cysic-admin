@@ -37,7 +37,10 @@ export const router = createBrowserRouter(
               path: "prover",
               element: <ZkProver />,
             },
-            
+            {
+              path: "serviceHub",
+              element: <NftServiceHub />,
+            },
           ]
         },
         {
@@ -58,10 +61,6 @@ export const router = createBrowserRouter(
             {
               path: "socialTask",
               element: <NftSocialTask />,
-            },
-            {
-              path: "serviceHub",
-              element: <NftServiceHub />,
             },
           ]
         },

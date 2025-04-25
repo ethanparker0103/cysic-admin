@@ -191,7 +191,7 @@ const UserPortal = () => {
                             <InfoCard
                                 title="BALANCE"
                                 rightAction={
-                                    <Link to="/nft/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <Link to="/zk/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         HISTORY <ArrowRight size={12} className="ml-1" />
                                     </Link>
                                 }
@@ -207,7 +207,7 @@ const UserPortal = () => {
                             <InfoCard
                                 title="VOUCHER"
                                 rightAction={
-                                    <Link to="/nft/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <Link to="/zk/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         VIEW ALL <ArrowRight size={12} className="ml-1" />
                                     </Link>
                                 }
@@ -226,7 +226,7 @@ const UserPortal = () => {
                             <div className="py-4 px-6 w-full h-full">
                                 <div className="flex justify-between items-center mb-4">
                                     <div className="text-base !font-[300] title">TOTAL REWARDS</div>
-                                    <Link to="/nft/serviceHub" className="flex items-center text-sub text-sm hover:text-white">
+                                    <Link to="/zk/serviceHub" className="flex items-center text-sub text-sm hover:text-white">
                                         DETAILS <ArrowRight size={12} className="ml-1" />
                                     </Link>
                                 </div>
@@ -299,7 +299,7 @@ const UserPortal = () => {
                                 </div>
 
                                 <div className="flex justify-end items-center">
-                                    <Link to="/nft/serviceHub" className="flex items-center text-sub text-sm !font-[400] hover:text-white">
+                                    <Link to="/zk/serviceHub" className="flex items-center text-sub text-sm !font-[400] hover:text-white">
                                         CHECK DETAILS <ArrowRight size={12} className="ml-1" />
                                     </Link>
                                 </div>
@@ -317,7 +317,7 @@ const UserPortal = () => {
                             <ServiceCard
                                 title="CYSIC ZK"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                                onClick={() => { navigate('/zk') }}
+                                onClick={() => { navigate('/zk/serviceHub') }}
                             />
                         </div>
 

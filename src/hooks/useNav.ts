@@ -117,7 +117,7 @@ const _zkNavs = [
     },
     {
         content: 'dashboard',
-        href: '/nft/userPortal'
+        href: '/zk/serviceHub'
     },
     {
         content: 'prover',
@@ -226,6 +226,10 @@ const useNav = ()=>{
 
     const currentNavs = useMemo(() => {
         const path = location.pathname;
+
+        if (path === '/zk/serviceHub') {
+            return computeNavs
+        }
 
         if (path === '/zk' || path.startsWith('/zk/')) {
             return zkNavs;
