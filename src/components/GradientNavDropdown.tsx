@@ -1,5 +1,5 @@
 import React from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn } from "@nextui-org/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as NextUILink } from "@nextui-org/react";
 
@@ -12,9 +12,10 @@ interface NavItem {
 
 interface GradientNavDropdownProps {
     item: NavItem;
+    className?: string;
 }
 
-export default function GradientNavDropdown({ item }: GradientNavDropdownProps) {
+export default function GradientNavDropdown({ item, className }: GradientNavDropdownProps) {
     const navigate = useNavigate();
 
     // 判断是否为外部链接
@@ -42,7 +43,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
                     as={NextUILink}
                     href={item.href}
                     variant="light"
-                    className="uppercase font-[400] !text-sub"
+                    className={cn("uppercase font-[400] !text-sub", className)}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -56,7 +57,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
                     as={RouterLink}
                     to={item.href || "/"}
                     variant="light"
-                    className="uppercase font-[400] !text-sub"
+                    className={cn("uppercase font-[400] !text-sub", className)}
                 >
                     {item.content}
                 </Button>
@@ -72,7 +73,7 @@ export default function GradientNavDropdown({ item }: GradientNavDropdownProps) 
             <DropdownTrigger>
                 <Button
                     variant="light"
-                    className="uppercase font-[400] text-sub"
+                    className={cn("uppercase font-[400] text-sub", className)}
                 >
                     {item.content}
                 </Button>

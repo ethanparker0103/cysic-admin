@@ -47,7 +47,7 @@ export default function Header() {
         onOpen();
     };
     return isMobile ? <>
-        <div className="h-[5.625rem] flex items-center">
+        <div className="h-[5.625rem] flex items-center relative z-[1]">
             <div className="flex flex-wrap gap-3 relative w-full">
                 <Button onClick={handleOpen}>
                     <Menu width={30} height={30} />
@@ -88,26 +88,26 @@ export default function Header() {
             </Drawer>
         </div>
     </> : (
-        <div className="relative z-[1] ">
+        <div className="relative z-[1] h-[8rem]">
             <div className="relative px-[3rem] py-6">
                 <GradientBorderCard className="h-20 flex items-center backdrop-blur-sm bg-black/10">
                     <div className="w-full h-full flex justify-between items-center">
-                        <div className="flex items-center h-full">
-                            <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" /></Link>
+                        <div className="flex items-center h-full flex-1">
+                            <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>
 
-                            {currentNavs.map((nav: any) => (
-                                <GradientNavDropdown key={nav.content} item={nav} />
-                            ))}
+                                {currentNavs.map((nav: any) => (
+                                    <GradientNavDropdown className="flex-1 max-w-[11.25rem]" key={nav.content} item={nav} />
+                                ))}
                         </div>
-                        <div className="h-full flex items-center">
+                        <div className="h-full flex items-center justify-end w-[26.75rem]">
                             {walletAddress ? (
                                 !isSigned ? (
-                                    <div onClick={handleLoginPersonalMessage} className="px-10 w-full h-full flex items-center gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                    <div onClick={handleLoginPersonalMessage} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                         <span className="text-sub font-[400] uppercase text-sm">SIGN MESSAGE</span>
                                         <ArrowRight width={16} height={16} />
                                     </div>
                                 ) : shouldShowBindPrompt ? (
-                                    <div onClick={handleBindInviteCode} className="px-10 w-full h-full flex items-center gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                    <div onClick={handleBindInviteCode} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                         <span className="text-sub font-[400] uppercase text-sm">BIND INVITE CODE</span>
                                         <ArrowRight width={16} height={16} />
                                     </div>
@@ -115,7 +115,7 @@ export default function Header() {
                                     <ConnectInfo />
                                 )
                             ) : (
-                                <div onClick={handleConnect} className="px-10 w-full h-full flex items-center gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                <div onClick={handleConnect} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                     <span className="text-sub font-[400] uppercase text-sm">SIGN IN</span>
                                     <ArrowRight width={16} height={16} />
                                 </div>

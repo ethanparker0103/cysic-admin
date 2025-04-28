@@ -10,7 +10,7 @@ import ZkProver from "@/routes/pages/Zk/prover/page";
 import NftUserPortal from "@/routes/pages/Nft/userPortal/page";
 import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
 import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
-
+import { getImageUrl } from "@/utils/tools";
 
 export const router = createBrowserRouter(
   [
@@ -75,3 +75,46 @@ export const router = createBrowserRouter(
     basename: "/m",
   }
 );
+
+
+export const backgroundImageList = {
+  '/': {
+    img: getImageUrl('@/assets/images/_global/home_landing_bg.png'),
+    className: "grayscale"
+  },
+  '/zk': {
+    img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),
+    className: "h-[135%]"
+  },
+  '/zk/invite': {
+    img: getImageUrl('@/assets/images/_global/invite_landing_bg.png')
+  },
+  '/ai': {
+    img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
+    className: "h-screen grayscale brightness-[0.3]"
+  },
+  '/stake': {
+    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+    className: "h-screen"
+  },
+  '/nft': {
+    img: getImageUrl('@/assets/images/_global/nft_landing_bg.png'),
+    className: "h-screen"
+  },
+  '/nft/userPortal': {
+    img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -10vh"
+    }
+  },
+  '/nft/socialTask': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -30vh"
+    }
+  },
+}

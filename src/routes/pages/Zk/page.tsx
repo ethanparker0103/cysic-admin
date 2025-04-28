@@ -55,23 +55,7 @@ const investors2 = investors.slice(6)
 
 const ZkLanding = () => {
     return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden">
-
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                {/* 背景图片使用scale变换 */}
-                <img
-                    src={getImageUrl('@/assets/images/_global/zk_landing_bg.png')}
-                    alt="Background"
-                    className="absolute top-1/2 left-1/2 w-full h-full object-cover"
-                    style={{
-                        filter: 'grayscale(0%)',
-                        transform: 'translate(-50%, -50%) scale(1.3)', // 使用scale放大图片
-                        transformOrigin: 'center 0%',  // 确保从中心点缩放
-                        objectPosition: '50% 50%'  // 调整图片在视窗中的位置
-                    }}
-                />
-            </div>
-
+        <>
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
                     <span className="sub-title">Simple in Form, Infinite in Power.</span>
@@ -109,7 +93,7 @@ const ZkLanding = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

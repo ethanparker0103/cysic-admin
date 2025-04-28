@@ -214,22 +214,9 @@ const NftLanding = () => {
     // 假设header高度约为80px
 
     return (
-        <div className="w-full">
+        <>
             {/* 第一屏 - 考虑header高度的全屏效果 */}
-            <div className="min-h-screen w-full flex flex-col items-center justify-center">
-                {/* 背景图只在第一屏 */}
-                <div className="absolute inset-0 z-0 h-[calc(100vh+8rem)]">
-                    <img
-                        src={getImageUrl('@/assets/images/_global/nft_landing_bg.png')}
-                        alt="Background"
-                        className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40"></div>
-
-                    {/* 底部阴影渐变效果 */}
-                    <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
-                </div>
-
+            <div className="h-[90vh] w-full flex flex-col items-center justify-center">
                 {/* 居中内容，向上偏移一些 */}
                 <div className="z-10 flex flex-col items-center px-4 text-center -mt-[7.5rem]">
                     <span className="text-2xl !font-[400] sub-title">INTRODUCING</span>
@@ -279,7 +266,7 @@ const NftLanding = () => {
                     ))}
                 </div>
             </Section>
-        </div>
+        </>
     );
 };
 

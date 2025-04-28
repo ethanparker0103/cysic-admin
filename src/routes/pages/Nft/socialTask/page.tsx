@@ -168,18 +168,8 @@ const SocialTaskPage = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
-      {/* 背景装饰 */}
-      <div className="absolute w-full top-0 left-0 right-0 h-[100vh] overflow-hidden">
-        <div className="w-full h-full">
-          <img
-            src={getImageUrl("@/assets/images/_global/socialTask_landing_bg.png")}
-            alt="Background"
-            className="w-full h-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#001910]/30 to-black"></div>
-        </div>
-      </div>
+    <>
+
 
       {/* 内容区域 */}
       <div className="mx-auto px-[3rem] relative z-10 pt-20 pb-16">
@@ -196,7 +186,7 @@ const SocialTaskPage = () => {
             .map(group => renderTaskGroup(group))
         )}
       </div>
-    </div>
+    </>
   );
 };
 

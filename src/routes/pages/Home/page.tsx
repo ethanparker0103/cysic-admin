@@ -6,21 +6,12 @@ import { isMobile } from "react-device-detect";
 
 const Home = () => {
   return (
-    <div className="relative min-h-screen w-full pb-12">
-      <div
-        className="absolute -top-[0px] left-0 right-0 h-[15.625rem] pointer-events-none z-[1]"
-        style={{
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%)'
-        }}
-      ></div>
+    <div className={cn(
+      " h-screen flex flex-col justify-between items-center",
+      isMobile ? 'max-h-[70rem]' : 'max-h-[70rem]'
+    )}>
 
-
-      <div
-        className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat z-0"
-        style={{ filter: 'grayscale(100%)', backgroundImage: `url(${getImageUrl('@/assets/images/_global/home_landing_bg.png')})` }}
-      />
-
-      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
+      <div className="pt-10 flex flex-col items-center gap-6 relative z-[2]">
         <div className="flex flex-col items-center">
           <span className="sub-title">Introducing</span>
           <span className={cn("title !text-[#fff] text-center title-lg", isMobile && "py-4")}>ComputeFi</span>
@@ -36,7 +27,7 @@ const Home = () => {
         </Button>
       </div>
 
-      <div className="mt-[40vh] flex flex-col items-center gap-6 relative z-[2]">
+      <div className="pb-[10rem] flex flex-col items-center gap-6 relative z-[2]">
         <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[9.625rem]" />
         <span className={cn("title font-[400] uppercase text-center text-md")}>Digital Harvester</span>
         <div className="text-sub text-center text-sm">

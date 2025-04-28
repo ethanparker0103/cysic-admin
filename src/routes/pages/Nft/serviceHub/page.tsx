@@ -123,19 +123,7 @@ const UserDetailsPage = () => {
     } = useUser();
 
     return (
-        <div className="w-full min-h-screen bg-gradient-to-b from-[#001910]/40 to-black">
-            {/* 背景装饰 */}
-            <div className="absolute w-full top-0 left-0 right-0 h-[100vh] overflow-hidden">
-                <div className="w-full h-full">
-                    <img
-                        src={getImageUrl("@/assets/images/_global/userPortal_landing_bg.png")}
-                        alt="Background"
-                        className="w-full h-full object-cover opacity-70"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#001910]/30 to-black"></div>
-                </div>
-            </div>
-
+        <>
             <div className="container mx-auto px-4 relative z-10 py-12">
                 {/* 返回按钮 */}
                 <Link to={"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
@@ -336,7 +324,7 @@ const UserDetailsPage = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

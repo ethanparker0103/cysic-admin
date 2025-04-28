@@ -419,22 +419,7 @@ const StakePage = () => {
   );
 
   return (
-    <div className="min-h-screen w-full pb-12 overflow-hidden ">
-      {/* 背景图片 */}
-      <div className="absolute inset-0 z-0 overflow-hidden ">
-        <img
-          src={getImageUrl('@/assets/images/_global/stake_landing_bg.png')}
-          alt="Background"
-          className="h-screen absolute top-0 left-1/2 w-full object-cover"
-          style={{
-            filter: 'grayscale(0%)',
-            transform: 'translate(-50%, 0%) scale(1)',
-            transformOrigin: 'center ',
-            objectPosition: '50% 50%'
-          }}
-        />
-      </div>
-
+    <>
       {/* 主标题 */}
       <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
         <div className="flex flex-col items-center">
@@ -572,7 +557,7 @@ const StakePage = () => {
           </div>
         </GradientBorderCard>
       </div>
-    </div>
+    </>
   );
 };
 

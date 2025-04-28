@@ -213,20 +213,8 @@ const InvitePage = () => {
     };
 
     return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden">
-            <div className="absolute inset-0 z-0 overflow-hidden">
-                <img
-                    src={getImageUrl('@/assets/images/_global/invite_landing_bg.png')}
-                    alt="Background"
-                    className="absolute top-1/2 left-1/2 w-full h-full object-cover"
-                    style={{
-                        filter: 'grayscale(0%)',
-                        transform: 'translate(-50%, -50%) scale(1)',
-                        transformOrigin: 'center 0%',
-                        objectPosition: '50% 50%'
-                    }}
-                />
-            </div>
+        <>
+
 
             {/* 顶部标题部分 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
@@ -431,7 +419,7 @@ const InvitePage = () => {
                     </div>
                 </GradientBorderCard>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -16,6 +16,7 @@ import RewardsDetailModal from "@/routes/components/modal/rewardsDetailModal";
 import ConvertModal from "@/routes/components/modal/convertModal";
 import ConvertHistoryModal from "@/routes/components/modal/convertHistoryModal";
 import { isMobile } from "react-device-detect";
+import LandingBackground from "@/components/LandingBackground";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -39,7 +40,7 @@ export default function App({ children }: { children: React.ReactNode }) {
 
                     <div className={cn("relative", isMobile && "max-w-screen overflow-x-hidden")}>
                         <Header />
-                        <main>{children}</main>
+                        <LandingBackground>{children}</LandingBackground>
                     </div>
                     <Footer />
                 </>

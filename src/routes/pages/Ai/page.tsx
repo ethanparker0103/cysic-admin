@@ -169,25 +169,9 @@ const AiLanding = () => {
     });
 
     return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden bg-gradient-to-b from-[#090A09] to-[#090A09]">
-            {/* 背景图片 */}
-            <div className="absolute top-0 inset-0 z-0 overflow-hidden">
-                <img
-                    src={getImageUrl('@/assets/images/_global/ai_landing_bg.png')}
-                    alt="Background"
-                    className="absolute top-0 left-1/2 w-full h-[150vh] object-cover"
-                    style={{
-                        filter: 'grayscale(0%)',
-                        transform: 'translate(-50%, 0%) scale(1)',
-                        transformOrigin: 'center 0%',
-                        objectPosition: '50% 50%'
-                    }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#090A09]/30 to-[#090A09]"></div>
-            </div>
-
+        <>
             {/* 主标题部分 */}
-            <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] mt-20">
+            <div className="flex flex-col items-center justify-center gap-6 relative z-[2] h-[90vh]">
                 <div className="flex flex-col items-center">
                     <span className="sub-title">INTELLIGENCE SIMPLIFIED, POTENTIAL UNLEASHED</span>
                     <span className="title title-lg !text-[#fff] text-center">CYSIC AI</span>
@@ -197,7 +181,7 @@ const AiLanding = () => {
             </div>
 
             {/* 投资者部分 */}
-            <div className="mt-[30vh] flex flex-col items-center gap-12 relative z-[2]">
+            <div className="flex flex-col items-center gap-12 relative z-[2]">
                 <span className="title !font-[300] uppercase text-center text-[2.25rem]">investors</span>
                 <div className="flex flex-wrap gap-10 justify-center">
                     <div className="flex flex-wrap gap-10 justify-center">
@@ -231,7 +215,7 @@ const AiLanding = () => {
             </div>
 
             {/* Project Based Service 部分 */}
-            <div className="mt-12 relative z-[2] container mx-auto px-[3rem]">
+            <div className="mt-12 relative z-[2] container mx-auto px-[3rem] w-full">
                 <ShadowCardContainer className="pt-12">
                     <>
                         <h2 className="title !font-[300] text-3xl uppercase text-center">PROJECT BASED SERVICE</h2>
@@ -309,7 +293,7 @@ const AiLanding = () => {
             </div>
 
             {/* 计算力服务部分 */}
-            <div className="mx-auto !px-[3rem] mt-20 mb-10 ">
+            <div className="mx-auto !px-[3rem] mt-20 mb-10 w-full">
                 <ShadowCardContainer className="relative z-[2] ">
                     <div className="relative py-20 overflow-hidden aspect-[1344/640]">
                         {/* 紫色背景光晕 */}
@@ -327,7 +311,7 @@ const AiLanding = () => {
                         </div>
 
 
-                        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+                        <div className="relative z-10 text-center max-w-4xl mx-auto px-4 w-full">
                             <h2 className="title !font-[300] text-4xl uppercase mb-4">COMPUTATIONAL POWER SERVICE</h2>
                             <p className="mb-6 max-w-3xl mx-auto text-base">
                                 Share in the profits generated from Cysic AI's computing power by purchasing Cysic AI Compute Boxes!
@@ -344,7 +328,7 @@ const AiLanding = () => {
                     </div>
                 </ShadowCardContainer>
             </div>
-        </div>
+        </>
     );
 };
 
