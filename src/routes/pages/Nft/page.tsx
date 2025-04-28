@@ -1,23 +1,34 @@
 import Button from "@/components/Button";
-import { getImageUrl, handlePurchaseNftModal, handleSignIn } from "@/utils/tools";
+import { formatReward, getImageUrl, handlePurchaseNftModal, handleSignIn } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { baseHref } from "@/config";
-
+import { baseHref, purchaseChainId, purchaseNftContract } from "@/config";
+import { useReadContracts } from "wagmi";
+import { purchaseNftAbi } from "@/config/abi/purchase";
+import useNftPurchase from "@/models/nft";
+import { BigNumber } from "bignumber.js";
+import { nftProducts } from "@/config/nft";
 // NFT 卡片组件
 interface NFTCardProps {
+    id: string;
     name: string;
     rewards: string;
-    lock: string;
-    price: string;
-    supply: string;
-    sold: boolean;
     image?: string;
 }
 
-const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardProps) => {
+const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
+    const { levelInfos } = useNftPurchase()
+    // 由于 levelInfos 的类型 ValidatorResponse 没有字符串索引签名，这里需要确保 id 是有效的键
+    const levelInfo = levelInfos ? levelInfos[id as keyof typeof levelInfos] : undefined
+    const price = levelInfo?.price ? BigNumber(levelInfo.price.toString()).shiftedBy(-6).toString() : '0'
+    // 修复类型错误，确保 levelInfo.id 存在且为数字类型
+    const levelId = levelInfo?.id ? Number(levelInfo.id) : 0
+    // 修复类型错误，使用类型断言确保访问合法
+    const ready = levelId > 0 ? levelInfos?.[(levelId - 1).toString() as keyof typeof levelInfos]?.soldOut : true
+    const sold = levelInfo?.soldOut
+
     return (
         <GradientBorderCard borderRadius={8}>
             <div className="p-6 w-full h-full">
@@ -36,8 +47,17 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
                         {/* 供应信息 */}
                         <div className="mt-4 flex justify-between items-center">
                             <div className="text-sm text-sub">Supply</div>
-                            <div className="text-sm text-white">{supply}</div>
+                            <div className="text-sm text-white">
+                                {levelInfo?.soldAmount?.toString() || '0'}/{levelInfo?.maxSupply?.toString() || '0'}
+                            </div>
                         </div>
+
+                        <div className="mt-2 flex justify-between items-center">
+                            <div className="text-sm text-sub">ID</div>
+                            <div className="text-sm text-white">{id}</div>
+                        </div>
+
+
                     </div>
 
                     {/* 右侧：详细信息 */}
@@ -51,14 +71,18 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
 
                         {/* 奖励和锁定信息 */}
                         <div className="mt-4">
-                            <div className="text-green-400 !font-[500]">{rewards}</div>
-                            <div className="text-sm text-sub mt-1">{lock}</div>
+                            <div className="!text-[32px] !font-[600] text-right sub-title !tracking-normal">{rewards}</div>
+                            {/* <div className="text-sm text-sub mt-1">{lock}</div> */}
+                            <div className="text-sm text-sub mt-1">BENEFIT</div>
+                            <div className="text-sm ">Cysic Pre-order Voucher – usable as credit and early access to hardware purchase.</div>
                         </div>
 
                         {/* 价格信息 */}
                         <div className="mt-4 flex justify-between items-center">
                             <div className="text-sm text-sub">Price</div>
-                            <div className="text-2xl !font-[400] font-medium">{price}</div>
+                            <div className="text-2xl !font-[400] font-medium">
+                                {formatReward(price, 2)}
+                            </div>
                         </div>
 
                         {/* 按钮区域 */}
@@ -66,12 +90,10 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
                             <Button
                                 onClick={() => handlePurchaseNftModal({
                                     nft: {
-                                        id: 1,
+                                        id: id,
                                         name: name,
                                         rewards: rewards.split(' ')[0], // 只取数字部分
-                                        lock: lock,
-                                        price: price.split(' ')[0], // 只取数字部分
-                                        supply: supply,
+                                        price: price, // 只取数字部分
                                         chip: "Intel", // 可以从外部传入或设为默认值
                                         computingPower: "50 TH", // 可以从外部传入或设为默认值
                                         image: image
@@ -79,9 +101,9 @@ const NFTCard = ({ name, rewards, lock, price, supply, sold, image }: NFTCardPro
                                 })}
                                 type="light"
                                 className="w-full py-6 min-h-fit h-fit rounded-lg"
-                                disabled={sold}
+                                disabled={!ready || !!sold}
                             >
-                                {sold ? 'SOLD OUT' : 'PURCHASE'}
+                                {!ready ? 'NOT START' : sold ? 'SOLD OUT' : 'PURCHASE'}
                             </Button>
                         </div>
                     </div>
@@ -99,7 +121,7 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
-    const navigate = useNavigate    ()
+    const navigate = useNavigate()
     return (
         <GradientBorderCard borderRadius={8} className="h-64 overflow-hidden">
             <div className="relative h-full w-full group cursor-pointer overflow-hidden">
@@ -142,57 +164,7 @@ const Section = ({ children, className = "" }: SectionProps) => {
     );
 };
 
-// NFT 产品数据
-const nftProducts = [
-    {
-        id: "zk-singularity-harvester",
-        name: "ZK Singularity Harvester",
-        rewards: "10,000 CYS",
-        lock: "12 Monthly Lock + 12 Linear Unlock",
-        price: "88 USDC",
-        supply: "354/1000",
-        sold: true,
-        image: getImageUrl("@/assets/images/nft/product1.png"),
-        chip: "Intel",
-        computingPower: "45 TH"
-    },
-    {
-        id: "zk-storm-harvester",
-        name: "ZK Storm Harvester",
-        rewards: "10,000 CYS",
-        lock: "12 Monthly Lock + 12 Linear Unlock",
-        price: "88 USDC",
-        supply: "354/1000",
-        sold: false,
-        image: getImageUrl("@/assets/images/nft/product2.png"),
-        chip: "Intel",
-        computingPower: "50 TH"
-    },
-    {
-        id: "zk-dune-harvester",
-        name: "ZK Dune Harvester",
-        rewards: "28,000 CYS",
-        lock: "12 Monthly Lock + 12 Linear Unlock",
-        price: "388 USDC",
-        supply: "354/1000",
-        sold: true,
-        image: getImageUrl("@/assets/images/nft/product3.png"),
-        chip: "AMD",
-        computingPower: "75 TH"
-    },
-    {
-        id: "zk-dust-harvester",
-        name: "ZK Dust Harvester",
-        rewards: "10,000 CYS",
-        lock: "12 Monthly Lock + 12 Linear Unlock",
-        price: "88 USDC",
-        supply: "354/1000",
-        sold: false,
-        image: getImageUrl("@/assets/images/nft/product4.png"),
-        chip: "Nvidia",
-        computingPower: "55 TH"
-    }
-];
+
 
 // 功能板块
 const featureBlocks = [
@@ -210,8 +182,68 @@ const featureBlocks = [
     }
 ];
 
+
+const STEP = 6
+
+const levelCalls = nftProducts?.map(i => {
+    return {
+        address: purchaseNftContract[purchaseChainId],
+        abi: purchaseNftAbi,
+        functionName: 'levelInfo',
+        args: [i.id],
+        chainId: purchaseChainId
+    }
+})
+
 const NftLanding = () => {
-    // 假设header高度约为80px
+
+    const { levelInfos, setState } = useNftPurchase()
+    const [showCount, setShowCount] = useState(STEP); // 初始显示4个NFT产品
+    const handleShowMore = () => {
+        if (showCount >= nftProducts.length) {
+            setShowCount(STEP)
+        } else {
+            setShowCount(prev => prev + STEP); // 每次点击增加4个产品
+        }
+    };
+
+    const { data: levelInfosMulticallData } = useReadContracts({
+        contracts: levelCalls as any,
+        query: {
+            enabled: !!levelCalls.length,
+            refetchInterval: 20_000
+        }
+    })
+
+    const temp = useMemo(() => {
+        const result: any = {}
+        levelInfosMulticallData?.forEach((i, index) => {
+            if (!result?.[levelCalls?.[index]?.args?.[0]]) {
+                result[levelCalls?.[index]?.args?.[0]] = {}
+            }
+            const levelId = levelCalls?.[index]?.args?.[0];
+            if (levelId && i?.result) {
+                result[levelId] = {
+                    price: i?.result?.[0] || '0',
+                    maxSupply: i?.result?.[1] || '0',
+                    soldAmount: i?.result?.[2] || '0',
+                    soldOut: i?.result?.[3] || false,
+
+                    id: levelId
+                }
+            }
+        })
+        // setState({ levelInfos: result })
+        return result
+    }, [levelInfosMulticallData])
+
+    useEffect(() => {
+        if (temp) {
+            setState({ levelInfos: temp })
+        }
+    }, [temp])
+
+    console.log('levelInfos', temp, levelInfos)
 
     return (
         <>
@@ -233,18 +265,25 @@ const NftLanding = () => {
                 <p className="text-center text-sub text-base mb-6">Trade Compute Box on MagicEden</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {nftProducts.map((nft) => (
+                    {nftProducts.slice(0, showCount).map((nft) => (
                         <NFTCard
                             key={nft.id}
                             name={nft.name}
                             rewards={nft.rewards}
-                            lock={nft.lock}
-                            price={nft.price}
-                            supply={nft.supply}
-                            sold={nft.sold}
                             image={nft.image}
+                            id={nft.id}
                         />
                     ))}
+                </div>
+
+                <div className="flex justify-center mt-10">
+                    <Button
+                        onClick={handleShowMore}
+                        type="light"
+                        className="px-8 py-4 rounded-lg"
+                    >
+                        {showCount >= nftProducts.length ? 'SHOW LESS' : 'SHOW MORE'}
+                    </Button>
                 </div>
             </Section>
 

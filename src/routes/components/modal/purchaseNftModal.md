@@ -10,6 +10,7 @@ import { useWriteContract } from "@/hooks/useWriteContract";
 import { purchaseChainId, USDC, purchaseNftContract, purchaseNftAbi } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { cn } from "@nextui-org/react";
+import useNftPurchase from "@/models/nft";
 import Input from "@/components/Input";
 
 const USDCDecimal = 18;
@@ -74,7 +75,6 @@ const PurchaseNftModal = () => {
     const [quantity, setQuantity] = useState<number>(1);
     const [selectedVoucher, setSelectedVoucher] = useState<Voucher>(defaultVouchers[0]);
     const [availableVouchers, setAvailableVouchers] = useState<Voucher[]>(defaultVouchers);
-    const [voucherOpen, setVoucherOpen] = useState<boolean>(false);
     const [purposeOptions, setPurposeOptions] = useState<PurposeOption[]>([
         {
             id: "zk",
@@ -127,6 +127,8 @@ const PurchaseNftModal = () => {
 
     // 使用useMemo计算派生状态
     const {
+        balance,
+        allowance,
         formattedBalance,
         totalPrice,
         totalPriceWei,
@@ -143,6 +145,8 @@ const PurchaseNftModal = () => {
         // 如果没有NFT数据，返回初始值
         if (!nft) {
             return {
+                balance,
+                allowance,
                 formattedBalance,
                 totalPrice: "0",
                 totalPriceWei: BigInt(0),
@@ -176,6 +180,8 @@ const PurchaseNftModal = () => {
         }
         
         return {
+            balance,
+            allowance,
             formattedBalance,
             totalPrice,
             totalPriceWei,
@@ -189,18 +195,17 @@ const PurchaseNftModal = () => {
     // 在弹窗打开时初始化状态
     useEffect(() => {
         if (visible && data?.nft) {
-            setNft(data.nft as NFTInfo);
+            setNft(data.nft);
             setWriteError("");
             setQuantity(1);
             setSelectedVoucher(defaultVouchers[0]);
-            setVoucherOpen(false);
             
-            // 根据用户状态设置可用优惠券
+            // 可以根据用户状态设置可用优惠券
             setAvailableVouchers(defaultVouchers);
             
             // 如果有指定的初始步骤
             if (data.step !== undefined) {
-                setCurrentStep(Number(data.step) as PurchaseStep);
+                setCurrentStep(data.step);
             } else {
                 setCurrentStep(PurchaseStep.DETAILS);
             }
@@ -209,10 +214,7 @@ const PurchaseNftModal = () => {
 
     // 处理优惠券选择
     const handleVoucherSelect = (voucher: Voucher) => {
-        if (!voucher.disabled) {
-            setSelectedVoucher(voucher);
-            setVoucherOpen(false);
-        }
+        setSelectedVoucher(voucher);
     };
 
     // 处理授权操作
@@ -271,7 +273,7 @@ const PurchaseNftModal = () => {
         );
     };
 
-    // 继续购买流程
+    // 继续购买
     const handleContinue = async () => {
         setWriteError("");
         
@@ -307,7 +309,6 @@ const PurchaseNftModal = () => {
         setCurrentStep(PurchaseStep.DETAILS);
         setQuantity(1);
         setSelectedVoucher(defaultVouchers[0]);
-        setVoucherOpen(false);
         setPurposeOptions(purposeOptions.map(option => ({
             ...option,
             selected: option.id === "zk"
@@ -399,7 +400,7 @@ const PurchaseNftModal = () => {
                                             <Input
                                                 type="number"
                                                 value={quantity}
-                                                onChange={(v: string | number) => setQuantity(Number(v))}
+                                                onChange={(v) => setQuantity(Number(v))}
                                                 className="bg-[#0E0E0E] text-white px-4 py-3 w-full focus:outline-none"
                                             />
                                         </div>
@@ -408,28 +409,23 @@ const PurchaseNftModal = () => {
                                     <div>
                                         <label className="block text-sub mb-2">Voucher</label>
                                         <div className="relative">
-                                            <div 
-                                                className="bg-[#0E0E0E] border border-gray-700 rounded-md p-4 flex justify-between items-center cursor-pointer"
-                                                onClick={() => setVoucherOpen(!voucherOpen)}
-                                            >
+                                            <div className="bg-[#0E0E0E] border border-gray-700 rounded-md p-4 flex justify-between items-center cursor-pointer">
                                                 <span className="text-white">{selectedVoucher?.code || "No voucher"}</span>
                                                 <span>▼</span>
                                             </div>
                                             
-                                            {/* 优惠券下拉菜单 */}
-                                            {voucherOpen && (
-                                                <div className="absolute w-full mt-1 bg-[#0E0E0E] border border-gray-700 rounded-md z-10">
-                                                    {availableVouchers.map((voucher) => (
-                                                        <div 
-                                                            key={voucher.code}
-                                                            className={`p-3 hover:bg-gray-800 cursor-pointer ${voucher.disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                                            onClick={() => handleVoucherSelect(voucher)}
-                                                        >
-                                                            {voucher.code}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            {/* Voucher dropdown - you can implement actual dropdown functionality */}
+                                            <div className="hidden absolute w-full mt-1 bg-[#0E0E0E] border border-gray-700 rounded-md z-10">
+                                                {availableVouchers.map((voucher) => (
+                                                    <div 
+                                                        key={voucher.code}
+                                                        className="p-3 hover:bg-gray-800 cursor-pointer"
+                                                        onClick={() => handleVoucherSelect(voucher)}
+                                                    >
+                                                        {voucher.code}
+                                                    </div>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

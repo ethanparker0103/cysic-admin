@@ -151,6 +151,7 @@ export const purchaseChainId = arbitrumSepolia.id;
 export const USDC = {
   [arbitrumSepolia.id]: "0x1e6e1C6BcCD8b8B9ec82ee8863cD53D640D36b76",
 };
+export const USDCDecimal = 18;
 export const purchaseNftContract = {
   [arbitrumSepolia.id]: "0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC",
 };
