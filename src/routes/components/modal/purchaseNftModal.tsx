@@ -7,12 +7,12 @@ import Copy from "@/components/Copy";
 import { erc20Abi, formatUnits, parseUnits } from "viem";
 import { useReadContracts } from "wagmi";
 import { useWriteContract } from "@/hooks/useWriteContract";
-import { purchaseChainId, USDC, purchaseNftContract, purchaseNftAbi } from "@/config";
+import { purchaseChainId, USDC, purchaseNftContract, purchaseNftAbi, USDCDecimal } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { cn } from "@nextui-org/react";
 import Input from "@/components/Input";
 
-const USDCDecimal = 18;
+
 
 // NFT 信息接口
 interface NFTInfo {
