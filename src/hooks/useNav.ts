@@ -73,7 +73,7 @@ const navs = [
         href: mediasLink.whitePaper
     },
     {
-        content: 'Community',
+        content: 'Company',
         children: [
             {
                 content: 'blog',
@@ -210,18 +210,18 @@ const stakeeNavs = navs.map((i, index) => {
 
 const useNav = ()=>{
     const location = useLocation();
-    const { isRegistered } = useAccount()
+    const { isSigned } = useAccount()
 
 
     const zkNavs = useMemo(()=>{
-        if(isRegistered){
+        if(isSigned){
             return _zkNavs.slice(0, 1).concat({
                 content: 'Invite',
                 href: '/zk/invite'
             }, _zkNavs.slice(1));
         }
         return _zkNavs
-    }, [isRegistered])
+    }, [isSigned])
 
 
     const currentNavs = useMemo(() => {

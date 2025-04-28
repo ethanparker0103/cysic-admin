@@ -75,7 +75,7 @@ const ZkLanding = () => {
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
                     <span className="sub-title">Simple in Form, Infinite in Power.</span>
-                    <span className="title text-[11.25rem] !text-[#fff] text-center">Cysic ZK</span>
+                    <span className="title title-lg !text-[#fff] text-center">Cysic ZK</span>
                 </div>
 
 

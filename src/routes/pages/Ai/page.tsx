@@ -190,7 +190,7 @@ const AiLanding = () => {
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] mt-20">
                 <div className="flex flex-col items-center">
                     <span className="sub-title">INTELLIGENCE SIMPLIFIED, POTENTIAL UNLEASHED</span>
-                    <span className="title text-[11.25rem] !text-[#fff] text-center">CYSIC AI</span>
+                    <span className="title title-lg !text-[#fff] text-center">CYSIC AI</span>
                 </div>
 
                 <SignInButton className="backdrop-blur-sm mt-[3.25rem] mb-[4rem]"/>

@@ -3,25 +3,30 @@ import GradientNavDropdown from "@/components/GradientNavDropdown";
 import { baseHref, BIND_CHECK_PATHS } from "@/config";
 import { getImageUrl, handleLoginPersonalMessage, handleSignIn } from "@/utils/tools";
 
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 import ConnectInfo from "@/components/ConnectInfo";
 import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo } from "react";
+import { isMobile } from "react-device-detect";
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerContent, useDisclosure } from "@nextui-org/react";
+import Button from "@/components/Button";
+
+const size = 'full'
 
 export default function Header() {
     const { walletAddress, isSigned, isBinded } = useAccount();
     const { currentNavs } = useNav();
     const location = useLocation();
-    
+
     // 检查当前路径是否需要绑定邀请码
     const needsBindCheck = useMemo(() => {
         const path = location.pathname;
         // 使用 includes 检查路径是否包含特定字符串
         return BIND_CHECK_PATHS.some(checkPath => path.includes(checkPath));
     }, [location.pathname]);
-    
+
     // 需要显示绑定提示的条件
     const shouldShowBindPrompt = isSigned && needsBindCheck && !isBinded;
 
@@ -35,14 +40,60 @@ export default function Header() {
     };
 
 
-    console.log('isSigned', isSigned)
-    return (
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    const handleOpen = () => {
+        onOpen();
+    };
+    return isMobile ? <>
+        <div className="h-[5.625rem] flex items-center">
+            <div className="flex flex-wrap gap-3 relative w-full">
+                <Button onClick={handleOpen}>
+                    <Menu width={30} height={30} />
+                </Button>
+
+                <Link to={'/'} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
+                    <img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" />
+                </Link>
+            </div>
+            <Drawer isOpen={isOpen} size={size} onClose={onClose}>
+                <DrawerContent>
+                    {(onClose) => (
+                        <>
+                            <DrawerHeader className="flex flex-col gap-1">Drawer Title</DrawerHeader>
+                            <DrawerBody>
+                                <p>
+                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
+                                    risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
+                                    quam.
+                                </p>
+                                <p>
+                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor
+                                    adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit
+                                    officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
+                                </p>
+                            </DrawerBody>
+                            <DrawerFooter>
+                                <Button onClick={onClose}>
+                                    Close
+                                </Button>
+                                <Button onClick={onClose}>
+                                    Action
+                                </Button>
+                            </DrawerFooter>
+                        </>
+                    )}
+                </DrawerContent>
+            </Drawer>
+        </div>
+    </> : (
         <div className="relative z-[1] ">
             <div className="relative px-[3rem] py-6">
                 <GradientBorderCard className="h-20 flex items-center backdrop-blur-sm bg-black/10">
                     <div className="w-full h-full flex justify-between items-center">
                         <div className="flex items-center h-full">
-                            <a href={baseHref}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" /></a>
+                            <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" /></Link>
 
                             {currentNavs.map((nav: any) => (
                                 <GradientNavDropdown key={nav.content} item={nav} />

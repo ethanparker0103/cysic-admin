@@ -2,7 +2,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
-import { NextUIProvider } from "@nextui-org/react";
+import { cn, NextUIProvider } from "@nextui-org/react";
 import Header from "@/routes/layout/global/header";
 import Footer from "@/routes/layout/global/footer";
 import SignInModal from "@/routes/components/modal/signInModal";
@@ -15,6 +15,7 @@ import useCosmosUpdate from "@/hooks/cosmos/useCosmosUpdate";
 import RewardsDetailModal from "@/routes/components/modal/rewardsDetailModal";
 import ConvertModal from "@/routes/components/modal/convertModal";
 import ConvertHistoryModal from "@/routes/components/modal/convertHistoryModal";
+import { isMobile } from "react-device-detect";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -36,7 +37,7 @@ export default function App({ children }: { children: React.ReactNode }) {
                     <ConvertHistoryModal />
 
 
-                    <div className="relative">
+                    <div className={cn("relative", isMobile && "max-w-screen overflow-x-hidden")}>
                         <Header />
                         <main>{children}</main>
                     </div>
