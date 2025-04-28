@@ -44,12 +44,12 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ title, imageSrc, onClick }: ServiceCardProps) => (
     <GradientBorderCard borderRadius={8} className="overflow-hidden">
-        <div className="relative h-[10.625rem] w-full group cursor-pointer overflow-hidden" onClick={onClick}>
+        <div className="group relative h-[10.625rem] w-full group cursor-pointer overflow-hidden" onClick={onClick}>
             {/* 背景图片 */}
             <img
                 src={imageSrc}
                 alt={title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:grayscale-0 grayscale"
             />
 
             {/* 叠加的半透明层 */}

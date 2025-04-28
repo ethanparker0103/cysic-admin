@@ -28,8 +28,10 @@ body {
     touch-action: manipulation;
 }
 
-#root{
-    background-color: #090A09;
+
+#root,html,body{
+    /* background: linear-gradient(180deg, #090A09 0%, #000 100%); */
+    background: #090A09;
     position: relative;
 }
 
@@ -190,4 +192,25 @@ body {
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     z-index: -1;
+  }
+
+
+
+  .gradient-border-card::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    padding: var(--border-width, 1px);
+    background: linear-gradient(
+      var(--gradient-direction, 90deg),
+      #fff 0%,
+      rgba(255, 255, 255, 0.2) 100%
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 100%) content-box,
+      linear-gradient(#fff 0 100%);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }

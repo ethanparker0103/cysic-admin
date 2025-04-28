@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <div className={cn(
       " h-screen flex flex-col justify-between items-center",
-      isMobile ? 'max-h-[70rem]' : 'max-h-[70rem]'
+      isMobile ? 'max-h-[70rem]' : 'max-h-[70rem] min-h-[960px]'
     )}>
 
       <div className="pt-10 flex flex-col items-center gap-6 relative z-[2]">

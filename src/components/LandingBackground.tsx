@@ -49,6 +49,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({ ch
                         ...style
                     }}
                 />
+
+                <div className={cn("absolute w-full z-1 top-0 shadow-[#090A09_0_-50px_200px_100px_inset]", className)}/>
             </div>
 
             {/* 主体内容层 */}

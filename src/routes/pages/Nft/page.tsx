@@ -107,7 +107,7 @@ const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
                 <img
                     src={imageSrc}
                     alt={title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="hover: absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:grayscale-0 grayscale"
                 />
 
                 {/* 叠加的半透明层 */}
@@ -134,7 +134,7 @@ interface SectionProps {
 
 const Section = ({ children, className = "" }: SectionProps) => {
     return (
-        <div className={`w-full bg-black py-24 ${className}`}>
+        <div className={`w-full py-24 ${className}`}>
             <div className="container mx-auto px-8">
                 {children}
             </div>

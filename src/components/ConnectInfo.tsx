@@ -71,8 +71,10 @@ const ConnectInfo = () => {
             <Button needLoading className="!p-0" onClick={handleFaucet}>
                 <img src={getImageUrl('@/assets/images/icon/faucet.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
             </Button>
-            <Dropdown classNames={{
-                content: 'p-0 mt-6',
+            <Dropdown 
+            placement="bottom-end"
+            classNames={{
+                content: 'p-0 mt-6 bg-[transparent]',
             }}>
                 <DropdownTrigger>
                     <div className="px-6 flex items-center gap-4 cursor-pointer">
@@ -86,10 +88,10 @@ const ConnectInfo = () => {
                 </DropdownTrigger>
 
                 <DropdownMenu
-                    className="p-0 min-w-[330px] bg-[#090A09B2] backdrop-blur-md vertical-gradient-border rounded-lg overflow-hidden"
+                    className="p-0 min-w-[330px] backdrop-blur gradient-border-card bg-[transparent] rounded-lg overflow-hidden"
                     variant="flat"
                     itemClasses={{
-                        base: "hover:!opacity-100 text-sub uppercase transition-colors ",
+                        base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
                     }}
                 >
                     {needCompleteProfile ? (

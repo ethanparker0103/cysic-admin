@@ -4,189 +4,156 @@ import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 import { arbitrumSepolia } from "viem/chains";
 
-export const BIND_CHECK_PATHS = ['/zk', '/ai'];
+export const BIND_CHECK_PATHS = ["/zk", "/ai"];
 
-export const defaultChainId = '9527';
+export const defaultChainId = "9527";
 
 export const baseStatus: any = {
-    '0': 'Pending',
-    '1': 'Accept',
-    '2': 'Reject'
-}
+  "0": "Pending",
+  "1": "Accept",
+  "2": "Reject",
+};
 
 export const rewardStatus: any = {
-    '0': 'Pending',
-    '1': 'Claimed',
-    '2': 'No Reward'
-}
+  "0": "Pending",
+  "1": "Claimed",
+  "2": "No Reward",
+};
 
-export const providerStatus = baseStatus
+export const providerStatus = baseStatus;
 
-export const projectStatus = baseStatus
+export const projectStatus = baseStatus;
 
-export const verifierStatus = baseStatus
+export const verifierStatus = baseStatus;
 
 export const taskStatus: any = {
-    "TaskStatusWaitSchedule": "Wait For Assign",
-    "TaskStatusWaitVerifier": "Wait For Verifier",
-    "TaskStatusFinishSuccess": "Success",
-    "TaskStatusWaitProof": "Wait For Proof",
-    "TaskStatusMatchProviderFailed": "Failed"
-}
+  TaskStatusWaitSchedule: "Wait For Assign",
+  TaskStatusWaitVerifier: "Wait For Verifier",
+  TaskStatusFinishSuccess: "Success",
+  TaskStatusWaitProof: "Wait For Proof",
+  TaskStatusMatchProviderFailed: "Failed",
+};
 
 export const TaskStatus: any = {
-    '0': 'TaskStatusPublished',
-    '1': taskStatus['TaskStatusWaitSchedule'],
-    '2': taskStatus['TaskStatusWaitProof'],
-    '3': taskStatus['TaskStatusWaitVerifier'],
-    '100': taskStatus['TaskStatusFinishSuccess'],
-    '200': 'TaskStatusFinishFailed',
-    '400': 'TaskStatusInvalid',
-    '40': taskStatus['TaskStatusMatchProviderFailed'],
-    '401': 'TaskStatusMatchVerifierFailed',
-}
+  "0": "TaskStatusPublished",
+  "1": taskStatus["TaskStatusWaitSchedule"],
+  "2": taskStatus["TaskStatusWaitProof"],
+  "3": taskStatus["TaskStatusWaitVerifier"],
+  "100": taskStatus["TaskStatusFinishSuccess"],
+  "200": "TaskStatusFinishFailed",
+  "400": "TaskStatusInvalid",
+  "40": taskStatus["TaskStatusMatchProviderFailed"],
+  "401": "TaskStatusMatchVerifierFailed",
+};
 
 export const ProofBackend: any = {
-    '1': 'Halo2'
-}
+  "1": "Halo2",
+};
 
+export const isQa = import.meta.env.VITE_APP_ENV == "qa";
+export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
-export const isQa = import.meta.env.VITE_APP_ENV == 'qa'
-export const isProd = import.meta.env.VITE_APP_ENV == 'prod'
+export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev;
 
-
-export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev
-
-export const mainUrl = import.meta.env.VITE_APP_BASE_URL
+export const mainUrl = import.meta.env.VITE_APP_BASE_URL;
 // isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
-export const baseHref = '/m'
+export const baseHref = "/m";
 
 export const defaultRewardAmount = 100;
 
 export const commonPageSize = 10;
 
-export const explorerUrl = 'https://explorer-testnet.prover.xyz'
+export const explorerUrl = "https://explorer-testnet.prover.xyz";
 
-export const cosmosReservedValue = '0.1'
+export const cosmosReservedValue = "0.1";
 
-export const cysicBaseCoin = 'CYS'
-export const cysicStCoin = 'CGT'
+export const cysicBaseCoin = "CYS";
+export const cysicStCoin = "CGT";
 
 export const supTokens: any = {
-    [cysicBaseCoin]: {
-        name: cysicBaseCoin,
-        icon: getImageUrl('@/assets/images/tokens/cysic.svg')
-    },
-    [cysicStCoin]: {
-        name: cysicStCoin,
-        icon: getImageUrl('@/assets/images/tokens/cysic-light.svg')
-    }
-}
-
+  [cysicBaseCoin]: {
+    name: cysicBaseCoin,
+    icon: getImageUrl("@/assets/images/tokens/cysic.svg"),
+  },
+  [cysicStCoin]: {
+    name: cysicStCoin,
+    icon: getImageUrl("@/assets/images/tokens/cysic-light.svg"),
+  },
+};
 
 export const cosmosFee = {
-    amount: [
-        {
-            denom: cysicBaseCoin,
-            amount: "200000",
-        },
-    ],
-    gas: "2000000", // gas amount
+  amount: [
+    {
+      denom: cysicBaseCoin,
+      amount: "200000",
+    },
+  ],
+  gas: "2000000", // gas amount
 };
 
 export const cosmosFee_lower = {
-    amount: coins(200000 / 2, cysicBaseCoin), // 5000 uatom
-    gas: 2000000 / 2, // 200000 gas
-}
+  amount: coins(200000 / 2, cysicBaseCoin), // 5000 uatom
+  gas: 2000000 / 2, // 200000 gas
+};
 
-export const keplrDownloadLink = 'https://chromewebstore.google.com/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap'
+export const keplrDownloadLink =
+  "https://chromewebstore.google.com/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap";
 
 export const blockTime = {
-    short: 5_000,
-    average: 10_000,
-    long: 15_000
-}
+  short: 5_000,
+  average: 10_000,
+  long: 15_000,
+};
 
-
-export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString({
+export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryString(
+  {
     text: "Earn Cysic tokens as rewards while verifying and computing ZK proofs for top projects like @Scroll_ZKP and @AleoHQ, exclusively on @cysic_xyz. #cysictestnet \n\r ",
-})}`
-
+  }
+)}`;
 
 export const mediasLink = {
-    whitePaper: 'https://bit.ly/cysicnetworkwhitepaper',
-    discord: 'https://bit.ly/CysicDC',
-    twitter: 'https://bit.ly/Cysic_xyz',
-    medium: 'https://bit.ly/CysicMedium',
-    twitterWhitePaper: 'https://x.com/cysic_xyz/status/1846960627878866984',
-}
+  whitePaper: "https://bit.ly/cysicnetworkwhitepaper",
+  discord: "https://bit.ly/CysicDC",
+  twitter: "https://bit.ly/Cysic_xyz",
+  medium: "https://bit.ly/CysicMedium",
+  twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
+};
 
 export const downloadLink = {
-    andorid: 'https://statics.prover.xyz/app-release.apk',
-    googlePlay: 'https://play.google.com/store/apps/details?id=com.cysic.plus'
-}
+  andorid: "https://statics.prover.xyz/app-release.apk",
+  googlePlay: "https://play.google.com/store/apps/details?id=com.cysic.plus",
+};
 
-export const enableCosmosUrl = ['my', 'stake', '/my', '/my/phase1', '/stake/cgt', '/stake/veCompute', '/my/', '/stake/cgt/', '/stake/veCompute/', '/my/phase1/', '/my/phase1Convert', '/my/phase1Convert/']
+export const enableCosmosUrl = [
+  "my",
+  "stake",
+  "/my",
+  "/my/phase1",
+  "/stake/cgt",
+  "/stake/veCompute",
+  "/my/",
+  "/stake/cgt/",
+  "/stake/veCompute/",
+  "/my/phase1/",
+  "/my/phase1Convert",
+  "/my/phase1Convert/",
+];
 
-
-export const loginSignContent = 'Welcome to Cysic！'
-export const responseSuccessCode = 0
+export const loginSignContent = "Welcome to Cysic！";
+export const responseSuccessCode = 0;
 
 export const CHAIN_ID_MAP = {
-    [arbitrumSepolia.id]: arbitrumSepolia
-}
+  [arbitrumSepolia.id]: arbitrumSepolia,
+};
 
-export const purchaseChainId = arbitrumSepolia.id
+export const purchaseChainId = arbitrumSepolia.id;
 export const USDC = {
-    [arbitrumSepolia.id]: '0x1e6e1C6BcCD8b8B9ec82ee8863cD53D640D36b76'
-}
+  [arbitrumSepolia.id]: "0x1e6e1C6BcCD8b8B9ec82ee8863cD53D640D36b76",
+};
 export const purchaseNftContract = {
-    [arbitrumSepolia.id]: '0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC',
-}
-export const purchaseNftAbi = [
-    {
-        "inputs": [
-            {
-                "internalType": "uint256",
-                "name": "id",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "bytes",
-                "name": "data",
-                "type": "bytes"
-            }
-        ],
-        "name": "userMint",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
-]
+  [arbitrumSepolia.id]: "0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC",
+};
 
-export const usdcFacuetAbi = [
-    {
-        "inputs": [
-            {
-                "internalType": "address",
-                "name": "to",
-                "type": "address"
-            },
-            {
-                "internalType": "uint256",
-                "name": "amount",
-                "type": "uint256"
-            }
-        ],
-        "name": "mint",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-    }
-]
+export * from './abi/faucet'
+export * from './abi/purchase'

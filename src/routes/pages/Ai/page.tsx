@@ -256,7 +256,7 @@ const AiLanding = () => {
                         {/* 项目卡片列表 */}
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             {filteredProjects.map(project => (
-                                <GradientBorderCard key={project.id} innerClassName="relative flex flex-col gap-4 p-4 !bg-[#090A09]">
+                                <GradientBorderCard key={project.id} className="relative flex flex-col gap-4 p-4 !bg-[#090A09]">
                                     <>
 
                                         <div className="w-full flex gap-4">

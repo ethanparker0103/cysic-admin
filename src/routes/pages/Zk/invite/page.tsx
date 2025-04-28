@@ -339,7 +339,7 @@ const InvitePage = () => {
                                                             content: '!p-0',
                                                         }}
                                                         content={<>
-                                                            <GradientBorderCard innerClassName="p-4 flex flex-col gap-1">
+                                                            <GradientBorderCard className="p-4 flex flex-col gap-1">
                                                                 <>
                                                                 <div className="w-full flex items-center justify-between text-sm">
                                                                     <div className="!text-sub w-20">Reward</div>

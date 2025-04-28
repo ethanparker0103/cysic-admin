@@ -68,7 +68,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
     // 有子菜单时创建下拉菜单
     return (
         <Dropdown classNames={{
-            content: 'p-0 mt-6',
+            content: 'p-0 mt-6 bg-[transparent]',
         }}>
             <DropdownTrigger>
                 <Button
@@ -80,8 +80,11 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
             </DropdownTrigger>
 
             <DropdownMenu
+                style={{
+                    '--gradient-direction': '0deg',
+                }}
                 aria-label={`${item.content} submenu`}
-                className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur-md vertical-gradient-border rounded-lg overflow-hidden"
+                className="p-0 min-w-[180px] bg-[transparent] backdrop-blur gradient-border-card rounded-lg overflow-hidden"
                 variant="flat"
                 itemClasses={{
                     base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",

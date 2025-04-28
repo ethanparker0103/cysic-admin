@@ -80,14 +80,15 @@ export const router = createBrowserRouter(
 export const backgroundImageList = {
   '/': {
     img: getImageUrl('@/assets/images/_global/home_landing_bg.png'),
-    className: "grayscale"
+    className: "grayscale",
   },
   '/zk': {
     img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),
     className: "h-[135%]"
   },
   '/zk/invite': {
-    img: getImageUrl('@/assets/images/_global/invite_landing_bg.png')
+    img: getImageUrl('@/assets/images/_global/invite_landing_bg.png'),
+    className: "h-screen"
   },
   '/ai': {
     img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
@@ -99,7 +100,10 @@ export const backgroundImageList = {
   },
   '/nft': {
     img: getImageUrl('@/assets/images/_global/nft_landing_bg.png'),
-    className: "h-screen"
+    className: "h-screen",
+    style: {
+      backgroundPosition: "center -10vh"
+    }
   },
   '/nft/userPortal': {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
