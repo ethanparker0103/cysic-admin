@@ -29,7 +29,7 @@ const guide = {
                     <div className="flex flex-col gap-6">
                         <span>Download the official Cysic Verifier App</span>
 
-                        <div className="flex gap-4 items-center">
+                        <div className={cn("flex gap-4 items-center", isMobile ? "flex-col" : "flex-row")}>
                             <GradientBorderCard className=" p-6 ">
                                 <div className="flex items-center gap-1">
                                     <img
@@ -310,11 +310,13 @@ const GuideStepCard = ({
 
             {/* {children} */}
             {code ? (
-                <div className="relative bg-[#FFFFFF0D] rounded-[16px] p-4 flex items-center justify-between gap-10">
+                <div className={
+                    cn("relative bg-[#FFFFFF0D] rounded-[16px] p-4 flex items-center justify-between ", isMobile ? "flex-col gap-6" : "gap-10")
+                }>
                     <SyntaxHighlighter
                         language="bash"
                         style={github}
-                        className="flex-1 break-words rounded-md !bg-[#FFFFFF0D] !text-[#fff] [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
+                        className="flex-1 w-full break-words rounded-md !bg-[#FFFFFF0D] !text-[#fff] [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
                     >
                         {code}
                     </SyntaxHighlighter>
@@ -691,7 +693,7 @@ const VerifierPage = () => {
                                     className="w-full"
                                 >
                                     <Tab key="Android" title="Android">
-                                        <div className="bg-[#FFFFFF0D] w-full p-4 flex gap-6">
+                                        <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", isMobile ?"flex-col" :"")}>
                                             <div className="flex-1">
 
                                                 <GuideStepCard
