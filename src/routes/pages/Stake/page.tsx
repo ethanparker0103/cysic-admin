@@ -28,6 +28,8 @@ import { showStatusModal } from "@/utils/tools";
 import { StatusType } from "@/routes/components/modal/statusModal";
 import { cysicTestnet } from "@/config";
 import useAccount from "@/hooks/useAccount";
+import { cn } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
 
 interface Validator {
   id: string;
@@ -423,12 +425,12 @@ const StakePage = () => {
       {/* 主标题 */}
       <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
         <div className="flex flex-col items-center">
-          <span className="title text-[4rem] !text-[#fff] text-center">STAKE CGTS</span>
+          <span className={cn("title !text-[#fff] text-center", isMobile ? "!text-[32px]" : "!text-[4rem]")}>STAKE CGTS</span>
         </div>
       </div>
 
       {/* 主要内容部分 */}
-      <div className="container mx-auto px-4 md:px-8 mt-8 relative z-[2]">
+      <div className="container mx-auto mt-8 relative z-[2]">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 左侧 - 质押信息 */}
           <GradientBorderCard
@@ -436,8 +438,8 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6 h-full flex flex-col justify-between">
-              <div className="flex justify-between items-start">
-                <h2 className="title text-xl uppercase !font-[300]">STAKE CGTS</h2>
+              <div className={cn("flex gap-4", isMobile ? "flex-col" : "justify-between items-start")}>
+                <h2 className="title !text-xl uppercase !font-[300]">STAKE CGTS</h2>
                 <Button
                   onClick={handleStakeModal}
                   type={BtnType.light}
@@ -447,18 +449,18 @@ const StakePage = () => {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-3 ">
-                <div className="col-span-1 border-r border-white pr-6">
-                  <div className=" uppercase title text-base mb-2 !font-[300]">STAKING AMOUNT</div>
-                  <div className="text-2xl text-right title !font-[400]">{stakeAmount} CGT</div>
+              <div className={cn("grid ", isMobile ? "grid-cols-1 mt-4" : " grid-cols-3")}>
+                <div className={cn("col-span-1 border-white ", isMobile ? "border-b pb-6" : "border-r pr-6")}>
+                  <div className=" uppercase title !text-base mb-2 !font-[300]">STAKING AMOUNT</div>
+                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{stakeAmount} CGT</div>
                 </div>
-                <div className="col-span-1 border-r border-white px-6">
-                  <div className=" uppercase title text-base mb-2 !font-[300]">UNSTAKING AMOUNT</div>
-                  <div className="text-2xl text-right title !font-[400]">{unstakeAmount} CGT</div>
+                <div className={cn("col-span-1 border-white ", isMobile ? "border-b py-6" : "border-r px-6")}>
+                  <div className=" uppercase title !text-base mb-2 !font-[300]">UNSTAKING AMOUNT</div>
+                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{unstakeAmount} CGT</div>
                 </div>
-                <div className="col-span-1 pl-4">
-                  <div className=" uppercase title text-base mb-2 !font-[300]">APR</div>
-                  <div className="text-2xl text-right title !font-[400]">{apr}%</div>
+                <div className={cn("col-span-1 ", isMobile ? "pt-4" : "pl-4")}>
+                  <div className=" uppercase title !text-base mb-2 !font-[300]">APR</div>
+                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{apr}%</div>
                 </div>
               </div>
             </div>
@@ -469,13 +471,13 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6">
-              <h2 className="title text-xl uppercase !font-[300] mb-4">CLAIM REWARDS</h2>
-              <div className="text-2xl !font-[400] title mb-4 text-center text-right">{formatReward(rewardsAmount, 4)} CGT</div>
+              <h2 className="title !text-xl uppercase !font-[300] mb-4">CLAIM REWARDS</h2>
+              <div className={cn("!text-2xl !font-[400] title mb-4", isMobile ? "text-left" : "text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
                 onClick={handleClaim}
                 type={BtnType.light}
-                className="rounded-lg w-full py-3 text-base"
+                className="rounded-lg w-full py-3 !text-base"
               >
                 CLAIM ALL
               </Button>
@@ -490,11 +492,11 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="title text-xl uppercase">MY VALIDATORS</h2>
+              <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
+                <h2 className="title !text-xl uppercase">MY VALIDATORS</h2>
                 <div className="flex items-center gap-2">
                   <History size={16} />
-                  <span className="text-sm text-sub">Daily update at 2PM UTC</span>
+                  <span className="!text-sm text-sub">Daily update at 2PM UTC</span>
                 </div>
               </div>
 
@@ -515,7 +517,7 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6">
-              <h2 className="title text-xl !font-[300] uppercase mb-2">YOUR VALIDATORS</h2>
+              <h2 className="title !text-xl !font-[300] uppercase mb-2">YOUR VALIDATORS</h2>
               <div className="flex gap-2 items-start mb-3 ">
                 <div className="w-full">
                   <p className="text-sub text-base mb-4">
@@ -533,8 +535,8 @@ const StakePage = () => {
           borderRadius={8}
         >
           <div className="w-full py-4 px-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="title text-xl uppercase !font-[300]">ACTIVE VALIDATORS</h2>
+            <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
+              <h2 className="title !text-xl uppercase !font-[300]">ACTIVE VALIDATORS</h2>
               <div className="relative w-[20rem] flex items-center">
                 <input
                   type="text"

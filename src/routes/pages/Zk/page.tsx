@@ -1,6 +1,8 @@
 import Button from "@/components/Button";
 import SignInButton from "@/routes/components/SignInButton";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
+import { cn } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
 import { ArrowRight } from "lucide-react";
 
 
@@ -57,8 +59,8 @@ const ZkLanding = () => {
     return (
         <>
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
-                <div className="flex flex-col items-center">
-                    <span className="sub-title">Simple in Form, Infinite in Power.</span>
+                <div className={cn("flex flex-col items-center", isMobile ? "gap-4" : "")}>
+                    <span className="sub-title text-center">Simple in Form, Infinite in Power.</span>
                     <span className="title title-lg !text-[#fff] text-center">Cysic ZK</span>
                 </div>
 

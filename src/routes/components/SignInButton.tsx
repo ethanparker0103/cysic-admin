@@ -49,7 +49,7 @@ const SignInButton = ({
       return "Complete Profile";
     }
     
-    return "Welcome";
+    return "";
   }, [address, isSigned, isBinded, isProfileCompleted, customText, isBindRequired]);
   
   // 触发登录弹窗事件或直接签名
@@ -71,6 +71,8 @@ const SignInButton = ({
       handleSignIn('profile');
     }
   };
+
+  if(!buttonText) return;
   
   return (
     <Button 

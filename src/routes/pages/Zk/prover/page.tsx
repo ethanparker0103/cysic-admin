@@ -10,6 +10,8 @@ import { useRequest } from "ahooks";
 import NFTProverCard from "@/components/NFTCard";
 import { useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
+import { isMobile } from "react-device-detect";
+import { cn } from "@nextui-org/react";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
@@ -23,21 +25,21 @@ const SelfProverStepCard = ({ step, title, description, buttonText, children, on
     return (
         <div className="mb-8">
             <div className="flex flex-col items-start">
-                <div className="w-full flex justify-between items-start">
+                <div className={cn("w-full flex ", isMobile ? "flex-col" : "justify-between items-start")}>
                     <div className="flex flex-col">
-                        <div className="text-base !font-[300] title">Step {step}/2</div>
-                        <h3 className="title text-3xl uppercase !font-[300] mb-2">{title}</h3>
+                        <div className="!text-base !font-[300] title">Step {step}/2</div>
+                        <h3 className={cn("title uppercase !font-[300] mb-2", isMobile ? "!text-[24px]" : "!text-3xl")}>{title}</h3>
                     </div>
                     {buttonText ? <Button
                         onClick={onClick}
                         type="light"
-                        className="rounded-lg px-12 py-3 min-h-fit h-fit text-base !font-[400]"
+                        className="rounded-lg px-12 py-3 min-h-fit h-fit !text-base !font-[400]"
                     >
                         {buttonText}
                     </Button> : null}
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 mt-4">
                     <p className="text-sub text-sm mb-4">{description}</p>
                 </div>
 
@@ -68,15 +70,15 @@ const ProverCard = ({ icon, name, description, isActive, btnText }: ProverCardPr
         >
             <div className="w-full p-6 h-full flex flex-col">
                 <div className="flex items-start gap-4 flex-1">
-                    <div className="h-12 w-12 rounded-full bg-[#111] flex items-center justify-center text-white">
+                    <div className={cn(" rounded-full bg-[#111] flex items-center justify-center text-white", isMobile ? "h-8 w-8" : "w-12 h-12")}>
                         {icon}
                     </div>
                     <div className="flex-1 h-full flex flex-col">
-                        <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-3xl !font-[300] title">{name}</h3>
+                        <div className={cn("flex mb-4", isMobile ? "flex-col" : "justify-between items-start")}>
+                            <h3 className={cn("!font-[300] title", isMobile ? "!text-[24px] mb-2" : "!text-3xl")}>{name}</h3>
                             <div className="flex items-center gap-2">
                                 <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                <span className="uppercase text-sm !font-[300] title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                <span className="uppercase !text-sm !font-[300] title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                             </div>
                         </div>
                         <p className="flex-1 text-sm !font-[400] mb-6 text-sub">{description}</p>
@@ -129,22 +131,22 @@ const ProverPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title text-4xl !font-[300] !text-[#fff] text-center">PROVER</span>
+                    <span className="title !text-4xl !font-[300] !text-[#fff] text-center">PROVER</span>
                 </div>
             </div>
 
             {/* 主要内容部分 */}
-            <div className="mx-auto px-[3rem] mt-12 relative z-[2]">
+            <div className="mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
                 <GradientBorderCard
                     borderRadius={8}
                     className="mb-4"
                 >
-                    <div className="w-full p-8">
+                    <div className={cn("w-full", isMobile ? "px-6 py-4" : "p-8")}>
                         <div className="flex flex-col gap-2 mb-6 ">
-                            <h1 className="title !font-[300] text-4xl uppercase">BECOME A CYSIC PROVER</h1>
-                            <h1 className="title !font-[300] text-4xl uppercase">AND EARN CYS & CGT</h1>
-                            <h2 className="title !font-[300] text-xl uppercase mt-2">EASIER THAN EVER BEFORE!</h2>
+                            <h1 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>BECOME A CYSIC PROVER</h1>
+                            <h1 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>AND EARN CYS & CGT</h1>
+                            <h2 className={cn("title !font-[300] uppercase mt-2", isMobile ? "!text-base" : "text-xl")}>EASIER THAN EVER BEFORE!</h2>
                                     </div>
 
                         <p className="text-white !font-[400] text-base mb-6">
@@ -160,21 +162,21 @@ const ProverPage = () => {
                     <GradientBorderCard
                         borderRadius={8}
                     >
-                        <div className="w-full px-6 py-4 flex justify-between items-center">
-                            <div className="flex flex-col gap-4">
-                                <h3 className="text-base !font-[300] title uppercase">ZK VERIFIER STATUS</h3>
+                        <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
+                            <div className="flex flex-col gap-4 w-full">
+                                <h3 className="!text-base !font-[300] title uppercase">ZK VERIFIER STATUS</h3>
                                 <div className="flex items-center gap-2">
                                     <div className={`w-3 h-3 rounded-full ${verifierStatus.standardActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                                    <span className="!font-[300] text-sm title uppercase">STANDARD {verifierStatus.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                    <span className="!font-[300] !text-sm title uppercase">STANDARD {verifierStatus.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className={`w-3 h-3 rounded-full ${verifierStatus.mobileActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                    <span className="!font-[300] text-sm title uppercase">MOBILE {verifierStatus.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                    <span className="!font-[300] !text-sm title uppercase">MOBILE {verifierStatus.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                                 </div>
                             </div>
                             <Button
                                 type="solid"
-                                className="min-h-fit h-fit px-6 py-6"
+                                className={cn("min-h-fit h-fit px-6 py-6", isMobile ?"w-full":"")}
                             >
                                 <div className="flex items-center justify-center gap-2 text-base !font-[400]">
                                     <span>DOWNLOAD OUR ANDROID APP</span>
@@ -191,7 +193,7 @@ const ProverPage = () => {
                         <div className="w-full px-6 py-4">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="text-base !font-[300] title uppercase">MULTIPLIER</h3>
+                                    <h3 className="!text-base !font-[300] title uppercase">MULTIPLIER</h3>
                                     <Tooltip
                                         classNames={{
                                             content: '!p-0',
@@ -227,7 +229,7 @@ const ProverPage = () => {
                             <div className="flex justify-end items-center">
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                                    <span className="text-sm !font-[400] title">HIGH SPEED</span>
+                                    <span className="!text-sm !font-[400] title">HIGH SPEED</span>
                                 </div>
                                     </div>
                     </div>
@@ -243,13 +245,13 @@ const ProverPage = () => {
                         {/* Tabs 标签 */}
                         <div className="flex gap-4 px-6 py-4">
                             <button
-                                className={`title !font-[300] text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
+                                className={`title !font-[300] !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('nft')}
                             >
                                 NFT
                             </button>
                             <button
-                                className={`title !font-[300] text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
+                                className={`title !font-[300] !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('self')}
                             >
                                 SELF
@@ -263,10 +265,10 @@ const ProverPage = () => {
                                     {zkTaskLoading ? (
                                         <div className="text-center py-6">正在加载Prover状态...</div>
                                     ) : proverStatus.nftActive ? (
-                                        <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }} />
+                                        <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }}  className={isMobile ? "w-full" : "w-1/2"} />
                                     ) : (
                                         <div className="flex flex-col items-center gap-4 py-6">
-                                            <h3 className="title !font-[300] text-2xl uppercase">NFT INACTIVE</h3>
+                                            <h3 className="title !font-[300] !text-2xl uppercase">NFT INACTIVE</h3>
                                             <p className="text-center max-w-xl text-sub text-base mb-4">
                                                 Purchase a Digital Harvester to become a Prover on the Cysic Network. No technical setup required.
                                             </p>
@@ -301,7 +303,7 @@ const ProverPage = () => {
                                         description="Run a Cysic Prover on your own hardware to contribute to the network and earn rewards."
                                     >
                                         <div className="flex flex-col gap-5 mt-4">
-                                            <div className="flex gap-4">
+                                            <div className={cn("flex gap-4", isMobile ? "flex-col" : "")}>
                                                 <ProverCard
                                                     icon="ZS"
                                                     name="zkSync Prover"

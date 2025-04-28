@@ -93,21 +93,33 @@ const _zkNavs = [
     {
         content: 'Cysic ZK',
         children: [
+            // {
+            //     content: 'Service',
+            //     href: '/'
+            // },
+            // {
+            //     content: 'Cysic NFT',
+            //     href: '/nft'
+            // },
+            // {
+            //     content: 'Cysic AI',
+            //     href: '/ai'
+            // },
+            // {
+            //     content: 'Cysic Mining',
+            //     href: '/stake'
+            // },
             {
-                content: 'Service',
-                href: '/'
+                content: 'Prover',
+                href: '/zk/prover'
             },
             {
-                content: 'Cysic NFT',
-                href: '/nft'
+                content: 'Verifier',
+                href: '/zk/verifier'
             },
             {
-                content: 'Cysic AI',
-                href: '/ai'
-            },
-            {
-                content: 'Cysic Mining',
-                href: '/stake'
+                content: 'Project',
+                href: '/zk/project'
             },
         ]
     },
@@ -118,10 +130,6 @@ const _zkNavs = [
     {
         content: 'dashboard',
         href: '/zk/serviceHub'
-    },
-    {
-        content: 'prover',
-        href: '/zk/prover'
     },
 ]
 

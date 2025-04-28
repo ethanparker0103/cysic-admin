@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Button from "@/components/Button";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, shortStr } from "@/utils/tools";
 import { ArrowRight, CircleHelp } from "lucide-react";
 import Copy from "@/components/Copy";
 import useUser from "@/models/user";
@@ -12,6 +12,8 @@ import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
 import useAccount from "@/hooks/useAccount";
+import { isMobile } from "react-device-detect";
+import { cn } from "@nextui-org/react";
 
 // 邀请等级类型定义
 interface InviteTier {
@@ -114,7 +116,7 @@ const InvitePage = () => {
             renderCell: (leader) => (
                 <div className="flex items-center">
                     <div className="h-5 w-5 rounded-full bg-white mr-2 flex-shrink-0"></div>
-                    <span>{leader.address}</span>
+                    <span>{shortStr(leader.address, 12)}</span>
                 </div>
             )
         },
@@ -148,7 +150,7 @@ const InvitePage = () => {
             renderCell: (member) => (
                 <div className="flex items-center">
                     <div className="h-5 w-5 rounded-full bg-white mr-2 flex-shrink-0"></div>
-                    <span>{member.address}</span>
+                    <span>{shortStr(member.address, 12)}</span>
                 </div>
             )
         },
@@ -219,34 +221,34 @@ const InvitePage = () => {
             {/* 顶部标题部分 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title text-[2.25rem] !text-[#fff] text-center">INVITE</span>
+                    <span className="title !text-[2.25rem] !text-[#fff] text-center">INVITE</span>
                     <div className="flex items-center gap-4 mt-4 cursor-pointer">
-                        <div className="title text-base font-[300]">HOW INVITE WORK</div>
+                        <div className="title !text-base font-[300]">HOW INVITE WORK</div>
                         <ArrowRight width={16} height={16} />
                     </div>
                 </div>
             </div>
 
             {/* 主要内容部分 */}
-            <div className="mx-auto px-[3rem] mt-12 relative z-[2]">
+            <div className="mx-auto w-full mt-12 relative z-[2]">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* 左侧 - 总邀请奖励 */}
                     <GradientBorderCard
-                        className="col-span-2"
+                        className={isMobile ? "" : "col-span-2"}
                         borderRadius={8}
                     >
                         <div className="w-full py-4">
-                            <h2 className="title text-xl !font-[300] uppercase mb-4 px-6">TOTAL INVITE REWARDS</h2>
+                            <h2 className="title !text-xl !font-[300] uppercase mb-4 px-6">TOTAL INVITE REWARDS</h2>
                             <div className="border-b border-white my-4 "></div>
 
 
                             {/* 推荐收益 */}
                             <div className="flex justify-between items-start px-6">
-                                <span className="!font-[300] uppercase text-base title">REFERRAL EARNINGS</span>
+                                <span className="!font-[300] uppercase !text-base title">REFERRAL EARNINGS</span>
                                 <div className="flex flex-col items-center gap-4">
-                                    <span className="text-2xl text-right title !font-[400]">{rewards.cys} CYS</span>
+                                    <span className="!text-2xl text-right title !font-[400]">{rewards.cys} CYS</span>
                                     <div className="bg-white h-px w-8 self-end" />
-                                    <span className="text-2xl text-right title !font-[400]">{rewards.cys} CGT</span>
+                                    <span className="!text-2xl text-right title !font-[400]">{rewards.cys} CGT</span>
                                 </div>
                             </div>
 
@@ -254,8 +256,8 @@ const InvitePage = () => {
 
                             {/* 升级收益 */}
                             <div className="flex justify-between items-center px-6">
-                                <span className="!font-[300] uppercase text-base title">UPGRADE EARNINGS</span>
-                                <span className="text-2xl text-right title !font-[400]">{rewards.CGT} CGT</span>
+                                <span className="!font-[300] uppercase !text-base title">UPGRADE EARNINGS</span>
+                                <span className="!text-2xl text-right title !font-[400]">{rewards.CGT} CGT</span>
                             </div>
                         </div>
                     </GradientBorderCard>
@@ -266,10 +268,10 @@ const InvitePage = () => {
                     >
                         <div className="w-full px-6 py-4">
                             <div className="flex justify-between items-start">
-                                <h2 className="title text-xl uppercase !font-[300]">YOUR<br />REFERRAL<br />CODE</h2>
+                                <h2 className="title !text-xl uppercase !font-[300]">YOUR<br />REFERRAL<br />CODE</h2>
                                 {/* 推荐码显示 */}
                                 <div className="flex items-center self-start">
-                                    <span className="title text-2xl !font-[400]">{inviteCode}</span>
+                                    <span className="title !text-2xl !font-[400]">{inviteCode}</span>
                                     <Copy value={inviteCode}>
                                     </Copy>
                                 </div>
@@ -299,9 +301,9 @@ const InvitePage = () => {
                     borderRadius={8}
                 >
                     <div className="w-full px-6 py-4 flex flex-col gap-6">
-                        <div className="flex justify-between items-center">
+                        <div className={cn("flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
                             <div >
-                                <h2 className="title !font-[300] text-xl uppercase mb-2">SUCCESSFUL INVITES</h2>
+                                <h2 className="title !font-[300] !text-xl uppercase mb-2">SUCCESSFUL INVITES</h2>
                                 <p className="text-base !font-[400]">
                                     Successful Invites could also speed up your Multiplier for Earnings from Verifier/Prover.
                                 </p>
@@ -323,9 +325,9 @@ const InvitePage = () => {
                         {tierLoading ? (
                             <div className="text-center py-4">Loading level data...</div>
                         ) : (
-                            <div className="grid grid-cols-5 gap-[10.25rem]">
+                            <div className={cn("grid grid-cols-5 overflow-x-scroll", isMobile ? "gap-[9rem]" : "gap-[10.25rem]")}>
                                 {tiers.sort((a, b) => a.level - b.level).map((tier, index) => (
-                                    <div key={tier.id} className="relative">
+                                    <div key={tier.id} className="relative h-full min-w-[7rem]">
                                         <GradientBorderCard
                                             borderRadius={8}
                                             borderWidth={1}
@@ -333,7 +335,7 @@ const InvitePage = () => {
                                         >
                                             <div className="w-full p-4 flex flex-col items-center">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="text-base !font-[300] title uppercase font-light tracking-wider">{tier.name}</h3>
+                                                    <h3 className="!text-base !font-[300] title uppercase font-light tracking-wider">{tier.name}</h3>
                                                     <Tooltip
                                                         classNames={{
                                                             content: '!p-0',
@@ -369,7 +371,7 @@ const InvitePage = () => {
                                                         <path d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
                                                     {/* <span className="text-base title !font-[300]">{tier.needInviteCnt}</span> */}
-                                                    <span className="text-base title !font-[300]">
+                                                    <span className="!text-base title !font-[300]">
                                                         {(tiers[index-1]?.needInviteCnt || 0)}
                                                     </span>
                                                 </div>
@@ -378,7 +380,13 @@ const InvitePage = () => {
 
                                         {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
                                         {index < tiers.length - 1 && (
-                                            <div className="absolute left-full top-1/2 w-[6.75rem] h-px bg-white translate-x-[calc(calc(10.25rem-6.75rem)/2)] -translate-y-1/2 z-[1]"></div>
+                                            <div className={
+                                                cn("absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
+
+                                                    isMobile ? "w-[1.2rem] translate-x-[calc(calc(2rem-1.2rem)/2)] " : "w-[6.75rem] translate-x-[calc(calc(10.25rem-6.75rem)/2)]"
+
+                                                )
+                                            } />
                                         )}
                                     </div>
                                 ))}
@@ -388,7 +396,7 @@ const InvitePage = () => {
                         {/* 团队领导表格 */}
                         {leaderData && (
                             <div className="mt-4">
-                                <h2 className="title !font-[300] text-base uppercase mb-4">TEAM LEADER</h2>
+                                <h2 className="title !font-[300] !text-base uppercase mb-4">TEAM LEADER</h2>
                                 <CysicTable
                                     data={[leaderData]}
                                     columns={leaderColumns}
@@ -400,7 +408,7 @@ const InvitePage = () => {
                         {/* 团队列表表格 */}
                         {memberData.length > 0 && (
                             <div className="mt-4">
-                                <h2 className="title !font-[300] text-base uppercase mb-4">TEAM MEMBERS</h2>
+                                <h2 className="title !font-[300] !text-base uppercase mb-4">TEAM MEMBERS</h2>
                                 <CysicTable
                                     data={memberData}
                                     columns={memberColumns}

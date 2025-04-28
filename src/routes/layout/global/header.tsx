@@ -1,6 +1,6 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
-import { baseHref, BIND_CHECK_PATHS } from "@/config";
+import { BIND_CHECK_PATHS } from "@/config";
 import { getImageUrl, handleLoginPersonalMessage, handleSignIn } from "@/utils/tools";
 
 import { ArrowRight, Menu } from 'lucide-react';
@@ -8,9 +8,9 @@ import ConnectInfo from "@/components/ConnectInfo";
 import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerContent, useDisclosure } from "@nextui-org/react";
+import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 
 const size = 'full'
@@ -39,13 +39,12 @@ export default function Header() {
         handleSignIn();
     };
 
-
-
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const handleOpen = () => {
         onOpen();
     };
+
     return isMobile ? <>
         <div className="h-[5.625rem] flex items-center relative z-[1]">
             <div className="flex flex-wrap gap-3 relative w-full">
@@ -58,30 +57,28 @@ export default function Header() {
                 </Link>
             </div>
             <Drawer isOpen={isOpen} size={size} onClose={onClose}>
-                <DrawerContent>
+                <DrawerContent className="bg-[#090A09]">
                     {(onClose) => (
                         <>
-                            <DrawerHeader className="flex flex-col gap-1">Drawer Title</DrawerHeader>
-                            <DrawerBody>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-                                    risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
-                                    quam.
-                                </p>
-                                <p>
-                                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor
-                                    adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit
-                                    officia eiusmod Lorem aliqua enim laboris do dolor eiusmod.
-                                </p>
-                            </DrawerBody>
-                            <DrawerFooter>
-                                <Button onClick={onClose}>
-                                    Close
-                                </Button>
-                                <Button onClick={onClose}>
-                                    Action
-                                </Button>
-                            </DrawerFooter>
+                            <div className="h-[5.625rem] flex flex-wrap gap-3 relative w-full -z-[1]">
+                                <Link to={'/'} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" >
+                                    <img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="w-[11.25rem]" />
+                                </Link>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-10 overflow-y-auto py-12">
+                                {currentNavs?.map(i => {
+                                    if (i?.children?.length) {
+                                        return i?.children?.map(j => {
+                                            return (<Link onClick={onClose} to={j?.href} className="text-xl !text-sub">{j.content}</Link>)
+                                        })
+                                    }else{
+                                        return (<Link onClick={onClose} to={i?.href || '/'} className="text-xl !text-sub">{i.content}</Link>)
+                                    }
+                                })}
+                            </div>
+
+
                         </>
                     )}
                 </DrawerContent>
@@ -95,9 +92,9 @@ export default function Header() {
                         <div className="flex items-center h-full flex-1">
                             <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>
 
-                                {currentNavs.map((nav: any) => (
-                                    <GradientNavDropdown className="flex-1 max-w-[11.25rem]" key={nav.content} item={nav} />
-                                ))}
+                            {currentNavs.map((nav: any) => (
+                                <GradientNavDropdown className="flex-1 max-w-[11.25rem]" key={nav.content} item={nav} />
+                            ))}
                         </div>
                         <div className="h-full flex items-center justify-end w-[26.75rem]">
                             {walletAddress ? (

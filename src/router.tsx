@@ -11,6 +11,8 @@ import NftUserPortal from "@/routes/pages/Nft/userPortal/page";
 import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
 import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
 import { getImageUrl } from "@/utils/tools";
+import { isMobile } from "react-device-detect";
+import VerifierPage from "@/routes/pages/Zk/verifier/page";
 
 export const router = createBrowserRouter(
   [
@@ -36,6 +38,10 @@ export const router = createBrowserRouter(
             {
               path: "prover",
               element: <ZkProver />,
+            },
+            {
+              path: "verifier",
+              element: <VerifierPage />,
             },
             {
               path: "serviceHub",
@@ -84,26 +90,39 @@ export const backgroundImageList = {
   },
   '/zk': {
     img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),
-    className: "h-[135%]"
+    className: isMobile ? "h-[90%]" : "h-[135%]",
   },
   '/zk/invite': {
     img: getImageUrl('@/assets/images/_global/invite_landing_bg.png'),
-    className: "h-screen"
+    className: "h-screen",
+    needShadow: true
   },
-  '/ai': {
+  '/zk/prover': {
+    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+    className: "h-screen",
+    needShadow: true
+  },
+  '/zk/verifier': {
+    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+    className: "h-screen",
+    needShadow: true
+  },
+  '/ai': {    
     img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
-    className: "h-screen grayscale brightness-[0.3]"
+    className: "h-screen grayscale brightness-[0.3]",
+    needShadow: true
   },
   '/stake': {
     img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
-    className: "h-screen"
+    className: "h-screen",
   },
   '/nft': {
     img: getImageUrl('@/assets/images/_global/nft_landing_bg.png'),
     className: "h-screen",
     style: {
       backgroundPosition: "center -10vh"
-    }
+    },
+    needShadow: true
   },
   '/nft/userPortal': {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
@@ -111,7 +130,9 @@ export const backgroundImageList = {
     style: {
       filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -10vh"
-    }
+    },
+    needShadow: true
+
   },
   '/nft/socialTask': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
@@ -119,6 +140,8 @@ export const backgroundImageList = {
     style: {
       filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -30vh"
-    }
+    },
+    needShadow: true
+    
   },
 }

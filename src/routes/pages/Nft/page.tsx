@@ -10,6 +10,8 @@ import { purchaseNftAbi } from "@/config/abi/purchase";
 import useNftPurchase from "@/models/nft";
 import { BigNumber } from "bignumber.js";
 import { nftProducts } from "@/config/nft";
+import { cn } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
 // NFT 卡片组件
 interface NFTCardProps {
     id: string;
@@ -32,11 +34,11 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
     return (
         <GradientBorderCard borderRadius={8}>
             <div className="p-6 w-full h-full">
-                <div className="flex flex-col md:flex-row gap-6">
+                <div className={cn("flex gap-6", isMobile ? 'items-center flex-col' : 'flex-row')}>
                     {/* 左侧：图片 + 供应信息的上下结构 */}
-                    <div className="shrink-0 flex flex-col w-[12.1875rem]">
+                    <div className={cn("shrink-0 flex flex-col items-center", isMobile ? 'w-full' : 'w-[12.1875rem]')}>
                         {/* 产品图片 */}
-                        <div className="w-full aspect-square bg-gray-800 rounded-lg overflow-hidden">
+                        <div className="aspect-square bg-gray-800 rounded-lg overflow-hidden w-[12.1875rem]">
                             {image ? (
                                 <img src={image} alt={name} className="w-full h-full object-cover" />
                             ) : (
@@ -45,14 +47,14 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
                         </div>
 
                         {/* 供应信息 */}
-                        <div className="mt-4 flex justify-between items-center">
+                        <div className="mt-4 flex justify-between items-center w-full">
                             <div className="text-sm text-sub">Supply</div>
                             <div className="text-sm text-white">
                                 {levelInfo?.soldAmount?.toString() || '0'}/{levelInfo?.maxSupply?.toString() || '0'}
                             </div>
                         </div>
 
-                        <div className="mt-2 flex justify-between items-center">
+                        <div className="mt-2 flex justify-between items-center w-full">
                             <div className="text-sm text-sub">ID</div>
                             <div className="text-sm text-white">{id}</div>
                         </div>
@@ -62,7 +64,7 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
 
                     {/* 右侧：详细信息 */}
                     <div className="flex-1">
-                        <div className="title text-3xl !font-[300]">{name}</div>
+                        <div className={cn("title !font-[300]", isMobile ? '!text-[2rem]' : 'text-3xl')}>{name}</div>
 
                         {/* 参数详情链接 */}
                         <a href="#" className="text-xs text-sub flex items-center mt-1">
@@ -71,7 +73,11 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
 
                         {/* 奖励和锁定信息 */}
                         <div className="mt-4">
-                            <div className="!text-[32px] !font-[600] text-right sub-title !tracking-normal">{rewards}</div>
+                            <div className={
+                                cn("!font-[600] sub-title !tracking-normal",
+                                    isMobile ? "!text-base " : "!text-[32px]  text-right "
+                                )
+                            }>{rewards}</div>
                             {/* <div className="text-sm text-sub mt-1">{lock}</div> */}
                             <div className="text-sm text-sub mt-1">BENEFIT</div>
                             <div className="text-sm ">Cysic Pre-order Voucher – usable as credit and early access to hardware purchase.</div>
@@ -81,7 +87,7 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
                         <div className="mt-4 flex justify-between items-center">
                             <div className="text-sm text-sub">Price</div>
                             <div className="text-2xl !font-[400] font-medium">
-                                {formatReward(price, 2)}
+                                {formatReward(price, 2)} USDC
                             </div>
                         </div>
 
@@ -129,7 +135,11 @@ const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
                 <img
                     src={imageSrc}
                     alt={title}
-                    className="hover: absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:grayscale-0 grayscale"
+                    className={
+                        cn("hover: absolute inset-0 w-full h-full object-cover transition-transform duration-500 ",
+                            isMobile ? "" : "group-hover:scale-105 group-hover:grayscale-0 grayscale"
+                        )
+                    }
                 />
 
                 {/* 叠加的半透明层 */}
@@ -157,7 +167,7 @@ interface SectionProps {
 const Section = ({ children, className = "" }: SectionProps) => {
     return (
         <div className={`w-full py-24 ${className}`}>
-            <div className="container mx-auto px-8">
+            <div className={cn("container mx-auto ", isMobile ? '' : "px-8")}>
                 {children}
             </div>
         </div>
@@ -242,8 +252,6 @@ const NftLanding = () => {
             setState({ levelInfos: temp })
         }
     }, [temp])
-
-    console.log('levelInfos', temp, levelInfos)
 
     return (
         <>

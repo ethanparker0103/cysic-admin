@@ -5,6 +5,7 @@ import { getImageUrl } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight, Search } from "lucide-react";
 import { useState, ReactNode } from "react";
+import { isMobile } from "react-device-detect";
 import { useNavigate } from "react-router-dom";
 
 const ShadowCardContainer = ({ children, className }: { children: ReactNode, className?: string }) => {
@@ -173,7 +174,7 @@ const AiLanding = () => {
             {/* 主标题部分 */}
             <div className="flex flex-col items-center justify-center gap-6 relative z-[2] h-[90vh]">
                 <div className="flex flex-col items-center">
-                    <span className="sub-title">INTELLIGENCE SIMPLIFIED, POTENTIAL UNLEASHED</span>
+                    <span className="sub-title text-center mb-2">INTELLIGENCE SIMPLIFIED, POTENTIAL UNLEASHED</span>
                     <span className="title title-lg !text-[#fff] text-center">CYSIC AI</span>
                 </div>
 
@@ -215,15 +216,15 @@ const AiLanding = () => {
             </div>
 
             {/* Project Based Service 部分 */}
-            <div className="mt-12 relative z-[2] container mx-auto px-[3rem] w-full">
+            <div className="mt-12 relative z-[2] container mx-auto w-full">
                 <ShadowCardContainer className="pt-12">
                     <>
-                        <h2 className="title !font-[300] text-3xl uppercase text-center">PROJECT BASED SERVICE</h2>
+                        <h2 className={cn("title !font-[300] uppercase text-center", isMobile ? "!text-[32px]" : "!text-3xl")}>PROJECT BASED SERVICE</h2>
                         <p className="text-gray-300 text-center text-sm mt-2 mb-8">
                             Access 700+ AI Agents & Models directly through our Playground or integrate via API calls.
                         </p>
 
-                        <div className="flex items-center justify-between mb-12 gap-6">
+                        <div className={cn("flex mb-12 gap-6", isMobile ? "flex-col" : " items-center justify-between")}>
                             {/* 分类标签 */}
                             <div className="flex overflow-x-auto pb-4 gap-6 text-center border-b border-sub flex-1">
                                 {serviceCategories.map(category => (
@@ -238,7 +239,7 @@ const AiLanding = () => {
                             </div>
 
                             {/* 搜索框 */}
-                            <div className="relative w-[18rem]">
+                            <div className={cn("relative ", isMobile ? "w-full" : "w-[18rem]")}>
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <Search size={16} className="text-gray-500" />
                                 </div>
@@ -254,7 +255,7 @@ const AiLanding = () => {
                         </div>
 
                         {/* 项目卡片列表 */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className={cn(isMobile ? "grid grid-rows-1 gap-4" : "grid grid-cols-2 gap-4")}>
                             {filteredProjects.map(project => (
                                 <GradientBorderCard key={project.id} className="relative flex flex-col gap-4 p-4 !bg-[#090A09]">
                                     <>
@@ -264,7 +265,7 @@ const AiLanding = () => {
 
                                             <div className="flex flex-col gap-2 w-full">
                                                 <div className="flex items-center gap-2 justify-between w-full">
-                                                    <div className="title !font-[300] uppercase text-base">{project.name}</div>
+                                                    <div className="title !font-[300] uppercase !text-base">{project.name}</div>
 
                                                     <div className={`text-xs px-2 py-1 rounded ${project.tagColor}`}>
                                                         {project.tag}
@@ -293,9 +294,9 @@ const AiLanding = () => {
             </div>
 
             {/* 计算力服务部分 */}
-            <div className="mx-auto !px-[3rem] mt-20 mb-10 w-full">
+            <div className="mx-auto mt-20 mb-10 w-full">
                 <ShadowCardContainer className="relative z-[2] ">
-                    <div className="relative py-20 overflow-hidden aspect-[1344/640]">
+                    <div className={cn("relative py-20 overflow-hidden ", isMobile ? "" : "aspect-[1344/640]")}>
                         {/* 紫色背景光晕 */}
                         <div className="absolute z-[4] inset-0 shadow-[inset_0px_0px_100px_100px_rgba(9,10,9,1)] rounded-xl"></div>
 
@@ -312,7 +313,7 @@ const AiLanding = () => {
 
 
                         <div className="relative z-10 text-center max-w-4xl mx-auto px-4 w-full">
-                            <h2 className="title !font-[300] text-4xl uppercase mb-4">COMPUTATIONAL POWER SERVICE</h2>
+                            <h2 className={cn("title !font-[300] uppercase mb-4", isMobile ? "!text-[32px]" : "!text-4xl")}>COMPUTATIONAL POWER SERVICE</h2>
                             <p className="mb-6 max-w-3xl mx-auto text-base">
                                 Share in the profits generated from Cysic AI's computing power by purchasing Cysic AI Compute Boxes!
                                 <br />No coding required — Just buy and start EARNING immediately!

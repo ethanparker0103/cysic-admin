@@ -5,6 +5,8 @@ import { getImageUrl } from "@/utils/tools";
 import { ReactNode, useState, useEffect } from "react";
 import axios from "@/service";
 import { useRequest } from "ahooks";
+import { isMobile } from "react-device-detect";
+import { cn } from "@nextui-org/react";
 
 // 任务卡片组件
 interface TaskCardProps {
@@ -41,8 +43,8 @@ interface TaskSectionProps {
 
 const TaskSection = ({ title, children, rightAction }: TaskSectionProps) => (
   <div className="mb-12">
-    <div className="flex justify-between items-center mb-6">
-      <h2 className="title text-4xl !font-[300] uppercase">{title}</h2>
+    <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
+      <h2 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>{title}</h2>
       {rightAction && (
         <div>{rightAction}</div>
       )}
@@ -145,7 +147,7 @@ const SocialTaskPage = () => {
         key={group.id}
         title={group.name}
         rightAction={
-          <a href="#" className="flex items-center text-sub text-sm hover:text-white">
+          <a href="#" className={cn("flex items-center text-sub hover:text-white", isMobile ? "text-base" : "text-sm")}>
             {rightActionText} <ArrowRight size={16} className="ml-1" />
           </a>
         }
@@ -172,9 +174,9 @@ const SocialTaskPage = () => {
 
 
       {/* 内容区域 */}
-      <div className="mx-auto px-[3rem] relative z-10 pt-20 pb-16">
+      <div className={cn("mx-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "px-[3rem]")}>
         {/* 页面标题 */}
-        <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">SOCIAL TASKS</h1>
+        <h1 className="title text-7xl !font-[200] mb-24 text-center">SOCIAL TASKS</h1>
         
         {/* 根据API数据渲染任务组 */}
         {loading ? (

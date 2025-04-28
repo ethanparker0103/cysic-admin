@@ -2,17 +2,20 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
 import { Pencil } from "lucide-react";
 import { getImageUrl } from "@/utils/tools";
+import { cn } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
 
-const NFTProverCard = ({ status }: { status: { nft: boolean } }) => {
+const NFTProverCard = ({ status, className }: { status: { nft: boolean }, className?: string }) => {
     return (
         <GradientBorderCard
             borderRadius={8}
+            className={className}
         >
             <div className="w-full px-6 py-4">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div className="col-span-4 flex flex-col">
-                        <div className="bg-gray-300 w-full flex-1 rounded-lg mb-3"></div>
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className={cn("flex flex-col", isMobile ? "col-span-8" : "col-span-4 ")}>
+                        <div className="bg-gray-300 w-full flex-1 rounded-lg mb-3 aspect-square max-w-[12rem] mx-auto"></div>
+                        <div className={cn("flex items-center gap-2 mb-2", isMobile ? "justify-center" : "")}>
                             <div className={`w-3 h-3 rounded-full ${status.nft ? 'bg-green-500' : 'bg-red-500'}`}></div>
                             <span className="uppercase">NFT ACTIVE</span>
                         </div>

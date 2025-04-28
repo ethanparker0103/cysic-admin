@@ -27,7 +27,7 @@ const Home = () => {
         </Button>
       </div>
 
-      <div className="pb-[10rem] flex flex-col items-center gap-6 relative z-[2]">
+      <div className={cn("flex flex-col items-center gap-6 relative z-[2]", isMobile ? "pb-0" : "pb-[10rem]")}>
         <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[9.625rem]" />
         <span className={cn("title font-[400] uppercase text-center text-md")}>Digital Harvester</span>
         <div className="text-sub text-center text-sm">

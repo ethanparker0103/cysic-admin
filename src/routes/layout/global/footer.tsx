@@ -55,7 +55,7 @@ export default function Footer() {
     return (
         <div className={cn("flex flex-col items-center gap-6 py-12 border-t border-[#fff] relative z-[1]", isMobile && "max-w-screen overflow-x-hidden")}>
             <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[6rem]" />
-            <div className="flex items-center gap-6">
+            <div className={cn("flex items-center", isMobile ? "flex-col gap-4" : 'gap-6')}>
                 {
                     navs.map((nav) => (
                         <Button
