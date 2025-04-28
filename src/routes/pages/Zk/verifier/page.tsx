@@ -30,7 +30,7 @@ const guide = {
                         <span>Download the official Cysic Verifier App</span>
 
                         <div className={cn("flex gap-4 items-center", isMobile ? "flex-col" : "flex-row")}>
-                            <GradientBorderCard className=" p-6 ">
+                            <GradientBorderCard className=" p-6 bg-[#FFFFFF0D]">
                                 <div className="flex items-center gap-1">
                                     <img
                                         className="size-8"
@@ -77,7 +77,7 @@ const guide = {
                                 </div>
                             </GradientBorderCard>
 
-                            <GradientBorderCard className=" p-6 ">
+                            <GradientBorderCard className=" p-6 bg-[#FFFFFF0D]">
                                 <div className="flex items-center gap-1">
                                     <img
                                         className="size-8"
