@@ -1,7 +1,7 @@
 import { ArrowRight, ExternalLink } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { ReactNode, useEffect } from "react";
-import { formatReward, getImageUrl, handleConvertModal, handleSignIn, handleStakeModal } from "@/utils/tools";
+import { formatReward, getImageUrl, handleConvertModal, handleSignIn, handleStakeModal, handleVoucherModal } from "@/utils/tools";
 import Button from "@/components/Button";
 import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
@@ -203,9 +203,9 @@ const UserPortal = () => {
                             <InfoCard
                                 title="VOUCHER"
                                 rightAction={
-                                    <Link to="/zk/serviceHub" className="flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
+                                    <div onClick={handleVoucherModal} className="cursor-pointer flex items-center text-sub justify-end hover:text-white text-sm font-[400]">
                                         VIEW ALL <ArrowRight size={12} className="ml-1" />
-                                    </Link>
+                                    </div>
                                 }
                             >
                                 <div className={cn("!font-[300] text-right title w-full", isMobile ? "!text-[24px]" : "text-2xl")}>{voucherCnt}</div>

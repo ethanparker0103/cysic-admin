@@ -47,8 +47,8 @@ interface PurposeOption {
 // 购买步骤枚举
 enum PurchaseStep {
     DETAILS = 0,
-    PURPOSE = 1,
-    CONFIRMATION = 2
+    CONFIRMATION = 1,
+    PURPOSE = 99,
 }
 
 // 默认优惠券选项
@@ -245,7 +245,7 @@ const PurchaseNftModal = () => {
         try {
             const purposeData = '0x';
 
-            await writeContractAsync({
+            const res = await writeContractAsync({
                 address: purchaseNftContract[purchaseChainId] as `0x${string}`,
                 abi: purchaseNftAbi,
                 functionName: 'userMint',
@@ -255,6 +255,7 @@ const PurchaseNftModal = () => {
 
             // 购买成功，显示确认页面
             setCurrentStep(PurchaseStep.CONFIRMATION);
+            return res;
         } catch (error) {
             console.error("Purchase error:", error);
             setWriteError(`Failed to purchase NFT: ${error instanceof Error ? error.message : String(error)}`);
@@ -274,19 +275,25 @@ const PurchaseNftModal = () => {
     // 继续购买流程
     const handleContinue = async () => {
         setWriteError("");
-        
-        if (currentStep === PurchaseStep.DETAILS) {
-            // 进入第二步前重新检查余额和授权
-            await refetchContractsData();
-            setCurrentStep(PurchaseStep.PURPOSE);
-        } else if (currentStep === PurchaseStep.PURPOSE) {
-            // 根据是否需要授权执行不同操作
-            if (needApprove) {
-                await handleApprove();
-            } else {
-                await handlePurchase();
-            }
+       
+        if (needApprove) {
+            await handleApprove();
+        } else {
+            const res = await handlePurchase();
+            console.log('res', res);
         }
+        // if (currentStep === PurchaseStep.DETAILS) {
+        //     // 进入第二步前重新检查余额和授权
+        //     await refetchContractsData();
+        //     setCurrentStep(PurchaseStep.PURPOSE);
+        // } else if (currentStep === PurchaseStep.PURPOSE) {
+        //     // 根据是否需要授权执行不同操作
+        //     if (needApprove) {
+        //         await handleApprove();
+        //     } else {
+        //         await handlePurchase();
+        //     }
+        // }
     };
 
     // 返回上一步

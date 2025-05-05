@@ -1,7 +1,7 @@
 import { ArrowRight, ChevronLeft, ChevronsUp } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
-import { formatReward, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
+import { formatReward, handleConvertModal, handleMultiplierModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { ReactNode } from "react";
 import Copy from "@/components/Copy";
 
@@ -96,7 +96,7 @@ const SpeedIndicator = () => (
                 <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                 <span className="!text-sm !font-[400] title">HIGH SPEED</span>
             </div>
-            <div className="flex items-center ml-4 text-xs">
+            <div className="flex items-center ml-4 text-xs cursor-pointer" onClick={handleMultiplierModal}>
                 <span className="text-sub text-sm !font-[400]">SPEED UP</span>
                 <ChevronsUp size={12} className="ml-1 text-sub" />
             </div>
@@ -229,9 +229,9 @@ const UserDetailsPage = () => {
                                 </div>
 
                                 {/* 进度条 */}
-                                <div className="relative w-full h-3 bg-gray-500 rounded-full overflow-hidden">
-                                    <div className="absolute inset-0 left-0 w-3/4 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300"></div>
-                                    <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-3 h-3 bg-white rounded-full"></div>
+                                <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
+                                    <div className="absolute inset-0 left-0 w-3/4 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"></div>
+                                    {/* <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-2 h-2 bg-white rounded-full"></div> */}
                                 </div>
 
                                 {/* HIGH SPEED 指示器 */}
@@ -239,7 +239,7 @@ const UserDetailsPage = () => {
                                     <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                                     <span className="!text-sm title">HIGH SPEED</span>
                                 </div>
-                                <div className="ml-4 flex items-center gap-1 self-end">
+                                <div className="ml-4 flex items-center gap-1 self-end cursor-pointer" onClick={handleMultiplierModal}>
                                     <span className="text-sm text-sub text-sub">SPEED UP</span>
                                     <ArrowRight size={12} />
                                 </div>

@@ -85,9 +85,9 @@ export default function Header() {
             </Drawer>
         </div>
     </> : (
-        <div className="relative z-[1] h-[8rem]">
+        <div className="sticky top-0 z-[11] h-[8rem]">
             <div className="relative px-[3rem] py-6">
-                <GradientBorderCard className="h-20 flex items-center backdrop-blur-sm ">
+                <GradientBorderCard className="h-20 flex items-center backdrop-blur">
                     <div className="w-full h-full flex justify-between items-center">
                         <div className="flex items-center h-full flex-1">
                             <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>

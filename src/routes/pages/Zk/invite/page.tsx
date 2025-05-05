@@ -16,7 +16,7 @@ import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 
 // 邀请等级类型定义
-interface InviteTier {
+export interface InviteTier {
     id: number;
     level: number;
     name: string;
@@ -49,6 +49,11 @@ interface TeamLeader {
         symbol: string;
     }>;
 }
+
+export const getTierIcon = (tierName: string) => {
+    const lowerName = tierName.toLowerCase();
+    return getImageUrl(`@/assets/images/invite/${lowerName}.png`);
+};
 
 const InvitePage = () => {
     const { isRegistered, walletAddress } = useAccount()
@@ -202,12 +207,6 @@ const InvitePage = () => {
     };
 
     const inviteCode = overviewData?.data?.inviteCode || registeredInviteCode || "-----";
-    
-    // 获取邀请等级图标
-    const getTierIcon = (tierName: string) => {
-        const lowerName = tierName.toLowerCase();
-        return getImageUrl(`@/assets/images/invite/${lowerName}.png`);
-    };
     
     // 获取当前用户等级
     const getCurrentLevelId = () => {

@@ -713,3 +713,17 @@ export const handleLoginPersonalMessage = () => {
   const event = new CustomEvent('login_personal_message');
   window.dispatchEvent(event);
 };
+
+export const handleMultiplierModal = () => {
+  const event = new CustomEvent('modal_multiplier_visible', {
+    detail: { visible: true }
+  });
+  window.dispatchEvent(event);
+};
+
+export const handleVoucherModal = () => {
+  const event = new CustomEvent('modal_voucher_visible', {
+    detail: { visible: true }
+  });
+  window.dispatchEvent(event);
+};

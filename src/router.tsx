@@ -13,6 +13,9 @@ import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
 import { getImageUrl } from "@/utils/tools";
 import { isMobile } from "react-device-detect";
 import VerifierPage from "@/routes/pages/Zk/verifier/page";
+import ProjectPage from "@/routes/pages/Zk/project/page";
+import MyProjectPage from "@/routes/pages/Zk/project/my/page";
+import ProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
 
 export const router = createBrowserRouter(
   [
@@ -42,6 +45,18 @@ export const router = createBrowserRouter(
             {
               path: "verifier",
               element: <VerifierPage />,
+            },
+            {
+              path: "project",
+              element: <ProjectPage />,
+            },
+            {
+              path: "project/my",
+              element: <MyProjectPage />,
+            },
+            {
+              path: "project/detail/:id",
+              element: <ProjectDetailPage />,
             },
             {
               path: "serviceHub",
@@ -107,6 +122,14 @@ export const backgroundImageList = {
     className: "h-screen",
     needShadow: true
   },
+  '/zk/project': {
+    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+    className: "h-screen brightness-[0.7]",
+    style: {
+      backgroundPosition: "center -25vh"
+    },
+    needShadow: true
+  },  
   '/ai': {    
     img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
     className: "h-screen grayscale brightness-[0.3]",

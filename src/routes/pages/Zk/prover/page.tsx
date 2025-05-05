@@ -1,7 +1,7 @@
 // @ts-nocheck
 import Button from "@/components/Button";
-import { getImageUrl, handleReserveModal } from "@/utils/tools";
-import { ArrowRight, CircleHelp, Pencil } from "lucide-react";
+import { handleMultiplierModal, handleReserveModal } from "@/utils/tools";
+import { ArrowRight, CircleHelp } from "lucide-react";
 import { useState } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Tooltip from "@/components/Tooltip";
@@ -136,7 +136,7 @@ const ProverPage = () => {
             </div>
 
             {/* 主要内容部分 */}
-            <div className="mx-auto mt-12 relative z-[2]">
+            <div className="container mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
                 <GradientBorderCard
                     borderRadius={8}
@@ -207,7 +207,7 @@ const ProverPage = () => {
                                 </div>
 
 
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 cursor-pointer" onClick={handleMultiplierModal}>
                                     <span className="text-sub text-sm !font-[400]">SPEED UP</span>
                                     <Tooltip
                                         classNames={{

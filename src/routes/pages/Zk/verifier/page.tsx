@@ -1,19 +1,15 @@
 // @ts-nocheck
 import Button from "@/components/Button";
-import { getImageUrl, handleReserveModal } from "@/utils/tools";
-import { ArrowRight, CircleHelp, Copy, Pencil } from "lucide-react";
-import { useState } from "react";
+import { getImageUrl, handleMultiplierModal, handleReserveModal } from "@/utils/tools";
+import { ArrowRight, CircleHelp } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
-import NFTProverCard from "@/components/NFTCard";
-import { useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
 import { downloadLink } from "@/config";
-import bash from "highlight.js/lib/languages/bash";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"; // 选择一个你喜欢的主题
 import copy from "copy-to-clipboard";
@@ -393,80 +389,11 @@ const SelfProverStepCard = ({
     );
 };
 
-// Prover 组件卡片
-interface ProverCardProps {
-    icon: React.ReactNode;
-    name: string;
-    description: string;
-    isActive: boolean;
-    btnText: string;
-}
-
-const ProverCard = ({
-    icon,
-    name,
-    description,
-    isActive,
-    btnText,
-}: ProverCardProps) => {
-    return (
-        <GradientBorderCard borderRadius={8} className="mb-4 flex-1">
-            <div className="w-full p-6 h-full flex flex-col">
-                <div className="flex items-start gap-4 flex-1">
-                    <div
-                        className={cn(
-                            " rounded-full bg-[#111] flex items-center justify-center text-white",
-                            isMobile ? "h-8 w-8" : "w-12 h-12"
-                        )}
-                    >
-                        {icon}
-                    </div>
-                    <div className="flex-1 h-full flex flex-col">
-                        <div
-                            className={cn(
-                                "flex mb-4",
-                                isMobile ? "flex-col" : "justify-between items-start"
-                            )}
-                        >
-                            <h3
-                                className={cn(
-                                    "!font-[300] title",
-                                    isMobile ? "!text-[24px] mb-2" : "!text-3xl"
-                                )}
-                            >
-                                {name}
-                            </h3>
-                            <div className="flex items-center gap-2">
-                                <div
-                                    className={`h-3 w-3 rounded-full ${isActive ? "bg-green-500" : "bg-red-500"
-                                        }`}
-                                ></div>
-                                <span className="uppercase !text-sm !font-[300] title">
-                                    {isActive ? "ACTIVE" : "INACTIVE"}
-                                </span>
-                            </div>
-                        </div>
-                        <p className="flex-1 text-sm !font-[400] mb-6 text-sub">
-                            {description}
-                        </p>
-                        <div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                            <span>{btnText}</span>
-                            <ArrowRight width={16} height={16} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </GradientBorderCard>
-    );
-};
-
 const VerifierPage = () => {
-    const [selectedTab, setSelectedTab] = useState("nft");
-
     const { address, isRegistered } = useAccount();
 
     // 获取ZK任务概览信息
-    const { data: zkTaskOverview, loading: zkTaskLoading } = useRequest(
+    const { data: zkTaskOverview } = useRequest(
         () => axios.get("/api/v1/zkTask/overview"),
         {
             onSuccess: (res) => {
@@ -477,12 +404,6 @@ const VerifierPage = () => {
         }
     );
 
-    // 从API获取状态
-    const proverStatus = zkTaskOverview?.data?.proverStatus || {
-        nftActive: 0,
-        selfActive: 0,
-    };
-
     const verifierStatus = zkTaskOverview?.data?.verifierStatus || {
         standardActive: 0,
         mobileActive: 0,
@@ -490,7 +411,6 @@ const VerifierPage = () => {
 
     const multiplierPercent = zkTaskOverview?.data?.multiplierPercent || 0;
 
-    const navigate = useNavigate();
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -504,7 +424,7 @@ const VerifierPage = () => {
             </div>
 
             {/* 主要内容部分 */}
-            <div className="mx-auto mt-12 relative z-[2]">
+            <div className="container mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
                 <GradientBorderCard borderRadius={8} className="mb-4">
                     <div className={cn("w-full", isMobile ? "px-6 py-4" : "p-8")}>
@@ -609,7 +529,7 @@ const VerifierPage = () => {
                                     </Tooltip>
                                 </div>
 
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-2 cursor-pointer" onClick={handleMultiplierModal}>
                                     <span className="text-sub text-sm !font-[400]">SPEED UP</span>
                                     <Tooltip
                                         classNames={{

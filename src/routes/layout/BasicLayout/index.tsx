@@ -17,6 +17,8 @@ import ConvertModal from "@/routes/components/modal/convertModal";
 import ConvertHistoryModal from "@/routes/components/modal/convertHistoryModal";
 import { isMobile } from "react-device-detect";
 import LandingBackground from "@/components/LandingBackground";
+import MultiplierModal from "@/routes/components/modal/multiplierModal";
+import VoucherModal from "@/routes/components/modal/vocherModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -28,6 +30,9 @@ export default function App({ children }: { children: React.ReactNode }) {
 
             <NextUIProvider>
                 <>
+
+                    <VoucherModal />
+                    <MultiplierModal />
                     <SignInModal />
                     <ReserveModal />
                     <StakeModal />
