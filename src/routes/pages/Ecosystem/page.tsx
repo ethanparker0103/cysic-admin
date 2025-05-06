@@ -1,5 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { ecosystemCategories, ecosystemCategoriesTagColor, ecosystemProjects, IEcosystemProject } from "@/routes/pages/Ecosystem/config";
+import { ecosystemCategories, ecosystemCategoriesTagColor, ecosystemProjects, ecosystemSubLabelsTagColor, IEcosystemProject } from "@/routes/pages/Ecosystem/config";
 import { cn, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 import { isMobile } from "react-device-detect";
@@ -20,9 +20,15 @@ const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
                                 <span className="text-sm text-black">{project?.projectName.slice(0, 2)}</span>
                             </div>
                         }
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 flex-1">
                             <div className="break-words !text-base title !font-[300]">{project?.projectName}</div>
-                            <div className={cn("text-xs text-white w-fit px-2 rounded", ecosystemCategoriesTagColor[project?.category as keyof typeof ecosystemCategoriesTagColor])}>{project?.category}</div>
+                            <div className="flex flex-wrap gap-1">
+                            {
+                                project?.subLabel?.map((subLabel) => (
+                                    <div key={subLabel} className={cn("text-xs text-white w-fit px-2 rounded", ecosystemSubLabelsTagColor[subLabel as keyof typeof ecosystemSubLabelsTagColor])}>{subLabel}</div>
+                                ))
+                            }
+                            </div>
                         </div>
                     </div>
 
@@ -68,7 +74,7 @@ const EcosystemPage = () => {
                     onSelectionChange={(key) => setSelectedCategory(key as string)}
                     variant="underlined"
                     classNames={{
-                        tabList: "flex-wrap gap-0 justify-center",
+                        tabList: "flex-wrap gap-0 justify-start",
                         tab: "w-fit border-b border-[#FFFFFF80] text-base py-4 box-content px-6 min-w-[9.375rem]",
                         cursor: "box-content px-3"
                     }}>
