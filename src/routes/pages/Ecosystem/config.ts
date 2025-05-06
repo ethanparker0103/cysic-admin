@@ -15,7 +15,7 @@ export interface IEcosystemProject {
       blurb: "A Layer 1 blockchain focused on privacy using Zero-Knowledge proofs.",
       websiteLink: "https://aleo.org",
       twitterLink: "https://twitter.com/AleoHQ",
-      img: 'http://x.com/AleoHQ/photo'
+      img: 'https://aleo.org/favicon.ico'
     },
     {
       projectName: "Scroll",
@@ -23,7 +23,7 @@ export interface IEcosystemProject {
       blurb: "zkEVM-based Ethereum scaling solution offering high throughput.",
       websiteLink: "https://scroll.io",
       twitterLink: "https://twitter.com/Scroll_ZKP",
-      img: 'https://pbs.twimg.com/profile_images/1696531511519150080/Fq5O0LeN_400x400.jpg'
+      img: 'https://scroll.io/favicon.ico'
     },
     {
       projectName: "Herodotus",
@@ -31,7 +31,7 @@ export interface IEcosystemProject {
       blurb: "A zk-based coprocessor to accelerate computation for privacy-preserving applications.",
       websiteLink: "https://herodotus.dev/",
       twitterLink: "https://x.com/HerodotusDev",
-      img: 'http://x.com/HerodotusDev/photo'
+      img: 'https://herodotus.dev/favicon.ico'
     },
     {
       projectName: "zkSync",
@@ -39,7 +39,7 @@ export interface IEcosystemProject {
       blurb: "zkEVM Ethereum scaling solution for low-cost, high-speed transactions.",
       websiteLink: "https://zksync.io",
       twitterLink: "https://twitter.com/zksync",
-      img: 'http://x.com/zksync/photo'
+      img: "https://zksync.iofavicon.ico"
     },
     {
       projectName: "Nil",
@@ -47,7 +47,7 @@ export interface IEcosystemProject {
       blurb: "zkEVM Ethereum-compatible scaling solution using ZK technology.",
       websiteLink: "https://nil.foundation",
       twitterLink: "https://x.com/nil_foundation",
-      img: 'http://x.com/nil_foundation/photo'
+      img: "https://nil.foundationfavicon.ico"
     },
     {
       projectName: "Kakarot",
@@ -55,7 +55,7 @@ export interface IEcosystemProject {
       blurb: "zkEVM solution for Ethereum scalability and privacy.",
       websiteLink: "https://www.kakarot.org/",
       twitterLink: "https://x.com/KakarotZkEvm",
-      img: 'http://x.com/KakarotZkEvm/photo'
+      img: "https://www.kakarot.org/favicon.ico"
     },
     {
       projectName: "Axiom",
@@ -63,7 +63,7 @@ export interface IEcosystemProject {
       blurb: "A Zero-Knowledge Virtual Machine (zkVM) focused on optimized computation.",
       websiteLink: "https://www.axiom.xyz/",
       twitterLink: "https://x.com/axiom_xyz",
-      img: 'http://x.com/axiom_xyz/photo'
+      img: "https://www.axiom.xyz/favicon.ico"
     },
     {
       projectName: "Talus",
@@ -71,7 +71,7 @@ export interface IEcosystemProject {
       blurb: "AI-driven layer 1 blockchain with decentralized learning protocols.",
       websiteLink: "https://talus.network/",
       twitterLink: "https://x.com/TalusNetwork",
-      img: 'http://x.com/TalusNetwork/photo'
+      img: "https://talus.network/favicon.ico"
     },
     {
       projectName: "Risc0",
@@ -79,7 +79,7 @@ export interface IEcosystemProject {
       blurb: "zkVM and prover network for scalable privacy-preserving applications.",
       websiteLink: "https://risczero.com/",
       twitterLink: "https://x.com/RiscZero",
-      img: 'http://x.com/RiscZero/photo'
+      img: "https://risczero.com/favicon.ico"
     },
     {
       projectName: "Modulus Labs",
@@ -87,7 +87,7 @@ export interface IEcosystemProject {
       blurb: "AI-powered research platform designed to simplify complex analytics.",
       websiteLink: "https://www.accountablemagic.com/",
       twitterLink: "https://x.com/CountableMagic",
-      img: 'http://x.com/CountableMagic/photo'
+      img: "https://www.accountablemagic.com/favicon.ico"
     },
     {
       projectName: "Swaps.io",
@@ -95,7 +95,7 @@ export interface IEcosystemProject {
       blurb: "A decentralized exchange (DEX) using Zero-Knowledge technology.",
       websiteLink: "https://swaps.io/",
       twitterLink: "https://x.com/swaps_io",
-      img: 'http://x.com/swaps_io/photo'
+      img: "https://swaps.io/favicon.ico"
     },
     {
       projectName: "Human.tech",
@@ -103,7 +103,7 @@ export interface IEcosystemProject {
       blurb: "ZK-powered identity solutions aimed at privacy and security.",
       websiteLink: "https://human.tech/",
       twitterLink: "https://x.com/0xHolonym",
-      img: 'http://x.com/0xHolonym/photo'
+      img: "https://human.tech/favicon.ico"
     },
     {
       projectName: "Nexus",
@@ -111,7 +111,7 @@ export interface IEcosystemProject {
       blurb: "A privacy-focused prover network using zkVM technology.",
       websiteLink: "https://nexus.xyz/",
       twitterLink: "https://x.com/NexusLabs",
-      img: 'http://x.com/NexusLabs/photo'
+      img: "https://nexus.xyz/favicon.ico"
     },
     {
       projectName: "Manta",
@@ -119,7 +119,7 @@ export interface IEcosystemProject {
       blurb: "Modular Layer 2 solutions built on ZK technology.",
       websiteLink: "https://manta.network",
       twitterLink: "https://x.com/MantaNetwork",
-      img: 'http://x.com/MantaNetwork/photo'
+      img: "https://manta.networkfavicon.ico"
     },
     {
       projectName: "Succinct",
@@ -127,7 +127,7 @@ export interface IEcosystemProject {
       blurb: "Potential ZK solution for infrastructure scaling.",
       websiteLink: "https://www.succinct.xyz/",
       twitterLink: "https://x.com/SuccinctLabs",
-      img: 'http://x.com/SuccinctLabs/photo'
+      img: "https://www.succinct.xyz/favicon.ico"
     },
     {
       projectName: "zkCloud",
@@ -135,7 +135,7 @@ export interface IEcosystemProject {
       blurb: "ZK-powered cloud computing infrastructure for privacy and scalability.",
       websiteLink: "https://zkcloud.com/",
       twitterLink: "https://x.com/thezkcloud",
-      img: 'http://x.com/thezkcloud/photo'
+      img: "https://zkcloud.com/favicon.ico"
     },
     {
       projectName: "ZKM",
@@ -143,7 +143,7 @@ export interface IEcosystemProject {
       blurb: "Privacy-focused infrastructure powered by ZK technology.",
       websiteLink: "https://www.zkm.io/",
       twitterLink: "https://x.com/ProjectZKM",
-      img: 'http://x.com/ProjectZKM/photo'
+      img: "https://www.zkm.io/favicon.ico"
     },
     {
       projectName: "zkPass",
@@ -151,7 +151,7 @@ export interface IEcosystemProject {
       blurb: "Privacy-focused identity solutions based on Zero-Knowledge proofs.",
       websiteLink: "https://zkpass.org",
       twitterLink: "https://x.com/zkPass",
-      img: 'http://x.com/zkPass/photo'
+      img: "https://zkpass.orgfavicon.ico"
     },
     {
       projectName: "Blocksense",
@@ -159,7 +159,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized oracles using Zero-Knowledge proofs for enhanced privacy.",
       websiteLink: "https://blocksense.network/",
       twitterLink: "https://x.com/blocksense_",
-      img: 'http://x.com/blocksense_/photo'
+      img: "https://blocksense.network/favicon.ico"
     },
     {
       projectName: "zPrize",
@@ -167,7 +167,7 @@ export interface IEcosystemProject {
       blurb: "A competition promoting innovation in Zero-Knowledge Proofs.",
       websiteLink: "https://www.zprize.io/",
       twitterLink: "https://x.com/z_prize",
-      img: 'http://x.com/z_prize/photo'
+      img: "https://www.zprize.io/favicon.ico"
     },
     {
       projectName: "ETHProofs",
@@ -175,7 +175,7 @@ export interface IEcosystemProject {
       blurb: "Ethereum-based Zero-Knowledge Proof technology for",
       websiteLink: "https://ethproofs.org/",
       twitterLink: "https://x.com/eth_proofs",
-      img: 'http://x.com/eth_proofs/photo'
+      img: "https://ethproofs.org/favicon.ico"
     },
     {
       projectName: "Polyhedra",
@@ -183,7 +183,7 @@ export interface IEcosystemProject {
       blurb: "A cross-chain solution leveraging ZK proofs for secure interoperability.",
       websiteLink: "https://www.polyhedra.network/",
       twitterLink: "https://x.com/PolyhedraZK",
-      img: 'http://x.com/PolyhedraZK/photo'
+      img: "https://www.polyhedra.network/favicon.ico"
     },
     {
       projectName: "Brevis",
@@ -191,7 +191,7 @@ export interface IEcosystemProject {
       blurb: "A decentralized oracle infrastructure powered by Zero-Knowledge proofs.",
       websiteLink: "https://brevis.network/",
       twitterLink: "https://x.com/brevis_zk",
-      img: 'http://x.com/brevis_zk/photo'
+      img: "https://brevis.network/favicon.ico"
     },
     {
       projectName: "Metamask",
@@ -199,7 +199,7 @@ export interface IEcosystemProject {
       blurb: "A popular cryptocurrency wallet for managing digital assets and DeFi activities.",
       websiteLink: "https://metamask.io",
       twitterLink: "https://x.com/MetaMask",
-      img: 'http://x.com/MetaMask/photo'
+      img: "https://metamask.iofavicon.ico"
     },
     {
       projectName: "Keplr",
@@ -207,7 +207,7 @@ export interface IEcosystemProject {
       blurb: "A wallet for Cosmos-based blockchains, providing decentralized access.",
       websiteLink: "https://keplr.app",
       twitterLink: "https://x.com/keplrwallet",
-      img: 'http://x.com/keplrwallet/photo'
+      img: "https://keplr.appfavicon.ico"
     },
     {
       projectName: "OKX Wallet",
@@ -215,7 +215,7 @@ export interface IEcosystemProject {
       blurb: "OKX's official wallet for storing and trading crypto assets.",
       websiteLink: "https://www.okx.com",
       twitterLink: "https://x.com/okx",
-      img: 'http://x.com/okx/photo'
+      img: "https://www.okx.comfavicon.ico"
     },
     {
       projectName: "Fox Wallet",
@@ -223,7 +223,7 @@ export interface IEcosystemProject {
       blurb: "A crypto wallet (uncertain if active or official).",
       websiteLink: "https://foxwallet.com/",
       twitterLink: "https://x.com/FoxWallet",
-      img: 'http://x.com/FoxWallet/photo'
+      img: "https://foxwallet.com/favicon.ico"
     },
     {
       projectName: "Wormhole",
@@ -231,7 +231,7 @@ export interface IEcosystemProject {
       blurb: "A cross-chain bridge for decentralized asset transfer.",
       websiteLink: "https://wormhole.com/",
       twitterLink: "https://x.com/wormhole",
-      img: 'http://x.com/wormhole/photo'
+      img: "https://wormhole.com/favicon.ico"
     },
     {
       projectName: "Across",
@@ -239,7 +239,7 @@ export interface IEcosystemProject {
       blurb: "A decentralized bridge for cross-chain communication.",
       websiteLink: "https://across.to/",
       twitterLink: "https://x.com/AcrossProtocol",
-      img: 'http://x.com/AcrossProtocol/photo'
+      img: "https://across.to/favicon.ico"
     },
     {
       projectName: "Orbiter",
@@ -247,7 +247,7 @@ export interface IEcosystemProject {
       blurb: "Cross-chain bridge enabling efficient asset transfers.",
       websiteLink: "https://orbiter.finance",
       twitterLink: "https://x.com/Orbiter_Finance",
-      img: 'http://x.com/Orbiter_Finance/photo'
+      img: "https://orbiter.financefavicon.ico"
     },
     {
       projectName: "LI.FI",
@@ -255,7 +255,7 @@ export interface IEcosystemProject {
       blurb: "Interoperable cross-chain bridge for decentralized finance.",
       websiteLink: "https://li.fi/?utm_source=link3&utm_medium=link3&utm_campaign=link3",
       twitterLink: "https://x.com/lifiprotocol",
-      img: 'http://x.com/lifiprotocol/photo'
+      img: "https://li.fi/?utm_source=link3&utm_medium=link3&utm_campaign=link3favicon.ico"
     },
     {
       projectName: "Bungee",
@@ -263,7 +263,7 @@ export interface IEcosystemProject {
       blurb: "Bridge solution for connecting different blockchains.",
       websiteLink: "https://new.bungee.exchange/",
       twitterLink: "https://x.com/BungeeExchange",
-      img: 'http://x.com/BungeeExchange/photo'
+      img: "https://new.bungee.exchange/favicon.ico"
     },
     {
       projectName: "Synapse",
@@ -271,7 +271,7 @@ export interface IEcosystemProject {
       blurb: "A multi-chain cross-communication bridge.",
       websiteLink: "https://synapseprotocol.com/",
       twitterLink: "https://x.com/SynapseProtocol",
-      img: 'http://x.com/SynapseProtocol/photo'
+      img: "https://synapseprotocol.com/favicon.ico"
     },
     {
       projectName: "Cysic Bridge",
@@ -279,7 +279,7 @@ export interface IEcosystemProject {
       blurb: "The bridge solution developed by Cysic Network.",
       websiteLink: "Not Available",
       twitterLink: "Not Available",
-      img: 'http://x.com/CysicNetwork/photo'
+      img: "Not Availablefavicon.ico"
     },
     {
       projectName: "Footprint Analytics",
@@ -287,7 +287,7 @@ export interface IEcosystemProject {
       blurb: "Blockchain data analytics platform for Web3 projects.",
       websiteLink: "https://www.footprint.network",
       twitterLink: "https://x.com/Footprint_Data",
-      img: 'http://x.com/Footprint_Data/photo'
+      img: "https://www.footprint.networkfavicon.ico"
     },
     {
       projectName: "Dune",
@@ -295,7 +295,7 @@ export interface IEcosystemProject {
       blurb: "Data analytics tool for blockchain, creating customizable dashboards.",
       websiteLink: "https://dune.com",
       twitterLink: "https://x.com/Dune",
-      img: 'http://x.com/Dune/photo'
+      img: "https://dune.comfavicon.ico"
     },
     {
       projectName: "BlockScout",
@@ -303,7 +303,7 @@ export interface IEcosystemProject {
       blurb: "Open-source block explorer for Ethereum and Ethereum-compatible networks.",
       websiteLink: "https://blockscout.com",
       twitterLink: "https://x.com/blockscout",
-      img: 'http://x.com/blockscout/photo'
+      img: "https://blockscout.comfavicon.ico"
     },
     {
       projectName: "Privy",
@@ -311,7 +311,7 @@ export interface IEcosystemProject {
       blurb: "Privacy-preserving tooling for blockchain developers.",
       websiteLink: "https://www.privy.io/",
       twitterLink: "https://x.com/privy_io",
-      img: 'http://x.com/privy_io/photo'
+      img: "https://www.privy.io/favicon.ico"
     },
     {
       projectName: "Cosmos SDK",
@@ -319,7 +319,7 @@ export interface IEcosystemProject {
       blurb: "Framework for building application-specific blockchains.",
       websiteLink: "https://docs.cosmos.network/",
       twitterLink: "https://x.com/cosmos_sdk",
-      img: 'http://x.com/cosmos_sdk/photo'
+      img: "https://docs.cosmos.network/favicon.ico"
     },
     {
       projectName: "Cysic AMM",
@@ -327,7 +327,7 @@ export interface IEcosystemProject {
       blurb: "Cysic's decentralized automated market maker.",
       websiteLink: "Not Available",
       twitterLink: "Not Available",
-      img: 'http://x.com/CysicNetwork/photo'
+      img: "Not Availablefavicon.ico"
     },
     {
       projectName: "AntEX (Cody's)",
@@ -335,7 +335,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized exchange developed by Cody's team.",
       websiteLink: "Not Available",
       twitterLink: "Not Available",
-      img: 'http://x.com/CysicNetwork/photo'
+      img: "Not Availablefavicon.ico"
     },
     {
       projectName: "Aave",
@@ -343,7 +343,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized protocol for lending and borrowing digital assets.",
       websiteLink: "https://aave.com",
       twitterLink: "https://x.com/aave",
-      img: 'http://x.com/aave/photo'
+      img: "https://aave.comfavicon.ico"
     },
     {
       projectName: "Uniswap",
@@ -351,7 +351,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized exchange with liquidity pools for trading tokens.",
       websiteLink: "https://uniswap.org",
       twitterLink: "https://x.com/Uniswap",
-      img: 'http://x.com/Uniswap/photo'
+      img: "https://uniswap.orgfavicon.ico"
     },
     {
       projectName: "Compound",
@@ -359,7 +359,7 @@ export interface IEcosystemProject {
       blurb: "Lending protocol on Ethereum for crypto assets.",
       websiteLink: "https://compoundlabs.xyz/",
       twitterLink: "https://x.com/compoundfinance",
-      img: 'http://x.com/compoundfinance/photo'
+      img: "https://compoundlabs.xyz/favicon.ico"
     },
     {
       projectName: "Ankr?",
@@ -367,7 +367,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized cloud infrastructure provider.",
       websiteLink: "https://www.ankr.com",
       twitterLink: "https://x.com/ankr",
-      img: 'http://x.com/ankr/photo'
+      img: "https://www.ankr.comfavicon.ico"
     },
     {
       projectName: "Chainlink",
@@ -375,7 +375,7 @@ export interface IEcosystemProject {
       blurb: "Decentralized oracle network for smart contracts.",
       websiteLink: "https://chain.link",
       twitterLink: "https://x.com/chainlink",
-      img: 'http://x.com/chainlink/photo'
+      img: "https://chain.linkfavicon.ico"
     },
     {
       projectName: "Alchemy",
@@ -383,7 +383,7 @@ export interface IEcosystemProject {
       blurb: "Blockchain development platform offering tools and infrastructure.",
       websiteLink: "https://www.alchemy.com",
       twitterLink: "https://x.com/Alchemy",
-      img: 'http://x.com/Alchemy/photo'
+      img: "https://www.alchemy.comfavicon.ico"
     },
     {
       projectName: "OpenSea",
@@ -391,7 +391,7 @@ export interface IEcosystemProject {
       blurb: "The largest NFT marketplace for buying and selling digital art.",
       websiteLink: "https://opensea.io",
       twitterLink: "https://x.com/opensea",
-      img: 'http://x.com/opensea/photo'
+      img: "https://opensea.iofavicon.ico"
     },
     {
       projectName: "OKX NFT Marketplace",
@@ -399,7 +399,7 @@ export interface IEcosystemProject {
       blurb: "OKX's NFT marketplace offering digital art and collectibles.",
       websiteLink: "https://www.okx.com",
       twitterLink: "https://x.com/okx",
-      img: 'http://x.com/okx/photo'
+      img: "https://www.okx.comfavicon.ico"
     },
     {
       projectName: "Tornado Cash",
@@ -407,7 +407,7 @@ export interface IEcosystemProject {
       blurb: "Privacy-enhancing tool for Ethereum transactions.",
       websiteLink: "https://tornadocash-eth.ipns.dweb.link/",
       twitterLink: "https://x.com/TornadoCash",
-      img: 'http://x.com/TornadoCash/photo'
+      img: "https://tornadocash-eth.ipns.dweb.link/favicon.ico"
     },
     {
       projectName: "Cysic Intelligence",
@@ -415,7 +415,7 @@ export interface IEcosystemProject {
       blurb: "AI-powered solutions integrated with blockchain technologies.",
       websiteLink: "Not Available",
       twitterLink: "Not Available",
-      img: 'http://x.com/CysicNetwork/photo'
+      img: "Not Availablefavicon.ico"
     },
     {
       projectName: "Aspecta",
@@ -423,7 +423,7 @@ export interface IEcosystemProject {
       blurb: "AI-driven identity solution for decentralized systems.",
       websiteLink: "https://aspecta.ai/",
       twitterLink: "https://x.com/aspecta_ai",
-      img: 'http://x.com/aspecta_ai/photo'
+      img: "https://aspecta.ai/favicon.ico"
     },
     {
       projectName: "Inference Labs",
@@ -431,7 +431,7 @@ export interface IEcosystemProject {
       blurb: "AI-focused research lab for future technologies.",
       websiteLink: "https://inferencelabs.com/",
       twitterLink: "https://x.com/inference_labs",
-      img: 'http://x.com/inference_labs/photo'
+      img: "https://inferencelabs.com/favicon.ico"
     },
     {
       projectName: "Eternis AI",
@@ -439,7 +439,7 @@ export interface IEcosystemProject {
       blurb: "AI platform for decentralized applications.",
       websiteLink: "https://www.eternis.ai/",
       twitterLink: "https://x.com/eternisai",
-      img: 'http://x.com/eternisai/photo'
+      img: "https://www.eternis.ai/favicon.ico"
     },
     {
       projectName: "Gensyn",
@@ -447,7 +447,7 @@ export interface IEcosystemProject {
       blurb: "AI infrastructure with scalability for blockchain projects.",
       websiteLink: "https://www.gensyn.ai/",
       twitterLink: "https://x.com/gensynai",
-      img: 'http://x.com/gensynai/photo'
+      img: "https://www.gensyn.ai/favicon.ico"
     },
     {
       projectName: "Future vibe coding",
@@ -455,7 +455,7 @@ export interface IEcosystemProject {
       blurb: "A future-focused platform for coding and community interaction.",
       websiteLink: "Not Available",
       twitterLink: "Not Available",
-      img: 'http://x.com/CysicNetwork/photo'
+      img: "Not Availablefavicon.ico"
     },
     {
       projectName: "P2P",
@@ -463,7 +463,7 @@ export interface IEcosystemProject {
       blurb: "Peer-to-peer validator network for decentralized applications.",
       websiteLink: "https://www.p2p.org/staking-as-a-business",
       twitterLink: "https://x.com/P2Pvalidator",
-      img: 'http://x.com/P2Pvalidator/photo'
+      img: "https://www.p2p.org/staking-as-a-businessfavicon.ico"
     },
     {
       projectName: "OKX",
@@ -471,7 +471,7 @@ export interface IEcosystemProject {
       blurb: "Centralized exchange offering validator services.",
       websiteLink: "https://www.okx.com",
       twitterLink: "https://x.com/okx",
-      img: 'http://x.com/okx/photo'
+      img: "https://www.okx.comfavicon.ico"
     },
     {
       projectName: "Noble",
@@ -479,7 +479,7 @@ export interface IEcosystemProject {
       blurb: "Stablecoin project focused on the Cosmos ecosystem.",
       websiteLink: "https://www.noble.xyz/",
       twitterLink: "https://x.com/noble_xyz",
-      img: 'http://x.com/noble_xyz/photo'
+      img: "https://www.noble.xyz/favicon.ico"
     },
     {
       projectName: "Tether",
@@ -487,7 +487,7 @@ export interface IEcosystemProject {
       blurb: "Popular stablecoin pegged to USD.",
       websiteLink: "https://www.tether.to",
       twitterLink: "https://x.com/Tether_to",
-      img: 'http://x.com/Tether_to/photo'
+      img: "https://www.tether.tofavicon.ico"
     },
     {
       projectName: "Celestia",
@@ -495,7 +495,7 @@ export interface IEcosystemProject {
       blurb: "Scalable, modular blockchain for data availability.",
       websiteLink: "https://celestia.org",
       twitterLink: "https://x.com/celestia",
-      img: 'http://x.com/celestia/photo'
+      img: "https://celestia.orgfavicon.ico"
     },
     {
       projectName: "Avail",
@@ -503,7 +503,7 @@ export interface IEcosystemProject {
       blurb: "Data availability layer for scalable decentralized applications.",
       websiteLink: "https://www.availproject.org/",
       twitterLink: "https://x.com/AvailProject",
-      img: 'http://x.com/AvailProject/photo'
+      img: "https://www.availproject.org/favicon.ico"
     },
     {
       projectName: "Mina",
@@ -511,7 +511,7 @@ export interface IEcosystemProject {
       blurb: "Mina is a zero knowledge (ZK) blockchain for proving anything. Building towards the private, provable web.",
       websiteLink: "https://minaprotocol.com/",
       twitterLink: "https://x.com/MinaProtocol",
-      img: 'http://x.com/MinaProtocol/photo'
+      img: "https://minaprotocol.com/favicon.ico"
     },
     {
       projectName: "Ora",
@@ -519,7 +519,7 @@ export interface IEcosystemProject {
       blurb: "World Intelligence",
       websiteLink: "https://www.ora.io/",
       twitterLink: "https://x.com/OraProtocol",
-      img: 'http://x.com/OraProtocol/photo'
+      img: "https://www.ora.io/favicon.ico"
     },
     {
       projectName: "Electron Labs",
@@ -527,7 +527,7 @@ export interface IEcosystemProject {
       blurb: "Reducing TEE and ZK verification costs by 95%.",
       websiteLink: "https://electron.dev/",
       twitterLink: "https://x.com/ElectronZK",
-      img: 'http://x.com/ElectronZK/photo'
+      img: "https://electron.dev/favicon.ico"
     },
     {
       projectName: "zkLink Nova",
@@ -535,7 +535,7 @@ export interface IEcosystemProject {
       blurb: "Nova, the multi-rollup Aggregated Layer 3 zkEVM network with liquidity from any L2s.",
       websiteLink: "https://zklink.io/",
       twitterLink: "https://x.com/zkLink_Official",
-      img: 'http://x.com/zkLink_Official/photo'
+      img: "https://zklink.io/favicon.ico"
     },
     {
       projectName: "ChainUp",
@@ -543,7 +543,7 @@ export interface IEcosystemProject {
       blurb: "Secure, Compliant, Innovative B2B Digital Asset Solutions CEX/DEX SaaS, Liquidity, Custody, MPC Wallet, KYT, Tokenization & more",
       websiteLink: "https://x.com/ChainUpOfficial",
       twitterLink: "https://x.com/ChainUpOfficial",
-      img: 'http://x.com/ChainUpOfficial/photo'
+      img: "https://x.com/ChainUpOfficialfavicon.ico"
     },
     {
       projectName: "Intmax",
@@ -551,7 +551,7 @@ export interface IEcosystemProject {
       blurb: "A zkRollup with a stateless architecture. Achieving hyper-scaling and privacy at the same time.",
       websiteLink: "https://www.intmax.io/",
       twitterLink: "https://x.com/intmaxIO",
-      img: 'http://x.com/intmaxIO/photo'
+      img: "https://www.intmax.io/favicon.ico"
     },
     {
       projectName: "6block",
@@ -559,7 +559,7 @@ export interface IEcosystemProject {
       blurb: "Crypto mining and staking solution provider",
       websiteLink: "https://6block.com/",
       twitterLink: "https://x.com/6block_official",
-      img: 'http://x.com/6block_official/photo'
+      img: "https://6block.com/favicon.ico"
     },
     {
       projectName: "DBunker",
@@ -567,7 +567,7 @@ export interface IEcosystemProject {
       blurb: "Liquid & Aggregated Mining for DePIN & AI",
       websiteLink: "https://www.dbunker.xyz/",
       twitterLink: "https://x.com/Dbunker_Network",
-      img: 'http://x.com/Dbunker_Network/photo'
+      img: "https://www.dbunker.xyz/favicon.ico"
     }
   ];
 
