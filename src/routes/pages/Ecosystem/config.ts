@@ -259,60 +259,6 @@ export const ecosystemProjects: IEcosystemProject[] = [
     img: "https://foxwallet.com/favicon.ico"
   },
   {
-    projectName: "Wormhole",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "A cross-chain bridge for decentralized asset transfer.",
-    websiteLink: "https://wormhole.com/",
-    twitterLink: "https://x.com/wormhole",
-    img: "https://wormhole.com/favicon.ico"
-  },
-  {
-    projectName: "Across",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "A decentralized bridge for cross-chain communication.",
-    websiteLink: "https://across.to/",
-    twitterLink: "https://x.com/AcrossProtocol",
-    img: "https://across.to/favicon.ico"
-  },
-  {
-    projectName: "Orbiter",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "Cross-chain bridge enabling efficient asset transfers.",
-    websiteLink: "https://orbiter.finance",
-    twitterLink: "https://x.com/Orbiter_Finance",
-    img: "https://orbiter.finance/favicon.ico"
-  },
-  {
-    projectName: "LI.FI",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "Interoperable cross-chain bridge for decentralized finance.",
-    websiteLink: "https://li.fi/?utm_source=link3&utm_medium=link3&utm_campaign=link3",
-    twitterLink: "https://x.com/lifiprotocol",
-    img: "https://li.fi/favicon.ico"
-  },
-  {
-    projectName: "Bungee",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "Bridge solution for connecting different blockchains.",
-    websiteLink: "https://new.bungee.exchange/",
-    twitterLink: "https://x.com/BungeeExchange",
-    img: "https://new.bungee.exchange/favicon.ico"
-  },
-  {
-    projectName: "Synapse",
-    category: "Bridge",
-    subLabel: [],
-    blurb: "A multi-chain cross-communication bridge.",
-    websiteLink: "https://synapseprotocol.com/",
-    twitterLink: "https://x.com/SynapseProtocol",
-    img: "https://synapseprotocol.com/favicon.ico"
-  },
-  {
     projectName: "Cysic Bridge",
     category: "Bridge",
     subLabel: [],
@@ -321,24 +267,6 @@ export const ecosystemProjects: IEcosystemProject[] = [
     twitterLink: "",
     img: "https://cysic.xyz/assets/logo.svg",
     className: "bg-[transparent]"
-  },
-  {
-    projectName: "Footprint Analytics",
-    category: "Infrastructure",
-    subLabel: ["Tooling"],
-    blurb: "Blockchain data analytics platform for Web3 projects.",
-    websiteLink: "https://www.footprint.network",
-    twitterLink: "https://x.com/Footprint_Data",
-    img: "https://www.footprint.network/app/assets/img/apple-touch-icon.png"
-  },
-  {
-    projectName: "Dune",
-    category: "Infrastructure",
-    subLabel: ["Tooling"],
-    blurb: "Data analytics tool for blockchain, creating customizable dashboards.",
-    websiteLink: "https://dune.com",
-    twitterLink: "https://x.com/Dune",
-    img: "https://dune.com/favicon.ico"
   },
   {
     projectName: "BlockScout",
@@ -513,15 +441,6 @@ export const ecosystemProjects: IEcosystemProject[] = [
     websiteLink: "https://www.gensyn.ai/",
     twitterLink: "https://x.com/gensynai",
     img: "https://cdn.prod.website-files.com/666760929427ffac7da1f179/6686c3e974048ab40a6d012a_icon.png"
-  },
-  {
-    projectName: "Future vibe coding",
-    category: "Social",
-    subLabel: [],
-    blurb: "A future-focused platform for coding and community interaction.",
-    websiteLink: "",
-    twitterLink: "",
-    img: ""
   },
   {
     projectName: "P2P",
