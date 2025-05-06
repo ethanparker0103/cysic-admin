@@ -69,12 +69,16 @@ const navs = [
         ]
     },
     {
-        content: 'Docs',
-        href: mediasLink.whitePaper
-    },
-    {
-        content: 'Company',
+        content: 'Resource',
         children: [
+            {
+                content: 'Whitepaper',
+                href: mediasLink.whitePaper
+            },
+            {
+                content: 'Docs',
+                href: mediasLink.docs
+            },
             {
                 content: 'blog',
                 href: '/'
@@ -83,8 +87,15 @@ const navs = [
                 content: 'media',
                 href: '/'
             },
-
         ]
+    },
+    {
+        content: 'Ecosystem',
+        href: '/ecosystem'
+    },
+    {
+        content: 'Company',
+        href: '/'
     }
 ]
 

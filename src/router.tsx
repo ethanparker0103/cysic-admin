@@ -16,6 +16,7 @@ import VerifierPage from "@/routes/pages/Zk/verifier/page";
 import ProjectPage from "@/routes/pages/Zk/project/page";
 import MyProjectPage from "@/routes/pages/Zk/project/my/page";
 import ProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
+import EcosystemPage from "@/routes/pages/Ecosystem/page";
 
 export const router = createBrowserRouter(
   [
@@ -26,6 +27,10 @@ export const router = createBrowserRouter(
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "/ecosystem",
+          element: <EcosystemPage />,
         },
         {
           path: "/zk",
