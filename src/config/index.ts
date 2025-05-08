@@ -156,5 +156,12 @@ export const purchaseNftContract = {
   [arbitrumSepolia.id]: "0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC",
 };
 
+
+export const classes = {
+  container: ` max-w-[1440px] px-[3rem] mx-auto`,
+  subTitle: 'sub-title !tracking-widest !text-[24px] !font-[400]',
+}
+
+
 export * from './abi/faucet'
 export * from './abi/purchase'

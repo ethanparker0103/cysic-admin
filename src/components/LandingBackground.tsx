@@ -26,7 +26,9 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
 
     if (!backgroundConfig?.img) {
         return (
-            <main className={cn("relative min-h-screen w-full z-10 max-w-[1440px] px-[3rem] mx-auto", isMobile ? "pb-6 px-3" : "pb-12")}>
+            <main className={cn("relative min-h-screen w-full z-10 mx-auto",
+                ['/hardware', '/zk'].includes(path) ? "" : "max-w-[1440px] px-[3rem] ",
+                isMobile ? "pb-6 px-3" : ['/hardware', '/zk'].includes(path) ? "pb-0" : "pb-12")}>
                 {children}
             </main>
         );
@@ -74,8 +76,9 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
             {/* 主体内容层 */}
             <div className="relative w-full" style={{ minHeight: height }}>
                 <main className={
-                    cn("relative min-h-screen w-full z-10 max-w-[1440px] px-[3rem] mx-auto flex flex-col items-center justify-center",
-                        isMobile ? "pb-6 px-3" : "pb-12"
+                    cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
+                        ['/hardware', '/zk'].includes(path) ? "" : "max-w-[1440px] px-[3rem] ",
+                        isMobile ? "pb-6 px-3" : ['/hardware', '/zk'].includes(path) ? "pb-0" : "pb-12"
                     )
                 }>
                     {children}

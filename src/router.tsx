@@ -138,7 +138,8 @@ export const backgroundImageList = {
   },
   '/zk': {
     img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),
-    className: isMobile ? "h-[90%]" : "h-[135%]",
+    className: isMobile ? "h-[90%]" : "h-[180vh]",
+    // needShadow: true
   },
   '/zk/invite': {
     img: getImageUrl('@/assets/images/_global/invite_landing_bg.png'),
