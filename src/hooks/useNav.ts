@@ -30,6 +30,14 @@ const navs = [
         content: 'Hardware',
         children: [
             {
+                content: 'Academy',
+                href: '/academy'
+            },
+            {
+                content: 'Hardware',
+                href: '/hardware'
+            },
+            {
                 content: 'ZK Air/Pro',
                 href: '/'
             },

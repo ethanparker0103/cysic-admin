@@ -17,6 +17,8 @@ import ProjectPage from "@/routes/pages/Zk/project/page";
 import MyProjectPage from "@/routes/pages/Zk/project/my/page";
 import ProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
 import EcosystemPage from "@/routes/pages/Ecosystem/page";
+import AcademyPage from "@/routes/pages/Academy/page";
+import HardwarePage from "@/routes/pages/Hardware/page";
 
 export const router = createBrowserRouter(
   [
@@ -31,6 +33,14 @@ export const router = createBrowserRouter(
         {
           path: "/ecosystem",
           element: <EcosystemPage />,
+        },
+        {
+          path: "/academy",
+          element: <AcademyPage />,
+        },
+        {
+          path: "/hardware",
+          element: <HardwarePage />,
         },
         {
           path: "/zk",
@@ -107,6 +117,24 @@ export const backgroundImageList = {
   '/': {
     img: getImageUrl('@/assets/images/_global/home_landing_bg.png'),
     className: "grayscale",
+  },
+  '/ecosystem': {
+    img: getImageUrl('@/assets/images/_global/zk_ecosystem_bg.png'),
+    className: "h-[50vh]",
+    style: { filter: "grayscale(1) brightness(0.3) ", backgroundPosition: "center -25vh" },
+    needShadow: true
+  },
+  '/academy': {
+    img: getImageUrl('@/assets/images/_global/zk_academy_bg.png'),
+    className: "h-[100vh]",
+    style: { backgroundPosition: "center -50vh" },
+    needShadow: true
+  },
+  '/hardware': {
+    img: getImageUrl('@/assets/images/_global/zk_hardware_bg.png'),
+    className: "h-screen",
+    style: { backgroundPosition: "center -10vh" },
+    // needShadow: true
   },
   '/zk': {
     img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),

@@ -27,9 +27,9 @@ const Home = () => {
         </Button>
       </div>
 
-      <div className={cn("flex flex-col items-center gap-6 relative z-[2]", isMobile ? "pb-0" : "pb-[10rem]")}>
+      <div className={cn("flex flex-col items-center gap-6 relative z-[2]", isMobile ? "pb-0" : "pb-[10rem] -mb-[6rem]")}>
         <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[9.625rem]" />
-        <span className={cn("title font-[400] uppercase text-center text-md")}>Digital Harvester</span>
+        <span className={cn(isMobile ? "" : "!text-[6rem]", "title font-[400] uppercase text-center text-md")}>Digital Harvester</span>
         <div className="text-sub text-center text-sm">
           You can obtain the corresponding computing power by purchasing a Cysic Digital Harvester.<br/>
           The Harvester is universally compatible across the Cysic Space, including Cysic AI, Cysic ZK, and Cysic Mining.<br/>

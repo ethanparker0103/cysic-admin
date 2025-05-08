@@ -43,7 +43,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                     as={NextUILink}
                     href={item.href}
                     variant="light"
-                    className={cn("uppercase font-[400] !text-sub", className)}
+                    className={cn("uppercase font-[400] !text-sub h-full rounded-none", className)}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
@@ -57,7 +57,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                     as={RouterLink}
                     to={item.href || "/"}
                     variant="light"
-                    className={cn("uppercase font-[400] !text-sub", className)}
+                    className={cn("uppercase font-[400] !text-sub h-full rounded-none", className)}
                 >
                     {item.content}
                 </Button>
@@ -73,7 +73,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
             <DropdownTrigger>
                 <Button
                     variant="light"
-                    className={cn("uppercase font-[400] text-sub", className)}
+                    className={cn("uppercase font-[400] text-sub h-full rounded-none", className)}
                 >
                     {item.content}
                 </Button>
@@ -84,7 +84,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                     '--gradient-direction': '0deg',
                 }}
                 aria-label={`${item.content} submenu`}
-                className="p-0 min-w-[180px] bg-[transparent] backdrop-blur gradient-border-card rounded-lg overflow-hidden"
+                className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur gradient-border-card rounded-lg overflow-hidden"
                 variant="flat"
                 itemClasses={{
                     base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",

@@ -19,6 +19,7 @@ interface GradientBorderCardProps {
   className?: string;
   borderWidth?: number;
   borderRadius?: number;
+  style?: React.CSSProperties;
 }
 
 const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
@@ -27,6 +28,7 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
   className = '',
   borderWidth = 1,
   borderRadius = 16,
+  style = {}
 }) => {
   const cssVariables = {
     '--gradient-direction': direction,
@@ -43,6 +45,7 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
         style={{
           ...cssVariables,
           borderRadius: `${borderRadius}px`,
+          ...style
         }}
       >
         <>
