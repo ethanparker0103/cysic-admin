@@ -9,19 +9,19 @@ const navs = [
         content: 'Service',
         children: [
             {
-                content: 'Cysic NFT',
-                href: '/nft'
-            },
-            {
                 content: 'Cysic ZK',
                 href: '/zk'
             },
             {
-                content: 'Cysic AI',
+                content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
+                href: '/nft'
+            },
+            {
+                content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
                 href: '/ai'
             },
             {
-                content: 'Cysic Mining',
+                content: <div className="text-center">Cysic Mining<br/>(Coming Soon)</div>,
                 href: '/stake'
             },
         ]
@@ -29,10 +29,6 @@ const navs = [
     {
         content: 'Hardware',
         children: [
-            {
-                content: 'Academy',
-                href: '/academy'
-            },
             {
                 content: 'Hardware',
                 href: '/hardware'
@@ -51,6 +47,10 @@ const navs = [
         content: 'Cysic Portal',
         children: [
             {
+                content: 'Social Tasks',
+                href: '/nft/socialTask'
+            },
+            {
                 content: 'Staking',
                 href: '/stake'
             },
@@ -61,10 +61,6 @@ const navs = [
             {
                 content: 'swap',
                 href: 'https://dev-swap.prover.xyz/'
-            },
-            {
-                content: 'Social Tasks',
-                href: '/nft/socialTask'
             },
             {
                 content: 'Dashboard',
@@ -80,16 +76,20 @@ const navs = [
         content: 'Resource',
         children: [
             {
+                content: 'Academy',
+                href: '/academy'
+            },
+            {
                 content: 'Whitepaper',
                 href: mediasLink.whitePaper
             },
             {
                 content: 'Docs',
-                href: mediasLink.docs
+                href: mediasLink.discord
             },
             {
                 content: 'blog',
-                href: '/'
+                href: mediasLink.medium
             },
             {
                 content: 'media',

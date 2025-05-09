@@ -96,7 +96,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                         return (
                             <DropdownItem
                                 key={child.content}
-                                className="py-2 px-4 text-sm"
+                                className="py-6 px-4 text-sm text-center"
                                 as={NextUILink}
                                 href={child.href}
                                 target="_blank"
@@ -110,7 +110,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                         return (
                             <DropdownItem
                                 key={child.content}
-                                className="py-2 px-4 text-sm"
+                                className="py-6 px-4 text-sm text-center"
                                 onPress={() => handleNavigation(child.href)}
                             >
                                 {child.content}

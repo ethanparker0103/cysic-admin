@@ -93,7 +93,7 @@ export default function Header() {
                             <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>
 
                             {currentNavs.map((nav: any) => (
-                                <GradientNavDropdown className="flex-1 max-w-[11.25rem]" key={nav.content} item={nav} />
+                                <GradientNavDropdown className="flex-1 max-w-[11.25rem] text-center" key={nav.content} item={nav} />
                             ))}
                         </div>
                         <div className="h-full flex items-center justify-end w-[26.75rem]">
