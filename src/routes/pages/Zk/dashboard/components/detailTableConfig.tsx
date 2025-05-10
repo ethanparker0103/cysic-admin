@@ -156,7 +156,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
         case "projectName":
             return (
                 <Link
-                    to={`/zk/dashboard/project/${item?.project_id}`}
+                    to={`/zk/dashboard/project/${item?.projectId}`}
                     className="flex items-center gap-1 cursor-pointer"
                 >
                     <span>{item?.[columnKey]}</span>

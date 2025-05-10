@@ -7,7 +7,7 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
 import { getImageUrl, shortStr } from "@/utils/tools";
-import { commonPageSize, providerStatus, TaskStatus } from "@/config";
+import { commonPageSize, explorerUrl, providerStatus, TaskStatus } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
 
@@ -41,14 +41,16 @@ const ProverDetail = () => {
             label: "Address",
             renderCell: (item: any) => {
                 return <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
+                    <a target="_blank" href={explorerUrl + `/address/${item?.address}`}
+                        className="flex items-center gap-2">
                         <span>{item?.address}</span>
                         <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
-                    </div>
-                    <div className="flex items-center gap-2 text-[#737373]">
+                    </a>
+                    <a target="_blank" href={explorerUrl + `/address/${item?.cysicAddress}`}
+                        className="flex items-center gap-2 text-[#737373]">
                         <span>{item?.cysicAddress}</span>
                         <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
-                    </div>
+                    </a>
                 </div>
             }
         },
