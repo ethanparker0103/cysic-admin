@@ -260,8 +260,6 @@ const StakeModal = () => {
     const [showValidatorList, setShowValidatorList] = useState(false);
     const [amount, setAmount] = useState("");
     const [stakePercentage, setStakePercentage] = useState(0);
-    const [redemptionAmount, setRedemptionAmount] = useState("1,000.00 CYS");
-    const [totalEarnings, setTotalEarnings] = useState("123.00 CYS");
     const [estimatedArrivalTime, setEstimatedArrivalTime] = useState("Nov 12, 2025 08:00");
     const { balanceMap, address, connector } = useCosmos()
     const cgtBalance = balanceMap?.CGT?.hm_amount || 0

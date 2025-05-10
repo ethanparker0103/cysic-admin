@@ -12,6 +12,7 @@ interface BackgroundConfig {
     maxWidth?: string;
     className?: string;
     needShadow?: boolean;
+    needBack?: boolean;
     style?: React.CSSProperties;
 }
 
@@ -48,6 +49,15 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
         return undefined;
     }, [path]);
 
+    const needBack = backgroundConfig?.needBack ?? false
+    const backPath = useMemo(() => {
+        if (needBack) {
+            return path.split('/').slice(0, -1).join('/');
+        }
+        return path;
+    }, [needBack, path]);
+
+
     if (!backgroundConfig?.img) {
         return (
             <main className={cn("relative min-h-screen w-full z-10 mx-auto",
@@ -66,17 +76,11 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
         className = "",
         style = {},
         needShadow = false,
-        needBack = false
     } = backgroundConfig;
 
     // 组合背景
     const backgroundImage = gradient ? `${gradient}, url(${img})` : `url(${img})`;
-    const backPath = useMemo(() => {
-        if (needBack) {
-            return path.split('/').slice(0, -1).join('/');
-        }
-        return path;
-    }, [needBack, path]);
+
 
     return (
         <>

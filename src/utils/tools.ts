@@ -741,3 +741,10 @@ export const handleHowInviteWorkModal = (visible = true) => {
   });
   window.dispatchEvent(event);
 }
+
+export const handleFaucetModal = () => {
+  const event = new CustomEvent('modal_faucet_visible', {
+    detail: { visible: true }
+  });
+  window.dispatchEvent(event);
+}

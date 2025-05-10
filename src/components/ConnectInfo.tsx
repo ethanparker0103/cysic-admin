@@ -1,4 +1,4 @@
-import { getImageUrl, shortStr, handleSignIn } from "@/utils/tools"
+import { getImageUrl, shortStr, handleSignIn, handleFaucetModal } from "@/utils/tools"
 
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from "@nextui-org/react";
 import Copy from "@/components/Copy";
@@ -68,7 +68,7 @@ const ConnectInfo = () => {
 
     return (
         <>
-            <Button needLoading className="!p-0" onClick={handleFaucet}>
+            <Button needLoading className="!p-0" onClick={handleFaucetModal}>
                 <img src={getImageUrl('@/assets/images/icon/faucet.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
             </Button>
             <Dropdown 

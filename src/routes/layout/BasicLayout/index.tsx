@@ -21,6 +21,7 @@ import MultiplierModal from "@/routes/components/modal/multiplierModal";
 import VoucherModal from "@/routes/components/modal/vocherModal";
 import CheckKeplrModal from "@/routes/components/modal/checkKeplrModal";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
+import FaucetModal from "@/routes/components/modal/faucetModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -32,6 +33,7 @@ export default function App({ children }: { children: React.ReactNode }) {
 
             <NextUIProvider>
                 <>
+                    <FaucetModal />
 
                     <VoucherModal />
                     <MultiplierModal />
