@@ -64,7 +64,7 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
 
                     {/* 右侧：详细信息 */}
                     <div className="flex-1">
-                        <div className={cn("title !font-[300]", isMobile ? '!text-[2rem]' : 'text-3xl')}>{name}</div>
+                        <div className={cn("title !font-light", isMobile ? '!text-[2rem]' : 'text-3xl')}>{name}</div>
 
                         {/* 参数详情链接 */}
                         <a href="#" className="text-xs text-sub flex items-center mt-1">
@@ -147,7 +147,7 @@ const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
 
                 {/* 内容区域，上下分布 */}
                 <div className="absolute inset-0 flex flex-col justify-between p-6 z-10" onClick={() => { navigate(href || '/') }}>
-                    <h3 className="title text-3xl !font-[300]">{title}</h3>
+                    <h3 className="title text-3xl !font-light">{title}</h3>
 
                     <div className="self-end">
                         <ArrowRight size={20} className="text-white" />

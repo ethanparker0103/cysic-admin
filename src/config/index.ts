@@ -159,9 +159,32 @@ export const purchaseNftContract = {
 
 export const classes = {
   container: ` max-w-[1440px] px-[3rem] mx-auto`,
-  subTitle: 'sub-title !tracking-widest !text-[24px] !font-[400]',
+  subTitle: 'sub-title !tracking-widest !text-2xl !font-[400]',
 }
 
+export const routesConfig = {
+  "ecosystem": "/ecosystem",
+  "academy": "/academy",
+  "hardware": "/hardware",
+  "zk": "/zk",
+  "invite": "/zk/invite",
+  "prover": "/zk/prover",
+  "verifier": "/zk/verifier",
+  "project": "/zk/project",
+  "project/my": "/zk/project/my",
+  "project/my/:id": "/zk/project/my/:id",
+  "serviceHub": "/zk/serviceHub",
+  "ai": "/ai",
+  "nft": "/nft",
+  "userPortal": "/nft/userPortal",
+  "socialTask": "/nft/socialTask",
+  "stake": "/stake",
+  "dashboard": "/zk/dashboard",
+  "dashboard/project": "/zk/dashboard/project",
+  "dashboard/prover": "/zk/dashboard/prover",
+  "dashboard/verifier": "/zk/dashboard/verifier",
+  
+}
 
 export * from './abi/faucet'
 export * from './abi/purchase'

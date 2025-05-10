@@ -21,7 +21,7 @@ const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
                             </div>
                         }
                         <div className="flex flex-col gap-1 flex-1">
-                            <div className="break-words !text-base title !font-[300]">{project?.projectName}</div>
+                            <div className="break-words !text-base title !font-light">{project?.projectName}</div>
                             <div className="flex flex-wrap gap-1">
                             {
                                 project?.subLabel?.map((subLabel) => (

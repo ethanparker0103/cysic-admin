@@ -439,7 +439,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-6 h-full flex flex-col justify-between">
               <div className={cn("flex gap-4", isMobile ? "flex-col" : "justify-between items-start")}>
-                <h2 className="title !text-xl uppercase !font-[300]">STAKE CGTS</h2>
+                <h2 className="title !text-xl uppercase !font-light">STAKE CGTS</h2>
                 <Button
                   onClick={handleStakeModal}
                   type={BtnType.light}
@@ -451,15 +451,15 @@ const StakePage = () => {
 
               <div className={cn("grid ", isMobile ? "grid-cols-1 mt-4" : " grid-cols-3")}>
                 <div className={cn("col-span-1 border-white ", isMobile ? "border-b pb-6" : "border-r pr-6")}>
-                  <div className=" uppercase title !text-base mb-2 !font-[300]">STAKING AMOUNT</div>
+                  <div className=" uppercase title !text-base mb-2 !font-light">STAKING AMOUNT</div>
                   <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{stakeAmount} CGT</div>
                 </div>
                 <div className={cn("col-span-1 border-white ", isMobile ? "border-b py-6" : "border-r px-6")}>
-                  <div className=" uppercase title !text-base mb-2 !font-[300]">UNSTAKING AMOUNT</div>
+                  <div className=" uppercase title !text-base mb-2 !font-light">UNSTAKING AMOUNT</div>
                   <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{unstakeAmount} CGT</div>
                 </div>
                 <div className={cn("col-span-1 ", isMobile ? "pt-4" : "pl-4")}>
-                  <div className=" uppercase title !text-base mb-2 !font-[300]">APR</div>
+                  <div className=" uppercase title !text-base mb-2 !font-light">APR</div>
                   <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{apr}%</div>
                 </div>
               </div>
@@ -471,7 +471,7 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6">
-              <h2 className="title !text-xl uppercase !font-[300] mb-4">CLAIM REWARDS</h2>
+              <h2 className="title !text-xl uppercase !font-light mb-4">CLAIM REWARDS</h2>
               <div className={cn("!text-2xl !font-[400] title mb-4", isMobile ? "text-left" : "text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
@@ -517,7 +517,7 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-6">
-              <h2 className="title !text-xl !font-[300] uppercase mb-2">YOUR VALIDATORS</h2>
+              <h2 className="title !text-xl !font-light uppercase mb-2">YOUR VALIDATORS</h2>
               <div className="flex gap-2 items-start mb-3 ">
                 <div className="w-full">
                   <p className="text-sub text-base mb-4">
@@ -536,7 +536,7 @@ const StakePage = () => {
         >
           <div className="w-full py-4 px-6">
             <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
-              <h2 className="title !text-xl uppercase !font-[300]">ACTIVE VALIDATORS</h2>
+              <h2 className="title !text-xl uppercase !font-light">ACTIVE VALIDATORS</h2>
               <div className="relative w-[20rem] flex items-center">
                 <input
                   type="text"

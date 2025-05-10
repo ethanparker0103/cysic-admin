@@ -87,12 +87,12 @@ const ZkLanding = () => {
                 </span>
 
                 <div className="flex gap-6">
-                    <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4">
-                        <span>Join Testnet Phase III</span>
+                    <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center">
+                        <span className="text-base">Join Testnet Phase III</span>
                         <ArrowRight className="w-4 h-4" />
                     </Button>
-                    <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4">
-                        <span>About Testnet</span>
+                    <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center">
+                        <span className="text-base">About Testnet</span>
                         <ArrowRight className="w-4 h-4" />
                     </Button>
                 </div>
@@ -105,9 +105,9 @@ const ZkLanding = () => {
                         classes.container
                     )}
                 >
-                    <div className="!font-[200] !text-[24px] title">
+                    <div className="!font-[200] !text-2xl title">
                         Cysic Network offers an&nbsp;
-                        <span className="!font-[500] !text-[24px] title">
+                        <span className="!font-[500] !text-2xl title">
                             all-in-one solution
                         </span>
                         &nbsp;for
@@ -170,7 +170,7 @@ const ZkLanding = () => {
                         <div className="flex flex-col">
                             <span className={classes.subTitle}>Powerful ZK Prover</span>
                             <span className={classes.subTitle}>and Verifier Network for</span>
-                            <span className="title !text-[64px] !font-[300] pt-1">
+                            <span className="title !text-[64px] !font-light pt-1">
                                 everyone
                             </span>
                         </div>
@@ -183,7 +183,7 @@ const ZkLanding = () => {
 
                 <div className={cn("flex gap-6 py-16", classes.container)}>
                     <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-                        <div className="!tracking-widest sub-title !text-[24px] !font-[400]">
+                        <div className="!tracking-widest sub-title !text-2xl !font-[400]">
                             Unmatched
                             <br />
                             Performance
@@ -197,7 +197,7 @@ const ZkLanding = () => {
                         </div>
                     </GradientBorderCard>
                     <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-                        <div className="!tracking-widest sub-title !text-[24px] !font-[400]">
+                        <div className="!tracking-widest sub-title !text-2xl !font-[400]">
                             Fully
                             <br />
                             Permissionless &
@@ -213,7 +213,7 @@ const ZkLanding = () => {
                         </div>
                     </GradientBorderCard>
                     <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-                        <div className="!tracking-widest sub-title !text-[24px] !font-[400]">
+                        <div className="!tracking-widest sub-title !text-2xl !font-[400]">
                             Affordable, Scalable,
                             <br />
                             and Powerful for
@@ -237,7 +237,7 @@ const ZkLanding = () => {
                         classes.container
                     )}
                 >
-                    <div className="title !text-[64px] !font-[300]">
+                    <div className="title !text-[64px] !font-light">
                         how cysic network works
                     </div>
                     <img
@@ -263,12 +263,12 @@ const ZkLanding = () => {
                         <span className={classes.subTitle}>Join Cysic Network </span>
                         <span className="title !text-[11.25rem] !font-[200]">Phase III</span>
                         <div className="flex gap-6">
-                            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4">
-                                <span>Join Testnet Phase III</span>
+                            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center">
+                                <span className="text-base">Join Testnet Phase III</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Button>
-                            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4">
-                                <span>About Testnet</span>
+                            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center">
+                                <span className="text-base">About Testnet</span>
                                 <ArrowRight className="w-4 h-4" />
                             </Button>
                         </div>
@@ -276,7 +276,7 @@ const ZkLanding = () => {
                 </div>
 
                 <div className="py-16 flex flex-col items-center gap-12 relative z-[2]">
-                    <span className="title !font-[300] uppercase text-center !text-[4rem]">
+                    <span className="title !font-light uppercase text-center !text-[4rem]">
                         investors
                     </span>
                     <div className="flex flex-wrap gap-10 justify-center">
@@ -289,7 +289,7 @@ const ZkLanding = () => {
                                 );
                             })}
                         </div>
-                        <div className="flex flex-wrap gap-10 justify-center">
+                        <div className="flex flex-wrap gap-10 justify-center w-full">
                             {investors2?.map((i) => {
                                 return (
                                     <div className="min-w-12 h-8" key={i.name}>

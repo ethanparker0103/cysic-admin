@@ -10,7 +10,7 @@ const Ad = ({ type }: { type: string }) => {
               Become a <span className="text-gradient  ">Verifier</span>{" "}
               <br/> to earn $CYS and $CGT
             </div>
-            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-[300]">
+            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-light">
               Run a lightweight node to support proof verification,
               strengthening the network's security and scalability
             </div>
@@ -29,11 +29,11 @@ const Ad = ({ type }: { type: string }) => {
               Become a <span className="text-gradient  ">Prover</span> to
               earn $CYS, $CGT ANd VeCompute
             </div>
-            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-[300]">
+            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-light">
               Contribute Your Computational Power to Support ZK Proofs and Earn
               Rewards
             </div>
-            <div className="leading-[1.2] text-[#737373] text-sm font-[300]">
+            <div className="leading-[1.2] text-[#737373] text-sm font-light">
               *Certain hardware specifications are required for becoming a
               prover.
             </div>
@@ -53,7 +53,7 @@ const Ad = ({ type }: { type: string }) => {
               <span className="text-gradient  ">reward</span> with Cysic
               Network Triple Reward System
             </div>
-            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-[300]">
+            <div className="leading-[1.2] text-[#A1A1AA] text-sm font-light">
               Our unique reward structure lets you contribute computational
               power and earn in three ways
             </div>

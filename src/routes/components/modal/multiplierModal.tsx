@@ -216,11 +216,11 @@ const MultiplierModal = () => {
                             <div className="flex flex-col gap-4">
                                 <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
                                     <div className="flex flex-col gap-4">
-                                        <h2 className="title !text-base uppercase !font-[300]">Invite Code</h2>
+                                        <h2 className="title !text-base uppercase !font-light">Invite Code</h2>
                                         {/* 推荐码显示 */}
                                         <div className="flex items-center justify-end">
                                             {/* <span className="title !text-2xl !font-[400]">{inviteCode}</span> */}
-                                            <Copy value={inviteCode} className="title !text-[24px] !font-[300]">{inviteCode}</Copy>
+                                            <Copy value={inviteCode} className="title !text-2xl !font-light">{inviteCode}</Copy>
                                         </div>
                                         <div className="flex items-center gap-2 justify-end">
                                             <span className="text-sm uppercase !font-[400]">Check my Invites</span>
@@ -243,7 +243,7 @@ const MultiplierModal = () => {
                                                 >
                                                     <div className="w-full p-4 flex flex-col items-center">
                                                         <div className="flex items-center gap-2 mb-2">
-                                                            <h3 className="!text-base !font-[300] title uppercase font-light tracking-wider">{tier.name}</h3>
+                                                            <h3 className="!text-base !font-light title uppercase font-light tracking-wider">{tier.name}</h3>
                                                             <Tooltip
                                                                 classNames={{
                                                                     content: '!p-0',
@@ -278,8 +278,8 @@ const MultiplierModal = () => {
                                                                 <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                                 <path d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                             </svg>
-                                                            {/* <span className="text-base title !font-[300]">{tier.needInviteCnt}</span> */}
-                                                            <span className="!text-base title !font-[300]">
+                                                            {/* <span className="text-base title !font-light">{tier.needInviteCnt}</span> */}
+                                                            <span className="!text-base title !font-light">
                                                                 {(tiers[index - 1]?.needInviteCnt || 0)}
                                                             </span>
                                                         </div>

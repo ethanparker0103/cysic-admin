@@ -1,28 +1,52 @@
 import { backgroundImageList } from "@/router";
-import { useLocation } from "react-router-dom";
-import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import React, { useMemo } from "react";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
+import { ArrowLeft } from "lucide-react";
 
 interface BackgroundConfig {
     img: string;
-    height?: string; // 比如 "60vh" 或 "100vh"
-    gradient?: string; // 可选，比如 "linear-gradient(to bottom, rgba(0,0,0,0.5), #000)"
+    height?: string; 
+    gradient?: string;
     maxWidth?: string;
     className?: string;
     needShadow?: boolean;
     style?: React.CSSProperties;
 }
 
-export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
+export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React.memo(({
     children,
 }) => {
     const location = useLocation();
     const path = location.pathname;
 
-    // 根据当前路由拿背景配置
-    const backgroundConfig: BackgroundConfig | undefined =
-        backgroundImageList?.[path as keyof typeof backgroundImageList];
+    // 使用useMemo缓存背景配置
+    const backgroundConfig = useMemo<BackgroundConfig | undefined>(() => {
+        // 直接检查是否有完全匹配的路径
+        const config = backgroundImageList[path as keyof typeof backgroundImageList];
+        if (config) {
+            return config;
+        }
+        
+        // 如果路径中没有找到匹配项，检查是否有适用的动态路由
+        // 只在没有直接匹配时处理动态路由逻辑
+        for (const key in backgroundImageList) {
+            // 只处理包含':' 的动态路由键
+            if (key.includes(':')) {
+                // 将路由模式转换为正则表达式
+                const pattern = key.replace(/:[^/]+/g, '[^/]+');
+                const regex = new RegExp(`^${pattern}$`);
+                
+                // 检查当前路径是否匹配此模式
+                if (regex.test(path)) {
+                    return backgroundImageList[key as keyof typeof backgroundImageList];
+                }
+            }
+        }
+        
+        return undefined;
+    }, [path]);
 
     if (!backgroundConfig?.img) {
         return (
@@ -42,10 +66,17 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
         className = "",
         style = {},
         needShadow = false,
+        needBack = false
     } = backgroundConfig;
 
     // 组合背景
     const backgroundImage = gradient ? `${gradient}, url(${img})` : `url(${img})`;
+    const backPath = useMemo(() => {
+        if (needBack) {
+            return path.split('/').slice(0, -1).join('/');
+        }
+        return path;
+    }, [needBack, path]);
 
     return (
         <>
@@ -75,6 +106,14 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
 
             {/* 主体内容层 */}
             <div className="relative w-full" style={{ minHeight: height }}>
+                {
+                    needBack ? (
+                        <Link to={backPath} className="absolute top-1 left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-[2rem] font-normal uppercase title">
+                            <ArrowLeft className="size-[2rem]" />
+                            <span>Back</span>
+                        </Link>
+                    ) : null
+                }
                 <main className={
                     cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
                         ['/hardware', '/zk'].includes(path) ? "" : "max-w-[1440px] px-[3rem] ",
@@ -86,6 +125,6 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = ({
             </div>
         </>
     );
-};
+});
 
 export default LandingBackground;

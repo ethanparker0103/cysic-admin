@@ -19,7 +19,7 @@ const MainCard = (props: any) => {
                     {typeof rest?.title == "string" ? t(rest?.title) : rest?.title}
                 </span>
             </div> : null}
-            <div className={clsx("text-[24px] text-[#fff] font-bold h-full", className)}>{rest?.children}</div>
+            <div className={clsx("text-2xl text-[#fff] font-bold h-full", className)}>{rest?.children}</div>
         </div>
     );
 };

@@ -12,13 +12,27 @@ import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
 import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
 import { getImageUrl } from "@/utils/tools";
 import { isMobile } from "react-device-detect";
-import VerifierPage from "@/routes/pages/Zk/verifier/page";
-import ProjectPage from "@/routes/pages/Zk/project/page";
+
 import MyProjectPage from "@/routes/pages/Zk/project/my/page";
-import ProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
+import MyProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
 import EcosystemPage from "@/routes/pages/Ecosystem/page";
 import AcademyPage from "@/routes/pages/Academy/page";
 import HardwarePage from "@/routes/pages/Hardware/page";
+
+import ProjectPage from "@/routes/pages/Zk/project/page";
+import VerifierPage from "@/routes/pages/Zk/verifier/page";
+import ProverPage from "@/routes/pages/Zk/prover/page";
+
+import DashboardPage from "@/routes/pages/Zk/dashboard/page";
+import TaskListPage from "@/routes/pages/Zk/dashboard/task/page";
+import ProjectListPage from "@/routes/pages/Zk/dashboard/project/page";
+import VerifierListPage from "@/routes/pages/Zk/dashboard/verifier/page";
+import ProverListPage from "@/routes/pages/Zk/dashboard/prover/page";
+import ProjectDetailPage from "@/routes/pages/Zk/dashboard/project/[id]/page";
+import VerifierDetailPage from "@/routes/pages/Zk/dashboard/verifier/[id]/page";
+import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
+import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page"
+
 
 export const router = createBrowserRouter(
   [
@@ -70,12 +84,48 @@ export const router = createBrowserRouter(
               element: <MyProjectPage />,
             },
             {
-              path: "project/detail/:id",
-              element: <ProjectDetailPage />,
+              path: "project/my/:id",
+              element: <MyProjectDetailPage />,
             },
             {
               path: "serviceHub",
               element: <NftServiceHub />,
+            },
+            {
+              path: "dashboard",
+              element: <DashboardPage />,
+            },
+            {
+              path: 'dashboard/project',
+              element: <ProjectListPage />,
+            },
+            {
+              path: 'dashboard/verifier',
+              element: <VerifierListPage />
+            },
+            {
+              path: 'dashboard/prover',
+              element: <ProverListPage />
+            },
+            {
+              path: 'dashboard/task',
+              element: <TaskListPage />
+            },
+            {
+              path: 'dashboard/project/:id',
+              element: <ProjectDetailPage />
+            },
+            {
+              path: 'dashboard/verifier/:id',
+              element: <VerifierDetailPage />
+            },
+            {
+              path: 'dashboard/prover/:id',
+              element: <ProverDetailPage />
+            },
+            {
+              path: 'dashboard/task/:id',
+              element: <TaskDetailPage />
             },
           ]
         },
@@ -111,7 +161,6 @@ export const router = createBrowserRouter(
     basename: "/m",
   }
 );
-
 
 export const backgroundImageList = {
   '/': {
@@ -164,6 +213,84 @@ export const backgroundImageList = {
     },
     needShadow: true
   },  
+  '/zk/dashboard': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+  },
+  '/zk/dashboard/project': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+  },
+  '/zk/dashboard/verifier': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+  },
+  '/zk/dashboard/prover': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+  },
+  '/zk/dashboard/task': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+  },
+  '/zk/dashboard/project/:id': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+    needBack: true
+  },
+  '/zk/dashboard/verifier/:id': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+    needBack: true
+  },
+  '/zk/dashboard/prover/:id': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+    needBack: true
+  },
+  '/zk/dashboard/task/:id': {
+    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    className: "h-screen",
+    style: {
+      filter: "sepia(1) hue-rotate(90deg)",
+      backgroundPosition: "center -20vh"
+    },
+    needBack: true
+  },
+
+
   '/ai': {    
     img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
     className: "h-screen grayscale brightness-[0.3]",
@@ -196,7 +323,7 @@ export const backgroundImageList = {
     className: "h-screen",
     style: {
       filter: "sepia(1) hue-rotate(90deg)",
-      backgroundPosition: "center -30vh"
+      backgroundPosition: "center -20vh"
     },
     needShadow: true
     

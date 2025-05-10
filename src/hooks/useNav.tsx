@@ -21,7 +21,7 @@ const navs = [
                 href: '/ai'
             },
             {
-                content: <div className="text-center">Cysic Mining<br/>(Coming Soon)</div>,
+                content: 'Cysic Mining',
                 href: '/stake'
             },
         ]
@@ -148,7 +148,29 @@ const _zkNavs = [
     },
     {
         content: 'dashboard',
-        href: '/zk/serviceHub'
+        children: [
+            {
+                content: 'Dashboard',
+                href: '/zk/dashboard'
+            },
+            {
+                content: 'Project',
+                href: '/zk/dashboard/project'
+            },
+            {
+                content: 'Prover',
+                href: '/zk/dashboard/prover'
+            },
+            {
+                content: 'Verifier',
+                href: '/zk/dashboard/verifier'
+            },
+            {
+                content: 'Task',
+                href: '/zk/dashboard/task'
+            },
+        ]
+        // href: '/zk/dashboard'
     },
 ]
 

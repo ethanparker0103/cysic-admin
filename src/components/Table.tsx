@@ -43,7 +43,7 @@ const CysicTable = <T extends object>({
       selectionMode="none"
       classNames={{
         wrapper: 'px-0 !bg-[transparent]',
-        th: '!bg-[#151515] !font-[300]',
+        th: '!bg-[#151515] !font-light',
       }}
     >
       <TableHeader>

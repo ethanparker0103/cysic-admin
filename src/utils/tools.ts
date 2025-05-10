@@ -727,3 +727,17 @@ export const handleVoucherModal = () => {
   });
   window.dispatchEvent(event);
 };
+
+export const handleCheckKeplrModal = () => {
+  const event = new CustomEvent('modal_check_keplr_visible', {
+    detail: { visible: true }
+  });
+  window.dispatchEvent(event);
+}
+
+export const handleHowInviteWorkModal = (visible = true) => {
+  const event = new CustomEvent('modal_how_invite_work_visible', {
+    detail: { visible }
+  });
+  window.dispatchEvent(event);
+}

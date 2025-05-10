@@ -87,7 +87,7 @@ const ProjectPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center gap-4">
-                    <span className="title !text-4xl !font-[300] !text-[#fff] text-center">
+                    <span className="title !text-4xl !font-light !text-[#fff] text-center">
                         PROJECT
                     </span>
                     <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ const ProjectPage = () => {
                         <div className="flex items-center justify-between gap-2 mb-6 ">
                             <h2
                                 className={cn(
-                                    "title !font-[300] uppercase mt-2",
+                                    "title !font-light uppercase mt-2",
                                     isMobile ? "!text-base" : "!text-xl"
                                 )}
                             >
@@ -123,7 +123,7 @@ const ProjectPage = () => {
                             </Link>
                         </div>
 
-                        <p className="!font-[300] text-[32px] text-right title">
+                        <p className="!font-light text-[32px] text-right title">
                             12
                         </p>
                     </div>
@@ -134,7 +134,7 @@ const ProjectPage = () => {
                     <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
                         <h2
                             className={cn(
-                                "title !font-[300] uppercase mt-2",
+                                "title !font-light uppercase mt-2",
                                 isMobile ? "!text-base" : "!text-xl"
                             )}
                         >

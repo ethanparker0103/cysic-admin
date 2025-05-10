@@ -44,7 +44,7 @@ interface TaskSectionProps {
 const TaskSection = ({ title, children, rightAction }: TaskSectionProps) => (
   <div className="mb-12">
     <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
-      <h2 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>{title}</h2>
+      <h2 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>{title}</h2>
       {rightAction && (
         <div>{rightAction}</div>
       )}
@@ -173,10 +173,10 @@ const SocialTaskPage = () => {
     <>
 
 
-      {/* 内容区域 */}
-      <div className={cn("mx-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "px-[3rem]")}>
-        {/* 页面标题 */}
-        <h1 className="title text-7xl !font-[200] mb-24 text-center">SOCIAL TASKS</h1>
+      {/* content */}
+      <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
+        {/* title */}
+        <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>SOCIAL TASKS</h1>
         
         {/* 根据API数据渲染任务组 */}
         {loading ? (

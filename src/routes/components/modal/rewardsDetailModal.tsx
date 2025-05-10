@@ -67,9 +67,7 @@ const RewardsDetailModal = () => {
             ready: visible && isBinded, // 仅当弹窗显示时才执行请求
         }
     );
-
-    console.log('phasesData', phasesData)
-
+    
     // 处理阶段切换
     const handlePhaseChange = (phase: RewardPhase) => {
         setActivePhase(phase);
@@ -131,8 +129,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total Points</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{totalPoints.toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total Points</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{totalPoints.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-4 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -168,8 +166,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Claimable</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.claimable).toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Claimable</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.claimable).toLocaleString()}</span>
                         <Button
                             type="light"
                             className="px-6 py-2 rounded-lg text-base font-[400]"
@@ -182,8 +180,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cys.total).toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cys.total).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -209,8 +207,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cgt.total).toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cgt.total).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -257,8 +255,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cysIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cysIncomeDetail?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
@@ -306,8 +304,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-[300] uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
-                        <span className={cn(" title !font-[300]", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cgtIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
+                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cgtIncomeDetail?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>

@@ -141,7 +141,7 @@ const MyProjectPage = () => {
             label: "Detail",
             width: "33%",
             renderCell: (project) => (
-                <Link to={`/zk/project/detail/${project.id}`} className="flex items-center gap-2">
+                <Link to={`/zk/project/my/${project.id}`} className="flex items-center gap-2">
                     <span className="uppercase text-sm">Detail</span>
                     <ArrowRight size={16} />
                 </Link>
@@ -195,7 +195,7 @@ const MyProjectPage = () => {
                 {/* 主标题 */}
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">
-                        <span className="title !text-4xl !font-[300] !text-[#fff] text-center">
+                        <span className="title !text-4xl !font-light !text-[#fff] text-center">
                             My projects
                         </span>
                     </div>
@@ -207,7 +207,7 @@ const MyProjectPage = () => {
                         <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
                             <h2
                                 className={cn(
-                                    "title !font-[300] uppercase mt-2",
+                                    "title !font-light uppercase mt-2",
                                     isMobile ? "!text-base" : "!text-xl"
                                 )}
                             >
@@ -232,7 +232,7 @@ const MyProjectPage = () => {
                 <div className="flex flex-col gap-6">
                     <div className="bg-[#0E0E0E] border border-[#333] rounded-lg p-4">
                         <div className="flex justify-between items-center">
-                            <div className="!text-3xl title font-light !font-[300]">
+                            <div className="!text-3xl title font-light !font-light">
                                 <input
                                     type="text"
                                     value={amount}

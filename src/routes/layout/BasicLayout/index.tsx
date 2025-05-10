@@ -19,6 +19,8 @@ import { isMobile } from "react-device-detect";
 import LandingBackground from "@/components/LandingBackground";
 import MultiplierModal from "@/routes/components/modal/multiplierModal";
 import VoucherModal from "@/routes/components/modal/vocherModal";
+import CheckKeplrModal from "@/routes/components/modal/checkKeplrModal";
+import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -41,6 +43,8 @@ export default function App({ children }: { children: React.ReactNode }) {
                     <RewardsDetailModal />
                     <ConvertModal />
                     <ConvertHistoryModal />
+                    <CheckKeplrModal />
+                    <HowInviteWorkModal />
 
 
                     <div className={cn("relative", isMobile && "max-w-screen overflow-x-hidden")}>

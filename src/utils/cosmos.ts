@@ -22,6 +22,7 @@ import {
 import { PubKey } from "cosmjs-types/cosmos/crypto/secp256k1/keys";
 import { Buffer } from "buffer";
 import { checksumAddress } from "viem";
+import { handleCheckKeplrModal } from "@/utils/tools";
 
 declare global {
     interface Window {
@@ -238,11 +239,7 @@ export const checkKeplrWallet = (onlyClient?: boolean) => {
     const unmatchedAddressWithEVM = useCosmos.getState().unmatchedAddressWithEVM == true
 
     if (!status) {
-        dispatchEvent(
-            new CustomEvent("modal_download_keplr_visible", {
-                detail: { visible: true },
-            })
-        );
+        handleCheckKeplrModal()
 
         throw { message: "Invalid Cosmos Wallet" };
     }

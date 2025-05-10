@@ -4,13 +4,13 @@ import { getImageUrl } from "@/utils/tools";
 const switchImg = (status: any) => {
     switch (+status) {
         case 0:
-            return getImageUrl('@/assets/images/dashboard/unknown.svg');
+            return getImageUrl('@/assets/images/icon/unknown.svg');
         case 1:
-            return getImageUrl('@/assets/images/dashboard/suc.svg');
+            return getImageUrl('@/assets/images/icon/suc.svg');
         case 2:
-            return getImageUrl('@/assets/images/dashboard/error.svg');
+            return getImageUrl('@/assets/images/icon/error.svg');
         default:
-            return getImageUrl('@/assets/images/dashboard/unknown.svg');
+            return getImageUrl('@/assets/images/icon/unknown.svg');
     }
 }
 const StatusIcon = ({status}: any) => {

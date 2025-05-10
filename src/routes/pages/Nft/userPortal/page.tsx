@@ -22,7 +22,7 @@ interface InfoCardProps {
 const InfoCard = ({ title, children, rightAction, className = "" }: InfoCardProps) => (
     <GradientBorderCard borderRadius={8} className={`h-full relative ${className}`}>
         <div className="h-full flex flex-col justify-between px-6 py-4 w-full gap-4">
-            <div className="text-base !font-[300] uppercase font-medium ">{title}</div>
+            <div className="text-base !font-light uppercase font-medium ">{title}</div>
             <div className="flex-1 flex flex-col justify-between w-full gap-4">
                 <div className="flex-1 flex items-center ">
                     {children}
@@ -62,9 +62,9 @@ const ServiceCard = ({ title, imageSrc, onClick }: ServiceCardProps) => (
             {/* 叠加的半透明层 */}
             <div className="absolute inset-0 bg-black/30"></div>
 
-            {/* 内容区域 */}
+            {/* content */}
             <div className="relative inset-0 flex flex-col h-full justify-between items-start p-4 z-10">
-                <h3 className="title text-2xl !font-[300]">{title}</h3>
+                <h3 className="title text-2xl !font-light">{title}</h3>
                 <ArrowRight size={20} className="self-end text-white" />
             </div>
         </div>
@@ -126,14 +126,14 @@ const UserPortal = () => {
     return (
         <>
 
-            {/* 内容区域 */}
+            {/* content */}
             <div className="container mx-auto relative z-10 pt-20 pb-16">
-                {/* 页面标题 */}
+                {/* title */}
                 <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">USER PORTAL</h1>
 
                 {/* GENERAL 部分 */}
                 <div className="mb-4">
-                    <h2 className={cn("title !font-[300] uppercase mb-12 text-center", isMobile ? "!text-[24px]" : "text-4xl")}>GENERAL</h2>
+                    <h2 className={cn("title !font-light uppercase mb-12 text-center", isMobile ? "!text-2xl" : "text-4xl")}>GENERAL</h2>
 
                     <div className="flex flex-wrap gap-4">
                         {/* 个人资料卡片 */}
@@ -176,7 +176,7 @@ const UserPortal = () => {
                                     </Link>
                                 }
                             >
-                                <Copy className={cn("!font-[300] justify-end title w-full", isMobile ? "!text-[24px]" : "text-2xl ")} value={inviteCode || ''}>
+                                <Copy className={cn("!font-light justify-end title w-full", isMobile ? "!text-2xl" : "text-2xl ")} value={inviteCode || ''}>
                                     {inviteCode || '-'}
                                 </Copy>
                             </InfoCard>
@@ -192,7 +192,7 @@ const UserPortal = () => {
                                     </Link>
                                 }
                             >
-                                <div className={cn("!font-[300] text-right title w-full", isMobile ? "!text-[24px]" : "text-2xl")}>
+                                <div className={cn("!font-light text-right title w-full", isMobile ? "!text-2xl" : "text-2xl")}>
                                     {balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}
                                 </div>
                             </InfoCard>
@@ -208,7 +208,7 @@ const UserPortal = () => {
                                     </div>
                                 }
                             >
-                                <div className={cn("!font-[300] text-right title w-full", isMobile ? "!text-[24px]" : "text-2xl")}>{voucherCnt}</div>
+                                <div className={cn("!font-light text-right title w-full", isMobile ? "!text-2xl" : "text-2xl")}>{voucherCnt}</div>
                             </InfoCard>
                         </div>
                     </div>
@@ -221,7 +221,7 @@ const UserPortal = () => {
                         <GradientBorderCard borderRadius={8} className="h-full">
                             <div className="py-4 px-6 w-full h-full">
                                 <div className="flex justify-between items-center mb-4">
-                                    <div className={cn("text-base !font-[300] title", isMobile ? "!text-base" : "")}>TOTAL REWARDS</div>
+                                    <div className={cn("text-base !font-light title", isMobile ? "!text-base" : "")}>TOTAL REWARDS</div>
                                     <Link to="/zk/serviceHub" className="flex items-center text-sub text-sm hover:text-white">
                                         DETAILS <ArrowRight size={12} className="ml-1" />
                                     </Link>
@@ -229,7 +229,7 @@ const UserPortal = () => {
 
                                 <div className={cn("flex gap-6 justify-between", isMobile ? "flex-col" : "")}>
                                     <div className={cn("min-w-[18.75rem] flex flex-col gap-6 border-white", isMobile ? "border-b pb-6   " : "border-r pr-6")}>
-                                        <div className="title !text-3xl !font-[300]">{cysReward} CYS</div>
+                                        <div className="title !text-3xl !font-light">{cysReward} CYS</div>
                                         <Button onClick={handleConvertModal} type="light" className={cn("min-w-fit self-end text-base py-2 px-3 rounded-md", isMobile ? "w-full" : "w-[8.125rem]")}>
                                             CONVERT
                                         </Button>
@@ -237,7 +237,7 @@ const UserPortal = () => {
 
                                     <div>
                                         <div className="flex flex-col gap-6">
-                                            <div className="title !text-3xl !font-[300]">{cgtReward} CGT</div>
+                                            <div className="title !text-3xl !font-light">{cgtReward} CGT</div>
                                             <Button onClick={handleStakeModal} type="light" className={cn("min-w-fit self-end text-base py-2 px-3 rounded-md", isMobile ? "w-full" : "w-[8.125rem]")}>
                                                 STAKE
                                             </Button>
@@ -252,7 +252,7 @@ const UserPortal = () => {
                     <div className="flex-1 min-w-[300px]">
                         <GradientBorderCard borderRadius={8} className="h-full">
                             <div className="py-4 px-6 w-full h-full">
-                                <div className="text-base !font-[300] uppercase mb-2">SOCIAL ACCOUNT</div>
+                                <div className="text-base !font-light uppercase mb-2">SOCIAL ACCOUNT</div>
 
                                 {googleAccount && (
                                     <SocialAccountItem
@@ -290,8 +290,8 @@ const UserPortal = () => {
                         <GradientBorderCard borderRadius={8} className="h-full">
                             <div className="py-4 px-6 h-full w-full flex flex-col justify-between">
                                 <div className="flex justify-between items-center w-full">
-                                    <div className={cn("title !font-[300] text-base", isMobile ? "!text-base" : "")}>MY NFTS</div>
-                                    <div className={cn("title !font-[300] !text-2xl", isMobile ? "!text-base" : "")}>{nftCnt}</div>
+                                    <div className={cn("title !font-light text-base", isMobile ? "!text-base" : "")}>MY NFTS</div>
+                                    <div className={cn("title !font-light !text-2xl", isMobile ? "!text-base" : "")}>{nftCnt}</div>
                                 </div>
 
                                 <div className="flex justify-end items-center">
@@ -306,7 +306,7 @@ const UserPortal = () => {
 
                 {/* SERVICE HUB 部分 */}
                 <div>
-                    <h2 className="title !text-4xl !font-[300] uppercase mb-12 text-center">SERVICE HUB</h2>
+                    <h2 className="title !text-4xl !font-light uppercase mb-12 text-center">SERVICE HUB</h2>
 
                     <div className="flex flex-wrap gap-4">
                         <div className="flex-1 min-w-[300px]">

@@ -206,7 +206,7 @@ const ReserveModal = () => {
             {/* 金额输入区域 */}
             <div className="bg-[#0E0E0E] border border-[#333] rounded-lg p-4 mb-6">
                 <div className="flex justify-between items-center">
-                    <div className="!text-3xl title font-light !font-[300]">
+                    <div className="!text-3xl title font-light !font-light">
                         <input
                             type="text"
                             value={amount}

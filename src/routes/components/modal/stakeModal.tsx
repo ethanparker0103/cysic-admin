@@ -577,8 +577,6 @@ const StakeModal = () => {
         }
     }, [selectedValidator, activeTab]);
 
-
-    console.log('selectedValidator', selectedValidator)
     return (
         <Modal
             isOpen={visible}

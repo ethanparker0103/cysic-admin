@@ -236,7 +236,7 @@ const ConvertModal = () => {
             type="text"
             value={fromAmount}
             onChange={handleFromAmountChange}
-            className="bg-transparent border-none outline-none w-full max-w-[200px] !text-3xl title !font-[300] text-white"
+            className="bg-transparent border-none outline-none w-full max-w-[200px] !text-3xl title !font-light text-white"
             placeholder="0.00"
           />
           <div className="flex items-center bg-[#222] rounded-full px-4 py-2">
@@ -288,7 +288,7 @@ const ConvertModal = () => {
       <div className="border border-[#333] rounded-lg p-4 mb-6">
         <div className="text-sub mb-2">To</div>
         <div className="flex justify-between items-center">
-          <span className="!text-3xl title !font-[300] text-white">{toAmount || "0.00"}</span>
+          <span className="!text-3xl title !font-light text-white">{toAmount || "0.00"}</span>
           <div className="flex items-center bg-[#222] rounded-full px-4 py-2">
             <img
               src={getTokenIcon(toToken)}

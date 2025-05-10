@@ -1,6 +1,6 @@
 // @ts-nocheck
 import Button from "@/components/Button";
-import { getImageUrl, shortStr } from "@/utils/tools";
+import { getImageUrl, shortStr, handleHowInviteWorkModal } from "@/utils/tools";
 import { ArrowRight, CircleHelp } from "lucide-react";
 import Copy from "@/components/Copy";
 import useUser from "@/models/user";
@@ -221,8 +221,8 @@ const InvitePage = () => {
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
                     <span className="title !text-[2.25rem] !text-[#fff] text-center">INVITE</span>
-                    <div className="flex items-center gap-4 mt-4 cursor-pointer">
-                        <div className="title !text-base font-[300]">HOW INVITE WORK</div>
+                    <div className="flex items-center gap-4 mt-4 cursor-pointer" onClick={handleHowInviteWorkModal}>
+                        <div className="title !text-base font-light">HOW INVITE WORK</div>
                         <ArrowRight width={16} height={16} />
                     </div>
                 </div>
@@ -237,13 +237,13 @@ const InvitePage = () => {
                         borderRadius={8}
                     >
                         <div className="w-full py-4">
-                            <h2 className="title !text-xl !font-[300] uppercase mb-4 px-6">TOTAL INVITE REWARDS</h2>
+                            <h2 className="title !text-xl !font-light uppercase mb-4 px-6">TOTAL INVITE REWARDS</h2>
                             <div className="border-b border-white my-4 "></div>
 
 
                             {/* 推荐收益 */}
                             <div className="flex justify-between items-start px-6">
-                                <span className="!font-[300] uppercase !text-base title">REFERRAL EARNINGS</span>
+                                <span className="!font-light uppercase !text-base title">REFERRAL EARNINGS</span>
                                 <div className="flex flex-col items-center gap-4">
                                     <span className="!text-2xl text-right title !font-[400]">{rewards.cys} CYS</span>
                                     <div className="bg-white h-px w-8 self-end" />
@@ -255,7 +255,7 @@ const InvitePage = () => {
 
                             {/* 升级收益 */}
                             <div className="flex justify-between items-center px-6">
-                                <span className="!font-[300] uppercase !text-base title">UPGRADE EARNINGS</span>
+                                <span className="!font-light uppercase !text-base title">UPGRADE EARNINGS</span>
                                 <span className="!text-2xl text-right title !font-[400]">{rewards.CGT} CGT</span>
                             </div>
                         </div>
@@ -267,7 +267,7 @@ const InvitePage = () => {
                     >
                         <div className="w-full px-6 py-4">
                             <div className="flex justify-between items-start">
-                                <h2 className="title !text-xl uppercase !font-[300]">YOUR<br />REFERRAL<br />CODE</h2>
+                                <h2 className="title !text-xl uppercase !font-light">YOUR<br />REFERRAL<br />CODE</h2>
                                 {/* 推荐码显示 */}
                                 <div className="flex items-center self-start">
                                     <span className="title !text-2xl !font-[400]">{inviteCode}</span>
@@ -302,7 +302,7 @@ const InvitePage = () => {
                     <div className="w-full px-6 py-4 flex flex-col gap-6">
                         <div className={cn("flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
                             <div >
-                                <h2 className="title !font-[300] !text-xl uppercase mb-2">SUCCESSFUL INVITES</h2>
+                                <h2 className="title !font-light !text-xl uppercase mb-2">SUCCESSFUL INVITES</h2>
                                 <p className="text-base !font-[400]">
                                     Successful Invites could also speed up your Multiplier for Earnings from Verifier/Prover.
                                 </p>
@@ -334,7 +334,7 @@ const InvitePage = () => {
                                         >
                                             <div className="w-full p-4 flex flex-col items-center">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="!text-base !font-[300] title uppercase font-light tracking-wider">{tier.name}</h3>
+                                                    <h3 className="!text-base !font-light title uppercase font-light tracking-wider">{tier.name}</h3>
                                                     <Tooltip
                                                         classNames={{
                                                             content: '!p-0',
@@ -369,8 +369,8 @@ const InvitePage = () => {
                                                         <path d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                         <path d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                     </svg>
-                                                    {/* <span className="text-base title !font-[300]">{tier.needInviteCnt}</span> */}
-                                                    <span className="!text-base title !font-[300]">
+                                                    {/* <span className="text-base title !font-light">{tier.needInviteCnt}</span> */}
+                                                    <span className="!text-base title !font-light">
                                                         {(tiers[index-1]?.needInviteCnt || 0)}
                                                     </span>
                                                 </div>
@@ -395,7 +395,7 @@ const InvitePage = () => {
                         {/* 团队领导表格 */}
                         {leaderData && (
                             <div className="mt-4">
-                                <h2 className="title !font-[300] !text-base uppercase mb-4">TEAM LEADER</h2>
+                                <h2 className="title !font-light !text-base uppercase mb-4">TEAM LEADER</h2>
                                 <CysicTable
                                     data={[leaderData]}
                                     columns={leaderColumns}
@@ -407,7 +407,7 @@ const InvitePage = () => {
                         {/* 团队列表表格 */}
                         {memberData.length > 0 && (
                             <div className="mt-4">
-                                <h2 className="title !font-[300] !text-base uppercase mb-4">TEAM MEMBERS</h2>
+                                <h2 className="title !font-light !text-base uppercase mb-4">TEAM MEMBERS</h2>
                                 <CysicTable
                                     data={memberData}
                                     columns={memberColumns}

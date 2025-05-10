@@ -296,7 +296,7 @@ const GuideStepCard = ({
                 <div className="text-base font-[400]">
                     Step{step}/{totalStep}
                 </div>
-                <div className="title !text-[20px] !font-[300]">{title}</div>
+                <div className="title !text-xl !font-light">{title}</div>
             </div>
             {description ? (
                 <>
@@ -354,11 +354,11 @@ const SelfProverStepCard = ({
                     )}
                 >
                     <div className="flex flex-col">
-                        <div className="!text-base !font-[300] title">Step {step}/2</div>
+                        <div className="!text-base !font-light title">Step {step}/2</div>
                         <h3
                             className={cn(
-                                "title uppercase !font-[300] mb-2",
-                                isMobile ? "!text-[24px]" : "!text-3xl"
+                                "title uppercase !font-light mb-2",
+                                isMobile ? "!text-2xl" : "!text-3xl"
                             )}
                         >
                             {title}
@@ -417,7 +417,7 @@ const VerifierPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title !text-4xl !font-[300] !text-[#fff] text-center">
+                    <span className="title !text-4xl !font-light !text-[#fff] text-center">
                         VERIFIER
                     </span>
                 </div>
@@ -431,15 +431,15 @@ const VerifierPage = () => {
                         <div className="flex flex-col gap-2 mb-6 ">
                             <h1
                                 className={cn(
-                                    "title !font-[300] uppercase",
-                                    isMobile ? "!text-[24px]" : "!text-4xl"
+                                    "title !font-light uppercase",
+                                    isMobile ? "!text-2xl" : "!text-4xl"
                                 )}
                             >
                                 Scale Up, Verify More, Earn More
                             </h1>
                             <h2
                                 className={cn(
-                                    "title !font-[300] uppercase mt-2",
+                                    "title !font-light uppercase mt-2",
                                     isMobile ? "!text-base" : "!text-xl"
                                 )}
                             >
@@ -467,7 +467,7 @@ const VerifierPage = () => {
                             )}
                         >
                             <div className="flex flex-col gap-4 w-full">
-                                <h3 className="!text-base !font-[300] title uppercase">
+                                <h3 className="!text-base !font-light title uppercase">
                                     ZK VERIFIER STATUS
                                 </h3>
                                 <div className="flex items-center gap-2">
@@ -477,7 +477,7 @@ const VerifierPage = () => {
                                             : "bg-gray-500"
                                             }`}
                                     ></div>
-                                    <span className="!font-[300] !text-sm title uppercase">
+                                    <span className="!font-light !text-sm title uppercase">
                                         STANDARD{" "}
                                         {verifierStatus.standardActive ? "ACTIVE" : "INACTIVE"}
                                     </span>
@@ -489,7 +489,7 @@ const VerifierPage = () => {
                                             : "bg-red-500"
                                             }`}
                                     ></div>
-                                    <span className="!font-[300] !text-sm title uppercase">
+                                    <span className="!font-light !text-sm title uppercase">
                                         MOBILE {verifierStatus.mobileActive ? "ACTIVE" : "INACTIVE"}
                                     </span>
                                 </div>
@@ -514,7 +514,7 @@ const VerifierPage = () => {
                         <div className="w-full px-6 py-4">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="!text-base !font-[300] title uppercase">
+                                    <h3 className="!text-base !font-light title uppercase">
                                         MULTIPLIER
                                     </h3>
                                     <Tooltip
@@ -594,7 +594,7 @@ const VerifierPage = () => {
                             borderRadius={8}
                             className="flex flex-col gap-4 py-8 px-6 mt-6"
                         >
-                            <div className="!text-xl title !font-[300]">
+                            <div className="!text-xl title !font-light">
                                 Tutorial: Run Cysic Verifier Node in 2 simple steps
                             </div>
                             <div className="text-sm text-sub">

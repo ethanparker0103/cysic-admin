@@ -14,7 +14,7 @@ const AcademyPage = () => {
                     <span className={cn("title !font-[200] !text-[#fff] text-center", isMobile ? "!text-[32px]" : "!text-[11.25rem]")}>
                         Cysic<br />Academy
                     </span>
-                    <span className="sub-title text-center text-[24px] !font-[400]">
+                    <span className="sub-title text-center text-2xl !font-[400]">
                         Learn about the front tier of technology<br />
                         that changes the world through Cysic
                     </span>

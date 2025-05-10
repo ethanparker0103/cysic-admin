@@ -27,8 +27,8 @@ const SelfProverStepCard = ({ step, title, description, buttonText, children, on
             <div className="flex flex-col items-start">
                 <div className={cn("w-full flex ", isMobile ? "flex-col" : "justify-between items-start")}>
                     <div className="flex flex-col">
-                        <div className="!text-base !font-[300] title">Step {step}/2</div>
-                        <h3 className={cn("title uppercase !font-[300] mb-2", isMobile ? "!text-[24px]" : "!text-3xl")}>{title}</h3>
+                        <div className="!text-base !font-light title">Step {step}/2</div>
+                        <h3 className={cn("title uppercase !font-light mb-2", isMobile ? "!text-2xl" : "!text-3xl")}>{title}</h3>
                     </div>
                     {buttonText ? <Button
                         onClick={onClick}
@@ -75,10 +75,10 @@ const ProverCard = ({ icon, name, description, isActive, btnText }: ProverCardPr
                     </div>
                     <div className="flex-1 h-full flex flex-col">
                         <div className={cn("flex mb-4", isMobile ? "flex-col" : "justify-between items-start")}>
-                            <h3 className={cn("!font-[300] title", isMobile ? "!text-[24px] mb-2" : "!text-3xl")}>{name}</h3>
+                            <h3 className={cn("!font-light title", isMobile ? "!text-2xl mb-2" : "!text-3xl")}>{name}</h3>
                             <div className="flex items-center gap-2">
                                 <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                <span className="uppercase !text-sm !font-[300] title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                <span className="uppercase !text-sm !font-light title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                             </div>
                         </div>
                         <p className="flex-1 text-sm !font-[400] mb-6 text-sub">{description}</p>
@@ -131,7 +131,7 @@ const ProverPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title !text-4xl !font-[300] !text-[#fff] text-center">PROVER</span>
+                    <span className="title !text-4xl !font-light !text-[#fff] text-center">PROVER</span>
                 </div>
             </div>
 
@@ -144,9 +144,9 @@ const ProverPage = () => {
                 >
                     <div className={cn("w-full", isMobile ? "px-6 py-4" : "p-8")}>
                         <div className="flex flex-col gap-2 mb-6 ">
-                            <h1 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>BECOME A CYSIC PROVER</h1>
-                            <h1 className={cn("title !font-[300] uppercase", isMobile ? "!text-[24px]" : "text-4xl")}>AND EARN CYS & CGT</h1>
-                            <h2 className={cn("title !font-[300] uppercase mt-2", isMobile ? "!text-base" : "text-xl")}>EASIER THAN EVER BEFORE!</h2>
+                            <h1 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>BECOME A CYSIC PROVER</h1>
+                            <h1 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>AND EARN CYS & CGT</h1>
+                            <h2 className={cn("title !font-light uppercase mt-2", isMobile ? "!text-base" : "text-xl")}>EASIER THAN EVER BEFORE!</h2>
                                     </div>
 
                         <p className="text-white !font-[400] text-base mb-6">
@@ -164,14 +164,14 @@ const ProverPage = () => {
                     >
                         <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
                             <div className="flex flex-col gap-4 w-full">
-                                <h3 className="!text-base !font-[300] title uppercase">ZK VERIFIER STATUS</h3>
+                                <h3 className="!text-base !font-light title uppercase">ZK VERIFIER STATUS</h3>
                                 <div className="flex items-center gap-2">
                                     <div className={`w-3 h-3 rounded-full ${verifierStatus.standardActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                                    <span className="!font-[300] !text-sm title uppercase">STANDARD {verifierStatus.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                    <span className="!font-light !text-sm title uppercase">STANDARD {verifierStatus.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className={`w-3 h-3 rounded-full ${verifierStatus.mobileActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                    <span className="!font-[300] !text-sm title uppercase">MOBILE {verifierStatus.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                    <span className="!font-light !text-sm title uppercase">MOBILE {verifierStatus.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                                 </div>
                             </div>
                             <Button
@@ -193,7 +193,7 @@ const ProverPage = () => {
                         <div className="w-full px-6 py-4">
                             <div className="flex items-center justify-between mb-4">
                                 <div className="flex items-center gap-2">
-                                    <h3 className="!text-base !font-[300] title uppercase">MULTIPLIER</h3>
+                                    <h3 className="!text-base !font-light title uppercase">MULTIPLIER</h3>
                                     <Tooltip
                                         classNames={{
                                             content: '!p-0',
@@ -245,13 +245,13 @@ const ProverPage = () => {
                         {/* Tabs 标签 */}
                         <div className="flex gap-4 px-6 py-4">
                             <button
-                                className={`title !font-[300] !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
+                                className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('nft')}
                             >
                                 NFT
                             </button>
                             <button
-                                className={`title !font-[300] !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
+                                className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('self')}
                             >
                                 SELF
@@ -268,7 +268,7 @@ const ProverPage = () => {
                                         <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }}  className={isMobile ? "w-full" : "w-1/2"} />
                                     ) : (
                                         <div className="flex flex-col items-center gap-4 py-6">
-                                            <h3 className="title !font-[300] !text-2xl uppercase">NFT INACTIVE</h3>
+                                            <h3 className="title !font-light !text-2xl uppercase">NFT INACTIVE</h3>
                                             <p className="text-center max-w-xl text-sub text-base mb-4">
                                                 Purchase a Digital Harvester to become a Prover on the Cysic Network. No technical setup required.
                                             </p>

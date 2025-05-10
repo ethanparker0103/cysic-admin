@@ -131,7 +131,7 @@ const VoucherModal = () => {
                                 >
                                     <div className="flex flex-col gap-3">
                                         <div className="flex flex-col gap-2">
-                                            <div className="text-[24px]">{task.name}</div>
+                                            <div className="text-2xl">{task.name}</div>
                                             {task.description && (
                                                 <div className="text-lg">{task.description}</div>
                                             )}
@@ -168,7 +168,7 @@ const VoucherModal = () => {
                                 >
                                     <div className="flex flex-col gap-3">
                                         <div className="flex flex-col gap-2">
-                                            <div className="text-[24px]">{task.name}</div>
+                                            <div className="text-2xl">{task.name}</div>
                                             {task.description && (
                                                 <div className="text-lg">{task.description}</div>
                                             )}
