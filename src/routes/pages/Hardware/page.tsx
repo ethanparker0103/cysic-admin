@@ -76,7 +76,7 @@ const HardwarePage = () => {
             </div>
 
 
-            <div className="py-12 title text-[96px] !font-light">Our Approach</div>
+            <div className="py-12 title text-[6rem] !font-light">Our Approach</div>
             <div className="w-full uppercase text-center bg-[#fff] text-[#000] py-4 title text-[40px] !font-[500]">
                 001.Asic Solutions
             </div>
@@ -243,7 +243,7 @@ const HardwarePage = () => {
                     <div className=" sub-title !text-xl !font-[400]">
                         Parallelism. Precision. Proofs — reengineered.
                     </div>
-                    <div className="title !text-[96px] !font-light">Hypercube IR</div>
+                    <div className="title !text-[6rem] !font-light">Hypercube IR</div>
                 </div>
                 <div className=" sub-title !text-xl !font-[400] text-center">
                     Advanced circuit optimization at the hardware level
@@ -428,7 +428,7 @@ const HardwarePage = () => {
                     <div className=" sub-title !text-xl !font-[400]">
                         GPU-Enhanced ZK Proving Acceleration
                     </div>
-                    <div className="title !text-[96px] !font-light">zkPog</div>
+                    <div className="title !text-[6rem] !font-light">zkPog</div>
                 </div>
                 <div className=" sub-title !text-xl !font-[400] text-center">
                     the first GPU platform to accelerate witness generation<br />

@@ -1,5 +1,5 @@
 import useAccount from "@/hooks/useAccount";
-import InfoCard from "@/routes/components/InfoCard";
+import InfoCard from "@/routes/components/usePortal/cards/InfoCard";
 import { getImageUrl, handleSignIn } from "@/utils/tools";
 
 const Profile = () => {

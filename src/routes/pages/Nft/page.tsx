@@ -260,7 +260,7 @@ const NftLanding = () => {
                 {/* 居中内容，向上偏移一些 */}
                 <div className="z-10 flex flex-col items-center px-4 text-center -mt-[7.5rem]">
                     <span className="text-2xl !font-[400] sub-title">INTRODUCING</span>
-                    <h1 className="title text-[96px] !font-[200] text-center">CYSIC NFTS</h1>
+                    <h1 className="title text-[6rem] !font-[200] text-center">CYSIC NFTS</h1>
                     <p className="mt-4 !font-[400] text-base max-w-[55rem] text-sub">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin consequat neque a sodales. Nulla vitae elementum urna. Quisque et ullamcorper ipsum. Maecenas dignissim lacus urna, facilisis porta mauris blandit nec. Mauris quis tincidunt est, sit amet pharetra odio.
                     </p>
@@ -269,7 +269,7 @@ const NftLanding = () => {
 
             {/* 第二屏 - 购买区域 */}
             <Section>
-                <h2 className="title !font-[200] text-[96px] uppercase text-center">PURCHASE</h2>
+                <h2 className="title !font-[200] text-[6rem] uppercase text-center">PURCHASE</h2>
                 <p className="text-center text-sub text-base mb-6">Trade Compute Box on MagicEden</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -299,7 +299,7 @@ const NftLanding = () => {
             <Section>
                 <div className="text-center mb-6">
                     <p className="text-2xl text-sub mb-2">Explore Cysic Space and use your NFTs to</p>
-                    <h2 className="title !font-[200] text-[96px] uppercase">EARN NOW</h2>
+                    <h2 className="title !font-[200] text-[6rem] uppercase">EARN NOW</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -12,7 +12,15 @@ import useUser from "@/models/user";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
 import { Multiplier } from "@/routes/components/Multiplier";
-import InviteCard from "@/routes/components/InviteCard";
+import InviteCard from "@/routes/components/usePortal/cards/InviteCard";
+import ZkTasks from "@/routes/components/usePortal/cards/ZkTasks";
+import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
+import ZkBalanceCard from "@/routes/components/usePortal/cards/ZkBalanceCard";
+import VoucherInfo from "@/routes/components/usePortal/cards/VoucherInfo";
+import CysicBalance from "@/routes/components/usePortal/cards/CysicBalance";
+import Profile from "@/routes/components/Profile";
+import SocialAccount from "@/routes/components/SocialAccount";
+import InviteCodeCard from "@/routes/components/usePortal/cards/InviteCodeCard";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -38,55 +46,6 @@ const StatCard = ({ title, children, rightActions = [], className = "" }: StatCa
     </GradientBorderCard>
 );
 
-// 详情指标卡片
-interface DetailCardProps {
-    title: string;
-    subtitle?: string;
-    value: ReactNode;
-    moreLink?: string;
-    className?: string;
-    status?: Array<{
-        label: string;
-        value: string;
-        color: string;
-    }>;
-}
-
-const DetailCard = ({ title, subtitle, value, moreLink, status, className }: DetailCardProps) => (
-    <GradientBorderCard borderRadius={8} className={cn("h-full w-full flex-1", className)}>
-        <div className="px-6 py-4 h-full w-full">
-            <div className="flex justify-between items-center">
-                <div className="flex gap-2 items-center">
-                    <div className="!text-base !font-light title uppercase">{title}</div>
-                    {subtitle && <div className="text-sm !font-[400] text-sub">{subtitle}</div>}
-                </div>
-                {moreLink && (
-                    <a href={moreLink} className="flex items-center text-sub text-xs hover:text-white">
-                        {moreLink} <ArrowRight size={12} className="ml-1" />
-                    </a>
-                )}
-            </div>
-
-            <div className="flex justify-between items-center">
-                <div className="text-2xl !font-light">{value}</div>
-            </div>
-
-            {status && (
-                <div className="mt-4 flex flex-col gap-4">
-                    {status.map((item, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full mr-2 ${item.color}`}></span>
-                            <span className="title !text-sm !font-light">{item.label}</span>
-                            <span className="ml-auto text-sm text-sub">{item.value}</span>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
-    </GradientBorderCard>
-);
-
-// 速度指示器组件
 
 // 用户详情页面
 const UserDetailsPage = () => {
@@ -94,9 +53,9 @@ const UserDetailsPage = () => {
     const cgtBalance = balanceMap?.CGT?.hm_amount || 0
     const cysBalance = balanceMap?.CYS?.hm_amount || 0
 
-    const { 
+    const {
         balance,
-        voucherCnt = 0 
+        voucherCnt = 0
     } = useUser();
 
     return (
@@ -108,69 +67,24 @@ const UserDetailsPage = () => {
                     <span>USER PORTAL</span>
                 </Link>
 
-                {/* 第一行：奖励和余额 */}
-                <div className={cn("flex gap-4 ", isMobile ? "flex-col" : "")}>
-                    {/* 总奖励 */}
-                    <div className="flex-[3]">
-                        <StatCard
-                            title={<div className="!text-base title !font-light uppercase" >TOTAL REWARDS</div>}
-                            rightActions={[
-                                <div onClick={() => handleRewardsDetailModal({ phase: "phase1" })} className="cursor-pointer flex items-center text-sub text-sm hover:text-white">
-                                    DETAILS <ArrowRight size={12} className="ml-1" />
-                                </div>
-                            ]}
-                        >
-                            <div className="flex flex-col gap-6">
-                                <div className={cn("flex gap-6", isMobile ? "flex-col" : "items-center justify-end")}>
-                                    <div className="!text-3xl !font-light title">{formatReward(cysBalance, 2)} CYS</div>
-                                    <Button type="light" className="rounded py-3 px-4" onClick={handleConvertModal}>
-                                        CONVERT
-                                    </Button>
-                                </div>
 
-                                <div className="h-px w-full bg-white"></div>
-
-                                <div className={cn("flex gap-6", isMobile ? "flex-col" : "items-center justify-end")}>
-                                    <div className="!text-3xl !font-light title">{formatReward(cgtBalance, 2)} CGT</div>
-                                    <Button type="light" className="rounded py-3 px-4" onClick={() => { handleStakeModal() }}>
-                                        STAKE
-                                    </Button>
-                                </div>
-                            </div>
-                        </StatCard>
+                <div className="flex flex-wrap gap-4">
+                    {/* total rewards */}
+                    <div className="flex-[5] min-w-[250px]">
+                        <ZkBalanceCard />
                     </div>
 
-                    <div className="flex-[2] flex flex-col gap-4">
-                        {/* CYSIC 余额 */}
-                        <StatCard
-                            title="CYSIC BALANCE"
-                            rightActions={[
-                                <a href="https://testnet-bridge.prover.xyz/bridge" target="_blank" className="flex items-center text-sub text-xs hover:text-white">
-                                    BRIDGE <ArrowRight size={12} className="ml-1" />
-                                </a>,
-                                <a href="#" className="flex items-center text-sub text-xs hover:text-white">
-                                    HISTORY <ArrowRight size={12} className="ml-1" />
-                                </a>
-                            ]}
-                        >
-                            <div className={cn("!text-3xl !font-light title", isMobile ? "text-left" : "text-right")}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
-                        </StatCard>
-
-                        {/* 代金券 */}
-                        <StatCard
-                            title="VOUCHER"
-                            rightActions={[
-                                <div onClick={() => handleVoucherModal()} className="flex items-center text-sub text-xs hover:text-white">
-                                    VIEW ALL <ArrowRight size={12} className="ml-1" />
-                                </div>,
-                                <Link to="/nft/socialTask" className="flex items-center text-sub text-xs hover:text-white">
-                                    SOCIAL TASKS <ArrowRight size={12} className="ml-1" />
-                                </Link>
-                            ]}
-                        >
-                            <div className={cn("!text-3xl !font-light title", isMobile ? "text-left" : "text-right")}>{voucherCnt}</div>
-                        </StatCard>
+                    {/* balance / voucher */}
+                    <div className="flex-[4] min-w-[250px] flex flex-col gap-4">
+                        <CysicBalance />
+                        <VoucherInfo />
                     </div>
+                </div>
+
+                <div className="flex flex-wrap gap-4 pt-12">
+                    <div className="flex-1"><Profile /></div>
+                    <div className="flex-1"><SocialAccount /></div>
+                    <div className="flex-1"><InviteCodeCard /></div>                    
                 </div>
 
                 {/* DETAILS 标题 */}
@@ -179,14 +93,8 @@ const UserDetailsPage = () => {
                 <div className="flex flex-col gap-4 w-full">
                     {/* 第一行 details 部分 */}
                     <div className={cn("flex gap-4 w-full", isMobile ? "flex-col" : "")}>
-                        {/* 邀请码卡片 */}
-                       <InviteCard />
-
-                        {/* 乘数卡片 */}
-                        <Multiplier />
-
                         {/* 任务完成度卡片 */}
-                        <GradientBorderCard borderRadius={8} className="flex-[2] w-full">
+                        <GradientBorderCard borderRadius={8} className="flex-1 w-full">
                             <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-4">
                                 <div className="uppercase !text-base !font-light title">MY TASK COMPLETION</div>
                                 <div className="!text-2xl !font-light title text-right">2500</div>
@@ -203,64 +111,15 @@ const UserDetailsPage = () => {
                                 </div>
                             </div>
                         </GradientBorderCard>
+                        <div className="flex-1" />
+                        <div className="flex-1" />
                     </div>
 
                     {/* 验证器和证明者状态 */}
-                    <div className={cn("flex gap-4 w-full", isMobile ? "flex-col" : "")}>
-                        {/* ZK 验证器 */}
-                        <DetailCard
-                            title="ZK VERIFIER"
-                            moreLink="MORE ABOUT ZK VERIFIER"
-                            value={<div></div>}
-                            status={[
-                                { label: "STANDARD ACTIVE", value: "", color: "bg-green-500" },
-                                { label: "MOBILE INACTIVE", value: "", color: "bg-red-500" }
-                            ]}
-                        />
-
-                        {/* ZK 证明者 */}
-                        <DetailCard
-                            title="ZK PROVER"
-                            moreLink="MORE ABOUT ZK PROVER"
-                            value={<div></div>}
-                            status={[
-                                { label: "NFT ACTIVE", value: "", color: "bg-green-500" },
-                                { label: "SELF INACTIVE", value: "", color: "bg-red-500" }
-                            ]}
-                        />
-
-                        {/* ZK 项目 */}
-                        <DetailCard
-                            title="ZK PROJECT"
-                            moreLink="MORE ABOUT ZK PROJECT"
-                            value={<div></div>}
-                            status={[
-                                { label: "100 ONGOING PROJECTS", value: "", color: "bg-green-500" },
-                                { label: "10 PROJECTS UNDER REVIEW", value: "", color: "bg-yellow-500" }
-                            ]}
-                        />
-                    </div>
+                    <ZkTasks />
                 </div>
 
-                {/* 我的 ZK 收割机 */}
-                <div className="mb-12">
-                    <div className="flex flex-col items-center my-12 gap-4">
-                        <h2 className="title !text-3xl !font-light uppercase">MY ZK HARVESTER</h2>
-                        <a href="#" className="flex items-center text-sub text-sm hover:text-white">
-                            ORDER HISTORY <ArrowRight size={16} className="ml-1" />
-                        </a>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <NFTProverCard
-                            status={{ nft: true }}
-                        />
-
-                        <NFTProverCard
-                            status={{ nft: false }}
-                        />
-                    </div>
-                </div>
+                <JoinZkPhase3 className="pt-12 [&_.title]:!text-[6rem]" slogen="Join Cysic ZK " />
             </div>
         </>
     );
