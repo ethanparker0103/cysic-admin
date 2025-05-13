@@ -1,7 +1,7 @@
 import { ArrowRight, ChevronLeft, ChevronsUp } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
-import { formatReward, handleConvertModal, handleMultiplierModal, handleRewardsDetailModal, handleStakeModal, handleVoucherModal } from "@/utils/tools";
+import { formatReward, handleConvertModal, handleMultiplierModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { ReactNode } from "react";
 import Copy from "@/components/Copy";
 
@@ -11,8 +11,6 @@ import useCosmos from "@/models/_global/cosmos";
 import useUser from "@/models/user";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
-import { Multiplier } from "@/routes/components/Multiplier";
-import InviteCard from "@/routes/components/InviteCard";
 
 // 统计卡片组件
 interface StatCardProps {
@@ -87,6 +85,24 @@ const DetailCard = ({ title, subtitle, value, moreLink, status, className }: Det
 );
 
 // 速度指示器组件
+const SpeedIndicator = () => (
+    <div className="w-full mt-2">
+        <div className="relative w-full h-3 bg-[#FFFFFF4D] rounded-full overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-blue-500 to-green-400"></div>
+            <div className="absolute top-1/2 -translate-y-1/2 right-1/3 w-3 h-3 bg-white rounded-full"></div>
+        </div>
+        <div className="flex justify-end mt-2">
+            <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                <span className="!text-sm !font-[400] title">HIGH SPEED</span>
+            </div>
+            <div className="flex items-center ml-4 text-xs cursor-pointer" onClick={handleMultiplierModal}>
+                <span className="text-sub text-sm !font-[400]">SPEED UP</span>
+                <ChevronsUp size={12} className="ml-1 text-sub" />
+            </div>
+        </div>
+    </div>
+);
 
 // 用户详情页面
 const UserDetailsPage = () => {
@@ -95,8 +111,14 @@ const UserDetailsPage = () => {
     const cysBalance = balanceMap?.CYS?.hm_amount || 0
 
     const { 
+        name, 
+        avatarUrl, 
+        inviteCode, 
         balance,
-        voucherCnt = 0 
+        rewardList = [],
+        socialAccountList,
+        voucherCnt = 0,  // 添加代金券数量
+        nftCnt = 0       // 添加NFT数量
     } = useUser();
 
     return (
@@ -105,7 +127,7 @@ const UserDetailsPage = () => {
                 {/* 返回按钮 */}
                 <Link to={"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
                     <ChevronLeft size={20} />
-                    <span>USER PORTAL</span>
+                    <span>GENERAL</span>
                 </Link>
 
                 {/* 第一行：奖励和余额 */}
@@ -160,9 +182,9 @@ const UserDetailsPage = () => {
                         <StatCard
                             title="VOUCHER"
                             rightActions={[
-                                <div onClick={() => handleVoucherModal()} className="flex items-center text-sub text-xs hover:text-white">
+                                <a href="#" className="flex items-center text-sub text-xs hover:text-white">
                                     VIEW ALL <ArrowRight size={12} className="ml-1" />
-                                </div>,
+                                </a>,
                                 <Link to="/nft/socialTask" className="flex items-center text-sub text-xs hover:text-white">
                                     SOCIAL TASKS <ArrowRight size={12} className="ml-1" />
                                 </Link>
@@ -180,10 +202,49 @@ const UserDetailsPage = () => {
                     {/* 第一行 details 部分 */}
                     <div className={cn("flex gap-4 w-full", isMobile ? "flex-col" : "")}>
                         {/* 邀请码卡片 */}
-                       <InviteCard />
+                        <GradientBorderCard borderRadius={8} className="flex-[4] w-full">
+                            <div className="w-full px-6 py-4 h-full flex flex-col justify-between">
+                                <div className="flex justify-between items-start w-full">
+                                    <div className="uppercase !text-base title !font-light">INVITE<br />CODE</div>
+                                    <div className="uppercase !text-base title !font-light">SUCCESSFUL<br />INVITES</div>
+                                </div>
+
+                                <div className="flex justify-between items-center w-full mt-8">
+                                    <div className="flex items-center gap-2">
+                                        <Copy value={inviteCode} className="!text-2xl title !font-light">
+                                            {inviteCode || '-'}
+                                        </Copy>
+                                    </div>
+                                    <div className="title !text-2xl !font-light">-</div>
+                                </div>
+                            </div>
+                        </GradientBorderCard>
 
                         {/* 乘数卡片 */}
-                        <Multiplier />
+                        <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
+                            <div className="w-full px-6 py-4 h-full flex flex-col justify-between">
+                                <div className="flex items-center gap-1">
+                                    <div className="uppercase !text-base !font-light title">MULTIPLIER</div>
+                                    <div className="text-sub text-xs">ⓘ</div>
+                                </div>
+
+                                {/* 进度条 */}
+                                <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
+                                    <div className="absolute inset-0 left-0 w-3/4 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"></div>
+                                    {/* <div className="absolute top-1/2 -translate-y-1/2 right-1/4 w-2 h-2 bg-white rounded-full"></div> */}
+                                </div>
+
+                                {/* HIGH SPEED 指示器 */}
+                                <div className={cn("flex items-center gap-2", isMobile ? "self-start" : "self-end")}>
+                                    <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+                                    <span className="!text-sm title">HIGH SPEED</span>
+                                </div>
+                                <div className="ml-4 flex items-center gap-1 self-end cursor-pointer" onClick={handleMultiplierModal}>
+                                    <span className="text-sm text-sub text-sub">SPEED UP</span>
+                                    <ArrowRight size={12} />
+                                </div>
+                            </div>
+                        </GradientBorderCard>
 
                         {/* 任务完成度卡片 */}
                         <GradientBorderCard borderRadius={8} className="flex-[2] w-full">
