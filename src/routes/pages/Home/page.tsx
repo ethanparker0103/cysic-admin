@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { investors1, investors2 } from "@/config/investor";
 import AdCard from "@/routes/components/AdCard";
+import ScrollingText from "@/routes/components/ScrollingText";
 import { academyConfigShowInHome } from "@/routes/pages/Academy/config";
 import { AcademyCard } from "@/routes/pages/Academy/page";
 import { ecosystemProjectsShowInHome } from "@/routes/pages/Ecosystem/config";
@@ -734,7 +735,7 @@ const Home = () => {
 
       <div className="w-full">
         <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
-          <div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" />
+          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
         <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-[200]">
           Cysic Raises <span className="unbounded text-[2rem] font-[300]">$12M in Pre-A Round</span> <br />
@@ -742,7 +743,7 @@ const Home = () => {
 
         </div>
         <div className="h-12 bg-gradient-to-r from-[#3500E5] to-[#BCA7FF]">
-          <div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" />
+          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
       </div>
 

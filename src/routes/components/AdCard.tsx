@@ -22,7 +22,7 @@ const AdCard = ({
         src={imageSrc}
         alt={typeof title === "string" ? title : "Advertisement"}
         className={cn(
-          "absolute inset-0 w-full h-full object-cover transition-transform duration-500 rounded-lg",
+          "absolute inset-0 w-full h-full object-fill transition-transform duration-500 rounded-lg",
           "group-hover:scale-105",
           className
         )}

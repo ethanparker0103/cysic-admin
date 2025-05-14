@@ -12,6 +12,8 @@ interface ScrollingTextProps {
   className?: string;
   /** 文本类名 */
   textClassName?: string;
+  /** 是否是背景图 */
+  isBackground?: boolean;
 }
 
 const ScrollingText: React.FC<ScrollingTextProps> = ({
@@ -20,10 +22,11 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
   direction = 'left',
   className = '',
   textClassName = '',
+  isBackground = false,
 }) => {
   return (
-    <div className={cn("overflow-hidden whitespace-nowrap", className)}>
-      <style jsx>{`
+    <div className={cn("overflow-hidden whitespace-nowrap w-full h-full", className)}>
+      <style>{`
         @keyframes scroll {
           0% { transform: translateX(${direction === 'left' ? '0' : '-50%'}); }
           100% { transform: translateX(${direction === 'left' ? '-50%' : '0'}); }
@@ -33,10 +36,13 @@ const ScrollingText: React.FC<ScrollingTextProps> = ({
           display: inline-flex;
           animation: scroll ${duration}s linear infinite;
           will-change: transform;
+          height: 100%;
+          width: ${isBackground ? '200%' : 'auto'};
         }
         
         .scrolling-item {
-          padding-right: 2rem;
+          ${isBackground ? 'width: 50%;' : 'padding-right: 2rem;'}
+          height: 100%;
         }
       `}</style>
 
