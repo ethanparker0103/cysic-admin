@@ -80,7 +80,7 @@ const drawerCardList = [
       {
         icon: (
           <img
-            src={getImageUrl("@/assets/images/icon/digital_comnpute.svg")}
+            src={getImageUrl("@/assets/images/icon/digital_compute.svg")}
             className="size-12"
           />
         ),
