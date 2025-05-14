@@ -226,6 +226,7 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
+    needBack: true
   },
   '/zk/dashboard/verifier': {
     img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
@@ -233,6 +234,7 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
+    needBack: true
   },
   '/zk/dashboard/prover': {
     img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
@@ -240,6 +242,7 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
+    needBack: true
   },
   '/zk/dashboard/task': {
     img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
@@ -247,6 +250,7 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
+    needBack: true
   },
   '/zk/dashboard/project/:id': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
