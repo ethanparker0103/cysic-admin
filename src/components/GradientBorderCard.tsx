@@ -15,11 +15,13 @@ export enum GradientDirection {
 // 组件属性接口保持不变...
 interface GradientBorderCardProps {
   children: React.ReactNode;
-  direction?: GradientDirection;
+  direction?: GradientDirection | string;
   className?: string;
   borderWidth?: number;
   borderRadius?: number;
   style?: React.CSSProperties;
+  gradientFrom?: string;
+  gradientTo?: string;
 }
 
 const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
@@ -28,11 +30,15 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
   className = '',
   borderWidth = 1,
   borderRadius = 16,
-  style = {}
+  style = {},
+  gradientFrom = '#fff',
+  gradientTo = 'rgba(255, 255, 255, 0.2)'
 }) => {
   const cssVariables = {
     '--gradient-direction': direction,
     '--border-width': `${borderWidth}px`,
+    '--gradient-from': gradientFrom,
+    '--gradient-to': gradientTo
   } as React.CSSProperties;
 
   return (

@@ -7,7 +7,7 @@ import { isMobile } from "react-device-detect";
 
 
 
-const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
+export const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
     return (
         <GradientBorderCard className="flex flex-col gap-4 p-4 w-[calc(calc(100%-3rem)/4)] !rounded-lg">
             <div className="flex flex-col gap-4">

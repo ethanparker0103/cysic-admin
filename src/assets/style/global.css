@@ -112,6 +112,14 @@ body {
     }
 }   
 
+.title-md-2{
+    font-size: 80px;
+
+    @media (max-width: 1400px) {
+        font-size: 48px;
+    }
+}   
+
 
 
 .title{
@@ -150,6 +158,18 @@ body {
         font-size: 16px;
     }
 }
+
+.teacher {
+    font-family: Teachers;
+    text-transform: uppercase;
+}
+
+.unbounded {
+    font-family: Unbounded;
+    text-transform: uppercase;
+}
+
+
 
 .code{
     color: rgba(255, 255, 255, 0.80);
@@ -205,8 +225,8 @@ body {
     padding: var(--border-width, 1px);
     background: linear-gradient(
       var(--gradient-direction, 90deg),
-      #fff 0%,
-      rgba(255, 255, 255, 0.2) 100%
+      var(--gradient-from, #fff) 0%,
+      var(--gradient-to, rgba(255, 255, 255, 0.2)) 100%
     );
     -webkit-mask: 
       linear-gradient(#fff 0 100%) content-box,

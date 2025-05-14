@@ -653,3 +653,6 @@ ecosystemSubLabels.forEach(subLabel => {
     console.warn(`SubLabel without predefined color: ${subLabel}`);
   }
 });
+
+
+export const ecosystemProjectsShowInHome = ecosystemProjects?.slice(0, 8)

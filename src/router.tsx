@@ -165,7 +165,7 @@ export const router = createBrowserRouter(
 export const backgroundImageList = {
   '/': {
     img: getImageUrl('@/assets/images/_global/home_landing_bg.png'),
-    className: "grayscale",
+    className: "grayscale h-[160vh]",
   },
   '/ecosystem': {
     img: getImageUrl('@/assets/images/_global/zk_ecosystem_bg.png'),

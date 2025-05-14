@@ -1,9 +1,23 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { academyConfig } from "@/routes/pages/Academy/config";
+import { academyConfig, academyConfigShowInHome } from "@/routes/pages/Academy/config";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
+export const AcademyCard = ({item}:{item:any})=>{
+    return <a href={item.href} target="_blank" className="w-full">
+    <GradientBorderCard className="px-6 py-4 flex justify-between cursor-pointer" >
+        <div className="flex flex-col gap-1 flex-1">
+            <span className="sub-title !text-[1.5rem]">{item.title}</span>
+            <span className="sub-title !text-base min-h-6">{item.subTitle}</span>
+        </div>
+        <div className="px-4 self-center">
+            <ArrowRight className="w-6 h-6" />
+        </div>
+
+    </GradientBorderCard>
+</a>
+}
 
 const AcademyPage = () => {
     return (
@@ -25,22 +39,9 @@ const AcademyPage = () => {
             <div className="container mx-auto mt-8 relative z-[2] flex flex-col gap-4">
                 {
                     academyConfig.map((item) => (
-                        <a key={item.title} href={item.href} target="_blank">
-                            <GradientBorderCard className="px-6 py-4 flex justify-between cursor-pointer" >
-                                <div className="flex flex-col gap-1 flex-1">
-                                    <span className="sub-title !text-[1.5rem]">{item.title}</span>
-                                    <span className="sub-title !text-base min-h-6">{item.subTitle}</span>
-                                </div>
-                                <div className="px-4 self-center">
-                                    <ArrowRight className="w-6 h-6" />
-                                </div>
-
-                            </GradientBorderCard>
-                        </a>
+                        <AcademyCard key={item.title} item={item} />
                     ))
                 }
-
-
             </div>
         </>
     )

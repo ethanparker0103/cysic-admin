@@ -158,7 +158,6 @@ export const purchaseNftContract = {
 
 
 export const classes = {
-  container: ` max-w-[1440px] px-[3rem] mx-auto`,
   subTitle: 'sub-title !tracking-widest !text-2xl !font-[400]',
 }
 

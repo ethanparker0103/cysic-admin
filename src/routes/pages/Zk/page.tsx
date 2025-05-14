@@ -1,61 +1,13 @@
-import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { classes } from "@/config";
+import { investors1, investors2 } from "@/config/investor";
 import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
-import SignInButton from "@/routes/components/SignInButton";
 import { getImageUrl } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
-import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
-const investors = [
-  {
-    name: "polycain",
-    img: getImageUrl("@/assets/images/investors/POLYCHAIN.png"),
-  },
-  {
-    name: "hashkey",
-    img: getImageUrl("@/assets/images/investors/HASHKEY.png"),
-  },
-  {
-    name: "OKX",
-    img: getImageUrl("@/assets/images/investors/OKX.png"),
-  },
-  {
-    name: "abcde",
-    img: getImageUrl("@/assets/images/investors/ABCDE.png"),
-  },
-  {
-    name: "matrix",
-    img: getImageUrl("@/assets/images/investors/MATRIX.png"),
-  },
-  {
-    name: "web3",
-    img: getImageUrl("@/assets/images/investors/WEB3.png"),
-  },
-  {
-    name: "snz",
-    img: getImageUrl("@/assets/images/investors/SNZ.png"),
-  },
-  {
-    name: "bitdigital",
-    img: getImageUrl("@/assets/images/investors/BITDIGITAL.png"),
-  },
-  {
-    name: "idg",
-    img: getImageUrl("@/assets/images/investors/IDG.png"),
-  },
-  {
-    name: "coinswitch",
-    img: getImageUrl("@/assets/images/investors/COINSWITCH.png"),
-  },
-  {
-    name: "a&t",
-    img: getImageUrl("@/assets/images/investors/A&T.png"),
-  },
-];
-const investors1 = investors.slice(0, 6);
-const investors2 = investors.slice(6);
+
+
 
 const ZkLanding = () => {
   return (
@@ -87,7 +39,7 @@ const ZkLanding = () => {
         <div
           className={cn(
             "w-full py-16 flex flex-col gap-2 items-center",
-            classes.container
+            "main-container"
           )}
         >
           <div className="!font-[200] !text-2xl title">
@@ -167,7 +119,7 @@ const ZkLanding = () => {
           The Most Decentralized ZKP COMPUTING NETWORK
         </div>
 
-        <div className={cn("flex gap-6 py-16", classes.container)}>
+        <div className={cn("flex gap-6 py-16 main-container")}>
           <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
             <div className="!tracking-widest sub-title !text-2xl !font-[400]">
               Unmatched
@@ -220,7 +172,7 @@ const ZkLanding = () => {
         <div
           className={cn(
             "py-16 flex flex-col gap-6 items-center",
-            classes.container
+            "main-container"
           )}
         >
           <div className="title !text-[64px] !font-light">

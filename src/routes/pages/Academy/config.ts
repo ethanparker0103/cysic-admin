@@ -27,3 +27,5 @@ export const academyConfig = [
         href: "https://hackmd.io/@Cysic/ryCUjWcdj"
     }
 ]
+
+export const academyConfigShowInHome = academyConfig?.slice(0, 3)

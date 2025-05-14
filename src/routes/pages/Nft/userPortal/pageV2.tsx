@@ -39,41 +39,6 @@ const InfoCard = ({ title, children, rightAction, className = "" }: InfoCardProp
     </GradientBorderCard>
 );
 
-// 服务卡片组件
-interface ServiceCardProps {
-    title: string;
-    imageSrc: string;
-    onClick?: () => void;
-}
-
-const ServiceCard = ({ title, imageSrc, onClick }: ServiceCardProps) => (
-    <GradientBorderCard borderRadius={8} className="overflow-hidden">
-        <div className="group relative h-[10.625rem] w-full group cursor-pointer overflow-hidden" onClick={onClick}>
-            {/* 背景图片 */}
-            <img
-                src={imageSrc}
-                alt={title}
-                className={
-                    cn("absolute inset-0 w-full h-full object-cover transition-transform duration-500",
-                        isMobile ? "" : "group-hover:scale-105 group-hover:grayscale-0 grayscale"
-
-                    )
-                }
-            />
-
-            {/* 叠加的半透明层 */}
-            <div className="absolute inset-0 bg-black/30"></div>
-
-            {/* content */}
-            <div className="relative inset-0 flex flex-col h-full justify-between items-start p-4 z-10">
-                <h3 className="title text-2xl !font-light">{title}</h3>
-                <ArrowRight size={20} className="self-end text-white" />
-            </div>
-        </div>
-    </GradientBorderCard>
-);
-
-
 // 主要组件
 const UserPortal = () => {
     const navigate = useNavigate();
@@ -226,7 +191,7 @@ const UserPortal = () => {
 
                     <div className="flex flex-wrap gap-4">
                         <div className="flex-1 min-w-[300px]">
-                            <ServiceCard
+                            <AdCard
                                 title="CYSIC ZK"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
                                 onClick={() => { navigate('/zk/serviceHub') }}
@@ -234,7 +199,7 @@ const UserPortal = () => {
                         </div>
 
                         <div className="flex-1 min-w-[300px]">
-                            <ServiceCard
+                            <AdCard
                                 title="CYSIC AI"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
                                 onClick={() => { navigate('/ai') }}
@@ -242,7 +207,7 @@ const UserPortal = () => {
                         </div>
 
                         <div className="flex-1 min-w-[300px]">
-                            <ServiceCard
+                            <AdCard
                                 title="CYSIC MINING"
                                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
                                 onClick={() => { navigate('/stake') }}
