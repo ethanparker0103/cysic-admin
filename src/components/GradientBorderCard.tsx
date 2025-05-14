@@ -12,8 +12,8 @@ export enum GradientDirection {
   DIAGONAL = '45deg'
 }
 
-// 组件属性接口保持不变...
 interface GradientBorderCardProps {
+  onClick?: () => void;
   children: React.ReactNode;
   direction?: GradientDirection | string;
   className?: string;
@@ -25,6 +25,7 @@ interface GradientBorderCardProps {
 }
 
 const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
+  onClick,
   children,
   direction = GradientDirection.LEFT_TO_RIGHT,
   className = '',
@@ -45,9 +46,11 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
     <>
 
       {/* content */}
-      <div className={
-        cn('gradient-border-card w-full overflow-hidden z-[2] relative backdrop-blur', className)
-      }
+      <div
+        onClick={onClick}
+        className={
+          cn('gradient-border-card w-full overflow-hidden z-[2] relative backdrop-blur', className)
+        }
         style={{
           ...cssVariables,
           borderRadius: `${borderRadius}px`,

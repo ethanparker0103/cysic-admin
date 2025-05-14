@@ -2,6 +2,7 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import { classes } from "@/config";
 import { investors1, investors2 } from "@/config/investor";
 import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
+import ScrollingText from "@/routes/components/ScrollingText";
 import { getImageUrl } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
@@ -111,13 +112,14 @@ const ZkLanding = () => {
           </div>
         </div>
 
-        <div
-          className={cn(
-            "w-screen title !text-[64px] !font-[500] py-2 text-[#000] bg-[#fff] whitespace-nowrap overflow-x-hidden"
-          )}
+        <ScrollingText
+          duration={20}
+          direction="left"
+          className="py-2 w-screen bg-white"
+          textClassName="title !text-[64px] !font-[500] text-[#000]"
         >
-          The Most Decentralized ZKP COMPUTING NETWORK
-        </div>
+          THE MOST DECENTRALIZED ZKP COMPUTING NETWORK.
+        </ScrollingText>
 
         <div className={cn("flex gap-6 py-16 main-container")}>
           <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">

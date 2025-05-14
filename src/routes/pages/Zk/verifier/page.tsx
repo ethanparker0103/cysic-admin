@@ -294,7 +294,7 @@ const GuideStepCard = ({
         <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
                 <div className="text-base font-[400]">
-                    Step{step}/{totalStep}
+                    Step {step}/{totalStep}
                 </div>
                 <div className="title !text-xl !font-light">{title}</div>
             </div>
@@ -576,7 +576,7 @@ const VerifierPage = () => {
                         title="RESERVE 100 CGT"
                         description={
                             <>
-                                To become a Verifier on Cysic ZK,you need to reserve at least
+                                To become a Verifier on Cysic ZK, you need to reserve at least
                                 100 CGT as collateral. <br /> Cysic will oversee Verifier
                                 actions, retaining this collateral if any irregular behavior
                                 occurs to protect Cysic ZK's operation.
@@ -595,7 +595,7 @@ const VerifierPage = () => {
                             className="flex flex-col gap-4 py-8 px-6 mt-6"
                         >
                             <div className="!text-xl title !font-light">
-                                Tutorial: Run Cysic Verifier Node in 2 simple steps
+                                Tutorial: Run Cysic Verifier Node in simple steps
                             </div>
                             <div className="text-sm text-sub">
                                 For more details, see the full Verifier Tutorial Doc

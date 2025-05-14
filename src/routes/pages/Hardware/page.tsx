@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { classes } from "@/config";
 import { academyConfig } from "@/routes/pages/Academy/config";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, scrollIntoView } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
@@ -84,18 +84,26 @@ const HardwarePage = () => {
                             Custom Proof Generation Chips
                         </div>
                         <div className="gap-6 flex flex-wrap">
-                            <div className="p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
+                            <div onClick={()=>{
+                                scrollIntoView('#zk-chip')
+                            }} className="cursor-pointer p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
                                 Cysic C1 Chip
                             </div>
-                            <div className="p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
+                            <div onClick={()=>{
+                                scrollIntoView('#zk-chip')
+                            }} className="cursor-pointer p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
                                 ZK Air
                             </div>
-                            <div className="p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
+                            <div onClick={()=>{
+                                scrollIntoView('#zk-chip')
+                            }} className="cursor-pointer p-4 rounded bg-[#FFFFFF0D] border title text-2xl !font-light">
                                 ZK Pro
                             </div>
                         </div>
                     </GradientBorderCard>
-                    <GradientBorderCard className="p-6 flex flex-col gap-6 items-start">
+                    <GradientBorderCard onClick={()=>{
+                        scrollIntoView('#Hypercube_IR_Layer')
+                    }} className="p-6 flex flex-col gap-6 items-start cursor-pointer">
                         <div className="title text-2xl !font-[500]">
                             Hypercube IR Layer
                         </div>
@@ -122,7 +130,7 @@ const HardwarePage = () => {
             </div>
 
 
-            <div className="pt-12 w-full pb-16">
+            <div id="zk-chip" className="pt-12 w-full pb-16">
                 <div className="pb-12 text-[64px] !font-light title text-center">
                     Get to know ASIC Chips
                 </div>
@@ -226,6 +234,7 @@ const HardwarePage = () => {
 
             {/* secction-3 */}
             <div
+                id="Hypercube_IR_Layer"
                 className="w-full h-screen bg-[#000] flex flex-col items-center justify-center gap-6"
                 style={{
                     background: `url(${getImageUrl(
@@ -243,13 +252,15 @@ const HardwarePage = () => {
                     Advanced circuit optimization at the hardware level
                 </div>
 
-                <Button
-                    className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-                    type="solid"
-                >
-                    <span>Read About HypercubE IR</span>
-                    <ArrowRight className="w-3 h-3" />
-                </Button>
+                <a href="https://x.com/cysic_xyz/status/1915390349457187169" target="_blank">
+                    <Button
+                        className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+                        type="solid"
+                    >
+                        <span>Read About HypercubE IR</span>
+                        <ArrowRight className="w-3 h-3" />
+                    </Button>
+                </a>
             </div>
 
             <div className="py-16 flex gap-12 items-center">
@@ -429,13 +440,15 @@ const HardwarePage = () => {
                     and full ZKP pipeline end-to-end.
                 </div>
 
-                <Button
-                    className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-                    type="solid"
-                >
-                    <span>Read About HypercubE IR</span>
-                    <ArrowRight className="w-3 h-3" />
-                </Button>
+                <a href="https://x.com/cysic_xyz/status/1917772291083231530" target="_blank">
+                    <Button
+                        className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+                        type="solid"
+                    >
+                        <span>Read About ZKPOG</span>
+                        <ArrowRight className="w-3 h-3" />
+                    </Button>
+                </a>
             </div>
 
             <div className="py-16 flex gap-12 items-center">
@@ -551,16 +564,18 @@ const HardwarePage = () => {
                     </div>
                     <div className="title !text-[64px] !font-light">GPU-accelerated ZKPs?</div>
                 </div>
-                <Button
-                    className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-                    type="solid"
-                >
-                    <span>Inquire about GPU-Accelerated ZKPs</span>
-                    <ArrowRight className="w-3 h-3" />
-                </Button>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdC7cCKdV1MWuzMktSp5eDrTxVWPgu9Dj4zANXlxAMN85Nm9w/viewform" target="_blank">
+                    <Button
+                        className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+                        type="solid"
+                    >
+                        <span>Inquire about GPU-Accelerated ZKPs</span>
+                        <ArrowRight className="w-3 h-3" />
+                    </Button>
+                </a>
             </div>
         </>
-  );
+    );
 };
 
 export default HardwarePage;
