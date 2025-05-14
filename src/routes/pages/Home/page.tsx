@@ -443,7 +443,7 @@ const navScreenList = [
   },
   {
     background:
-      "bg-[url('@/assets/images/_global/socialTask_landing_bg.png')] bg-cover bg-center ",
+      "bg-[url('@/assets/images/_global/socialTask_landing_bg.png')] bg-cover bg-center green-landing",
     subTitle: "compute power as liquid, yield-bearing assets",
     title: "Digital Compute",
     slogen: (

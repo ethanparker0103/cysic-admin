@@ -214,77 +214,68 @@ export const backgroundImageList = {
     needShadow: true
   },  
   '/zk/dashboard': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
   },
   '/zk/dashboard/project': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
   },
   '/zk/dashboard/verifier': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
   },
   '/zk/dashboard/prover': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
   },
   '/zk/dashboard/task': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
   },
   '/zk/dashboard/project/:id': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
     needBack: true
   },
   '/zk/dashboard/verifier/:id': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
     needBack: true
   },
   '/zk/dashboard/prover/:id': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
     needBack: true
   },
   '/zk/dashboard/task/:id': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
+    className: "h-screen purple-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
     needBack: true
@@ -310,9 +301,8 @@ export const backgroundImageList = {
   },
   '/nft/userPortal': {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
-    className: "h-screen",
+    className: "h-screen green-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -10vh"
     },
     needShadow: true
@@ -320,9 +310,8 @@ export const backgroundImageList = {
   },
   '/nft/socialTask': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen",
+    className: "h-screen green-landing",
     style: {
-      filter: "sepia(1) hue-rotate(90deg)",
       backgroundPosition: "center -20vh"
     },
     needShadow: true

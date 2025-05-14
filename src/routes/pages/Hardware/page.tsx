@@ -7,7 +7,7 @@ import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
-const container = classes.container
+const container = 'main-container'
 const HardwarePage = () => {
     return (
         <>
@@ -36,13 +36,7 @@ const HardwarePage = () => {
                     industry.{" "}
                 </div>
                 <div
-                    className="title !text-[32px] !font-[500]"
-                    style={{
-                        background:
-                            "linear-gradient(253.59deg, #E8D7E0 37.6%, #9D47FF 97.1%)",
-                        WebkitBackgroundClip: "text",
-                        WebkitTextFillColor: "transparent",
-                    }}
+                    className="title !text-[32px] !font-[500] text-gradient"
                 >
                     by combining ASIC innovation & GPU acceleration
                 </div>
