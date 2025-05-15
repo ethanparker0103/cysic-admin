@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import Button from "@/components/Button";
 import { getImageUrl, handleMultiplierModal, handleReserveModal } from "@/utils/tools";
 import { ArrowRight, CircleHelp } from "lucide-react";
@@ -15,7 +15,7 @@ import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"; // 选�
 import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
 import { Multiplier } from "@/routes/components/Multiplier";
-import ZkVerifierStatus from "@/routes/components/ZkVerifierStatus";
+import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
 
 const guide = {
     ["Android"]: {
@@ -392,27 +392,7 @@ const SelfProverStepCard = ({
 };
 
 const VerifierPage = () => {
-    const { address, isRegistered } = useAccount();
-
-    // 获取ZK任务概览信息
-    const { data: zkTaskOverview } = useRequest(
-        () => axios.get("/api/v1/zkTask/overview"),
-        {
-            onSuccess: (res) => {
-                console.log("ZK任务概览数据:", res?.data);
-            },
-            ready: !!address && !!isRegistered,
-            refreshDeps: [address, isRegistered],
-        }
-    );
-
-    const verifierStatus = zkTaskOverview?.data?.verifierStatus || {
-        standardActive: 0,
-        mobileActive: 0,
-    };
-
-    const multiplierPercent = zkTaskOverview?.data?.multiplierPercent || 0;
-
+    const { VerifierCardListComponent } = useProverStatus()
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -461,7 +441,7 @@ const VerifierPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <ZkVerifierStatus />
+                    <VerifierCardListComponent />
 
                     {/* MULTIPLIER */}
                     <Multiplier />

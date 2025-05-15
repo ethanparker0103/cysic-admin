@@ -191,7 +191,7 @@ const MyProjectPage = () => {
 
     return (
         <>
-            <div className="container min-h-screen w-full pb-12 overflow-hidden mx-auto">
+            <div className="min-h-screen w-full pb-12 overflow-hidden mx-auto">
                 {/* 主标题 */}
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">

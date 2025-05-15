@@ -214,6 +214,7 @@ export const backgroundImageList = {
     needShadow: true
   },  
   '/zk/project/my': {
+    img: '#000',
     needBack: true
   },  
   '/zk/dashboard': {

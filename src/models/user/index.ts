@@ -58,13 +58,36 @@ export interface IUserInfo {
     amount: string;
     symbol: string;
   }>;
-  socialAccountList?: {
+  socialAccount?: {
     google?: { name: string } | null;
     x?: { name: string } | null;
     discord?: { name: string } | null;
   };
   nftCnt?: number;
   voucherCnt?: number;
+  zkPart: {
+    inviteCode: string;
+    successInviteCnt: number;
+    multiplierPercent: number;
+    proverTaskCompletedCnt: number;
+    verifierTaskCompletedCnt: number;
+    proverStatus: {
+      nftActive: number;
+      selfActive: number;
+    },
+    verifierStatus: {
+      standardActive: number;
+      mobileActive: number;
+    },
+    "projectStatus": {
+      ongoingCnt: number;
+      underReviewCnt: number;
+    }
+
+    // TODO 待实现
+    rebaseRate: number;
+    inviteLevel: number;
+  }
 }
 
 // 用户状态管理接口

@@ -116,7 +116,7 @@ const UserDetailsPage = () => {
         inviteCode, 
         balance,
         rewardList = [],
-        socialAccountList,
+        socialAccount,
         voucherCnt = 0,  // 添加代金券数量
         nftCnt = 0       // 添加NFT数量
     } = useUser();

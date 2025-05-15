@@ -30,9 +30,10 @@ const useAccount = () => {
     inviteCode,
     balance,
     rewardList,
-    socialAccountList,
+    socialAccount,
     nftCnt,
     voucherCnt,
+    zkPart
   } = activeUser || {};
 
   // 是否需要绑定邀请码 - 已签名但未注册
@@ -67,11 +68,10 @@ const useAccount = () => {
     inviteCode,
     balance,
     rewardList,
-    socialAccountList,
+    socialAccount,
     nftCnt,
     voucherCnt,
-    
-    // 宇宙地址
+    zkPart,
     cosmosAddress,
     
     // 多地址支持 - 直接访问状态

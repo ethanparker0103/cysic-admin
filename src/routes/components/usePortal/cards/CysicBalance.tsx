@@ -1,14 +1,14 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { mediasLink } from "@/config";
-import useUser from "@/models/user";
+import useAccount from "@/hooks/useAccount";
 import { handleConvertHistoryModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
-import { Link } from "react-router-dom";
 
 const CysicBalance = () => {
-  const { balance } = useUser();
+  const { balance } = useAccount()
+
   return (
     <GradientBorderCard borderRadius={8} className="h-full">
       <div className="py-4 px-6 w-full h-full">

@@ -13,11 +13,11 @@ const Profile = () => {
     return (
         <InfoCard title="PROFILE">
             <>
-                <div className="absolute right-6 top-4 flex items-start">
+                <div className="absolute right-6 top-4 flex items-start h-[calc(100%-2rem)] aspect-square">
                     <img
                         src={avatarUrl || getImageUrl("@/assets/images/nft/preset1.png")}
                         alt="Profile"
-                        className="w-[6.25rem] h-[6.25rem] rounded-md object-cover"
+                        className="w-full h-full rounded-md object-cover"
                     />
                 </div>
 

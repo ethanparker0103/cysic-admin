@@ -1,10 +1,9 @@
 
 import Button from "@/components/Button";
 import { handleReserveModal } from "@/utils/tools";
-import { ArrowRight, CircleHelp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
 import { useRequest } from "ahooks";
 import NFTProverCard from "@/components/NFTCard";
@@ -12,9 +11,8 @@ import { useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
-import { downloadLink } from "@/config";
 import { Multiplier } from "@/routes/components/Multiplier";
-import ZkVerifierStatus from "@/routes/components/ZkVerifierStatus";
+import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
@@ -56,46 +54,6 @@ const SelfProverStepCard = ({ step, title, description, buttonText, children, on
     );
 };
 
-// Prover 组件卡片
-interface ProverCardProps {
-    icon: React.ReactNode;
-    name: string;
-    description: string;
-    isActive: boolean;
-    btnText: string;
-}
-
-const ProverCard = ({ icon, name, description, isActive, btnText }: ProverCardProps) => {
-    return (
-        <GradientBorderCard
-            borderRadius={8}
-            className="mb-4 flex-1"
-        >
-            <div className="w-full p-6 h-full flex flex-col">
-                <div className="flex items-start gap-4 flex-1">
-                    <div className={cn(" rounded-full bg-[#111] flex items-center justify-center text-white", isMobile ? "h-8 w-8" : "w-12 h-12")}>
-                        {icon}
-                    </div>
-                    <div className="flex-1 h-full flex flex-col">
-                        <div className={cn("flex mb-4", isMobile ? "flex-col" : "justify-between items-start")}>
-                            <h3 className={cn("!font-light title", isMobile ? "!text-2xl mb-2" : "!text-3xl")}>{name}</h3>
-                            <div className="flex items-center gap-2">
-                                <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                <span className="uppercase !text-sm !font-light title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
-                            </div>
-                        </div>
-                        <p className="flex-1 text-sm !font-[400] mb-6 text-sub">{description}</p>
-                        <div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                            <span>{btnText}</span>
-                            <ArrowRight width={16} height={16} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </GradientBorderCard>
-    );
-};
-
 const ProverPage = () => {
     const [selectedTab, setSelectedTab] = useState("self");
 
@@ -119,14 +77,9 @@ const ProverPage = () => {
         selfActive: 0
     };
 
-    const verifierStatus = zkTaskOverview?.data?.verifierStatus || {
-        standardActive: 0,
-        mobileActive: 0
-    };
-
-    const multiplierPercent = zkTaskOverview?.data?.multiplierPercent || 0;
-
     const navigate = useNavigate()
+
+    const { ProverCardListComponent, VerifierCardListComponent } = useProverStatus()
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -162,7 +115,7 @@ const ProverPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <ZkVerifierStatus />
+                    <VerifierCardListComponent />
 
                     {/* MULTIPLIER */}
                     <Multiplier />
@@ -235,23 +188,7 @@ const ProverPage = () => {
                                         description="Run a Cysic Prover on your own hardware to contribute to the network and earn rewards."
                                     >
                                         <div className="flex flex-col gap-5 mt-4">
-                                            <div className={cn("flex gap-4", isMobile ? "flex-col" : "")}>
-                                                <ProverCard
-                                                    icon="ZS"
-                                                    name="zkSync Prover"
-                                                    description="Run a zkSync Prover on your CPU-compatible machine to process proofs for zkSync transactions."
-                                                    isActive={false}
-                                                    btnText="COMING SOON"
-                                                />
-
-                                                <ProverCard
-                                                    icon="EP"
-                                                    name="ETHProve"
-                                                    description="Run an ETHProve on your GPU-compatible machine to process proofs for Aleo applications."
-                                                    isActive={false}
-                                                    btnText="COMING SOON"
-                                                />
-                                            </div>
+                                            <ProverCardListComponent />
                                         </div>
                                     </SelfProverStepCard>
                                 </div>

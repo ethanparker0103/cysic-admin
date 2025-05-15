@@ -68,7 +68,6 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
     }
 
     const disabledKeys = item?.children?.filter((i: any)=>i.disabled).map(i=>i.key)
-    console.log('disabledKeys', disabledKeys)
 
     // 有子菜单时创建下拉菜单
     return (

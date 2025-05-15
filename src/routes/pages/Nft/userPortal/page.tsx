@@ -27,8 +27,7 @@ const UserPortal = () => {
   const navigate = useNavigate();
   const { balanceMap } = useCosmos();
 
-  const { user } = useAccount();
-  const { inviteCode } = user || {};
+  const { inviteCode, zkPart } = useAccount();
 
   const cysReward = formatReward(balanceMap?.CYS?.hm_amount || "0", 2);
   const cgtReward = formatReward(balanceMap?.CGT?.hm_amount || "0", 2);
@@ -105,12 +104,7 @@ const UserPortal = () => {
                     rebate rate
                   </div>
                   <div className="flex items-center gap-2 self-end">
-                    <Copy
-                      value={inviteCode}
-                      className="!text-2xl title !font-light"
-                    >
-                      {inviteCode || "-"}
-                    </Copy>
+                    {zkPart?.rebaseRate || '-'}
                   </div>
                 </div>
               </GradientBorderCard>
@@ -125,12 +119,7 @@ const UserPortal = () => {
                     Invite level{" "}
                   </div>
                   <div className="flex items-center gap-2 self-end">
-                    <Copy
-                      value={inviteCode}
-                      className="!text-2xl title !font-light"
-                    >
-                      {inviteCode || "-"}
-                    </Copy>
+                    {zkPart?.inviteLevel || '-'}
                   </div>
                 </div>
               </GradientBorderCard>

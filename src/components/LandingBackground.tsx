@@ -50,6 +50,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
     }, [path]);
 
     const needBack = backgroundConfig?.needBack ?? false
+
     const backPath = useMemo(() => {
         if (needBack) {
             return path.split('/').slice(0, -1).join('/');

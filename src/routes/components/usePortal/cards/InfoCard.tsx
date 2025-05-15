@@ -13,7 +13,7 @@ const InfoCard = ({ title, children, rightAction, className = "" }: InfoCardProp
         <div className="h-full flex flex-col justify-between px-6 py-4 w-full gap-4">
             <div className="text-base !font-light uppercase font-medium ">{title}</div>
             <div className="flex-1 flex flex-col justify-between w-full gap-4">
-                <div className="flex-1 flex items-center ">
+                <div className="flex-1 flex items-end ">
                     {children}
                 </div>
                 {rightAction && (

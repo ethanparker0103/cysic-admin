@@ -1,10 +1,13 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
+import useAccount from "@/hooks/useAccount";
 import { handleMultiplierModal } from "@/utils/tools";
 import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
 export const Multiplier = () => {
+    const { zkPart } = useAccount()
+    const multiplierPercent = zkPart?.multiplierPercent || 0
     return (
         <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
             <div className="flex flex-col ">
@@ -18,7 +21,10 @@ export const Multiplier = () => {
 
                 {/* 进度条 */}
                 <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
-                    <div className="absolute inset-0 left-0 w-3/4 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"></div>
+                    <div 
+                        style={{ width: `${multiplierPercent}%` }}
+                        className="absolute inset-0 left-0 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"
+                    ></div>
                 </div>
 
                 {/* HIGH SPEED 指示器 */}
