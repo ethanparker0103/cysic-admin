@@ -110,7 +110,7 @@ const ConnectInfo = () => {
                     ) : null}
 
                     <DropdownItem key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                        <div className="flex items-center gap-2" onClick={()=>{navigate('/nft/userPortal')}}>
+                        <div className="flex items-center gap-2" onClick={()=>{navigate('/userPortal')}}>
                             <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                             <span>User Portal</span>
                         </div>

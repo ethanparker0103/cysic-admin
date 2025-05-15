@@ -6,7 +6,7 @@ import Ai from "@/routes/pages/Ai/page";
 import Nft from "@/routes/pages/Nft/page";
 import Stake from "@/routes/pages/Stake/page";
 import ZkInvite from "@/routes/pages/Zk/invite/page";
-import ZkProver from "@/routes/pages/Zk/prover/page"; 
+import ZkProver from "@/routes/pages/Zk/prover/page";
 import NftUserPortal from "@/routes/pages/Nft/userPortal/page";
 import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
 import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
@@ -34,6 +34,22 @@ import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
 import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page"
 
 
+
+const portalModules = {
+  path: "userPortal",
+  children: [
+    {
+      index: true,
+      element: <NftUserPortal />,
+    },
+    {
+      path: "serviceHub",
+      element: <NftServiceHub />,
+    },
+
+  ]
+}
+
 export const router = createBrowserRouter(
   [
     {
@@ -44,6 +60,7 @@ export const router = createBrowserRouter(
           index: true,
           element: <Home />,
         },
+        portalModules,
         {
           path: "/ecosystem",
           element: <EcosystemPage />,
@@ -55,6 +72,10 @@ export const router = createBrowserRouter(
         {
           path: "/hardware",
           element: <HardwarePage />,
+        },
+        {
+          path: "socialTask",
+          element: <NftSocialTask />,
         },
         {
           path: "/zk",
@@ -87,10 +108,7 @@ export const router = createBrowserRouter(
               path: "project/my/:id",
               element: <MyProjectDetailPage />,
             },
-            {
-              path: "serviceHub",
-              element: <NftServiceHub />,
-            },
+
             {
               path: "dashboard",
               element: <DashboardPage />,
@@ -127,6 +145,7 @@ export const router = createBrowserRouter(
               path: 'dashboard/task/:id',
               element: <TaskDetailPage />
             },
+            portalModules
           ]
         },
         {
@@ -140,14 +159,7 @@ export const router = createBrowserRouter(
               index: true,
               element: <Nft />,
             },
-            {
-              path: "userPortal",
-              element: <NftUserPortal />,
-            },
-            {
-              path: "socialTask",
-              element: <NftSocialTask />,
-            },
+            portalModules
           ]
         },
         {
@@ -212,11 +224,11 @@ export const backgroundImageList = {
       backgroundPosition: "center -25vh"
     },
     needShadow: true
-  },  
+  },
   '/zk/project/my': {
     img: '#000',
     needBack: true
-  },  
+  },
   '/zk/dashboard': {
     img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
     className: "h-screen purple-landing",
@@ -290,7 +302,7 @@ export const backgroundImageList = {
   },
 
 
-  '/ai': {    
+  '/ai': {
     img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
     className: "h-screen grayscale brightness-[0.3]",
     needShadow: true
@@ -307,7 +319,7 @@ export const backgroundImageList = {
     },
     needShadow: true
   },
-  '/nft/userPortal': {
+  '/userPortal': {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
@@ -316,13 +328,13 @@ export const backgroundImageList = {
     needShadow: true
 
   },
-  '/nft/socialTask': {
+  '/socialTask': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
       backgroundPosition: "center -20vh"
     },
     needShadow: true
-    
+
   },
 }

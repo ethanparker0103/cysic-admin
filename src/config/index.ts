@@ -113,6 +113,7 @@ export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryStri
 )}`;
 
 export const mediasLink = {
+  gitbook: "https://gitbook.prover.xyz/cysic-network/cysic-network-whitepaper",
   whitePaper: "https://bit.ly/cysicnetworkwhitepaper",
   discord: "https://bit.ly/CysicDC",
   twitter: "https://bit.ly/Cysic_xyz",
@@ -176,8 +177,8 @@ export const routesConfig = {
   "serviceHub": "/zk/serviceHub",
   "ai": "/ai",
   "nft": "/nft",
-  "userPortal": "/nft/userPortal",
-  "socialTask": "/nft/socialTask",
+  "userPortal": "/userPortal",
+  "socialTask": "/socialTask",
   "stake": "/stake",
   "dashboard": "/zk/dashboard",
   "dashboard/project": "/zk/dashboard/project",

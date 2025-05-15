@@ -31,7 +31,7 @@ const VoucherInfo = () => {
                             VIEW ALL <ArrowRight size={12} className="ml-1" />
                         </div>
                         <Link
-                            to="/nft/socialTask"
+                            to="/socialTask"
                             className="flex items-center text-sub text-sm hover:text-white"
                         >
                             SOCIAL TASKS <ArrowRight size={12} className="ml-1" />

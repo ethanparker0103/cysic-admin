@@ -62,7 +62,7 @@ const UserDetailsPage = () => {
         <>
             <div className="container mx-auto relative z-10 py-12">
                 {/* 返回按钮 */}
-                <Link to={"/nft/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
+                <Link to={"/userPortal"} className="flex items-center text-sub mb-6 hover:text-white">
                     <ChevronLeft size={20} />
                     <span>USER PORTAL</span>
                 </Link>
