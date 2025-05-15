@@ -141,7 +141,7 @@ const UserPortal = () => {
 
         <Link
           className="title !text-[24px] !font-[300] !text-[#00F0FF] flex items-center justify-center mb-12"
-          to="/zk/serviceHub"
+          to="/zk/invite"
         >
           check invites details →
         </Link>
@@ -158,7 +158,7 @@ const UserPortal = () => {
                 title="CYSIC ZK"
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
                 onClick={() => {
-                  navigate("/zk/serviceHub");
+                  navigate("/");
                 }}
               />
             </div>
@@ -173,9 +173,7 @@ const UserPortal = () => {
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-                onClick={() => {
-                  navigate("/ai");
-                }}
+                onClick={()=>null}
               />
             </div>
 
@@ -189,9 +187,7 @@ const UserPortal = () => {
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                onClick={() => {
-                  navigate("/stake");
-                }}
+                onClick={()=>null}
               />
             </div>
           </div>

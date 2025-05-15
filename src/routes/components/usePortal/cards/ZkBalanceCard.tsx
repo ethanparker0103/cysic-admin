@@ -1,6 +1,6 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import useCosmos from "@/models/_global/cosmos";
-import { formatReward, handleConvertModal, handleStakeModal } from "@/utils/tools";
+import { formatReward, handleConvertModal, handleRewardsDetailModal, handleStakeModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
@@ -28,12 +28,12 @@ const ZkBalanceCard = () => {
                     >
                       TOTAL REWARDS
                     </div>
-                    <Link
-                      to="/zk/serviceHub"
-                      className="flex items-center text-sub text-sm hover:text-white"
+                    <div
+                      onClick={handleRewardsDetailModal}
+                      className="flex items-center text-sub text-sm hover:text-white cursor-pointer"
                     >
                       DETAILS <ArrowRight size={12} className="ml-1" />
-                    </Link>
+                    </div>
                   </div>
 
                   <div

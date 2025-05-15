@@ -18,7 +18,7 @@ const Button = ({
     disabled,
     loading,
     style = {},
-    needLoading,
+    needLoading = true,
     id
 }: {
     children: ReactNode

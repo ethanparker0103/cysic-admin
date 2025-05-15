@@ -302,10 +302,10 @@ const InvitePage = () => {
                     <div className="w-full px-6 py-4 flex flex-col gap-6">
                         <div className={cn("flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
                             <div >
-                                <h2 className="title !font-light !text-xl uppercase mb-2">SUCCESSFUL INVITES</h2>
-                                <p className="text-base !font-[400]">
-                                    Successful Invites could also speed up your Multiplier for Earnings from Verifier/Prover.
-                                </p>
+                                <h2 className="title !font-light !text-xl uppercase mb-2">INVITE LEVEL</h2>
+                                <div className="text-base !font-[400] flex items-center">
+                                    Successful Invites <Tooltip content={<div className="max-w-[16rem] py-2">A user must complete all Basic Tasks in the Social Tasks to count as a Successful Invite.</div>}><div className="text-sub text-xs">&nbsp;ⓘ&nbsp;</div></Tooltip> could also speed up your Multiplier for Earnings from Verifier/Prover.
+                                </div>
                             </div>
 
                             <div className="flex self-start">

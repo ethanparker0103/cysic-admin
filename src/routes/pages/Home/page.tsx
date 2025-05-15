@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { investors1, investors2 } from "@/config/investor";
 import AdCard from "@/routes/components/AdCard";
+import {JoinTestnetPhaseIIIButton, CysicHardwareStackButton, SeeWhatsComingButton} from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
 import ScrollingText from "@/routes/components/ScrollingText";
 import { academyConfigShowInHome } from "@/routes/pages/Academy/config";
 import { AcademyCard } from "@/routes/pages/Academy/page";
@@ -379,12 +380,7 @@ const navScreenList = [
             <ArrowRight width={16} height={16} />
           </div>
         </Button>
-        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-          <div className="flex items-center gap-2 ">
-            <span>Join Testnet Phase III</span>
-            <ArrowRight width={16} height={16} />
-          </div>
-        </Button>
+        <JoinTestnetPhaseIIIButton />
       </div>
     ),
   },
@@ -602,24 +598,9 @@ const Home = () => {
           </div>
 
           <div className="flex items-center gap-4 flex-wrap mx-auto text-base">
-            <Button type="solid" className="backdrop-blur-sm teacher !p-6">
-              <div className="flex items-center gap-2 ">
-                <span>Join Testnet Phase III</span>
-                <ArrowRight width={16} height={16} />
-              </div>
-            </Button>
-            <Button type="solid" className="backdrop-blur-sm teacher !p-6">
-              <div className="flex items-center gap-2 ">
-                <span>Cysic Hardware Stack</span>
-                <ArrowRight width={16} height={16} />
-              </div>
-            </Button>
-            <Button type="solid" className="backdrop-blur-sm teacher !p-6">
-              <div className="flex items-center gap-2 ">
-                <span>See What's coming</span>
-                <ArrowRight width={16} height={16} />
-              </div>
-            </Button>
+            <JoinTestnetPhaseIIIButton/>
+            <CysicHardwareStackButton />
+            <SeeWhatsComingButton />
           </div>
         </div>
 

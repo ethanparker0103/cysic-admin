@@ -1,18 +1,19 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { handleMultiplierModal } from "@/utils/tools";
-import { cn } from "@nextui-org/react";
+import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
 export const Multiplier = () => {
     return (
         <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
+            <div className="flex flex-col ">
             <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-6">
                 <div className="flex items-center gap-1">
                     <div className="uppercase !text-base !font-light title">
                         MULTIPLIER
                     </div>
-                    <div className="text-sub text-xs">ⓘ</div>
+                    <Tooltip content={<div className="max-w-[16rem] py-2">A higher level Multiplier gives you a boost in rewards when earning rewards through Verifier/Prover.</div>}><div className="text-sub text-xs">ⓘ</div></Tooltip>
                 </div>
 
                 {/* 进度条 */}
@@ -37,6 +38,7 @@ export const Multiplier = () => {
             >
                 <span className="text-sm text-sub text-sub">SPEED UP</span>
                 <ArrowRight size={12} />
+            </div>
             </div>
         </GradientBorderCard>
     );

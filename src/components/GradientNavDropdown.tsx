@@ -5,9 +5,11 @@ import { Link as NextUILink } from "@nextui-org/react";
 
 
 interface NavItem {
+    key: string;
     content: string;
     href?: string;
     children?: NavItem[];
+    disabled?: boolean;
 }
 
 interface GradientNavDropdownProps {
@@ -65,6 +67,9 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
         }
     }
 
+    const disabledKeys = item?.children?.filter((i: any)=>i.disabled).map(i=>i.key)
+    console.log('disabledKeys', disabledKeys)
+
     // 有子菜单时创建下拉菜单
     return (
         <Dropdown classNames={{
@@ -80,6 +85,8 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
             </DropdownTrigger>
 
             <DropdownMenu
+                // disabledKeys={item?.children?.map(i=>i.disabled)}
+                disabledKeys={disabledKeys}
                 style={{
                     '--gradient-direction': '0deg',
                 }}
@@ -95,7 +102,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                         // 外部链接
                         return (
                             <DropdownItem
-                                key={child.content}
+                                key={child.key}
                                 className="py-6 px-4 text-sm text-center"
                                 as={NextUILink}
                                 href={child.href}
@@ -111,7 +118,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                             <DropdownItem
                                 key={child.content}
                                 className="py-6 px-4 text-sm text-center"
-                                onPress={() => handleNavigation(child.href)}
+                                onPress={() =>  child.disabled ? null : handleNavigation(child.href)}
                             >
                                 {child.content}
                             </DropdownItem>

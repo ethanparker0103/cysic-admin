@@ -213,6 +213,9 @@ export const backgroundImageList = {
     },
     needShadow: true
   },  
+  '/zk/project/my': {
+    needBack: true
+  },  
   '/zk/dashboard': {
     img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
     className: "h-screen purple-landing",

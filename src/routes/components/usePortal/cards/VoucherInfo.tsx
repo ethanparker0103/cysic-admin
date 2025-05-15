@@ -25,8 +25,8 @@ const VoucherInfo = () => {
                     </div>
                     <div className="flex items-center gap-6">
                         <div
-                            onClick={() => handleVoucherModal()}
-                            className="flex items-center text-sub text-sm hover:text-white"
+                            onClick={handleVoucherModal}
+                            className="flex items-center text-sub text-sm hover:text-white cursor-pointer"
                         >
                             VIEW ALL <ArrowRight size={12} className="ml-1" />
                         </div>

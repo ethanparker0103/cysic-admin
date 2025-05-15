@@ -3,6 +3,12 @@ import useAccount from "@/hooks/useAccount"
 import useUser from "@/models/user"
 import { useMemo } from "react"
 import { useLocation } from "react-router-dom"
+const comingSoonConfig = {
+    content: 'Coming Soon',
+    key: 'coming-soon',
+    href: '/',
+    disabled: true
+}
 
 const navs = [
     {
@@ -10,20 +16,27 @@ const navs = [
         children: [
             {
                 content: 'Cysic ZK',
+                key: 'zk',
                 href: '/zk'
             },
-            {
-                content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
-                href: '/nft'
-            },
-            {
-                content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
-                href: '/ai'
-            },
-            {
-                content: 'Cysic Mining',
-                href: '/stake'
-            },
+            comingSoonConfig
+            // {
+            //     content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
+            //     key: 'nft',
+            //     href: '/nft',
+            //     disabled: true
+            // },
+            // {
+            //     content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
+            //     key: 'ai',
+            //     href: '/ai',
+            //     disabled: true
+            // },
+            // {
+            //     content: 'Cysic Mining',
+            //     key: 'stake',
+            //     href: '/stake'
+            // },
         ]
     },
     {
@@ -31,14 +44,17 @@ const navs = [
         children: [
             {
                 content: 'Hardware',
+                key: 'hardware',
                 href: '/hardware'
             },
             {
                 content: 'ZK Air/Pro',
+                key: 'zk-air-pro',
                 href: '/'
             },
             {
                 content: 'Doge Coin Miner',
+                key: 'doge-coin-miner',
                 href: '/'
             },
         ]
@@ -48,26 +64,32 @@ const navs = [
         children: [
             {
                 content: 'Social Tasks',
+                key: 'social-tasks',
                 href: '/nft/socialTask'
             },
             {
                 content: 'Staking',
+                key: 'staking',
                 href: '/stake'
             },
             {
                 content: 'Bridge',
+                key: 'bridge',
                 href: 'https://testnet-bridge.prover.xyz/bridge'
             },
             {
                 content: 'swap',
+                key: 'swap',
                 href: 'https://dev-swap.prover.xyz/'
             },
             {
                 content: 'Dashboard',
+                key: 'dashboard',
                 href: '/nft/userPortal'
             },
             {
                 content: 'Explorer',
+                key: 'explorer',
                 href: 'https://cys-dev.prover.xyz/'
             },
         ]
@@ -77,32 +99,39 @@ const navs = [
         children: [
             {
                 content: 'Academy',
+                key: 'academy',
                 href: '/academy'
             },
             {
                 content: 'Whitepaper',
+                key: 'whitepaper',
                 href: mediasLink.whitePaper
             },
             {
                 content: 'Docs',
+                key: 'docs',
                 href: mediasLink.discord
             },
             {
                 content: 'blog',
+                key: 'blog',
                 href: mediasLink.medium
             },
             {
                 content: 'media',
+                key: 'media',
                 href: '/'
             },
         ]
     },
     {
         content: 'Ecosystem',
+        key: 'ecosystem',
         href: '/ecosystem'
     },
     {
         content: 'Company',
+        key: 'company',
         href: '/'
     }
 ]
@@ -117,11 +146,11 @@ const _zkNavs = [
             //     href: '/'
             // },
             // {
-            //     content: 'Cysic NFT',
+            //     content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
             //     href: '/nft'
             // },
             // {
-            //     content: 'Cysic AI',
+            //     content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
             //     href: '/ai'
             // },
             // {
@@ -130,20 +159,24 @@ const _zkNavs = [
             // },
             {
                 content: 'Prover',
+                key: 'prover',
                 href: '/zk/prover'
             },
             {
                 content: 'Verifier',
+                key: 'verifier',
                 href: '/zk/verifier'
             },
             {
                 content: 'Project',
+                key: 'project',
                 href: '/zk/project'
             },
         ]
     },
     {
         content: 'leaderboard',
+        key: 'leaderboard',
         href: '/'
     },
     {
@@ -151,22 +184,27 @@ const _zkNavs = [
         children: [
             {
                 content: 'Dashboard',
+                key: 'dashboard',
                 href: '/zk/dashboard'
             },
             {
                 content: 'Project',
+                key: 'project',
                 href: '/zk/dashboard/project'
             },
             {
                 content: 'Prover',
+                key: 'prover',
                 href: '/zk/dashboard/prover'
             },
             {
                 content: 'Verifier',
+                key: 'verifier',
                 href: '/zk/dashboard/verifier'
             },
             {
                 content: 'Task',
+                key: 'task',
                 href: '/zk/dashboard/task'
             },
         ]
@@ -177,28 +215,33 @@ const _zkNavs = [
 // /ai
 const aiNavs = [
     {
-        content: 'Cysic AI',
+        content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
         children: [
             {
                 content: 'Project',
+                key: 'project',
                 href: '/'
             },
             {
                 content: 'Playground',
+                key: 'playground',
                 href: '/'
             },
             {
                 content: 'Synergy',
+                key: 'synergy',
                 href: '/'
             }
         ]
     },
     {
         content: 'leaderboard',
+        key: 'leaderboard',
         href: '/'
     },
     {
         content: 'dashboard',
+        key: 'dashboard',
         href: '/nft/userPortal'
     },
 ]
@@ -206,22 +249,27 @@ const aiNavs = [
 const computeNavs = navs.map((i, index) => {
     if (index == 0) {
         return {
-            content: 'Cysic NFT',
+            content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
             children: [
                 {
                     content: 'Service',
+                    key: 'service',
                     href: '/'
                 },
                 {
                     content: 'Cysic ZK',
+                    key: 'zk',
                     href: '/zk'
                 },
                 {
-                    content: 'Cysic AI',
-                    href: '/ai'
+                    content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
+                    key: 'ai',
+                    href: '/ai',
+                    disabled: true
                 },
                 {
                     content: 'Cysic Mining',
+                    key: 'stake',
                     href: '/stake'
                 },
             ]
@@ -237,19 +285,25 @@ const stakeeNavs = navs.map((i, index) => {
             children: [
                 {
                     content: 'Service',
+                    key: 'service',
                     href: '/'
                 },
                 {
-                    content: 'Cysic NFT',
-                    href: '/nft'
+                    content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
+                    key: 'nft',
+                    href: '/nft',
+                    disabled: true
                 },
                 {
                     content: 'Cysic ZK',
+                    key: 'zk',
                     href: '/zk'
                 },
                 {
-                    content: 'Cysic AI',
-                    href: '/ai'
+                    content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
+                    key: 'ai',
+                    href: '/ai',
+                    disabled: true
                 },
             ]
         }

@@ -6,6 +6,7 @@ import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import CysicTable from "@/components/Table";
 import { Link } from "react-router-dom";
+import useAccount from "@/hooks/useAccount";
 
 
 interface IProject {
@@ -38,6 +39,7 @@ const memberData: IProject[] = [
 ]
 
 const ProjectPage = () => {
+    const { address } = useAccount()
 
     const projectColumns: CysicTableColumn<IProject>[] = [
         {
@@ -74,10 +76,10 @@ const ProjectPage = () => {
             label: "",
             width: "10%",
             renderCell: () => (
-                <div className="flex items-center gap-2 text-sm justify-end">
+                <Link to="/zk/project/my" className="flex items-center gap-2 text-sm justify-end">
                     <span>VIEW</span>
                     <ArrowRight size={16} />
-                </div>
+                </Link>
             )
         }
     ];
@@ -105,7 +107,8 @@ const ProjectPage = () => {
             {/* 主要内容部分 */}
             <div className="mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
-                <GradientBorderCard borderRadius={8} className="mb-4">
+               {
+                address ? ( <GradientBorderCard borderRadius={8} className="mb-4">
                     <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
                         <div className="flex items-center justify-between gap-2 mb-6 ">
                             <h2
@@ -127,7 +130,8 @@ const ProjectPage = () => {
                             12
                         </p>
                     </div>
-                </GradientBorderCard>
+                </GradientBorderCard>) : null 
+               }
 
 
                 <GradientBorderCard borderRadius={8}>
@@ -138,7 +142,7 @@ const ProjectPage = () => {
                                 isMobile ? "!text-base" : "!text-xl"
                             )}
                         >
-                            My projects
+                            All projects
                         </h2>
                         <CysicTable
                             data={memberData}

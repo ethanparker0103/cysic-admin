@@ -118,6 +118,7 @@ export const mediasLink = {
   twitter: "https://bit.ly/Cysic_xyz",
   medium: "https://bit.ly/CysicMedium",
   twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
+  bridge: "https://testnet-bridge.prover.xyz/bridge",
 };
 
 export const downloadLink = {

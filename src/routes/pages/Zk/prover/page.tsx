@@ -1,6 +1,6 @@
-// @ts-nocheck
+
 import Button from "@/components/Button";
-import { handleMultiplierModal, handleReserveModal } from "@/utils/tools";
+import { handleReserveModal } from "@/utils/tools";
 import { ArrowRight, CircleHelp } from "lucide-react";
 import { useState } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
@@ -12,6 +12,9 @@ import { useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
+import { downloadLink } from "@/config";
+import { Multiplier } from "@/routes/components/Multiplier";
+import ZkVerifierStatus from "@/routes/components/ZkVerifierStatus";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
@@ -94,7 +97,7 @@ const ProverCard = ({ icon, name, description, isActive, btnText }: ProverCardPr
 };
 
 const ProverPage = () => {
-    const [selectedTab, setSelectedTab] = useState("nft");
+    const [selectedTab, setSelectedTab] = useState("self");
 
     const { address, isRegistered } = useAccount()
 
@@ -159,81 +162,10 @@ const ProverPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <GradientBorderCard
-                        borderRadius={8}
-                    >
-                        <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
-                            <div className="flex flex-col gap-4 w-full">
-                                <h3 className="!text-base !font-light title uppercase">ZK VERIFIER STATUS</h3>
-                                <div className="flex items-center gap-2">
-                                    <div className={`w-3 h-3 rounded-full ${verifierStatus.standardActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
-                                    <span className="!font-light !text-sm title uppercase">STANDARD {verifierStatus.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className={`w-3 h-3 rounded-full ${verifierStatus.mobileActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                    <span className="!font-light !text-sm title uppercase">MOBILE {verifierStatus.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
-                                </div>
-                            </div>
-                            <Button
-                                type="solid"
-                                className={cn("min-h-fit h-fit px-6 py-6", isMobile ?"w-full":"")}
-                            >
-                                <div className="flex items-center justify-center gap-2 text-base !font-[400]">
-                                    <span>DOWNLOAD OUR ANDROID APP</span>
-                                    <ArrowRight size={16} />
-                                </div>
-                            </Button>
-                        </div>
-                    </GradientBorderCard>
+                    <ZkVerifierStatus />
 
                     {/* MULTIPLIER */}
-                    <GradientBorderCard
-                        borderRadius={8}
-                    >
-                        <div className="w-full px-6 py-4">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-2">
-                                    <h3 className="!text-base !font-light title uppercase">MULTIPLIER</h3>
-                                    <Tooltip
-                                        classNames={{
-                                            content: '!p-0',
-                                        }}
-                                        content={<>
-                                            desc
-                                        </>}
-                                    >
-                                        <div className="flex items-center"><CircleHelp width={12} height={12} /></div>
-                                    </Tooltip>
-                                </div>
-
-
-                                <div className="flex items-center gap-2 cursor-pointer" onClick={handleMultiplierModal}>
-                                    <span className="text-sub text-sm !font-[400]">SPEED UP</span>
-                                    <Tooltip
-                                        classNames={{
-                                            content: '!p-0',
-                                        }}
-                                        content={<>
-                                            {multiplierPercent + '%'}
-                                        </>}
-                                    >
-                                        <div className="flex items-center"><CircleHelp width={12} height={12} /></div>
-                                    </Tooltip>
-                                </div>
-                            </div>
-
-                            <div className="w-full h-3 bg-[#FFFFFF4D] rounded-full overflow-hidden mb-6">
-                                <div style={{width: multiplierPercent+'%'}} className="h-full bg-gradient-to-r from-purple-600 via-blue-400 to-green-300 rounded-full"></div>
-                            </div>
-
-                            <div className="flex justify-end items-center">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                                    <span className="!text-sm !font-[400] title">HIGH SPEED</span>
-                                </div>
-                                    </div>
-                    </div>
-                    </GradientBorderCard>
+                    <Multiplier />
                 </div>
 
                 {/* 第二部分：Tabs */}
@@ -244,12 +176,12 @@ const ProverPage = () => {
                     <div className="w-full">
                         {/* Tabs 标签 */}
                         <div className="flex gap-4 px-6 py-4">
-                            <button
+                            {/* <button
                                 className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('nft')}
                             >
                                 NFT
-                            </button>
+                            </button> */}
                             <button
                                 className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
                                 onClick={() => setSelectedTab('self')}
@@ -313,9 +245,9 @@ const ProverPage = () => {
                                                 />
 
                                                 <ProverCard
-                                                    icon="AL"
-                                                    name="Aleo Prover"
-                                                    description="Run an Aleo Prover on your GPU-compatible machine to process proofs for Aleo applications."
+                                                    icon="EP"
+                                                    name="ETHProve"
+                                                    description="Run an ETHProve on your GPU-compatible machine to process proofs for Aleo applications."
                                                     isActive={false}
                                                     btnText="COMING SOON"
                                                 />
