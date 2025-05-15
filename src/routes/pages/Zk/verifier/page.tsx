@@ -647,7 +647,7 @@ const VerifierPage = () => {
                                                 <div className="p-4 self-center mx-auto max-w-[20.625rem] min-w-[15rem] ">
                                                     <div className="rounded-[12px] p-3 bg-[#FFFFFF33]">
                                                         <video controls preload="auto" className="aspect-[240/520]" poster="/tutorial_poster.png" muted>
-                                                            <source src="https://api-testnet.prover.xyz/images/20ab22cdf245e99ffd59c5fd8806c9d3c853344d266f3d0ef31b288f41b299b6.mp4" type="video/mp4" />
+                                                            <source src="https://statics.prover.xyz/tutorial/video.mp4" type="video/mp4" />
                                                         </video>
                                                     </div>
                                                 </div>
