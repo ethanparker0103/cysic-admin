@@ -27,6 +27,18 @@ const SignInModal = () => {
   const { walletAddress, activeAddress, isSigned, isBinded } =
     useAccount();
   const { login } = usePrivy();
+  const loginWithGoogle = () => {
+    login({
+      loginMethods: ['google']
+    })
+  } 
+
+  const loginWithX = () => {
+    login({
+      loginMethods: ['twitter']
+    })
+  }
+
   // const { open } = useAppKit();
   const location = useLocation();
 
@@ -186,21 +198,6 @@ const SignInModal = () => {
   };
 
   // 处理社交账号登录
-  const handleSocialLogin = (provider: string) => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // 这里应该接入社交登录API
-      console.log(`Login with ${provider}`);
-      setError(`${provider} login not yet implemented`);
-    } catch (error) {
-      console.error(`Error logging in with ${provider}:`, error);
-      setError(`${provider} login failed`);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // 上传头像图片到服务器
   const uploadLogo = async (file: File): Promise<string> => {
@@ -328,7 +325,6 @@ const SignInModal = () => {
   };
 
   // 判断是否已连接但未签名 - 复用原有变量
-  const isConnectedOnly = walletAddress && !isSigned;
 
   return (
     <Modal
@@ -411,7 +407,7 @@ const SignInModal = () => {
                   <Button
                     type="solid"
                     className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
-                    onClick={() => handleSocialLogin("Google")}
+                    onClick={loginWithGoogle}
                     needLoading
                     loading={loading}
                   >
@@ -421,7 +417,7 @@ const SignInModal = () => {
                   <Button
                     type="solid"
                     className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
-                    onClick={() => handleSocialLogin("X")}
+                    onClick={loginWithX}
                     needLoading
                     loading={loading}
                   >

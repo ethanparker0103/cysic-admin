@@ -1,8 +1,10 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import useAccount from "@/hooks/useAccount";
 import { getImageUrl } from "@/utils/tools";
+import { usePrivy } from "@privy-io/react-auth";
 import { ArrowRight } from "lucide-react";
 import { ReactNode } from "react";
+import { toast } from "react-toastify";
 
 interface SocialAccountItemProps {
   icon: ReactNode;
@@ -34,6 +36,29 @@ const generateCodeChallenge = (): string => {
 
 const SocialAccount = () => {
   const { socialAccount } = useAccount();
+  const { login, linkDiscord, linkGoogle, linkTwitter } = usePrivy();
+
+const handleLoginOrLink = async (type: string)=>{
+    try{
+        if(type === 'google'){
+            await linkGoogle()
+        }else if(type === 'twitter'){
+            await linkTwitter()
+        }else if(type === 'discord'){
+            await linkDiscord()
+        }
+    }catch(error: any){
+        console.error(error)
+        if(error.message.includes('User must be authenticated before linking an account')){
+            await login({
+                loginMethods: [type as 'google' | 'twitter' | 'discord']
+            })
+        }else{
+            toast.error(error.message)
+        }
+    }
+}
+
 
   const oauthConfig: Record<string, any> = {
     google: {
@@ -106,7 +131,7 @@ const SocialAccount = () => {
                 !socialAccount?.google?.name && (
                   <div
                     className="cursor-pointer flex items-center"
-                    onClick={() => handleOAuthRedirect("google")}
+                    onClick={() => handleLoginOrLink('google')}
                   >
                     BIND GMAIL
                     <ArrowRight size={12} className="text-sub ml-2" />
@@ -129,7 +154,7 @@ const SocialAccount = () => {
                 !socialAccount?.x?.name && (
                   <div
                     className="cursor-pointer flex items-center"
-                    onClick={() => handleOAuthRedirect("x")}
+                    onClick={() => handleLoginOrLink('twitter')}
                   >
                     BIND X
                     <ArrowRight size={12} className="text-sub ml-2" />
@@ -150,7 +175,7 @@ const SocialAccount = () => {
                 !socialAccount?.discord?.name && (
                   <div
                     className="cursor-pointer flex items-center"
-                    onClick={() => handleOAuthRedirect("discord")}
+                    onClick={() => handleLoginOrLink('discord')}
                   >
                     BIND DISCORD
                     <ArrowRight size={12} className="text-sub ml-2" />
