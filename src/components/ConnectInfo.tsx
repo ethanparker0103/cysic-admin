@@ -7,7 +7,7 @@ import useAccount from "@/hooks/useAccount";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { usePrivy } from "@privy-io/react-auth";
 import { useDisconnect } from "wagmi";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useUser from "@/models/user";
 import { useWriteContract } from "@/hooks/useWriteContract";
 import { purchaseChainId, USDC, usdcFacuetAbi } from "@/config";
@@ -66,6 +66,7 @@ const ConnectInfo = () => {
         }
     };
 
+    const pathname = useLocation().pathname;
     return (
         <>
             <Button needLoading className="!p-0" onClick={handleFaucetModal}>
@@ -110,7 +111,7 @@ const ConnectInfo = () => {
                     ) : null}
 
                     <DropdownItem key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                        <div className="flex items-center gap-2" onClick={()=>{navigate('/userPortal')}}>
+                        <div className="flex items-center gap-2" onClick={()=>{ pathname.includes('/zk') ? navigate('/zk/userPortal') : navigate('/userPortal')}}>
                             <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                             <span>User Portal</span>
                         </div>

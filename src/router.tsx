@@ -319,6 +319,7 @@ export const backgroundImageList = {
     },
     needShadow: true
   },
+  
   '/userPortal': {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
@@ -326,7 +327,14 @@ export const backgroundImageList = {
       backgroundPosition: "center -10vh"
     },
     needShadow: true
-
+  },
+  '/zk/userPortal': {
+    img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
+    className: "h-screen green-landing",
+    style: {
+      backgroundPosition: "center -10vh"
+    },
+    needShadow: true
   },
   '/socialTask': {
     img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),

@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { investors1, investors2 } from "@/config/investor";
 import AdCard from "@/routes/components/AdCard";
-import {JoinTestnetPhaseIIIButton, CysicHardwareStackButton, SeeWhatsComingButton} from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
+import { JoinTestnetPhaseIIIButton, CysicHardwareStackButton, SeeWhatsComingButton } from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
 import ScrollingText from "@/routes/components/ScrollingText";
 import { academyConfigShowInHome } from "@/routes/pages/Academy/config";
 import { AcademyCard } from "@/routes/pages/Academy/page";
@@ -13,6 +13,7 @@ import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { ReactNode, useRef } from "react";
 import { isMobile } from "react-device-detect";
+import { Link } from "react-router-dom";
 
 const asSeenOnList = [
   {
@@ -400,14 +401,14 @@ const navScreenList = [
       </div>
     ),
     action: (
-      <div className="flex items-center gap-6">
+      <Link to="/hardware" className="flex items-center gap-6">
         <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
           <div className="flex items-center gap-2 ">
             <span>About Cysic Hardware</span>
             <ArrowRight width={16} height={16} />
           </div>
         </Button>
-      </div>
+      </Link>
     ),
   },
   {
@@ -488,12 +489,14 @@ const navScreenList = [
     subTitle: "learn with cysic",
     title: "cysic academy",
     slogen: (
-      <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-        <div className="flex items-center gap-2 ">
-          <span>View All Articles</span>
-          <ArrowRight width={16} height={16} />
-        </div>
-      </Button>
+      <Link to="/academy">
+        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
+          <div className="flex items-center gap-2 ">
+            <span>View All Articles</span>
+            <ArrowRight width={16} height={16} />
+          </div>
+        </Button>
+      </Link>
     ),
     action: (
       <div className="flex flex-wrap gap-4 main-container w-full">
@@ -598,7 +601,7 @@ const Home = () => {
           </div>
 
           <div className="flex items-center gap-4 flex-wrap mx-auto text-base">
-            <JoinTestnetPhaseIIIButton/>
+            <JoinTestnetPhaseIIIButton />
             <CysicHardwareStackButton />
             <SeeWhatsComingButton />
           </div>
