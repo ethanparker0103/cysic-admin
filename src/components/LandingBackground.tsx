@@ -13,6 +13,8 @@ interface BackgroundConfig {
     className?: string;
     needShadow?: boolean;
     needBack?: boolean;
+    backTo?: string;
+    backContent?: string;
     style?: React.CSSProperties;
 }
 
@@ -53,10 +55,10 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
 
     const backPath = useMemo(() => {
         if (needBack) {
-            return path.split('/').slice(0, -1).join('/');
+            return backgroundConfig?.backTo ?? path.split('/').slice(0, -1).join('/');
         }
         return path;
-    }, [needBack, path]);
+    }, [needBack, path, backgroundConfig?.backTo]);
 
 
     if (!backgroundConfig?.img) {
@@ -115,7 +117,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
                     needBack ? (
                         <Link to={backPath} className="absolute top-1 left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-[2rem] font-normal uppercase title">
                             <ArrowLeft className="size-[2rem]" />
-                            <span>Back</span>
+                            <span>{backgroundConfig?.backContent ?? 'Back'}</span>
                         </Link>
                     ) : null
                 }

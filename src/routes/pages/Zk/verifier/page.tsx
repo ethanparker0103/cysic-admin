@@ -16,6 +16,7 @@ import copy from "copy-to-clipboard";
 import { toast } from "react-toastify";
 import { Multiplier } from "@/routes/components/Multiplier";
 import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
+import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 
 const guide = {
     ["Android"]: {
@@ -45,24 +46,7 @@ const guide = {
                                         <span>Download</span>
                                         <ArrowRight width={16} height={16} />
                                     </a>
-                                    <Tooltip
-                                        closeDelay={0}
-                                        disableAnimation
-                                        classNames={{
-                                            content: "bg-[#2A313B]",
-                                        }}
-                                        content={
-                                            <div className="p-5 rounded-[12px] bg-[#2A313B] flex flex-col items-center gap-3">
-                                                <img
-                                                    className="size-[10.25rem]"
-                                                    src={getImageUrl(
-                                                        "@/assets/images/tutorial/cysic_prover_app.png"
-                                                    )}
-                                                />
-                                                <div className="text-sm">Scan to Download</div>
-                                            </div>
-                                        }
-                                    >
+                                    <DownloadQRCodeTooltip>
                                         <div className="p-2 rounded-[12px] cursor-pointer hover:bg-[#2A313B]">
                                             <img
                                                 className="size-8"
@@ -71,7 +55,7 @@ const guide = {
                                                 )}
                                             />
                                         </div>
-                                    </Tooltip>
+                                    </DownloadQRCodeTooltip>
                                 </div>
                             </GradientBorderCard>
 

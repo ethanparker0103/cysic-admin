@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { downloadLink, verifierStatus } from "@/config";
 import useAccount from "@/hooks/useAccount";
+import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 import { cn } from "@nextui-org/react";
 import { useRequest } from "ahooks";
 import axios from "axios";
@@ -23,7 +24,7 @@ export const useProverStatus = () => {
     const { data } = useRequest(() => {
         return axios.get('/api/v1/zkTask/prover/status')
     });
-    
+
     const proverStatusData = {
         zkSync: data?.data?.zkProverStatus || 0,
         aleo: data?.data?.aleoProverStatus || 0,
@@ -64,17 +65,19 @@ export const useProverStatus = () => {
                         <span className="!font-light !text-sm title uppercase">Mobile {zkPart?.verifierStatus?.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
-                <a href={downloadLink.googlePlay} target="_blank">
-                    <Button
-                        type="solid"
-                        className={cn("min-h-fit h-fit px-6 py-6", isMobile ? "w-full" : "")}
-                    >
-                        <div className="flex items-center justify-center gap-2 text-base !font-[400]">
-                            <span>DOWNLOAD OUR ANDROID APP</span>
-                            <ArrowRight size={16} />
-                        </div>
-                    </Button>
-                </a>
+                <DownloadQRCodeTooltip>
+                    <a href={downloadLink.googlePlay} target="_blank">
+                        <Button
+                            type="solid"
+                            className={cn("min-h-fit h-fit px-6 py-6", isMobile ? "w-full" : "")}
+                        >
+                            <div className="flex items-center justify-center gap-2 text-base !font-[400]">
+                                <span>DOWNLOAD OUR ANDROID APP</span>
+                                <ArrowRight size={16} />
+                            </div>
+                        </Button>
+                    </a>
+                </DownloadQRCodeTooltip>
             </div>
         </GradientBorderCard>
     );

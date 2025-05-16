@@ -205,7 +205,10 @@ export const backgroundImageList = {
   '/zk/invite': {
     img: getImageUrl('@/assets/images/_global/invite_landing_bg.png'),
     className: "h-screen",
-    needShadow: true
+    needShadow: true,
+    needBack: true,
+    backTo: '/zk/userPortal',
+    backContent: 'User Portal'
   },
   '/zk/prover': {
     img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),

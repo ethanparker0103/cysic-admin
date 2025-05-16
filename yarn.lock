@@ -7265,6 +7265,11 @@ cosmjs-types@^0.9.0:
   resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.9.0.tgz#c3bc482d28c7dfa25d1445093fdb2d9da1f6cfcc"
   integrity sha512-MN/yUe6mkJwHnCFfsNPeCfXVhyxHYW6c/xDUzrSbBycYzw++XvWDMJArXp2pLdgD6FQ8DW79vkPjeNKVrXaHeQ==
 
+countup.js@^2.8.0:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/countup.js/-/countup.js-2.8.2.tgz#ea49e8781693612cf11d81209a230058ef226da5"
+  integrity sha512-UtRoPH6udaru/MOhhZhI/GZHJKAyAxuKItD2Tr7AbrqrOPBX/uejWBBJt8q86169AMqKkE9h9/24kFWbUk/Bag==
+
 crc-32@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/crc-32/-/crc-32-1.2.2.tgz#3cad35a934b8bf71f25ca524b6da51fb7eace2ff"
@@ -10013,6 +10018,13 @@ react-clientside-effect@^1.2.7:
   dependencies:
     "@babel/runtime" "^7.12.13"
 
+react-countup@^6.5.3:
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-6.5.3.tgz#e892aa3eab2d6ba9c3cdba30bf4ed6764826d848"
+  integrity sha512-udnqVQitxC7QWADSPDOxVWULkLvKUWrDapn5i53HE4DPRVgs+Y5rr4bo25qEl8jSh+0l2cToJgGMx+clxPM3+w==
+  dependencies:
+    countup.js "^2.8.0"
+
 react-daisyui@^5.0.0:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/react-daisyui/-/react-daisyui-5.0.5.tgz#bde3ff6a22301a6679c65d53a53037f65ab4584e"
@@ -10037,6 +10049,13 @@ react-fast-compare@^3.1.1, react-fast-compare@^3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
+
+react-flip-numbers@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/react-flip-numbers/-/react-flip-numbers-3.0.9.tgz#108e1716d14f5bfa0ecbfc4a984aaf6efde3e94f"
+  integrity sha512-ZFpFIz5wxT00rPuMfmCfPOsnC09u9oxYV3zPlfG1X79N58a5bwFvZcfl6BIosowa2tI9t9KyJIYcJICFyr5Y5g==
+  dependencies:
+    react-simple-animate "^3.0.1"
 
 react-floater@^0.7.9:
   version "0.7.9"
@@ -10195,6 +10214,11 @@ react-side-effect@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.2.tgz#dc6345b9e8f9906dc2eeb68700b615e0b4fe752a"
   integrity sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw==
+
+react-simple-animate@^3.0.1:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/react-simple-animate/-/react-simple-animate-3.5.3.tgz#acc69e2dd64f48be9e0ba6b97ce134486336dbb6"
+  integrity sha512-Ob+SmB5J1tXDEZyOe2Hf950K4M8VaWBBmQ3cS2BUnTORqHjhK0iKG8fB+bo47ZL15t8d3g/Y0roiqH05UBjG7A==
 
 react-simple-toasts@^6.1.0:
   version "6.1.0"
