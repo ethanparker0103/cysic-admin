@@ -261,6 +261,14 @@ const ReserveModal = () => {
             >
                 {activeTab === ReserveAction.RESERVE ? (Number(amount) < 100 ? "Amount must be greater than 100 CYS" : "RESERVE") : "WITHDRAW"}
             </Button>
+
+            {
+                (activeTab === ReserveAction.WITHDRAW && BigNumber(depositMap?.proverHmAmount).minus(amount).lte(100)) ? (
+                    <div className="text-sm text-danger mt-2 text-center">
+                        Your Verifier/Prover status will be deactivated
+                    </div>
+                ) : null
+            }
         </Modal>
     );
 };

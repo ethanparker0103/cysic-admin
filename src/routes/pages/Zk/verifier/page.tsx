@@ -332,6 +332,7 @@ const GuideStepCard = ({
 };
 
 const SelfProverStepCard = ({
+    linkContent,
     step,
     title,
     description,
@@ -339,6 +340,7 @@ const SelfProverStepCard = ({
     children,
     onClick,
 }: {
+    linkContent?: string | React.ReactNode;
     step: number;
     title: string;
     description?: string | React.ReactNode;
@@ -382,7 +384,7 @@ const SelfProverStepCard = ({
                 </div>
 
                 <div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                    <span>Click here to know how to earn CGT</span>
+                    <span>{linkContent}</span>
                     <ArrowRight width={16} height={16} />
                 </div>
             </div>
@@ -459,6 +461,7 @@ const VerifierPage = () => {
                 <div className="flex flex-col">
                     <SelfProverStepCard
                         step={1}
+                        linkContent="Click here to know how to earn CGT"
                         title="RESERVE 100 CGT"
                         description={
                             <>
@@ -474,6 +477,7 @@ const VerifierPage = () => {
 
                     <SelfProverStepCard
                         step={2}
+                        linkContent="For more details, see the full Verifier Tutorial Doc"
                         title="Follow the corresponding tutorials based on your terminal machine"
                     >
                         <GradientBorderCard

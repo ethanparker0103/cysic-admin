@@ -12,10 +12,11 @@ import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import { Multiplier } from "@/routes/components/Multiplier";
-import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
+import { useProverStatus } from "@/routes/components/ZkProverStatus";
 
 // SELF Prover 的步骤组件
-const SelfProverStepCard = ({ step, title, description, buttonText, children, onClick }: {
+const SelfProverStepCard = ({ showLink, step, title, description, buttonText, children, onClick }: {
+    showLink?: boolean,
     step: number,
     title: string,
     description?: string | React.ReactNode,
@@ -44,10 +45,12 @@ const SelfProverStepCard = ({ step, title, description, buttonText, children, on
                     <p className="text-sub text-sm mb-4">{description}</p>
                 </div>
 
-                <div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                    <span>Click here to know how to earn CGT</span>
-                    <ArrowRight width={16} height={16} />
-                </div>
+                {
+                    showLink ? (<div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                        <span>Click here to know how to earn CGT</span>
+                        <ArrowRight width={16} height={16} />
+                    </div>) : null
+                }
             </div>
             {children || <div className="border-b border-white/10 mt-6"></div>}
         </div>
@@ -175,6 +178,7 @@ const ProverPage = () => {
                             {selectedTab === 'self' && (
                                 <div className="flex flex-col">
                                     <SelfProverStepCard
+                                        showLink
                                         step={1}
                                         title="RESERVE 100 CGT"
                                         description="Reserve 100 CGT tokens to enable your own computational resources to work as a prover on the Cysic Network."
@@ -185,7 +189,12 @@ const ProverPage = () => {
                                     <SelfProverStepCard
                                         step={2}
                                         title="PROVIDE YOUR OWN COMPUTATIONAL POWER"
-                                        description="Run a Cysic Prover on your own hardware to contribute to the network and earn rewards."
+                                        description={
+                                            <>
+                                            To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br/>
+                                            Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
+                                            </>
+                                        }
                                     >
                                         <div className="flex flex-col gap-5 mt-4">
                                             <ProverCardListComponent />

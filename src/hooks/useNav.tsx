@@ -25,11 +25,6 @@ const comingSoonConfig = [
 ]
 const basicNav = [
     {
-        content: 'Hardware',
-        key: 'hardware',
-        href: '/hardware'
-    },
-    {
         content: 'Cysic Portal',
         children: [
             {
@@ -107,6 +102,11 @@ const navs = [
             },
             ...comingSoonConfig
         ]
+    },
+    {
+        content: 'Hardware',
+        key: 'hardware',
+        href: '/hardware'
     },
     ...basicNav,
     {
