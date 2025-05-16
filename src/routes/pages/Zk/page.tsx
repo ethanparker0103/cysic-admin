@@ -1,6 +1,7 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { classes } from "@/config";
 import { investors1, investors2 } from "@/config/investor";
+import InViewFlip from "@/routes/components/InViewFlip";
 import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
 import ScrollingText from "@/routes/components/ScrollingText";
 import { getImageUrl } from "@/utils/tools";
@@ -82,21 +83,27 @@ const ZkLanding = () => {
             }}
           />
           <div className="relative z-1 size-full flex items-center justify-center gap-12">
-            <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-12 w-[24.8rem]">
               <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500]">55,000+</span>
+                <span className="title !text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="55" className="unbounded text-[64px] font-medium" />,000+
+                </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Unique Wallet Addresses
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500]">8M+</span>
+                <span className="title !text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="8" className="unbounded text-[64px] font-medium" />M+
+                </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Network transactions
                 </span>
               </div>
               <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500]">100,000+</span>
+                <span className="title !text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="100" className="unbounded text-[64px] font-medium" />,000+
+                </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Reserved High-End Graphic Crads
                 </span>
