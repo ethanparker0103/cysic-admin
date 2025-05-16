@@ -111,12 +111,15 @@ const VerifierDetail = () => {
     {
       key: "taskId",
       label: "Task ID",
+      renderCell: (item: any) => {
+        return item?.taskId || item?.task_id;
+      },
     },
     {
       key: "taskHash",
       label: "Task Hash",
       renderCell: (item: any) => {
-        return shortStr(item?.taskHash, 10);
+        return shortStr(item?.taskHash || item?.task_hash, 10);
       },
     },
     {
@@ -139,7 +142,7 @@ const VerifierDetail = () => {
       renderCell: (item: any) => {
         return (
           <Link
-            to={`/zk/dashboard/task/${item?.taskId}`}
+            to={`/zk/dashboard/task/${item?.taskId || item?.task_id}`}
             className="flex items-center gap-2"
           >
             <span>View</span>

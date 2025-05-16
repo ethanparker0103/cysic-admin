@@ -11,6 +11,8 @@ import { commonPageSize, TaskStatus } from "@/config";
 
 interface IVerifier {
     "id": number,
+    "task_id": number,
+    "taskId": number,
     "name": string,
     "address": string,
     "status": number,
@@ -34,7 +36,7 @@ const ProjectPage = () => {
         {
             key: "id",
             label: "ID",
-            renderCell: (row) => (row?.id)
+            renderCell: (row) => (row?.id || row?.task_id || row?.taskId)
         },
         {
             key: "name",
@@ -55,7 +57,7 @@ const ProjectPage = () => {
             key: "view",
             label: "View",
             renderCell: (row) => (
-                <Link to={`/zk/dashboard/verifier/${row.id}`} className="flex gap-1 items-center">
+                <Link to={`/zk/dashboard/verifier/${row.id || row.task_id || row.taskId}`} className="flex gap-1 items-center">
                     <span>Detail</span>
                     <img className="size-3" src={getImageUrl("@/assets/images/icon/share.svg")}/>
                 </Link>

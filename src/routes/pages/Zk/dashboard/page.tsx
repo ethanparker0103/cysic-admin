@@ -136,27 +136,27 @@ const DashboardPage = () => {
                                     <span className="title !text-xl !font-light">Prover</span>
                                     <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
                                 </div>
-                                <Link to={"/"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                <Link to={"/zk/dashboard/prover"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                             </div>
 
                             <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Prover</span>
+                                    <span className="title !text-xl !font-light">Verifier</span>
                                     <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
                                 </div>
-                                <Link to={"/"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                <Link to={"/zk/dashboard/verifier"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                             </div>
 
                             <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Prover</span>
+                                    <span className="title !text-xl !font-light">Project</span>
                                     <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
                                 </div>
-                                <Link to={"/"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                <Link to={"/zk/dashboard/project"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                             </div>
 
                         </GradientBorderCard>

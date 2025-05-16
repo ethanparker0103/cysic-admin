@@ -11,7 +11,7 @@ const JoinZkPhase3 = ({ slogen, title = 'Phase III', subTitle, className }: { sl
             {subTitle && <span className={cn('subTitle', classes.subTitle)}>{subTitle}</span>}
             <div className="flex gap-6">
                 <JoinTestnetPhaseIIIButton />
-                <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center uppercase">
+                <Button type="solid" className="backdrop-blur-sm !p-6 !py-4 flex gap-4 flex items-center uppercase">
                     <span className="text-base">About Testnet</span>
                     <ArrowRight className="w-4 h-4" />
                 </Button>
