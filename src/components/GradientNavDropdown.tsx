@@ -84,11 +84,11 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
                     content: 'p-0 !pt-2 -mt-1 bg-[transparent]',
                 }}
             >
-                <DropdownTrigger>
+                <DropdownTrigger onMouseEnter={handleMouseEnter}>
                     <Button
                         as={item?.href ? RouterLink : 'div'}
                         to={item?.href ? item.href : null}
-                        onMouseEnter={handleMouseEnter}
+                        
                         variant="light"
                         className={cn("uppercase font-[400] text-sub w-full h-full rounded-none")}
                     >

@@ -73,6 +73,7 @@ const FaucetModal = () => {
                 prev[address] = Date.now()
                 return prev
             })
+            toast.success('Claimed successfully')
         }else{
                 toast.error(res?.msg)
             }
