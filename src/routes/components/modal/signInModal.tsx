@@ -26,17 +26,34 @@ enum SignInStep {
 const SignInModal = () => {
   const { walletAddress, activeAddress, isSigned, isBinded } =
     useAccount();
-  const { login } = usePrivy();
+  const { login: _login, connectWallet, linkGoogle, linkTwitter, user} = usePrivy();
+
+  const login = async (type: 'google' | 'twitter' | 'wallet')=>{
+    if(user && user?.wallet?.address){
+      if(type === 'wallet'){
+        await connectWallet()
+      }else if(type === 'google'){
+        await linkGoogle()
+      }else if(type === 'twitter'){
+        await linkTwitter()
+      }
+    }else{
+      await _login({
+        loginMethods: [type]
+      })
+    }
+  }
+
   const loginWithGoogle = () => {
-    login({
-      loginMethods: ['google']
-    })
+    login('google')
   } 
 
   const loginWithX = () => {
-    login({
-      loginMethods: ['twitter']
-    })
+    login('twitter')
+  }
+
+  const loginWithWallet = () => {
+    login('wallet')
   }
 
   // const { open } = useAppKit();
@@ -135,7 +152,7 @@ const SignInModal = () => {
     setError(null);
     setLoading(true);
     try {
-      await login();
+      await loginWithWallet();
     } catch (error) {
       console.error("Error opening wallet:", error);
       setError("Failed to open wallet connector");

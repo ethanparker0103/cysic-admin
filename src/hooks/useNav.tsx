@@ -43,11 +43,6 @@ const basicNav = [
                 href: 'https://testnet-bridge.prover.xyz/bridge'
             },
             {
-                content: 'swap',
-                key: 'swap',
-                href: 'https://dev-swap.prover.xyz/'
-            },
-            {
                 content: 'Dashboard',
                 key: 'dashboard',
                 href: '/zk/dashboard'
