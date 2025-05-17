@@ -1,4 +1,5 @@
 import Button from "@/components/Button";
+import GradientBorderCard from "@/components/GradientBorderCard";
 import Modal from "@/components/Modal";
 import Spinner from "@/components/spinner";
 import useAccount from "@/hooks/useAccount";
@@ -156,8 +157,8 @@ const VoucherModal = () => {
             setValidTasks(validList);
             setInvalidTasks(invalidList);
         },
-        ready: isSigned && !!address,
-        refreshDeps: [isSigned, address],
+        ready: visible && isSigned && !!address,
+        refreshDeps: [visible, isSigned, address],
     });
 
     const validLoading = !validTasks?.length && _loading
@@ -195,10 +196,12 @@ const VoucherModal = () => {
                                 <div className="flex items-center justify-center h-full">
                                     <Spinner />
                                 </div>
-                            ) : (
+                            ) : validTasks?.length ? (
                                 validTasks.map((task) => (
                                     <VoucherItem refresh={run} key={task.name} voucher={task} />
                                 ))
+                            ) : (
+                                <div className="text-center py-12 text-gray-400">No voucher found</div>
                             )}
                         </div>
                     </Tab>
@@ -208,10 +211,12 @@ const VoucherModal = () => {
                                 <div className="flex items-center justify-center h-full">
                                     <Spinner />
                                 </div>
-                            ) : (
+                            ) : invalidTasks?.length ? (
                                 invalidTasks.map((task) => (
                                     <VoucherItem refresh={run} key={task.name} voucher={task} />
                                 ))
+                            ) : (
+                                <div className="text-center py-12 text-gray-400">No voucher found</div>
                             )}
                         </div>
                     </Tab>

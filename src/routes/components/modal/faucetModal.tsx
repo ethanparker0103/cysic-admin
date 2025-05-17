@@ -30,13 +30,13 @@ const FaucetModal = () => {
     // { [addr]: undefined | number }
     const [lastClaimTime, setLastClaimTime] = useLocalStorageState<{ [key: string]: undefined | number }>('lastClaimTime', {
         defaultValue: {},
-        listenStorageChange: true
+        listenStorageChange: true,
     });
 
-    const currentAddressCountdown = useMemo(()=>{
-        if(!address) return undefined
+    const currentAddressCountdown = useMemo(() => {
+        if (!address) return undefined
         const _lastClaimTime = lastClaimTime?.[address]
-        if(!_lastClaimTime) return undefined
+        if (!_lastClaimTime) return undefined
         return Number(_lastClaimTime) + cooldownTime
     }, [address, lastClaimTime])
 
@@ -47,10 +47,12 @@ const FaucetModal = () => {
         refreshDeps: [address, currentAddressCountdown, isSigned],
         onSuccess: (res) => {
             setLastClaimTime((prev: any) => {
-                if(!address) return prev
-                prev[address] = res.data.lastClaimAt
+                if (!address) return prev
+                const t = new Date(res.data.lastClaimAt).getTime()
+                if (t < 0) return prev
+                prev[address] = t
                 return prev
-            })  
+            })
         }
     })
 
@@ -60,34 +62,51 @@ const FaucetModal = () => {
         targetDate: expireTime,
         onEnd: () => {
             setLastClaimTime((prev: any) => {
-                if(!address) return prev
+                if (!address) return prev
                 prev[address] = undefined
                 return prev
-            }   )
+            })
         }
     })
 
     const { hours, minutes, seconds } = formattedRes;
 
     const handleClaim = async () => {
-        try{
+        try {
 
-        if (countdown > 0) return
-        if (lastClaimTime == undefined) return
+            if (countdown > 0) return
+            if (lastClaimTime == undefined) return
 
-        const res: any = await axios.get('/api/v1/user/faucet')
-        if(res?.code == 0){
-            setLastClaimTime((prev: any) => {
-                if(!address) return prev
-                prev[address] = Date.now()
-                return prev
-            })
-            toast.success('Claimed successfully')
-        }else{
-                toast.error(res?.msg)
+            const res: any = await axios.get('/api/v1/user/faucet')
+            if (res?.code == 0) {
+                setLastClaimTime((prev: any) => {
+                    if (!address) return prev
+                    prev[address] = Date.now()
+                    return prev
+                })
+                toast.success('Claimed successfully')
+            } else {
+                if (Number(res?.msg) > 0) {
+                    const targetDate = Number(res?.msg) + cooldownTime
+                    setLastClaimTime((prev: any) => {
+                        if (!address) return prev
+                    prev[address] = targetDate
+                        return prev
+                    })
+                }
+                toast.error('Claim failed, please try again later')
+
             }
         } catch (error: any) {
-            toast.error(error?.msg)
+            if (Number(error?.msg) > 0) {
+                const targetDate = Number(error?.msg) + cooldownTime
+                setLastClaimTime((prev: any) => {
+                    if (!address) return prev
+                    prev[address] = targetDate
+                    return prev
+                })
+            }
+            toast.error('Claim failed, please try again later')
         }
     }
 
@@ -103,8 +122,8 @@ const FaucetModal = () => {
                 <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="h-16 text-base teacher tracking-widest">
                     {
                         countdown > 0 ? <div className="flex items-center gap-2 justify-center">
-                        {/* <Clock className="w-4 h-4" /> */}
-                        <span className=" ">Countdown: {hours}:{minutes}:{seconds}</span>
+                            {/* <Clock className="w-4 h-4" /> */}
+                            <span className=" ">Countdown: {hours}:{minutes}:{seconds}</span>
                         </div> : 'Claim'
                     }
                 </Button>

@@ -12,6 +12,7 @@ import { useMemo } from "react";
 import { isMobile } from "react-device-detect";
 import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
+import { createPortal } from "react-dom";
 
 const size = 'full'
 
@@ -72,7 +73,7 @@ export default function Header() {
                                         return i?.children?.map(j => {
                                             return (<Link onClick={onClose} to={j?.href} className="text-xl !text-sub">{j.content}</Link>)
                                         })
-                                    }else{
+                                    } else {
                                         return (<Link onClick={onClose} to={i?.href || '/'} className="text-xl !text-sub">{i.content}</Link>)
                                     }
                                 })}
@@ -84,43 +85,49 @@ export default function Header() {
                 </DrawerContent>
             </Drawer>
         </div>
-    </> : (
-        <div className="sticky top-0 z-[11] h-[8rem]">
-            <div className="relative px-[3rem] py-6">
-                <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
-                    <div className="w-full h-full flex justify-between items-center">
-                        <div className="flex items-center h-full flex-1">
-                            <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>
+    </> : <>
+        {
+            createPortal(
+                <div className="fixed top-0 z-[11] h-[8rem] w-full">
+                    <div className="relative px-[3rem] py-6">
+                        <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
+                            <div className="w-full h-full flex justify-between items-center">
+                                <div className="flex items-center h-full flex-1">
+                                    <Link to={'/'}><img src={getImageUrl('@/assets/images/logo/cysic.svg')} className="flex-1 max-w-[11.25rem]" /></Link>
 
-                            {currentNavs.map((nav: any) => (
-                                <GradientNavDropdown className="flex-1 max-w-[11.25rem] text-center" key={nav.content} item={nav} />
-                            ))}
-                        </div>
-                        <div className="h-full flex items-center justify-end w-[26.75rem]">
-                            {walletAddress ? (
-                                !isSigned ? (
-                                    <div onClick={handleLoginPersonalMessage} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
-                                        <span className="text-sub font-[400] uppercase text-sm">SIGN MESSAGE</span>
-                                        <ArrowRight width={16} height={16} />
-                                    </div>
-                                ) : shouldShowBindPrompt ? (
-                                    <div onClick={handleBindInviteCode} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
-                                        <span className="text-sub font-[400] uppercase text-sm">BIND INVITE CODE</span>
-                                        <ArrowRight width={16} height={16} />
-                                    </div>
-                                ) : (
-                                    <ConnectInfo />
-                                )
-                            ) : (
-                                <div onClick={handleConnect} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
-                                    <span className="text-sub font-[400] uppercase text-sm">SIGN IN</span>
-                                    <ArrowRight width={16} height={16} />
+                                    {currentNavs.map((nav: any) => (
+                                        <GradientNavDropdown className="flex-1 max-w-[11.25rem] text-center" key={nav.content} item={nav} />
+                                    ))}
                                 </div>
-                            )}
-                        </div>
+                                <div className="h-full flex items-center justify-end w-[26.75rem]">
+                                    {walletAddress ? (
+                                        !isSigned ? (
+                                            <div onClick={handleLoginPersonalMessage} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                                <span className="text-sub font-[400] uppercase text-sm">SIGN MESSAGE</span>
+                                                <ArrowRight width={16} height={16} />
+                                            </div>
+                                        ) : shouldShowBindPrompt ? (
+                                            <div onClick={handleBindInviteCode} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                                <span className="text-sub font-[400] uppercase text-sm">BIND INVITE CODE</span>
+                                                <ArrowRight width={16} height={16} />
+                                            </div>
+                                        ) : (
+                                            <ConnectInfo />
+                                        )
+                                    ) : (
+                                        <div onClick={handleConnect} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                            <span className="text-sub font-[400] uppercase text-sm">SIGN IN</span>
+                                            <ArrowRight width={16} height={16} />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </GradientBorderCard>
                     </div>
-                </GradientBorderCard>
-            </div>
-        </div>
-    );
+                </div>,
+                document.body
+            )
+        }
+        <div className="h-[8rem]"></div>
+    </>;
 }

@@ -63,7 +63,6 @@ const Modal = ({
         >
             <ModalContent style={{ maxHeight, overflow: 'hidden' }}> {/* 更改为overflow: 'hidden' */}
                 <GradientBorderCard
-                    innerClassName="w-full flex flex-col overflow-hidden" // 改为overflow-hidden
                     className="h-full"
                     direction={GradientDirection.BOTTOM_TO_TOP}
                 >

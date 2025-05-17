@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { getImageUrl, shortStr, handleHowInviteWorkModal } from "@/utils/tools";
+import { getImageUrl, shortStr, handleHowInviteWorkModal, handleMultiplierModal } from "@/utils/tools";
 import { ArrowRight, CircleHelp } from "lucide-react";
 import Copy from "@/components/Copy";
 import { useState } from "react";
@@ -244,8 +244,8 @@ const InvitePage = () => {
                                 <h2 className="title !text-xl uppercase !font-light">YOUR<br />REFERRAL<br />CODE</h2>
                                 {/* 推荐码显示 */}
                                 <div className="flex items-center self-start">
-                                    <span className="title !text-2xl !font-[400]">{inviteCode}</span>
                                     <Copy value={inviteCode}>
+                                        <span className="title !text-2xl !font-[400]">{inviteCode}</span>
                                     </Copy>
                                 </div>
                             </div>
@@ -286,6 +286,7 @@ const InvitePage = () => {
                                 <Button
                                     type="solid"
                                     className="text-base !font-[400] !p-6"
+                                    onClick={handleMultiplierModal}
                                 >
                                     <div className="flex items-center gap-2">
                                         CLICK HERE TO CHECK YOUR MULTIPLIER

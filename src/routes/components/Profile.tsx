@@ -27,7 +27,7 @@ const Profile = () => {
                     <div className="flex flex-col gap-1 justify-end">
                         <div className="text-base text-sub">NAME</div>
                         <div className="flex items-center gap-2 text-base">
-                            <span className="text-white">{name || "Unknown"}</span>
+                            <span className="text-white">{name || "-"}</span>
                             <button onClick={handleEditName} className="text-sub p-0 bg-transparent border-0">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
