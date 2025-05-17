@@ -40,7 +40,9 @@ const FaucetModal = () => {
         return Number(_lastClaimTime) + cooldownTime
     }, [address, lastClaimTime])
 
+
     useRequest(() => {
+        if (currentAddressCountdown) return Promise.reject()
         return axios.get('/api/v1/user/faucet/last')
     }, {
         ready: !!address && !currentAddressCountdown && !!isSigned,
@@ -90,7 +92,7 @@ const FaucetModal = () => {
                     const targetDate = Number(res?.msg) + cooldownTime
                     setLastClaimTime((prev: any) => {
                         if (!address) return prev
-                    prev[address] = targetDate
+                        prev[address] = targetDate
                         return prev
                     })
                 }
@@ -119,7 +121,7 @@ const FaucetModal = () => {
         >
             <div className="flex flex-col gap-6">
                 <p>{faucetAmount || 1} $CYS gas is available to be claimed every 24 hours.</p>
-                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="h-16 text-base teacher tracking-widest">
+                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined || !isSigned || !address} className="h-16 text-base teacher tracking-widest">
                     {
                         countdown > 0 ? <div className="flex items-center gap-2 justify-center">
                             {/* <Clock className="w-4 h-4" /> */}
