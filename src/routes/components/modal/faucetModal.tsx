@@ -7,7 +7,7 @@ import useAccount from "@/hooks/useAccount";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
 import { useMemo } from "react";
-
+import useStatic from "@/models/_global";
 
 // GIN-debug] GET    /api/v1/user/faucet       --> github.com/cysic-tech/cysic-api/router.claimFaucet (6 handlers)
 // [GIN-debug] GET    /api/v1/user/faucet/last  --> github.com/cysic-tech/cysic-api/router.getLastClaimFaucetRecord (6 handlers)
@@ -15,6 +15,7 @@ import { useMemo } from "react";
 
 const cooldownTime = 24 * 60 * 60 * 1000
 const FaucetModal = () => {
+    const { faucetAmount } = useStatic()
     const { address, isSigned } = useAccount()
     // 获取模态框状态
     const { visible, setVisible, data } = useModalState({
@@ -94,15 +95,15 @@ const FaucetModal = () => {
         <Modal
             isOpen={visible}
             onClose={handleClose}
-            className="max-w-[600px]"
+            className="max-w-[440px]"
             title="Claim Gas"
         >
             <div className="flex flex-col gap-6">
-                <p>1 $CYS gas is available to be claimed every 24 hours.</p>
-                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="py-3 rounded-full h-12 text-base">
+                <p>{faucetAmount || 1} $CYS gas is available to be claimed every 24 hours.</p>
+                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="h-16 text-base teacher tracking-widest">
                     {
                         countdown > 0 ? <div className="flex items-center gap-2 justify-center">
-                        <Clock className="w-4 h-4" />
+                        {/* <Clock className="w-4 h-4" /> */}
                         <span className=" ">Countdown: {hours}:{minutes}:{seconds}</span>
                         </div> : 'Claim'
                     }

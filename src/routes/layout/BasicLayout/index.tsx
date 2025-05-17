@@ -22,10 +22,13 @@ import VoucherModal from "@/routes/components/modal/vocherModal";
 import CheckKeplrModal from "@/routes/components/modal/checkKeplrModal";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import FaucetModal from "@/routes/components/modal/faucetModal";
+import useBootstrap from "@/hooks/useBootstrap";
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
     useCosmosUpdate()
+
+    useBootstrap()
 
     return (
         <>

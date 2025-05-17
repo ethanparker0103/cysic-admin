@@ -13,9 +13,11 @@ const Profile = () => {
     return (
         <InfoCard title="PROFILE">
             <>
-                <div className="absolute right-6 top-4 flex items-start h-[calc(100%-2rem)] aspect-square">
+                <div 
+                onClick={handleEditName}
+                className="cursor-pointer absolute right-6 top-4 flex items-start h-[calc(100%-2rem)] aspect-square">
                     <img
-                        src={avatarUrl || getImageUrl("@/assets/images/nft/preset1.png")}
+                        src={avatarUrl}
                         alt="Profile"
                         className="w-full h-full rounded-md object-cover"
                     />

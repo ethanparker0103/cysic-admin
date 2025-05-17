@@ -25,9 +25,9 @@ export const useProverStatus = () => {
     });
     
     const proverStatusData = {
-        zkSync: data?.data?.zkProverStatus || 0,
-        aleo: data?.data?.aleoProverStatus || 0,
-        ethProve: data?.data?.ethProveProverStatus || 0
+        zkSync: data?.data?.proverStatus || 0,
+        aleo: data?.data?.proverStatus || 0,
+        ethProve: data?.data?.proverStatus || 0
     };
 
     // 返回组件函数而不是组件实例

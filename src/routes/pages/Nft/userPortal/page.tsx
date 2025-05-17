@@ -1,11 +1,8 @@
-import { ArrowRight } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { ReactNode } from "react";
 import {
   formatReward,
   getImageUrl,
 } from "@/utils/tools";
-import Copy from "@/components/Copy";
 import { Link, useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
 import useCosmos from "@/models/_global/cosmos";
@@ -20,17 +17,18 @@ import CysicBalance from "@/routes/components/usePortal/cards/CysicBalance";
 import VoucherInfo from "@/routes/components/usePortal/cards/VoucherInfo";
 import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
 import AdCard from "@/routes/components/AdCard";
+import useStatic from "@/models/_global";
+import { getTierIcon } from "@/routes/pages/Zk/invite/page";
 
 
 // 主要组件
 const UserPortal = () => {
   const navigate = useNavigate();
-  const { balanceMap } = useCosmos();
 
-  const { inviteCode, zkPart } = useAccount();
-
-  const cysReward = formatReward(balanceMap?.CYS?.hm_amount || "0", 2);
-  const cgtReward = formatReward(balanceMap?.CGT?.hm_amount || "0", 2);
+  const { currentRebateRate, inviteLevelId } = useAccount();
+  const { referralLevelList } = useStatic();
+  const levelName = referralLevelList?.find((item: any) => item.level == inviteLevelId)?.name;
+  const levelLogo = getTierIcon(levelName)
 
   return (
     <>
@@ -103,8 +101,8 @@ const UserPortal = () => {
                   <div className="uppercase !text-base title !font-light">
                     rebate rate
                   </div>
-                  <div className="flex items-center gap-2 self-end">
-                    {zkPart?.rebaseRate || '-'}
+                  <div className="flex items-center gap-2 self-end text-2xl unbounded font-[300]">
+                    {currentRebateRate || '-'}
                   </div>
                 </div>
               </GradientBorderCard>
@@ -118,8 +116,11 @@ const UserPortal = () => {
                   <div className="uppercase !text-base title !font-light">
                     Invite level{" "}
                   </div>
-                  <div className="flex items-center gap-2 self-end">
-                    {zkPart?.inviteLevel || '-'}
+                  <div className="flex items-center gap-2 self-end text-2xl unbounded font-[300]">
+                        <>
+                          {levelName ? <img src={levelLogo} className="w-6 h-6" /> : null}
+                          {levelName || '-'}
+                        </>
                   </div>
                 </div>
               </GradientBorderCard>

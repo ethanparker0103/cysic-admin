@@ -18,29 +18,11 @@ const useAccount = () => {
   // 获取当前活跃用户信息
   const activeUser = activeAddress ? addressMap[activeAddress] : undefined;
   
-  // 提取当前活跃用户相关状态
-  const {
-    address,
-    signature,
-    isSigned,
-    isRegistered,
-    isBinded,
-    name,
-    avatarUrl,
-    inviteCode,
-    balance,
-    rewardList,
-    socialAccount,
-    nftCnt,
-    voucherCnt,
-    zkPart
-  } = activeUser || {};
-
   // 是否需要绑定邀请码 - 已签名但未注册
-  const needBindInviteCode = !!isSigned && !isRegistered;
+  const needBindInviteCode = !!activeUser?.isSigned && !activeUser?.isRegistered;
   
   // 是否已完成个人资料填写
-  const hasCompleteProfile = !!name && !!avatarUrl;
+  const hasCompleteProfile = !!activeUser?.name && !!activeUser?.avatarUrl;
 
   // 返回对象
   return {
@@ -55,24 +37,15 @@ const useAccount = () => {
     activeAddress,                              // 当前活跃地址
     
     // 核心状态（简化后）
-    isSigned: !!isSigned,                       // 是否已签名
-    isRegistered: !!isRegistered,               // 是否已注册
-    isBinded: !!isBinded,                       // 是否已绑定
+    isSigned: !!activeUser?.isSigned,           // 是否已签名
+    isRegistered: !!activeUser?.isRegistered,   // 是否已注册
+    isBinded: !!activeUser?.isBinded,           // 是否已绑定
     hasCompleteProfile,                         // 是否已完善资料
-    signature,                                  // 签名内容
+    signature: activeUser?.signature,           // 签名内容
     needBindInviteCode,                         // 是否需要绑定邀请码
     
     // 个人信息
-    name,
-    avatarUrl,
-    inviteCode,
-    balance,
-    rewardList,
-    socialAccount,
-    nftCnt,
-    voucherCnt,
-    zkPart,
-    cosmosAddress,
+    ...activeUser,
     
     // 多地址支持 - 直接访问状态
     allAddresses: Object.keys(addressMap),      // 使用Object.keys直接获取地址列表

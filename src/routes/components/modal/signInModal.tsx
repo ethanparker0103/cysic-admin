@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ArrowRight, Upload } from "lucide-react";
@@ -343,6 +343,11 @@ const SignInModal = () => {
 
   // 判断是否已连接但未签名 - 复用原有变量
 
+  // < 15
+  const validInputLength = useMemo(()=>{
+    return formData.name.length < 15
+  }, [formData.name])
+
   return (
     <Modal
       isDismissable={false}
@@ -520,6 +525,13 @@ const SignInModal = () => {
               }
               className="w-full p-4 border border-gray-600 rounded bg-[#181818] text-white focus:border-white focus:outline-none"
             />
+            {
+              !validInputLength && (
+                <div className="text-red-500 text-sm">
+                  Name must be less than 15 characters
+                </div>
+              )
+            }
           </div>
 
           {/* 条款同意 */}
@@ -545,7 +557,7 @@ const SignInModal = () => {
             {!isSigned ? (
               <Button
                 type="light"
-                className="w-full h-14 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                className="w-full h-14 rounded transition-colors"
                 onClick={handleLoginPersonalMessage}
               >
                 SIGN MESSAGE{" "}
@@ -553,11 +565,11 @@ const SignInModal = () => {
             ) : (
               <Button
                 type="light"
-                className="w-full h-14 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+                className="w-full h-14 rounded transition-colors"
                 onClick={handleSubmit}
                 needLoading
                 loading={loading}
-                disabled={!formData.name || !formData.agreeTerms}
+                disabled={!formData.name || !formData.agreeTerms || !validInputLength}
               >
                 SUBMIT
               </Button>

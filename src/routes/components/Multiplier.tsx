@@ -1,5 +1,6 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import useAccount from "@/hooks/useAccount";
+import useStatic from "@/models/_global";
 import { handleMultiplierModal } from "@/utils/tools";
 import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
@@ -8,7 +9,7 @@ import { isMobile } from "react-device-detect";
 export const MultiplierPercentBar = () => {
 
     const { zkPart } = useAccount()
-    const multiplierPercent = zkPart?.multiplierPercent || 0
+    const multiplierPercent = zkPart?.multiplierFire || 0
     return (
         <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
             <div
@@ -20,6 +21,9 @@ export const MultiplierPercentBar = () => {
 }
 
 export const Multiplier = () => {
+    const { multiplierLevelList } = useStatic()
+    const { zkPart } = useAccount()
+    const currentMultiplier = multiplierLevelList?.find((item: { level: number | undefined; }) => item.level == zkPart?.multiplierLevel)
 
     return (
         <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
@@ -52,7 +56,7 @@ export const Multiplier = () => {
                         )}
                     >
                         <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-                        <span className="!text-sm title">HIGH SPEED</span>
+                        <span className="!text-sm title">{currentMultiplier?.name || '-'}</span>
                     </div>
                 </div>
             </div>

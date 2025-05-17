@@ -8,8 +8,7 @@ import { useSignMessage } from '@/hooks/useSignMessage';
 import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
-import { sleep } from '@/utils/tools';
-import { connectWallet } from "@/utils/cosmos"
+
 /**
  * 账户状态初始化Hook
  * 只处理基础的钱包连接、切换和签名

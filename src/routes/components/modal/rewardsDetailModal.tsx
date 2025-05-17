@@ -17,7 +17,7 @@ enum RewardPhase {
 }
 
 const RewardsDetailModal = () => {
-    const { isBinded } = useAccount()
+    const { isBinded, isSigned, address } = useAccount()
     // 获取模态框状态
     const { visible, setVisible, data } = useModalState({
         eventName: "modal_rewards_detail_visible",
@@ -46,7 +46,7 @@ const RewardsDetailModal = () => {
     }, [visible, data]);
 
     // 使用 useRequest 获取奖励数据
-    const { data: phasesData, loading } = useRequest(
+    const { data: phasesData, loading, run } = useRequest(
         async () => {
             const requests = [
                 axios.get('/api/v1/zkTask/reward/phase1'),
@@ -63,8 +63,8 @@ const RewardsDetailModal = () => {
             };
         },
         {
-            refreshDeps: [visible, isBinded], // 仅当弹窗显示时刷新数据
-            ready: visible && isBinded, // 仅当弹窗显示时才执行请求
+            refreshDeps: [visible, isSigned, address],
+            ready: visible && isSigned && !!address,
         }
     );
     
@@ -84,35 +84,9 @@ const RewardsDetailModal = () => {
     };
 
     // 处理领取奖励
-    const handleClaim = () => {
-        console.log("Claiming rewards");
-        // 这里添加领取奖励的逻辑
-    };
-
-    // 处理转换
-    // const handleConvert = (from: string, to: string, amount?: string) => {
-    //     console.log(`Converting from ${from} to ${to}`, amount);
-    //     // 弹出转换弹窗
-    //     const event = new CustomEvent("modal_convert_visible", {
-    //         detail: {
-    //             fromToken: from,
-    //             toToken: to,
-    //             amount
-    //         }
-    //     });
-    //     dispatchEvent(event);
-    // };
-
-    // 处理解除质押
-    const handleUnstake = () => {
-        console.log("Unstaking CGT");
-        // 这里添加解除质押逻辑
-    };
-
-    // 处理提取
-    const handleWithdraw = () => {
-        console.log("Withdrawing Reserved Amount");
-        // 这里添加提取逻辑
+    const handleClaim = async () => {
+        await axios.post(`/api/v1/zkTask/reward/phase2/claim`)
+        run()
     };
 
     // 渲染 Phase I 内容
@@ -169,6 +143,8 @@ const RewardsDetailModal = () => {
                         <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Claimable</span>
                         <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.claimable).toLocaleString()}</span>
                         <Button
+                            needLoading
+                            disabled={!parseInt(phase2.claimable)}
                             type="light"
                             className="px-6 py-2 rounded-lg text-base font-[400]"
                             onClick={handleClaim}

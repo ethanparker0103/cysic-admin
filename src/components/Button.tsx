@@ -48,9 +48,9 @@ const Button = ({
             case BtnType.gradient:
                 return 'bg-gradient border-none !text-[#fff]';
             case BtnType.dark:
-                return 'bg-[#000] border-none text-[#fff] ';
+                return 'bg-[#FFFFFF12] border-none text-[#fff] ';
             case BtnType.light:
-                return cn(resetDisabled, `disabled:bg-[#1D2127] disabled:text-[#ffffff51]`, `bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff]`);
+                return cn(resetDisabled, `disabled:bg-[#FFFFFF80] disabled:text-[#00000080]`, `bg-[#fff] border border-[transparent] text-[#000] hover:!opacity-80`);
             case BtnType.solid:
                 return '!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]';
             case BtnType.text:

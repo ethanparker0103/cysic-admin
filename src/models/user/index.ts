@@ -5,89 +5,78 @@ import { immer } from "zustand/middleware/immer";
 import axios from "@/service";
 import { responseSuccessCode } from "@/config";
 
-// 用户信息接口 - 使用与API一致的字段名
-export interface IRawUserInfo {
-  code: number;
-  msg: string;
-  userProfile: {
-    name: string;
-    avatarUrl: string;
-  };
-  inviteCode: string;
-  balance: {
-    symbol: string;
-    amount: string;
-  };
-  voucherCnt: number;
-  rewardList: [
-    {
-      symbol: string;
-      amount: string;
-    }
-  ];
-  socialAccount: {
-    google: {
-      name: string;
-    };
-    x: {
-      name: string;
-    };
-    discord: {
-      name: string;
-    };
-  };
-  nftCnt: number;
+
+export interface IUserProfile {
+  id: number;
+  name: string;
+  avatarUrl: string;
 }
 
-export interface IUserInfo {
+export interface IBalance {
+  symbol: string;
+  amount: string;
+}
+
+export interface IRewardList {
+  symbol: string;
+  amount: string;
+}
+
+export interface ISocialAccount {
+  google: {
+    name: string;
+  };
+  x: {
+    name: string;
+  };
+  discord: {
+    name: string;
+  };
+}
+
+
+export interface IZkPart {
+  successInviteCnt: number;
+  multiplierLevel: number; // 当前等级
+  multiplierFireInTotal: number; // 总fire
+  multiplierFire: number; // 当前等级fire
+  proverTaskCompletedCnt: number;
+  verifierTaskCompletedCnt: number;
+  proverStatus: {
+    nftActive: number;
+    selfActive: number;
+  };
+  verifierStatus: {
+    standardActive: number;
+    mobileActive: number;
+  };
+  projectStatus: {
+    ongoingCnt: number;
+    underReviewCnt: number;
+  };
+}
+export interface IRawUserInfo {
+  "userProfile": IUserProfile,
+  "inviteCode": string,
+  "inviteLevelId": number,
+  "currentRebateRate": number,
+  "balance": IBalance,
+  "voucherCnt": 0,
+  "rewardList": IRewardList[],
+  "socialAccount": ISocialAccount,
+  "nftCnt": 0,
+  "zkPart": IZkPart
+}
+
+export interface IUserInfo extends IRawUserInfo {
   address: string; // 钱包地址
   signature?: string; // 签名
   isSigned?: boolean; // 签名状态
   isRegistered?: boolean; // 注册状态
-  isBinded?: boolean; // 新增绑定状态
+  isBinded?: boolean; // 新增绑定状态 
+  name: string;
+  avatarUrl: string;
 
-  name?: string;
-  avatarUrl?: string;
-
-  inviteCode?: string;
-  balance?: {
-    amount: string;
-    symbol: string;
-  };
-  rewardList?: Array<{
-    amount: string;
-    symbol: string;
-  }>;
-  socialAccount?: {
-    google?: { name: string } | null;
-    x?: { name: string } | null;
-    discord?: { name: string } | null;
-  };
-  nftCnt?: number;
-  voucherCnt?: number;
-  zkPart: {
-    inviteCode: string;
-    successInviteCnt: number;
-    multiplierPercent: number;
-    proverTaskCompletedCnt: number;
-    verifierTaskCompletedCnt: number;
-    proverStatus: {
-      nftActive: number;
-      selfActive: number;
-    },
-    verifierStatus: {
-      standardActive: number;
-      mobileActive: number;
-    },
-    "projectStatus": {
-      ongoingCnt: number;
-      underReviewCnt: number;
-    }
-
-    // TODO 待实现
-    rebaseRate: number;
-    inviteLevel: number;
-  }
 }
 
 // 用户状态管理接口
@@ -95,13 +84,13 @@ interface UserState {
   // 多地址支持
   addressMap: Record<string, IUserInfo>;
   activeAddress?: string;
-  
+
   // 管理方法
   setActiveAddress: (address?: string) => void;
   getActiveUser: () => IUserInfo | undefined;
   getUserByAddress: (address: string) => IUserInfo | undefined;
   getAllAddresses: () => string[];
-  
+
   // 状态更新
   setState: (address: string, newValues: Partial<IUserInfo>) => void;
   setUserInfo: (address: string, info: IUserInfo) => void;
@@ -134,19 +123,19 @@ const useUser = create<UserState>()(
             console.log('setActiveAddress', address)
             draft.activeAddress = address;
           }),
-          
+
         // 获取当前活跃用户信息
         getActiveUser: () => {
           const { activeAddress, addressMap } = get();
           if (!activeAddress) return undefined;
           return addressMap[activeAddress];
         },
-        
+
         // 根据地址获取用户信息
         getUserByAddress: (address: string) => {
           return get().addressMap[address];
         },
-        
+
         // 获取所有已保存的地址
         getAllAddresses: () => {
           return Object.keys(get().addressMap);
@@ -159,14 +148,14 @@ const useUser = create<UserState>()(
             if (!draft.addressMap[address]) {
               draft.addressMap[address] = { address };
             }
-            
+
             // 更新地址对应的状态
             for (const key in newValues) {
               if (Object.prototype.hasOwnProperty.call(newValues, key)) {
                 (draft.addressMap[address] as any)[key] = newValues[key as keyof IUserInfo];
               }
             }
-            
+
             // 签名特殊处理，更新签名状态
             if (newValues.signature !== undefined) {
               draft.addressMap[address].isSigned = !!newValues.signature;
@@ -180,7 +169,7 @@ const useUser = create<UserState>()(
             if (!draft.addressMap[address]) {
               draft.addressMap[address] = { address };
             }
-            
+
             draft.addressMap[address].signature = signature;
             draft.addressMap[address].isSigned = !!signature;
           }),
@@ -192,7 +181,7 @@ const useUser = create<UserState>()(
           }),
 
         // 重置状态 - 可选择清除特定地址或全部
-        reset: (address?: string) => 
+        reset: (address?: string) =>
           set((draft) => {
             if (address) {
               // 只重置特定地址
@@ -229,7 +218,7 @@ const useUser = create<UserState>()(
 
               return true;
             }
-            if(data.code == 10024) {
+            if (data.code == 10024) {
               set((draft) => {
                 if (!draft.addressMap[address]) {
                   draft.addressMap[address] = { address };
@@ -252,10 +241,10 @@ const useUser = create<UserState>()(
             const data: any = await axios.get("/api/v1/referral/isBound");
 
             console.log('checkBindStatus data', data)
-            
+
             if (data.code == responseSuccessCode) {
               const isBinded = !!data.data.isBound;
-              
+
               // 更新状态
               set((draft) => {
                 if (!draft.addressMap[address]) {
@@ -263,10 +252,10 @@ const useUser = create<UserState>()(
                 }
                 draft.addressMap[address].isBinded = isBinded;
               });
-              
+
               return isBinded;
             }
-            
+
             return false;
           } catch (error) {
             console.error("检查绑定状态失败", error);
@@ -280,24 +269,22 @@ const useUser = create<UserState>()(
             // 获取用户概览信息
             const data: any = await axios.get("/api/v1/user/overview");
 
-            console.log("overview data", data);
-
             if (data.code == responseSuccessCode) {
-              const userInfo = data.data;
+              const userInfo = data.data as IRawUserInfo;
 
               // 直接更新状态，保留原有处理方式
               set((draft) => {
                 if (!draft.addressMap[address]) {
                   draft.addressMap[address] = { address };
                 }
-                
+
                 // 直接复制API返回的所有字段
                 for (const key in userInfo) {
                   if (Object.prototype.hasOwnProperty.call(userInfo, key)) {
                     draft.addressMap[address][key as keyof IUserInfo] = userInfo[key] as any;
                   }
                 }
-                
+
                 // 接口结构更新兼容
                 draft.addressMap[address].name = userInfo.userProfile.name;
                 draft.addressMap[address].avatarUrl = userInfo.userProfile.avatarUrl;
@@ -355,7 +342,7 @@ const useUser = create<UserState>()(
                 if (!draft.addressMap[address]) {
                   draft.addressMap[address] = { address };
                 }
-                
+
                 // 只更新提交的字段
                 if (userData.name) draft.addressMap[address].name = userData.name;
                 if (userData.avatarUrl) draft.addressMap[address].avatarUrl = userData.avatarUrl;
