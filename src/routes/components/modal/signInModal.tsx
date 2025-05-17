@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 
 // import { useAppKit } from "@reown/appkit/react";
 import { usePrivy } from "@privy-io/react-auth";
-import { BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
+import { BIND_CHECK_PATHS, mediasLink, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
 
 // 流程状态枚举
@@ -455,10 +455,10 @@ const SignInModal = () => {
           )}
 
           {/* 关于Cysic链接 */}
-          <div className="flex items-center text-sub mt-4 cursor-pointer hover:text-white transition-colors">
+          <a href={mediasLink.medium} target="_blank" className="flex items-center text-sub mt-4 cursor-pointer hover:text-white transition-colors">
             Read about Cysic
             <ArrowRight size={16} className="ml-2" />
-          </div>
+          </a>
         </div>
       )}
 

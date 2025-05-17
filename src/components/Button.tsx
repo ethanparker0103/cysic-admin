@@ -1,5 +1,8 @@
+import { cn } from '@nextui-org/react'
 import clsx from 'clsx'
 import { ReactNode, useMemo, useState } from 'react'
+
+const resetDisabled = 'disabled:![--tw-text-opacity:1] disabled:![--tw-bg-opacity:1] !opacity-100'
 
 export enum BtnType {
     solidGradient = 'solidGradient',
@@ -8,7 +11,8 @@ export enum BtnType {
     normal = 'normal',
     solid = 'solid',
     dark = 'dark',
-    light = 'light'
+    light = 'light',
+    text = 'text'
 }
 const Button = ({
     children,
@@ -36,6 +40,7 @@ const Button = ({
     const _loading = interalLoading || loading
     const classNameWithType = useMemo(() => {
         switch (type) {
+
             case BtnType.colorGradient: 
                 return 'gradient-color bg-[#1D2127] border-[#FFFFFF1F] border'
             case BtnType.solidGradient:
@@ -45,9 +50,10 @@ const Button = ({
             case BtnType.dark:
                 return 'bg-[#000] border-none text-[#fff] ';
             case BtnType.light:
-                return 'bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff] ';
+                return cn(resetDisabled, `disabled:bg-[#1D2127] disabled:text-[#ffffff51]`, `bg-[#fff] border border-[transparent] text-[#000] hover:bg-[transparent] hover:border-[#fff] hover:text-[#fff]`);
             case BtnType.solid:
                 return '!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]';
+            case BtnType.text:
             default:
                 return '!backdrop-blur-none !bg-[transparent] !border-none text-[#fff]';
         }

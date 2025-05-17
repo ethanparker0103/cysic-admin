@@ -3,9 +3,12 @@ import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import { connectWallet } from "@/utils/cosmos";
 import { keplrDownloadLink } from "@/config";
+import useCosmos from "@/models/_global/cosmos";
+import { useEffect } from "react";
 
 
 const CheckKeplrModal = () => {
+  const { address } = useCosmos()
   // 获取模态框状态
   const { visible, setVisible, data } = useModalState({
     eventName: "modal_check_keplr_visible",
@@ -14,6 +17,11 @@ const CheckKeplrModal = () => {
   const handleClose = () => {
     setVisible(false);
   };
+  useEffect(()=>{
+    if(address){
+      handleClose()
+    }
+  }, [address])
 
   return (
     <Modal

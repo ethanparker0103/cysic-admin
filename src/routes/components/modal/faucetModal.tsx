@@ -5,6 +5,8 @@ import axios from "axios";
 import { useLocalStorageState, useRequest, useCountDown } from "ahooks";
 import useAccount from "@/hooks/useAccount";
 import { toast } from "react-toastify";
+import { Clock } from "lucide-react";
+import { useMemo } from "react";
 
 
 // GIN-debug] GET    /api/v1/user/faucet       --> github.com/cysic-tech/cysic-api/router.claimFaucet (6 handlers)
@@ -13,7 +15,7 @@ import { toast } from "react-toastify";
 
 const cooldownTime = 24 * 60 * 60 * 1000
 const FaucetModal = () => {
-    const { address } = useAccount()
+    const { address, isSigned } = useAccount()
     // 获取模态框状态
     const { visible, setVisible, data } = useModalState({
         eventName: "modal_faucet_visible",
@@ -26,16 +28,22 @@ const FaucetModal = () => {
 
     // { [addr]: undefined | number }
     const [lastClaimTime, setLastClaimTime] = useLocalStorageState<{ [key: string]: undefined | number }>('lastClaimTime', {
-        defaultValue: {}
+        defaultValue: {},
+        listenStorageChange: true
     });
 
-    const currentAddressCountdown = address ? (lastClaimTime?.[address] == undefined ? undefined : new Date(lastClaimTime[address]).getTime() + cooldownTime) : undefined
+    const currentAddressCountdown = useMemo(()=>{
+        if(!address) return undefined
+        const _lastClaimTime = lastClaimTime?.[address]
+        if(!_lastClaimTime) return undefined
+        return Number(_lastClaimTime) + cooldownTime
+    }, [address, lastClaimTime])
 
     useRequest(() => {
         return axios.get('/api/v1/user/faucet/last')
     }, {
-        ready: !!address && !currentAddressCountdown,
-        refreshDeps: [address, currentAddressCountdown],
+        ready: !!address && !currentAddressCountdown && !!isSigned,
+        refreshDeps: [address, currentAddressCountdown, isSigned],
         onSuccess: (res) => {
             setLastClaimTime((prev: any) => {
                 if(!address) return prev
@@ -91,9 +99,12 @@ const FaucetModal = () => {
         >
             <div className="flex flex-col gap-6">
                 <p>1 $CYS gas is available to be claimed every 24 hours.</p>
-                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="py-6">
+                <Button type="light" onClick={handleClaim} disabled={countdown > 0 || lastClaimTime == undefined} className="py-3 rounded-full h-12 text-base">
                     {
-                        countdown > 0 ? `In ${hours}:${minutes}:${seconds}` : 'Claim'
+                        countdown > 0 ? <div className="flex items-center gap-2 justify-center">
+                        <Clock className="w-4 h-4" />
+                        <span className=" ">Countdown: {hours}:{minutes}:{seconds}</span>
+                        </div> : 'Claim'
                     }
                 </Button>
             </div>

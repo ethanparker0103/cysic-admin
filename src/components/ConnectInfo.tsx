@@ -1,18 +1,18 @@
-import { getImageUrl, shortStr, handleSignIn, handleFaucetModal } from "@/utils/tools"
+import { getImageUrl, shortStr, handleFaucetModal } from "@/utils/tools"
 
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link, cn } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, cn } from "@nextui-org/react";
 import Copy from "@/components/Copy";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { usePrivy } from "@privy-io/react-auth";
 import { useDisconnect } from "wagmi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import useUser from "@/models/user";
 import { useWriteContract } from "@/hooks/useWriteContract";
-import { purchaseChainId, USDC, usdcFacuetAbi } from "@/config";
-import { toast } from "react-toastify";
+import { routesConfig } from "@/config";
 import { useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 const ConnectInfo = () => {
     // 使用新的useAccount获取状态
@@ -30,7 +30,6 @@ const ConnectInfo = () => {
     const { reset } = useUser();
 
     // 状态：已注册但未完成资料填写
-    const needCompleteProfile = !name || !avatarUrl;
 
     // 处理断开连接
     const handleEVMDisconnect = async () => {
@@ -39,33 +38,8 @@ const ConnectInfo = () => {
         reset();
     };
 
-    // 处理打开完善资料弹窗
-    const handleCompleteProfile = () => {
-        handleSignIn('profile');
-    };
-
-    const navigate = useNavigate();
-
     // 处理测试代币领取
     const { writeContractAsync } = useWriteContract();
-    const handleFaucet = async () => {
-        if (!address) return;
-
-        try {
-            const tx = await writeContractAsync({
-                chainId: purchaseChainId,
-                address: USDC[purchaseChainId],
-                abi: usdcFacuetAbi,
-                functionName: 'mint',
-                args: [address, 1e22],
-            });
-
-            toast.success('Claimed');
-        } catch (error) {
-            toast.error('Failed to claim tokens');
-            console.error(error);
-        }
-    };
 
     const pathname = useLocation().pathname;
 
@@ -106,7 +80,7 @@ const ConnectInfo = () => {
                             base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
                         }}
                     >
-                        {needCompleteProfile ? (
+                        {/* {needCompleteProfile ? (
                             <DropdownItem
                                 key="complete-profile"
                                 className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between bg-gradient-to-r from-[#17D1B233] to-[#4C1F9933]"
@@ -119,10 +93,10 @@ const ConnectInfo = () => {
                                     <span className="text-[#17D1B2]">COMPLETE YOUR PROFILE</span>
                                 </div>
                             </DropdownItem>
-                        ) : null}
+                        ) : null} */}
 
-                        <DropdownItem key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                            <div className="flex items-center gap-2" onClick={() => { pathname.includes('/zk') ? navigate('/zk/userPortal') : navigate('/userPortal') }}>
+                        <DropdownItem as={Link} to={pathname.includes('/zk') ? '/zk/userPortal' : '/userPortal'} key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                            <div className="flex items-center gap-2" >
                                 <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
                                 <span>User Portal</span>
                             </div>
@@ -134,7 +108,7 @@ const ConnectInfo = () => {
                                 <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
                             </div>
 
-                            <div onClick={handleEVMDisconnect} className="">disconnect</div>
+                            <Button needLoading type="text" onClick={handleEVMDisconnect} className="uppercase !px-0">disconnect</Button>
                         </DropdownItem>
 
                         <DropdownItem key="cosmos-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
@@ -146,14 +120,21 @@ const ConnectInfo = () => {
                             <ConnectCosmosButton />
                         </DropdownItem>
 
-                        {inviteCode ? (
-                            <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                                <span className="">Referral Code</span>
-                                <Copy value={inviteCode}>
-                                    {inviteCode}
-                                </Copy>
-                            </DropdownItem>
-                        ) : null}
+
+                        <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                            <span className="">Referral Code</span>
+                            <Copy value={inviteCode}>
+                                {inviteCode || '-'}
+                            </Copy>
+                        </DropdownItem>
+
+                        <DropdownItem as={Link} to={routesConfig.invite} key="check-invite" className="py-4 px-6 ">
+                            <div className="flex items-center gap-2 text-[#00F0FF]">
+                                <span>Check invite details</span>
+                                <ArrowRight className="w-4 h-4" />
+                            </div>
+                        </DropdownItem>
+
 
                     </DropdownMenu>
                 </Dropdown>

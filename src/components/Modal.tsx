@@ -58,6 +58,7 @@ const Modal = ({
             isOpen={isOpen}
             onClose={onClose}
             className={clsx('bg-[#090A09] text-white', className)}
+            isKeyboardDismissDisabled
             {...props}
         >
             <ModalContent style={{ maxHeight, overflow: 'hidden' }}> {/* 更改为overflow: 'hidden' */}

@@ -30,7 +30,7 @@ declare global {
     }
 }
 
-let provider = window?.keplr;
+let provider = !window?.keplr?.isOkxWallet && window?.keplr;
 export const updateProvider = () => (provider = window?.keplr);
 
 const set = useCosmos.getState().setState;
@@ -240,8 +240,8 @@ export const checkKeplrWallet = (onlyClient?: boolean) => {
 
     if (!status) {
         handleCheckKeplrModal()
-
         throw { message: "Invalid Cosmos Wallet" };
+        // return;
     }
 
     if(onlyClient) return;

@@ -26,12 +26,12 @@ export default function ConnectCosmosButton({ className, content }: any) {
 
   return (
     <Button
-      className="!bg-[transparent] flex items-center justify-end gap-2"
+      className="!bg-[transparent] flex items-center justify-end gap-2 !px-0"
       onClick={connectWallet}
     >
       {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
       {content || (
-        <span className="desc text-sm font-[500]">Connect Keplr</span>
+        <span className="text-sm uppercase">Connect Keplr</span>
       )}
     </Button>
   );

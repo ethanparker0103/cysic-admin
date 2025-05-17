@@ -6,11 +6,11 @@ import { getImageUrl, handleConvertHistoryModal } from "@/utils/tools";
 import { Settings } from "lucide-react";
 import Input from "@/components/Input";
 import {
-    cosmosFee,
-    cosmosReservedValue,
-    cysicBaseCoin,
-    cysicStCoin,
-    supTokens,
+  cosmosFee,
+  cosmosReservedValue,
+  cysicBaseCoin,
+  cysicStCoin,
+  supTokens,
 } from "@/config";
 import useCosmos from "@/models/_global/cosmos";
 import { useEventListener } from "ahooks";
@@ -64,11 +64,11 @@ const ConvertModal = () => {
         setFromToken(data.fromToken === "CYS" ? TokenType.CYS : TokenType.CGT);
         setToToken(data.fromToken === "CYS" ? TokenType.CGT : TokenType.CYS);
       }
-      
+
       // 如果有指定的初始金额
       if (data?.amount) {
-        const formattedAmount = typeof data.amount === 'number' ? 
-          data.amount.toLocaleString() : 
+        const formattedAmount = typeof data.amount === 'number' ?
+          data.amount.toLocaleString() :
           parseFloat(data.amount).toLocaleString();
         setFromAmount(formattedAmount);
         calculateToAmount(parseFloat(data.amount));
@@ -91,11 +91,11 @@ const ConvertModal = () => {
     // 移除逗号，仅允许数字和小数点
     const rawValue = e.target.value.replace(/,/g, "");
     const value = rawValue.replace(/[^0-9.]/g, "");
-    
+
     // 使用逗号格式化
     const formattedValue = Number(value).toLocaleString();
     setFromAmount(formattedValue === "NaN" ? "" : formattedValue);
-    
+
     // 计算兑换金额
     if (value !== "" && !isNaN(Number(value))) {
       calculateToAmount(Number(value));
@@ -116,12 +116,12 @@ const ConvertModal = () => {
   const handleConvert = async (closeLoading?: any) => {
     try {
       checkKeplrWallet();
-      
+
       // 确保金额有效
       if (!fromAmount || parseFloat(fromAmount.replace(/,/g, "")) <= 0) {
         throw { message: "Please enter a valid amount" };
       }
-      
+
       if (fromToken === TokenType.CYS) {
         await exchangeToGovToken(connector, address);
       } else {
@@ -131,7 +131,9 @@ const ConvertModal = () => {
       setToAmount('');
     } catch (e: any) {
       console.log("error", e);
-      toast.error(e?.message || e?.msg || e);
+      if (e?.message !== 'Invalid Cosmos Wallet') {
+        toast.error(e?.message || e?.msg || e);
+      }
     } finally {
       await sleep(1000);
       dispatchEvent(new CustomEvent('refresh_cosmosBalance'));
@@ -161,7 +163,7 @@ const ConvertModal = () => {
 
   const exchangeToGovToken = async (client: any, address: string) => {
     const cleanAmount = fromAmount.replace(/,/g, "");
-    
+
     if (
       BigNumber(balanceMap?.[cysicBaseCoin]?.hm_amount || 0)
         .minus(cleanAmount)
@@ -169,7 +171,7 @@ const ConvertModal = () => {
     ) {
       throw { message: `Reserved Balance < ${cosmosReservedValue}` };
     }
-    
+
     // 构建交易参数
     const amount = {
       denom: "CYS",
@@ -202,7 +204,7 @@ const ConvertModal = () => {
 
   // 调整滑点设置
   const handleSlippageAdjust = () => {
-    dispatch({visible: true});
+    dispatch({ visible: true });
   };
 
   // 关闭模态框
@@ -261,7 +263,7 @@ const ConvertModal = () => {
 
       {/* 切换按钮 */}
       <div className="relative flex justify-center">
-        <div 
+        <div
           className="absolute -translate-y-1/2 w-12 h-12 bg-black border border-[#2B2B2B] rounded-full flex justify-center items-center cursor-pointer z-10"
           onClick={handleSwapTokens}
         >
@@ -310,8 +312,8 @@ const ConvertModal = () => {
           <span className="text-sub">Max. slippage</span>
           <div className="flex items-center">
             <span>{maxSlippage}%</span>
-            <button 
-              className="ml-2 text-white" 
+            <button
+              className="ml-2 text-white"
               onClick={handleSlippageAdjust}
             >
               <Settings size={16} />
@@ -329,9 +331,9 @@ const ConvertModal = () => {
         <div className="flex justify-between items-center text-sm">
           <span className="text-sub">Network cost</span>
           <div className="flex items-center">
-            <img 
-              src={getImageUrl('@/assets/images/icon/flash.svg')} 
-              alt="network" 
+            <img
+              src={getImageUrl('@/assets/images/icon/flash.svg')}
+              alt="network"
               className="w-4 h-4 mr-1"
             />
             <span>{calculateTransactionFee()} CYS</span>
@@ -345,6 +347,7 @@ const ConvertModal = () => {
         needLoading
         className="w-full py-4 rounded-lg text-base font-medium mb-4"
         onClick={handleConvert}
+        // disabled={!fromAmount}
       >
         CONVERT
       </Button>
