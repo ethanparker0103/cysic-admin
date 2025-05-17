@@ -1,7 +1,7 @@
 
 import Button from "@/components/Button";
 import { getImageUrl, handleMultiplierModal, handleReserveModal } from "@/utils/tools";
-import { ArrowRight, CircleHelp } from "lucide-react";
+import { ArrowRight, Check, CircleHelp } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Tooltip from "@/components/Tooltip";
 import axios from "@/service";
@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 import { Multiplier } from "@/routes/components/Multiplier";
 import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
 import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
+import { useState } from "react";
 
 const guide = {
     ["Android"]: {
@@ -271,9 +272,14 @@ const GuideStepCard = ({
         code?: string;
         // children?: React.ReactNode;
     }) => {
+    const [copied, setCopied] = useState(false)
+
     const handleCopy = (v: string) => {
         copy(v);
-        toast("copied");
+        setCopied(true);
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
     };
 
     return (
@@ -304,10 +310,10 @@ const GuideStepCard = ({
                     </SyntaxHighlighter>
                     <Button
                         type="solid"
-                        className="cursor-pointer px-6 py-2 text-base max-h-10"
+                        className="cursor-pointer px-6 py-2 text-base max-h-10 h-10"
                         onClick={() => handleCopy(code)}
                     >
-                        Copy
+                        {copied ? <div className="px-[0.625rem] mx-auto"><Check className="w-4 h-4 text-green-500" /></div> : "Copy"}
                     </Button>
                 </div>
             ) : null}

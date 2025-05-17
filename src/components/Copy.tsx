@@ -1,37 +1,28 @@
 import { cn } from "@nextui-org/react";
 import copy from "copy-to-clipboard";
-import toast from "react-simple-toasts";
+import { Check, Copy as CopyIcon } from "lucide-react";
+import { useState } from "react";
 
 const Copy = ({ className, value, children }: any) => {
+
+  const [copied, setCopied] = useState(false);
+  const handleCopied = () => {
+    copy(value);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 3000);
+  }
   return (
     <div
      className={cn("cursor-pointer flex gap-1 items-center", className)}
-      onClick={() => {
-        copy(value);
-        toast("Copied");
-      }}
+      onClick={handleCopied}
     >
       {children}
-      <svg
-        width="19"
-        height="18"
-        viewBox="0 0 19 18"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M4.875 5.0625C4.875 4.54473 5.29473 4.125 5.8125 4.125H10.875C11.2892 4.125 11.625 4.46079 11.625 4.875C11.625 5.18566 11.8768 5.4375 12.1875 5.4375C12.4982 5.4375 12.75 5.18566 12.75 4.875C12.75 3.83946 11.9105 3 10.875 3H5.8125C4.67341 3 3.75 3.92341 3.75 5.0625V10.125C3.75 11.1605 4.58946 12 5.625 12C5.93566 12 6.1875 11.7482 6.1875 11.4375C6.1875 11.1268 5.93566 10.875 5.625 10.875C5.21079 10.875 4.875 10.5392 4.875 10.125V5.0625Z"
-          fill="white"
-          fillOpacity="0.45"
-        />
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M8.8125 6C7.67341 6 6.75 6.92341 6.75 8.0625V12.9375C6.75 14.0766 7.67341 15 8.8125 15H13.6875C14.8266 15 15.75 14.0766 15.75 12.9375V8.0625C15.75 6.92341 14.8266 6 13.6875 6H8.8125ZM7.875 8.0625C7.875 7.54473 8.29473 7.125 8.8125 7.125H13.6875C14.2053 7.125 14.625 7.54473 14.625 8.0625V12.9375C14.625 13.4553 14.2053 13.875 13.6875 13.875H8.8125C8.29473 13.875 7.875 13.4553 7.875 12.9375V8.0625Z"
-          fill="white"
-          fillOpacity="0.45"
-        />
-      </svg>
+      {
+        copied ? (<Check className="w-4 h-4 text-green-500" />) : (<CopyIcon className="w-4 h-4" />)
+      }
+     
     </div>
   );
 };

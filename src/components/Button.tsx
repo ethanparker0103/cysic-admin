@@ -19,7 +19,7 @@ const Button = ({
     loading,
     style = {},
     needLoading = true,
-    id
+    id,
 }: {
     children: ReactNode
     className?: string

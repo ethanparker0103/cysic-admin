@@ -5,9 +5,22 @@ import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
 
-export const Multiplier = () => {
+export const MultiplierPercentBar = () => {
+
     const { zkPart } = useAccount()
     const multiplierPercent = zkPart?.multiplierPercent || 0
+    return (
+        <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
+            <div
+                style={{ width: `${multiplierPercent}%` }}
+                className="absolute inset-0 left-0 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"
+            ></div>
+        </div>
+    )
+}
+
+export const Multiplier = () => {
+
     return (
         <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
             <div className="flex flex-col ">
@@ -29,12 +42,7 @@ export const Multiplier = () => {
                     </div>
 
                     {/* 进度条 */}
-                    <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
-                        <div
-                            style={{ width: `${multiplierPercent}%` }}
-                            className="absolute inset-0 left-0 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"
-                        ></div>
-                    </div>
+                    <MultiplierPercentBar />
 
                     {/* HIGH SPEED 指示器 */}
                     <div
