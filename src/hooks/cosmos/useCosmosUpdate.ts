@@ -11,7 +11,7 @@ const useCosmosUpdate = ()=>{
     
       useEffect(() => {
         if (hasConnectedWithKeplr) {
-          connectWallet();
+          connectWallet({mode: 'soft'});
         }
       }, [hasConnectedWithKeplr]);
 

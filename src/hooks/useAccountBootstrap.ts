@@ -79,7 +79,7 @@ const useAccountBootstrap = () => {
             setAddress(newAddress);
             userStore.setActiveAddress(newAddress);
 
-            connectWallet()
+            // connectWallet()
           } else {
             // 断开了钱包连接
             userStore.setActiveAddress(undefined);

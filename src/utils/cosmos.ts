@@ -43,15 +43,20 @@ const cosmosConfig = {
     [cysicTestnet.chainId]: cysicTestnet,
 };
 
-async function connectWallet() {
+// soft - 尝试链接，不处理任何报错
+// hard - 尝试链接，处理所有报错
+async function connectWallet(props?: {mode?: 'soft' | 'hard'}) {
+    const {mode = 'hard'} = props || {}
     const chainId = cosmosConfig[chain]?.chainId;
     const rpc = cosmosConfig[chain]?.rpc;
 
     // 检查是否安装了 Keplr
     if (!provider) {
+        if(mode === 'soft'){
+            return;
+        }
         checkKeplrWallet();
         throw { message: "Keplr is not available" };
-        return;
     }
     set({ isConnecting: true });
 
@@ -64,7 +69,6 @@ async function connectWallet() {
         // 创建签名客户端
         const offlineSigner = provider.getOfflineSigner(chainId);
         const accounts = await offlineSigner.getAccounts();
-        console.log('accounts', accounts)
 
         // register cysic msgs
         const cysicRegistryTypes = [
@@ -111,6 +115,7 @@ async function connectWallet() {
     } catch (e) {
         useCosmos.getState().setState({
             isConnecting: false,
+            hasConnectedWithKeplr: false
         });
     }
 }
