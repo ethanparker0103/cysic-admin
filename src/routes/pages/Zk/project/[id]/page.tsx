@@ -11,6 +11,7 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { shortStr } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
+import { TaskStatus } from "@/config";
 
 interface ITask {
     taskId: number;
@@ -116,7 +117,7 @@ const ProjectDetailPage = () => {
             key: "status",
             label: "Status",
             width: "33%",
-            renderCell: (project) => <span>{project.status}</span>,
+            renderCell: (project) => <span>{TaskStatus?.[project.status] || project.status}</span>,
         },
         {
             key: "detail",
