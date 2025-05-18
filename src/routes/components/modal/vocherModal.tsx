@@ -1,5 +1,4 @@
 import Button from "@/components/Button";
-import GradientBorderCard from "@/components/GradientBorderCard";
 import Modal from "@/components/Modal";
 import Spinner from "@/components/spinner";
 import useAccount from "@/hooks/useAccount";
@@ -10,6 +9,13 @@ import axios from "axios";
 import dayjs from "dayjs";
 import { Check } from "lucide-react";
 import { SetStateAction, useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
+
+enum VoucherTab {
+    VALID = "VALID",
+    INVALID = "INVALID"
+}
 
 // - status: 0 - 可用, 1 - 已过期, 2 - 已使用
 const limitTime = 1000 * 3600 * 7;
@@ -81,6 +87,7 @@ const VoucherItem = ({ voucher, refresh }: { voucher: IVoucher, refresh: () => v
             await axios.post('/api/v1/user/voucher/redeem', {
                 userVoucherId: voucher.id
             })
+            toast.success('Voucher redeemed successfully');
             refresh();
         }
     };
@@ -164,6 +171,8 @@ const VoucherModal = () => {
     const validLoading = !validTasks?.length && _loading
     const invalidLoading = !invalidTasks?.length && _loading
 
+
+    const [activeTab, setActiveTab] = useState<VoucherTab>(VoucherTab.VALID);
     return (
         <Modal
             title="VOUCHER"
@@ -177,50 +186,61 @@ const VoucherModal = () => {
                     vouchers can be applied at checkout when purchasing a Digital
                     Harvester.
                 </div>
-                <Tabs
-                    classNames={{
-                        panel: "!p-0",
-                        tabList:
-                            "w-full p-0 gap-0 rounded-md overflow-hidden border border-[#FFFFFF80]",
-                        tab: cn(
-                            tabStyle,
-                            "py-6 [&:not(:last-child)]:border-r [&:not(:last-child)]:border-r-[#FFFFFF80] !rounded-none px-0 "
-                        ),
-                        cursor: "rounded-none",
-                    }}
-                    className="w-full"
-                >
-                    <Tab key="valid" title="VALID">
-                        <div className="flex flex-col gap-4">
-                            {validLoading ? (
-                                <div className="flex items-center justify-center h-full">
-                                    <Spinner />
-                                </div>
-                            ) : validTasks?.length ? (
-                                validTasks.map((task) => (
-                                    <VoucherItem refresh={run} key={task.name} voucher={task} />
-                                ))
-                            ) : (
-                                <div className="text-center py-12 text-gray-400">No voucher found</div>
-                            )}
-                        </div>
-                    </Tab>
-                    <Tab key="invalid" title="INVALID">
-                        <div className="flex flex-col gap-4">
-                            {invalidLoading ? (
-                                <div className="flex items-center justify-center h-full">
-                                    <Spinner />
-                                </div>
-                            ) : invalidTasks?.length ? (
-                                invalidTasks.map((task) => (
-                                    <VoucherItem refresh={run} key={task.name} voucher={task} />
-                                ))
-                            ) : (
-                                <div className="text-center py-12 text-gray-400">No voucher found</div>
-                            )}
-                        </div>
-                    </Tab>
-                </Tabs>
+
+
+                <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6 border border-[#FFFFFF4D]">
+                    <button
+                        className={`py-4 uppercase text-center text-base ${activeTab === VoucherTab.VALID
+                            ? "bg-white text-black"
+                            : "bg-[#1E1E1E] text-[#777]"
+                            }`}
+                        onClick={() => setActiveTab(VoucherTab.VALID)}
+                    >
+                        VALID
+                    </button>
+                    <button
+                        className={`py-4 uppercase text-center text-base ${activeTab === VoucherTab.INVALID
+                            ? "bg-white text-black"
+                            : "bg-[#1E1E1E] text-[#777]"
+                            }`}
+                        onClick={() => setActiveTab(VoucherTab.INVALID)}
+                    >
+                        INVALID
+                    </button>
+                </div>
+
+
+                {activeTab === VoucherTab.VALID ? (
+                    <div className="flex flex-col gap-4">
+                        {validLoading ? (
+                            <div className="flex items-center justify-center h-full">
+                                <Spinner />
+                            </div>
+                        ) : validTasks?.length ? (
+                            validTasks.map((task) => (
+                                <VoucherItem refresh={run} key={task.name} voucher={task} />
+                            ))
+                        ) : (
+                            <div className="text-center py-12 text-gray-400">No voucher found</div>
+                        )}
+                    </div>
+                ) : null}
+                {activeTab === VoucherTab.INVALID ? (
+                    <div className="flex flex-col gap-4">
+                        {invalidLoading ? (
+                            <div className="flex items-center justify-center h-full">
+                                <Spinner />
+                            </div>
+                        ) : invalidTasks?.length ? (
+                            invalidTasks.map((task) => (
+                                <VoucherItem refresh={run} key={task.name} voucher={task} />
+                            ))
+                        ) : (
+                            <div className="text-center py-12 text-gray-400">No voucher found</div>
+                        )}
+                    </div>
+                ) : null}
+
             </div>
         </Modal>
     );
