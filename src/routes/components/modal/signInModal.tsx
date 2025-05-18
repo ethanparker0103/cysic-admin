@@ -361,6 +361,7 @@ const SignInModal = () => {
       onClose={handleClose}
       title="SIGN IN"
       className="max-w-[600px]"
+      hideCloseButton={!isSigned && !!walletAddress}
     >
       {/* 错误提示 */}
       {error && (
@@ -442,7 +443,7 @@ const SignInModal = () => {
                     GOOGLE ACCOUNT
                   </Button>
 
-                  <Button
+                  {/* <Button
                     type="solid"
                     className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
                     onClick={loginWithDiscord}
@@ -450,7 +451,7 @@ const SignInModal = () => {
                     loading={loading}
                   >
                     DISCORD ACCOUNT
-                  </Button>
+                  </Button> */}
 
 
                   <Button

@@ -1,4 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
+import useAccount from "@/hooks/useAccount";
 import useUser from "@/models/user";
 import { handleVoucherModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
@@ -8,8 +9,8 @@ import { Link } from "react-router-dom";
 
 const VoucherInfo = () => {
     const { 
-        voucherCnt = 0 
-    } = useUser();
+        voucherValidCnt = 0 
+    } = useAccount();
 
     return (
         <GradientBorderCard borderRadius={8} className="h-full">
@@ -51,7 +52,7 @@ const VoucherInfo = () => {
                         )}
                     >
                         <div className="unbounded text-2xl font-light">
-                            {voucherCnt} USDC
+                            {voucherValidCnt}
                         </div>
                     </div>
                 </div>

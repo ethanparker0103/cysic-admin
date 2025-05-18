@@ -8,13 +8,26 @@ import { useSignMessage } from '@/hooks/useSignMessage';
 import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
+import { usePrivy } from '@privy-io/react-auth';
+import { handleSignIn } from '@/utils/tools';
 
 /**
  * 账户状态初始化Hook
  * 只处理基础的钱包连接、切换和签名
  */
 const useAccountBootstrap = () => {
-  const { address, isSigned, isBinded  } = useAccount()
+  const { address, isBinded, addressMap } = useAccount()
+  const { user } = usePrivy()
+  const isEmbed = user?.wallet?.connectorType == "embedded"
+  const isSigned = !!addressMap?.[address || '']?.signature
+
+  useEffect(()=>{
+    if(isEmbed && address && !isSigned){
+      handleSignIn()
+    }
+  }, [isEmbed, address, isSigned])
+
+
   const { signMessageAsync } = useSignMessage();
   const userStore = useUser();
   const { setAddress } = useStatic();

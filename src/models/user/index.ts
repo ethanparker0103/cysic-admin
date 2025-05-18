@@ -61,10 +61,11 @@ export interface IRawUserInfo {
   "inviteLevelId": number,
   "currentRebateRate": number,
   "balance": IBalance,
-  "voucherCnt": 0,
+  "voucherCnt": number,
+  voucherValidCnt: number,
   "rewardList": IRewardList[],
   "socialAccount": ISocialAccount,
-  "nftCnt": 0,
+  "nftCnt": number,
   "zkPart": IZkPart
 }
 
