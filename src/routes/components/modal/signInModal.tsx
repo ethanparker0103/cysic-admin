@@ -300,7 +300,7 @@ const SignInModal = () => {
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      setError("Error updating profile. Please try again.");
+      setError("Logo size must be less than 5MB, please try again later.");
     } finally {
       setLoading(false);
     }

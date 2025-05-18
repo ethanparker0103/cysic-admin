@@ -7,21 +7,27 @@ import Modal from "@/components/Modal";
 import useModalState from "@/hooks/useModalState";
 import { useRequest } from "ahooks";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
+import { shortStr } from "@/utils/tools";
+import { ArrowRight } from "lucide-react";
 
 interface ITask {
-    id: string;
-    hash: string;
-    bonus: string;
-    latency: number;
-    proofType: string;
+    taskId: number;
+    taskHash: string;
+    rewardCYS: string;
+    rewardCGT: string;
+    timeBounds: number;
     status: number;
-    detail: string;
+
+
+    hardwareRequirement: string;
+    latency: string;
+    proofType: string;
+    
 }
 
 interface IProjectDetail {
-    
     avatar: string;
     id: number;
     name: string;
@@ -40,6 +46,7 @@ interface IProjectDetail {
 const ProjectDetailPage = () => {
     const { id } = useParams();
     const [projectDetail, setProjectDetail] = useState<IProjectDetail>({} as IProjectDetail);
+    const [taskList, setTaskList] = useState<ITask[]>([]);
     useRequest(() => {
         // /zkTask/project/detail
         return axios.get(`/api/v1/zkTask/project/detail`, {
@@ -48,20 +55,31 @@ const ProjectDetailPage = () => {
             }
         });
     }, {
+        ready: !!id,
+        refreshDeps: [id],
         onSuccess: (res) => {
-            console.log('res',res);
             setProjectDetail(res.data as IProjectDetail);
         }
     });
 
-    
-    
+    useRequest(() => {
+        return axios.get(`/api/v1/zkTask/dashboard/project/taskList/${id}`);
+    }, {
+        ready: !!id,
+        refreshDeps: [id],
+        onSuccess: (res) => {
+            setTaskList(res.data?.list as ITask[]);
+        }
+    });
+
+
+
     const projectColumns: CysicTableColumn<ITask>[] = [
         {
             key: "taskID",
             label: "Task ID",
             width: "33%",
-            renderCell: (project) => <span>{project.id}</span>,
+            renderCell: (project) => <span>{project.taskId}</span>,
         },
         {
             key: "taskHash",
@@ -69,7 +87,7 @@ const ProjectDetailPage = () => {
             width: "33%",
             renderCell: (project) => (
                 <div className="flex items-center">
-                    <span>{project.hash}</span>
+                    {shortStr(project.taskHash, 14)}
                 </div>
             ),
         },
@@ -77,19 +95,22 @@ const ProjectDetailPage = () => {
             key: "bonus",
             label: "Bonus",
             width: "33%",
-            renderCell: (project) => <span>{project.bonus}</span>,
+            renderCell: (project) => <div className="flex flex-col gap-1">
+                <span>{project.rewardCYS} CYS</span>
+                <span>{project.rewardCGT} CGT</span>
+            </div>,
         },
         {
             key: "latency",
             label: "Latency",
             width: "33%",
-            renderCell: (project) => <span>{project.latency}</span>,
+            renderCell: (project) => <span>{project?.latency || '-'}</span>,
         },
         {
             key: "proofType",
             label: "Proof Type",
             width: "33%",
-            renderCell: (project) => <span>{project.proofType}</span>,
+            renderCell: (project) => <span>{project?.proofType || '-'}</span>,
         },
         {
             key: "status",
@@ -101,7 +122,10 @@ const ProjectDetailPage = () => {
             key: "detail",
             label: "Detail",
             width: "33%",
-            renderCell: (project) => <span>{project.detail}</span>,
+            renderCell: (project) => <Link className="flex items-center gap-2" to={`/zk/dashboard/task/${project.taskId}`}>
+                Detail
+                <ArrowRight size={16} />
+            </Link>,
         },
     ];
 
@@ -220,7 +244,7 @@ const ProjectDetailPage = () => {
                                 My projects
                             </h2>
                             <CysicTable
-                                data={projectDetail?.tasks || []}
+                                data={taskList || []}
                                 columns={projectColumns}
                             />
                         </div>
@@ -236,8 +260,9 @@ const ProjectDetailPage = () => {
             >
                 <div className="flex flex-col gap-6">
                     <div className="text-base">
-                        Are you sure to pause this project? You can also start this project
-                        anytime under the "My Projects".
+                        Are you sure to pause this project?
+                        <br />
+                        Please contact our Admin to start this project anytime.
                     </div>
 
                     <div className="flex flex-col gap-2">
@@ -245,18 +270,11 @@ const ProjectDetailPage = () => {
                             needLoading
                             type="light"
                             className="w-full py-4 rounded-lg text-base font-medium"
-                            onClick={handlePause}
+                            onClick={() => {
+                                setVisible(false);
+                            }}
                         >
-                            PAUSE
-                        </Button>
-
-                        <Button
-                            needLoading
-                            type="solid"
-                            className="w-full py-4 rounded-lg text-base font-medium"
-                            onClick={handleCancel}
-                        >
-                            CANCEL
+                            CONFIRM
                         </Button>
                     </div>
                 </div>

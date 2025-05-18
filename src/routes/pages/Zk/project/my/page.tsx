@@ -148,7 +148,7 @@ const MyProjectPage = () => {
                     {
                         project.status === 0 ? (
                             <>
-                                <TriangleAlert size={16} className=""/>
+                                <TriangleAlert size={16} className="" />
                             </>
                         ) : null
                     }
@@ -235,44 +235,24 @@ const MyProjectPage = () => {
                 className="max-w-[600px]"
             >
                 <div className="flex flex-col gap-6">
-                    <div className="bg-[#0E0E0E] border border-[#333] rounded-lg p-4">
-                        <div className="flex justify-between items-center">
-                            <div className="!text-3xl title font-light !font-light">
-                                <input
-                                    type="text"
-                                    value={amount}
-                                    onChange={handleAmountChange}
-                                    placeholder="1,234"
-                                    className="bg-transparent border-none outline-none w-full max-w-[200px] text-white"
-                                />
-                            </div>
-                            <div className="text-base flex items-center bg-[#222] p-2 rounded-full">
-                                <img
-                                    src={getImageUrl('@/assets/images/tokens/CGT.svg')}
-                                    alt={"CGT"}
-                                    className="w-6 h-6 mr-2"
-                                />
-                                <span className="title !font-[500] !text-base ">{"CGT"}</span>
-                            </div>
-                        </div>
-
-                        <div className="flex justify-between items-center mt-2">
-                            <div className="text-sm text-[#777]">Amount</div>
-                            <div className="text-white">
-                                Balance ${cgtBalance}
-                            </div>
-                        </div>
+                    <div className="text-base">
+                        Are you sure to start this project?
+                        <br />
+                        Please contact our Admin to start this project anytime.
                     </div>
 
-                    <Button
-                        needLoading
-                        type="light"
-                        className="w-full py-4 rounded-lg text-base font-medium"
-                        onClick={handlePay}
-                    >
-                        PAY
-                    </Button>
-
+                    <div className="flex flex-col gap-2">
+                        <Button
+                            needLoading
+                            type="light"
+                            className="w-full py-4 rounded-lg text-base font-medium"
+                            onClick={() => {
+                                setVisible(false);
+                            }}
+                        >
+                            CONFIRM
+                        </Button>
+                    </div>
                 </div>
             </Modal>
 
