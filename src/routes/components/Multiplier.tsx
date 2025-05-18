@@ -26,8 +26,8 @@ export const Multiplier = () => {
     const currentMultiplier = multiplierLevelList?.find((item: { level: number | undefined; }) => item.level == zkPart?.multiplierLevel)
 
     return (
-        <GradientBorderCard borderRadius={8} className="flex-[3] w-full">
-            <div className="flex flex-col ">
+        <GradientBorderCard borderRadius={8} className="flex-[3] w-full h-full">
+            <div className="flex flex-col justify-between">
                 <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-6">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
@@ -35,13 +35,6 @@ export const Multiplier = () => {
                                 MULTIPLIER
                             </div>
                             <Tooltip content={<div className="max-w-[16rem] py-2">A higher level Multiplier gives you a boost in rewards when earning rewards through Verifier/Prover.</div>}><div className="text-sub text-xs">ⓘ</div></Tooltip>
-                        </div>
-                        <div
-                            className="flex items-center justify-end gap-1 cursor-pointer"
-                            onClick={handleMultiplierModal}
-                        >
-                            <span className="text-sm text-sub text-sub">SPEED UP</span>
-                            <ArrowRight size={12} />
                         </div>
                     </div>
 
@@ -58,7 +51,19 @@ export const Multiplier = () => {
                         <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                         <span className="!text-sm title">{currentMultiplier?.name || '-'}</span>
                     </div>
+
+
+
+                    <div
+                        className="flex items-center justify-end gap-1 cursor-pointer"
+                        onClick={handleMultiplierModal}
+                    >
+                        <span className="text-sm text-sub text-sub">SPEED UP</span>
+                        <ArrowRight size={12} />
+                    </div>
                 </div>
+
+
             </div>
         </GradientBorderCard>
     );

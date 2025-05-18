@@ -15,11 +15,11 @@ const CysicBalance = () => {
         <div className="flex justify-between items-center mb-4">
           <div
             className={cn(
-              "text-base !font-light title",
-              isMobile ? "!text-base" : ""
+              "text-base font-light unbounded",
+              isMobile ? "text-base" : ""
             )}
           >
-            CYSIC BALANCE
+            BALANCE
           </div>
           <div className="flex items-center gap-6">
             <a
@@ -47,11 +47,11 @@ const CysicBalance = () => {
         >
           <div
             className={cn(
-              "flex items-end justify-end gap-6 border-white py-2"
+              "flex items-end justify-end gap-6 border-white"
             )}
           >
 
-            <div className={cn("!text-3xl !font-light title", isMobile ? "text-left" : "text-right")}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
+            <div className={cn("text-2xl font-light unbounded", isMobile ? "text-left" : "text-right")}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
 
           </div>
         </div>

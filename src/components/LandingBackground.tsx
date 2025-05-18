@@ -64,8 +64,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
     if (!backgroundConfig?.img) {
         return (
             <main className={cn("relative min-h-screen w-full z-10 mx-auto",
-                ['/hardware', '/zk'].includes(path) ? "" : "main-container",
-                isMobile ? "pb-6 px-3" : ['/hardware', '/zk'].includes(path) ? "pb-0" : "pb-12")}>
+                ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "" : "main-container",
+                isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "pb-0" : "pb-12")}>
                 {children}
             </main>
         );
@@ -123,8 +123,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
                 }
                 <main className={
                     cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
-                        ['/hardware', '/zk', '/'].includes(path) ? "" : "main-container ",
-                        isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/'].includes(path) ? "pb-0" : "pb-12"
+                        ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "" : "main-container ",
+                        isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "pb-0" : "pb-12"
                     )
                 }>
                     {children}

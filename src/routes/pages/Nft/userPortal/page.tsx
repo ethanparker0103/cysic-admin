@@ -1,8 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import {
-  formatReward,
-  getImageUrl,
-} from "@/utils/tools";
+import { formatReward, getImageUrl } from "@/utils/tools";
 import { Link, useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
 import useCosmos from "@/models/_global/cosmos";
@@ -19,7 +16,8 @@ import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
 import AdCard from "@/routes/components/AdCard";
 import useStatic from "@/models/_global";
 import { getTierIcon } from "@/routes/pages/Zk/invite/page";
-
+import { ArrowRight } from "lucide-react";
+import { routesConfig } from "@/config";
 
 // 主要组件
 const UserPortal = () => {
@@ -27,13 +25,15 @@ const UserPortal = () => {
 
   const { currentRebateRate, inviteLevelId } = useAccount();
   const { referralLevelList } = useStatic();
-  const levelName = referralLevelList?.find((item: any) => item.level == inviteLevelId)?.name;
-  const levelLogo = getTierIcon(levelName)
+  const levelName = referralLevelList?.find(
+    (item: any) => item.level == inviteLevelId
+  )?.name;
+  const levelLogo = getTierIcon(levelName);
 
   return (
     <>
       {/* content */}
-      <div className="container mx-auto relative z-10 pt-20 pb-16">
+      <div className="main-container mx-auto relative z-10 pt-20 pb-16 w-full">
         {/* title */}
         <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">
           USER PORTAL
@@ -58,27 +58,32 @@ const UserPortal = () => {
 
             {/* balance / voucher */}
             <div className="flex-[4] min-w-[250px] flex flex-col gap-4">
-                <CysicBalance />
-                <VoucherInfo />
+              <CysicBalance />
+              <VoucherInfo />
             </div>
           </div>
         </div>
 
-        <div className="mb-12">
-          {/* 乘数卡片 */}
-          <Multiplier />
-        </div>
-
         <div className="mb-12 flex flex-wrap gap-4">
-          <div className="flex-1 min-w-[300px]">
+          <div className="flex-[2]">
             <Profile />
           </div>
-          <div className="flex-1 min-w-[300px]">
+          <div className="flex-[1]">
             <SocialAccount />
+          </div>
+          <div className="flex-[2]">
+            <Multiplier />
           </div>
         </div>
 
-        <div className="mb-12">
+        <div className="mb-12 relative">
+          <Link
+            to={routesConfig.invite}
+            className="absolute top-2 right-0 teacher text-sm flex items-center text-sub text-sm hover:text-white"
+          >
+            check invite details <ArrowRight size={12} className="ml-1" />
+          </Link>
+
           <h2
             className={cn(
               "title !font-light uppercase mb-12 text-center",
@@ -89,52 +94,40 @@ const UserPortal = () => {
           </h2>
 
           <div className="flex flex-wrap gap-4">
-            <div className="flex-[2]">
-              <InviteCard />
-            </div>
-            <div className="flex-1">
-              <GradientBorderCard
-                borderRadius={8}
-                className="flex-[4] w-full h-full"
-              >
-                <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
-                  <div className="uppercase !text-base title !font-light">
-                    rebate rate
-                  </div>
-                  <div className="flex items-center gap-2 self-end text-2xl unbounded font-[300]">
-                    {currentRebateRate || '-'}
-                  </div>
+            <InviteCard />
+            <GradientBorderCard
+              borderRadius={8}
+              className="flex-1 w-full h-full"
+            >
+              <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
+                <div className="uppercase !text-base title !font-light">
+                  rebate rate
                 </div>
-              </GradientBorderCard>
-            </div>
-            <div className="flex-1">
-              <GradientBorderCard
-                borderRadius={8}
-                className="flex-[4] w-full h-full"
-              >
-                <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
-                  <div className="uppercase !text-base title !font-light">
-                    Invite level{" "}
-                  </div>
-                  <div className="flex items-center gap-2 self-end text-2xl unbounded font-[300]">
-                        <>
-                          {levelName ? <img src={levelLogo} className="w-6 h-6" /> : null}
-                          {levelName || '-'}
-                        </>
-                  </div>
+                <div className="flex items-center gap-2 self-end text-2xl unbounded">
+                  {currentRebateRate || "-"}
                 </div>
-              </GradientBorderCard>
-            </div>
-            <div className="flex-1" />
+              </div>
+            </GradientBorderCard>
+            <GradientBorderCard
+              borderRadius={8}
+              className="flex-1 w-full h-full"
+            >
+              <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
+                <div className="uppercase !text-base title !font-light">
+                  Invite level{" "}
+                </div>
+                <div className="flex items-center gap-2 self-end text-2xl unbounded">
+                  <>
+                    {levelName ? (
+                      <img src={levelLogo} className="w-6 h-6" />
+                    ) : null}
+                    {levelName || "-"}
+                  </>
+                </div>
+              </div>
+            </GradientBorderCard>
           </div>
         </div>
-
-        <Link
-          className="title !text-[24px] !font-[300] !text-[#00F0FF] flex items-center justify-center mb-12"
-          to="/zk/invite"
-        >
-          check invites details →
-        </Link>
 
         {/* SERVICE HUB 部分 */}
         <div>
@@ -158,12 +151,13 @@ const UserPortal = () => {
                 title={
                   <>
                     CYSIC AI
-                    <br />
-                    (COMING SOON)
+                    <div className="mt-3 !normal-case w-fit text-sm font-[500] teacher px-4 py-1 rounded-full border border-white bg-[#FFFFFF1A] backdrop-blur-sm">
+                      Coming Soon
+                    </div>
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-                onClick={()=>null}
+                onClick={() => null}
               />
             </div>
 
@@ -172,22 +166,33 @@ const UserPortal = () => {
                 title={
                   <>
                     CYSIC MINING
-                    <br />
-                    (COMING SOON)
+                    <div className="mt-3 !normal-case w-fit text-sm font-[500] teacher px-4 py-1 rounded-full border border-white bg-[#FFFFFF1A] backdrop-blur-sm">
+                      Coming Soon
+                    </div>
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                onClick={()=>null}
+                onClick={() => null}
               />
             </div>
           </div>
         </div>
-
-
-        <JoinZkPhase3 className="pt-24 [&_.title]:!text-[6rem]" slogen="Join Cysic Network " />
       </div>
 
-
+      <div className="relative h-screen w-full">
+        <div
+          className="absolute brightness-50 inset-0 size-full z-0"
+          style={{
+            backgroundImage: `url(${getImageUrl(
+              "@/assets/images/_global/zk_landing_bg_3.png"
+            )})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        />
+        <JoinZkPhase3 slogen="Join Cysic Network " title="Phase III" />
+      </div>
     </>
   );
 };

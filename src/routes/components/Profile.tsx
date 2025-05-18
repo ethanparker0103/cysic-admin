@@ -1,6 +1,6 @@
 import useAccount from "@/hooks/useAccount";
 import InfoCard from "@/routes/components/usePortal/cards/InfoCard";
-import { getImageUrl, handleSignIn } from "@/utils/tools";
+import { getImageUrl, handleSignIn, shortStr } from "@/utils/tools";
 
 const Profile = () => {
     const handleEditName = () => {
@@ -8,14 +8,14 @@ const Profile = () => {
     }
 
     const { user } = useAccount()
-    const { name,  avatarUrl } = user || {};
-    
+    const { name, avatarUrl } = user || {};
+
     return (
         <InfoCard title="PROFILE">
             <>
-                <div 
-                onClick={handleEditName}
-                className="cursor-pointer absolute right-6 top-4 flex items-start h-[calc(100%-2rem)] aspect-square">
+                <div
+                    onClick={handleEditName}
+                    className="cursor-pointer absolute right-6 top-4 flex items-start h-[calc(100%-2rem)] aspect-square">
                     <img
                         src={avatarUrl}
                         alt="Profile"
@@ -23,11 +23,11 @@ const Profile = () => {
                     />
                 </div>
 
-                <div className="flex justify-between gap-4 w-full">
-                    <div className="flex flex-col gap-1 justify-end">
+                <div className="flex justify-between gap-4 max-w-[17.5rem] ">
+                    <div className="flex flex-col gap-1 justify-end w-full">
                         <div className="text-base text-sub">NAME</div>
                         <div className="flex items-center gap-2 text-base">
-                            <span className="text-white">{name || "-"}</span>
+                            <span className="text-white flex-1">{name ? shortStr(name, 16) : "-"}</span>
                             <button onClick={handleEditName} className="text-sub p-0 bg-transparent border-0">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                     <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>

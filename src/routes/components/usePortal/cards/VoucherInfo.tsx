@@ -17,8 +17,8 @@ const VoucherInfo = () => {
                 <div className="flex justify-between items-center mb-4">
                     <div
                         className={cn(
-                            "text-base !font-light title",
-                            isMobile ? "!text-base" : ""
+                            "text-base font-light unbounded",
+                            isMobile ? "text-base" : ""
                         )}
                     >
                         VOCHER
@@ -47,11 +47,11 @@ const VoucherInfo = () => {
                 >
                     <div
                         className={cn(
-                            "flex items-end justify-end gap-6 border-white py-2"
+                            "flex items-end justify-end gap-6 border-white"
                         )}
                     >
-                        <div className="title !text-3xl !font-light">
-                            {voucherCnt}
+                        <div className="unbounded text-2xl font-light">
+                            {voucherCnt} USDC
                         </div>
                     </div>
                 </div>
