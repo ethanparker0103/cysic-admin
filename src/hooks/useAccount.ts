@@ -46,7 +46,7 @@ const useAccount = () => {
     
     // 个人信息
     ...activeUser,
-    
+    cosmosAddress,
     // 多地址支持 - 直接访问状态
     allAddresses: Object.keys(addressMap),      // 使用Object.keys直接获取地址列表
     addressMap,                                 // 暴露整个地址映射供需要时使用
