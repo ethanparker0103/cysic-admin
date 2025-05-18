@@ -19,7 +19,7 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ title, status, buttonText, onClick }: TaskCardProps) => (
-  <GradientBorderCard borderRadius={8} className="mb-4">
+  <GradientBorderCard borderRadius={8} className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]">
     <div className="py-4 px-6 w-full flex justify-between items-center">
       <div className="flex flex-col">
         <div className="text-base text-white">{title}</div>
