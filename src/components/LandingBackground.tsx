@@ -123,7 +123,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
                 }
                 <main className={
                     cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
-                        ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "" : "main-container ",
+                        (['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) || path == '/') ? "" : "main-container ",
                         isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "pb-0" : "pb-12"
                     )
                 }>
