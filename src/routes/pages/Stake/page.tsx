@@ -425,7 +425,7 @@ const StakePage = () => {
       {/* 主标题 */}
       <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
         <div className="flex flex-col items-center">
-          <span className={cn("title !text-[#fff] text-center", isMobile ? "!text-[32px]" : "!text-[4rem]")}>STAKE CGTS</span>
+          <span className={cn("unbounded font-light text-white text-center", isMobile ? "!text-[32px]" : "!text-[2.25rem]")}>STAKE CGTS</span>
         </div>
       </div>
 
@@ -537,14 +537,14 @@ const StakePage = () => {
           <div className="w-full py-4 px-6">
             <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
               <h2 className="title !text-xl uppercase !font-light">ACTIVE VALIDATORS</h2>
-              <div className="relative w-[20rem] flex items-center">
+              {/* <div className="relative w-[20rem] flex items-center">
                 <input
                   type="text"
                   className="w-full pl-12 pr-4 py-2 bg-[#FFFFFF0D] text-white border border-[#FFFFFF33] rounded-lg focus:outline-none focus:border-white"
                   placeholder="Search"
                 />
                 <Search className="absolute left-4 text-[#FFFFFF99]" size={16} />
-              </div>
+              </div> */}
             </div>
 
             {activeLoading ? (

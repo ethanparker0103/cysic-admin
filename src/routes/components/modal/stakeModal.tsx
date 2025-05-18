@@ -49,19 +49,34 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
         <div className="px-2 mt-4">
             <div className="relative pt-6 pb-10">
                 <Slider
-                    size="sm"
+                    size="md"
                     step={1}
                     minValue={0}
                     maxValue={100}
                     value={value}
                     onChange={(val) => onChange(val as number)}
+                    // classNames={{
+                    //     base: "max-w-full",
+                    //     track: "bg-[#333] h-2",
+                    //     filler: "bg-gradient-to-r from-blue-400 to-cyan-400 h-2",
+                    //     thumb: "bg-cyan-400 shadow-lg w-4 h-4 -top-1",
+                    //     mark: "bg-[#666] data-[active=true]:bg-cyan-400",
+                    // }}
                     classNames={{
-                        base: "max-w-full",
-                        track: "bg-[#333] h-2",
-                        filler: "bg-gradient-to-r from-blue-400 to-cyan-400 h-2",
-                        thumb: "bg-cyan-400 shadow-lg w-4 h-4 -top-1",
-                        mark: "bg-[#666] data-[active=true]:bg-cyan-400",
-                    }}
+                        // base: "max-w-md",
+                        filler: "bg-gradient-to-r from-[#19FFE0] to-[#9D47FF]",
+                        labelWrapper: "mb-2",
+                        label: "font-medium text-default-700 text-medium",
+                        value: "font-medium text-default-500 text-small",
+                        thumb: [
+                          "[&:after]:!bg-white [&:after]:!h-3 [&:after]:!w-3",
+                          "transition-size",
+                          "bg-gradient-to-r from-[#9D47FF] to-[#19FFE0]",
+                          "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
+                          "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
+                        ],
+                        step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50",
+                      }}
                     showSteps={false}
                     marks={[
                         { value: 0, label: "0%" },
@@ -70,12 +85,12 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         { value: 75, label: "75%" },
                         { value: 100, label: "100%" },
                     ]}
-                    renderThumb={(props) => (
-                        <div
-                            {...props}
-                            className="group absolute h-4 w-4 rounded-full bg-cyan-400 cursor-pointer z-10"
-                        />
-                    )}
+                    // renderThumb={(props) => (
+                    //     <div
+                    //         {...props}
+                    //         className="group absolute h-4 w-4 rounded-full bg-cyan-400 cursor-pointer z-10"
+                    //     />
+                    // )}
                 />
 
 
@@ -150,7 +165,7 @@ const ValidatorDropdown = ({
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
 
                         {/* 验证人选项卡 - 在Unstake模式下禁用Others选项卡 */}
-                        <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4">
+                        <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4 border border-[#FFFFFF4D]">
                             <button
                                 className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.MY_VALIDATORS
                                     ? "bg-white text-black"
@@ -205,7 +220,7 @@ const ValidatorDropdown = ({
                                     {validators.map((validator: ValidatorResponse, index: number) => (
                                         <div
                                             key={`${validator.validatorName}-${index}`}
-                                            className="flex justify-between items-center p-3 cursor-pointer hover:bg-[#111] rounded-md"
+                                            className="flex justify-between items-center p-3 cursor-pointer hover:bg-gradient-to-r from-[#19ffe066] to-[#9d47ff66] rounded-md"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 onSelect(validator);
@@ -590,7 +605,7 @@ const StakeModal = () => {
             )}
 
             {/* 选项卡头部 */}
-            <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6">
+            <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6 border border-[#FFFFFF4D]">
                 <button
                     className={`py-4 uppercase text-center text-base ${activeTab === StakeAction.STAKE
                         ? "bg-white text-black"
