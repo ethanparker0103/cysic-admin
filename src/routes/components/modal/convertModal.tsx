@@ -327,10 +327,6 @@ const ConvertModal = () => {
           <span>{fromAmount ? toAmount : "0.00"} {toToken}</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span className="text-sub">Fee({fee}%)</span>
-          <span>${networkCost}</span>
-        </div>
-        <div className="flex justify-between items-center text-sm">
           <span className="text-sub">Network cost</span>
           <div className="flex items-center">
             <img
