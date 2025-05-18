@@ -471,6 +471,7 @@ const VerifierPage = () => {
                             step={2}
                             linkContent="For more details, see the full Verifier Tutorial Doc"
                             buttonText="RESERVE"
+                            onClick={handleReserveModal}
                             title={
                                 <>
                                     <span className="text-2xl unbounded">Follow the corresponding tutorials</span> <br />
