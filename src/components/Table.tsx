@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, SortDescriptor } from "@nextui-org/react";
+import Spinner from "@/components/spinner";
 
 export interface CysicTableColumn<T> {
   key: string;
@@ -19,9 +20,11 @@ interface CysicTableProps<T> {
   emptyContent?: ReactNode;
   onRowClick?: (item: T) => void;
   keyExtractor?: (item: T) => string | number;
+  loading?: boolean;
 }
 
 const CysicTable = <T extends object>({
+  loading,
   data,
   columns,
   className = "",
@@ -34,8 +37,9 @@ const CysicTable = <T extends object>({
 }: CysicTableProps<T>) => {
   return (
     <Table
+    l
       aria-label="Cysic custom table"
-      className={`${className}`}
+      className={`${className} [&>div]:p-0 `}
       isHeaderSticky
       isStriped={false}
       sortDescriptor={initialSorting}
@@ -57,7 +61,7 @@ const CysicTable = <T extends object>({
           </TableColumn>
         ))}
       </TableHeader>
-      <TableBody items={data} emptyContent={emptyContent}>
+      <TableBody isLoading={loading} loadingContent={<Spinner />} items={data} emptyContent={emptyContent}>
         {(item) => (
           <TableRow 
             key={keyExtractor(item)} 
@@ -67,7 +71,7 @@ const CysicTable = <T extends object>({
             {(columnKey) => {
               const column = columns.find(col => col.key === columnKey);
               return (
-                <TableCell className="text-white py-4">
+                <TableCell className="text-white py-4 teacher text-sm !normal-case">
                   {column?.renderCell ? column.renderCell(item) : (item as any)[columnKey]}
                 </TableCell>
               );

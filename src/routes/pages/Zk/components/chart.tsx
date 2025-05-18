@@ -1,4 +1,6 @@
+import GradientBorderCard from '@/components/GradientBorderCard';
 import dayjs from 'dayjs';
+import { SquareKanban } from 'lucide-react';
 import { useMemo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Bar, Line, ComposedChart, Legend } from 'recharts';
 
@@ -121,22 +123,22 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         const newTaskCnt = payload[0]?.payload?.newTaskCnt
 
         return (
-            <div className="py-4 px-6 bg-[#0F0F0F] rounded-[24px] border flex flex-col gap-1 shadow-[0px_4px_0px_0px_#000000]">
+            <GradientBorderCard className="py-4 px-6 flex flex-col gap-1 " borderRadius={8}>
                 <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-1'>
                         <div className='size-3 rounded-full bg-[#21E9FA]' />
-                        <div className='text-[#A3A3A3]'>Task Count:</div>
+                        <div className='text-[#A1A1AA] teacher font-medium text-sm'>Task Count:</div>
                     </div>
-                    <span className='font-bold pl-4'>{newTaskCnt}</span>
+                    <span className='font-medium teacher text-sm pl-4'>{newTaskCnt}</span>
                 </div>
                 <div className='flex flex-col gap-1'>
                     <div className='flex items-center gap-1'>
                         <div className='size-3 rounded-full bg-[#9747FF]' />
-                        <div className='text-[#A3A3A3]'>Finish Task Count:</div>
+                        <div className='text-[#A1A1AA] teacher font-medium text-sm'>Finish Task Count:</div>
                     </div>
-                    <span className='font-bold pl-4'>{value}</span>
+                    <span className='font-medium teacher text-sm pl-4'>{value}</span>
                 </div>
-            </div>
+            </GradientBorderCard>
         );
     }
 
@@ -153,6 +155,11 @@ const Chart = ({ row = [], hasData }: any) => {
 
     return (
         <div className='size-full relative'>
+    <div className="flex items-center gap-2">
+                        <SquareKanban className="size-6" />
+                        <span className="unbounded text-base font-light ">Analytics</span>
+                    </div>
+
             {
                 hasData ? null : <div className='flex items-center justify-center size-full z-[1] p-2 rounded-[12px] absolute top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.01)] backdrop-blur-[4px]' >
                     <div className="font-bold">Data Collecting</div>
@@ -193,7 +200,7 @@ const Chart = ({ row = [], hasData }: any) => {
                         <Bar yAxisId="right" type="monotone" dataKey="newTaskCnt" barSize={20} fill="#21E9FA" />
                         <Line yAxisId="left" type="monotone" dataKey="finishTaskCnt" stroke="#9747FF" strokeWidth={5} />
 
-                        <Legend align="left" formatter={(str)=>{
+                        <Legend verticalAlign="top"  align="right" formatter={(str)=>{
                             switch(str){
                                 case 'newTaskCnt':
                                     return 'Task Count'

@@ -4,7 +4,7 @@ import { isMobile } from "react-device-detect";
 import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShareIcon } from "lucide-react";
+import { ArrowRight, ShareIcon, SquareKanban } from "lucide-react";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import Chart from "@/routes/pages/Zk/components/chart";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
@@ -63,7 +63,7 @@ const DashboardPage = () => {
 
 
     const [status, setStatusTab] = useState<any>(tabs[0].value)
-    const { data: taskListData } = usePagnation((currentPage: number) => {
+    const { data: taskListData, loading: taskListLoading } = usePagnation((currentPage: number) => {
         return axios.get('/api/v1/zkTask/dashboard/task/list', {
             params: {
                 pageNum: currentPage,
@@ -77,28 +77,27 @@ const DashboardPage = () => {
     })
 
     const taskList = taskListData?.data?.list || [] as ITask[]
-    console.log('taskList', taskList)
 
     const taskListColumns: CysicTableColumn<ITask>[] = [
         {
             key: "taskHash",
             label: "Task Hash",
-            renderCell: (task) => ( shortStr(task.taskHash, 12) )
+            renderCell: (task) => (shortStr(task.taskHash, 12))
         },
         {
             key: "createBlock",
             label: "Create Block",
-            renderCell: (task) => ( task.createBlock )
+            renderCell: (task) => (task.createBlock)
         },
         {
             key: "reward",
             label: "Reward",
-            renderCell: (task) => ( task.reward )
+            renderCell: (task) => (task.reward)
         },
         {
             key: "createAt",
             label: "Created at",
-            renderCell: (task) => ( task.createAt )
+            renderCell: (task) => (task.createAt)
         },
         {
             key: "status",
@@ -110,8 +109,9 @@ const DashboardPage = () => {
             label: "View",
             renderCell: (task) => (
                 <Link to={`/zk/dashboard/task/${task.id}`} className="flex gap-1 items-center">
-                    <span>Detail</span>
-                    <img className="size-3" src={getImageUrl("@/assets/images/icon/share.svg")} />
+                    <span className="teacher text-sm ">Detail</span>
+                    <ArrowRight className="size-3" />
+                    {/* <img className="size-3" src={getImageUrl("@/assets/images/icon/share.svg")} /> */}
                 </Link>
             )
         }
@@ -130,78 +130,103 @@ const DashboardPage = () => {
                 {/* s1 */}
                 <div className="flex flex-col gap-8">
                     <div className="flex gap-3">
-                        <GradientBorderCard className="py-4 px-6 flex gap-4">
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Prover</span>
-                                    <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
+                        <GradientBorderCard borderRadius={8} className="py-4 px-6 flex gap-4 flex-1">
+                            <div className="flex-1 flex flex-col gap-4 justify-between h-full">
+                                <div className="flex flex-col gap-4 justify-between h-full">
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light">Prover</span>
+                                        <Link to={"/zk/dashboard/prover"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                    </div>
+                                    <span className="unbounded text-[32px] !tracking-widest self-end ">{overview?.proverNum || '0'}</span>
                                 </div>
-                                <Link to={"/zk/dashboard/prover"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                             </div>
-
-                            <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
-
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Verifier</span>
-                                    <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
-                                </div>
-                                <Link to={"/zk/dashboard/verifier"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
-                            </div>
-
-                            <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
-
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Project</span>
-                                    <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
-                                </div>
-                                <Link to={"/zk/dashboard/project"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
-                            </div>
-
                         </GradientBorderCard>
+
+                        <GradientBorderCard borderRadius={8} className="py-4 flex gap-4 flex-[2]">
+                            <div className="flex flex-col gap-4 justify-between h-full w-full">
+                                <div className="flex items-center gap-2 justify-between px-6">
+                                    <span className="unbounded text-xl font-light">verifier</span>
+                                    <Link to={"/zk/dashboard/prover"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                </div>
+                                <Divider className="bg-[#FFFFFFCC]" />
+
+                                <div className="px-6 flex flex-col gap-4">
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest ">running</span>
+                                        <span className="unbounded text-[24px] !tracking-widest ">{overview?.approvedVerifierNum || '0'}</span>
+                                    </div>
+                                    <Divider className="bg-[#FFFFFFCC]" />
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest ">applied</span>
+                                        <span className="unbounded text-[24px] !tracking-widest ">{overview?.verifierNum || '0'}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </GradientBorderCard>
+
+                        <GradientBorderCard borderRadius={8} className="py-4 px-6 flex gap-4 flex-1">
+                            <div className="flex-1 flex flex-col gap-4 justify-between h-full">
+                                <div className="flex flex-col gap-4 justify-between h-full">
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light">Project</span>
+                                        <Link to={"/zk/dashboard/project"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                    </div>
+                                    <span className="unbounded text-[32px] !tracking-widest self-end ">{overview?.projectNum || '0'}</span>
+                                </div>
+                            </div>
+                        </GradientBorderCard>
+
+
+
                     </div>
 
                     <div className="flex gap-3">
-                        <GradientBorderCard className="flex-[2] py-4 px-6 flex gap-4">
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">task amount</span>
-                                    <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
+                        <GradientBorderCard borderRadius={8} className="py-4 flex gap-4 flex-1">
+                            <div className="flex flex-col gap-4 justify-between h-full w-full">
+                                <div className="flex items-center gap-2 justify-between px-6">
+                                    <span className="unbounded text-xl font-light">Task</span>
+                                    <Link to={"/zk/dashboard/task"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                                 </div>
-                            </div>
+                                <Divider className="bg-[#FFFFFFCC]" />
 
-                            <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
-
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">task in progress</span>
-                                    <span className="sub-title !tracking-widest !text-2xl !font-bold h-[5.625rem]">{overview?.proverNum || '0'}</span>
+                                <div className="px-6 flex flex-col gap-4">
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest ">Task amount</span>
+                                        <span className="unbounded text-[24px] !tracking-widest ">{overview?.totalTask || '0'}</span>
+                                    </div>
+                                    <Divider className="bg-[#FFFFFFCC]" />
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest ">Task in progress</span>
+                                        <span className="unbounded text-[24px] !tracking-widest ">{overview?.runningTask || '0'}</span>
+                                    </div>
                                 </div>
-                                <Link to={"/"} className="title !text-xl !font-light flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                             </div>
                         </GradientBorderCard>
 
 
-                        <GradientBorderCard className="flex-1 py-4 px-6 flex gap-4">
-                            <div className="flex-1 flex flex-col gap-4 justify-between">
-                                <div className="flex flex-col gap-4">
-                                    <span className="title !text-xl !font-light">Total Rewards</span>
-                                    <div className="flex gap-8">
-                                        <div className="flex flex-col">
-                                            <div className="flex gap-1">
-                                                <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
-                                                <span>CYS</span>
-                                            </div>
-                                            <span className="sub-title !tracking-widest !text-lg !font-semibold text-right">{overview?.proverNum || '0'}</span>
+                        <GradientBorderCard borderRadius={8} className="py-4 flex gap-4 flex-1">
+                            <div className="flex flex-col gap-4 justify-between h-full w-full">
+                                <div className="flex items-center gap-2 justify-between px-6">
+                                    <span className="unbounded text-xl font-light">Total Rewards</span>
+                                </div>
+                                <Divider className="bg-[#FFFFFFCC]" />
+
+                                <div className="px-6 flex flex-col gap-4">
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest " />
+                                        <div className="flex items-center gap-2 unbounded text-[24px] font-light">
+                                            <span className="unbounded text-[24px] !tracking-widest font-normal">{overview?.totalRewardCys || '0'}</span>
+                                            <img src={getImageUrl("@/assets/images/tokens/CYS.svg")} className="size-6" />
+                                            CYS
                                         </div>
-                                        <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
-                                        <div className="flex flex-col">
-                                            <div className="flex gap-1">
-                                                <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
-                                                <span>CGT</span>
-                                            </div>
-                                            <span className="sub-title !tracking-widest !text-lg !font-semibold text-right">{overview?.proverNum || '0'}</span>
+                                    </div>
+                                    <Divider className="bg-[#FFFFFFCC]" />
+                                    <div className="flex items-center gap-2 justify-between">
+                                        <span className="unbounded text-base font-light !tracking-widest " />
+                                        <div className="flex items-center gap-2 unbounded text-[24px] font-light">
+                                            <span className="unbounded text-[24px] !tracking-widest font-normal">{overview?.totalRewardCgt || '0'}</span>
+                                            <img src={getImageUrl("@/assets/images/tokens/CGT.svg")} className="size-6" />
+                                            CGT
                                         </div>
                                     </div>
                                 </div>
@@ -211,19 +236,30 @@ const DashboardPage = () => {
                 </div>
 
                 {/* s2 */}
-                <GradientBorderCard className="h-[280px] mt-8 px-6 py-4">
-                    <Chart row={chartData} hasData={hasData} />
+                <GradientBorderCard className="h-[320px] mt-8 px-6 py-4 pb-10">
+                    <>
+                        <Chart row={chartData} hasData={hasData} />
+                    </>
                 </GradientBorderCard>
 
                 {/* s3 */}
                 <GradientBorderCard className="mt-8 flex flex-col px-6 py-4">
-                    <Tabs 
-                    classNames={{
-                        tabList: "border-none"
-                    }}
-                    variant="bordered" selectedKey={status} onSelectionChange={(v) => {
-                        setStatusTab(v)
-                    }}>
+                    <Tabs
+                        key={"underlined"}
+                        aria-label="Tabs variants"
+                        variant={"underlined"}
+                        classNames={{
+                            base: 'pb-4',
+                            tabList: "w-full border-b border-white/30 !p-0 !gap-0",
+                            cursor: "h-px w-full",
+                            tab: "!p-0 w-[8.75rem]",
+                            panel: "!p-0",
+                            tabContent: "teacher text-base font-medium !normal-case"
+                        }}
+                        className="w-full"
+                        selectedKey={status} onSelectionChange={(v) => {
+                            setStatusTab(v)
+                        }}>
                         {
                             tabs.map((tab) => (
                                 <Tab key={tab.value} title={tab.name} />
@@ -232,7 +268,9 @@ const DashboardPage = () => {
                     </Tabs>
 
 
+
                     <CysicTable
+                        loading={taskListLoading}
                         data={taskList}
                         columns={taskListColumns}
                     />
