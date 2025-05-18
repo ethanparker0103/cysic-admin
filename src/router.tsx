@@ -327,8 +327,7 @@ export const backgroundImageList = {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center -10vh",
-      filter: "sepia(1) hue-rotate(90deg) brightness(0.3)"
+      backgroundPosition: "center 15vh",
     },
     needShadow: true
   },
@@ -336,8 +335,7 @@ export const backgroundImageList = {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center -10vh",
-      filter: "sepia(1) hue-rotate(90deg) brightness(0.3)"
+      backgroundPosition: "center 15vh"
     },
     needShadow: true
   },
