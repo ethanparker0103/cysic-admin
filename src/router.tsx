@@ -327,7 +327,7 @@ export const backgroundImageList = {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center 15vh",
+      backgroundPosition: "center 12vh",
     },
     needShadow: true
   },
@@ -335,7 +335,7 @@ export const backgroundImageList = {
     img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center 15vh"
+      backgroundPosition: "center 12vh"
     },
     needShadow: true
   },
