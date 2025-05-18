@@ -83,24 +83,38 @@ const ConvertModal = () => {
   // 计算兑换金额
   const calculateToAmount = (amount: number) => {
     const convertedAmount = amount * rate;
-    setToAmount(convertedAmount.toLocaleString());
+    setToAmount(convertedAmount.toString());
   };
 
   // 处理金额变更
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // 移除逗号，仅允许数字和小数点
     const rawValue = e.target.value.replace(/,/g, "");
-    const value = rawValue.replace(/[^0-9.]/g, "");
-
-    // 使用逗号格式化
-    const formattedValue = Number(value).toLocaleString();
-    setFromAmount(formattedValue === "NaN" ? "" : formattedValue);
-
-    // 计算兑换金额
-    if (value !== "" && !isNaN(Number(value))) {
-      calculateToAmount(Number(value));
+    if (!/^(\d*\.?\d*)$/.test(rawValue)) {
+      return; // 不是有效的数字格式，不更新状态
+    }
+    
+    // 设置未格式化的输入值
+    setFromAmount(rawValue);
+    
+    // 对于计算和显示格式化版本，特殊处理小数点结尾的情况
+    if (rawValue.endsWith('.')) {
+      // 如果以小数点结尾，只更新fromAmount，不更新toAmount
+      return;
+    } else if (rawValue === '') {
+      // 空输入，清除两个输入框
+      setToAmount('');
     } else {
-      setToAmount("");
+      // 有效数字，进行格式化和计算
+      const numValue = parseFloat(rawValue);
+      if (!isNaN(numValue)) {
+        // 计算兑换金额
+        calculateToAmount(numValue);
+        
+        // 格式化显示（可选，根据需要调整）
+        // const formattedValue = numValue.toLocaleString();
+        setFromAmount(numValue.toString());
+      }
     }
   };
 
@@ -238,7 +252,7 @@ const ConvertModal = () => {
             type="text"
             value={fromAmount}
             onChange={handleFromAmountChange}
-            className="bg-transparent border-none outline-none w-full max-w-[200px] !text-3xl title !font-light text-white"
+            className="bg-transparent border-none outline-none w-full max-w-[300px] !text-3xl title !font-light text-white"
             placeholder="0.00"
           />
           <div className="flex items-center bg-[#222] rounded-full px-4 py-2">
@@ -308,18 +322,6 @@ const ConvertModal = () => {
       {/* 转换信息 */}
       <div className="space-y-2 mb-6">
         <span className="text-sub text-sm">1 {fromToken} = {rate} {toToken}</span>
-        <div className="flex justify-between items-center text-sm">
-          <span className="text-sub">Max. slippage</span>
-          <div className="flex items-center">
-            <span>{maxSlippage}%</span>
-            <button
-              className="ml-2 text-white"
-              onClick={handleSlippageAdjust}
-            >
-              <Settings size={16} />
-            </button>
-          </div>
-        </div>
         <div className="flex justify-between items-center text-sm">
           <span className="text-sub">Receive at least</span>
           <span>{fromAmount ? toAmount : "0.00"} {toToken}</span>

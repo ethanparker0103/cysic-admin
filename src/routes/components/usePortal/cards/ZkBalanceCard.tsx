@@ -13,8 +13,8 @@ const ZkBalanceCard = () => {
   const { balanceMap } = useCosmos();
 
 
-  const cysReward = formatReward(balanceMap?.CYS?.hm_amount || "0", 2);
-  const cgtReward = formatReward(balanceMap?.CGT?.hm_amount || "0", 2);
+  const cysReward = formatReward(balanceMap?.CYS?.hm_amount || "0", 4);
+  const cgtReward = formatReward(balanceMap?.CGT?.hm_amount || "0", 4);
 
   return (
     <GradientBorderCard borderRadius={8} className="h-full">

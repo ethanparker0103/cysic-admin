@@ -649,9 +649,9 @@ export const handleSignIn = (targetStep?: string) => {
     window.dispatchEvent(event);
 };
 
-export const handleReserveModal = () => {
+export const handleReserveModal = (props: any={}) => {
   const event = new CustomEvent('modal_reserve_visible', { 
-    detail: { visible: true } 
+    detail: { visible: true, ...props } 
   });
   window.dispatchEvent(event);
 };

@@ -329,7 +329,7 @@ const RewardsDetailModal = () => {
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={() => handleConvertModal()}
+                                    onClick={() => handleConvertModal({fromToken: 'CGT'})}
                                 >
                                     CONVERT <span className="ml-1">→</span>
                                 </Button>
@@ -344,7 +344,7 @@ const RewardsDetailModal = () => {
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={handleStakeModal}
+                                    onClick={()=>handleStakeModal({tab: 'unstake'})}
                                 >
                                     UNSTAKE <span className="ml-1">→</span>
                                 </Button>
@@ -359,7 +359,7 @@ const RewardsDetailModal = () => {
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={handleReserveModal}
+                                    onClick={()=>handleReserveModal({tab: 'withdraw'})}
                                 >
                                     WITHDRAW <span className="ml-1">→</span>
                                 </Button>
