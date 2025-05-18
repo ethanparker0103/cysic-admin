@@ -254,12 +254,14 @@ export const backgroundImageList = {
     },
   },
   '/zk/dashboard/project': {
-    img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
-    className: "h-screen purple-landing",
-    style: {
-      backgroundPosition: "center -20vh"
-    },
-    needBack: true
+    img: '#000',
+    // img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
+    // className: "h-screen purple-landing",
+    // style: {
+    //   backgroundPosition: "center -20vh"
+    // },
+    needBack: true,
+    backContent: 'Dashboard'
   },
   '/zk/dashboard/verifier': {
     img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
@@ -267,7 +269,8 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Dashboard'
   },
   '/zk/dashboard/prover': {
     img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
@@ -275,7 +278,8 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Dashboard'
   },
   '/zk/dashboard/task': {
     img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
@@ -283,15 +287,18 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Dashboard'
   },
   '/zk/dashboard/project/:id': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    className: "h-screen purple-landing",
-    style: {
-      backgroundPosition: "center -20vh"
-    },
-    needBack: true
+    img: '#000',
+    // img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+    // className: "h-screen purple-landing",
+    // style: {
+    //   backgroundPosition: "center -20vh"
+    // },
+    needBack: true,
+    backContent: 'Project'
   },
   '/zk/dashboard/verifier/:id': {
     img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
@@ -299,7 +306,8 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Verifier'
   },
   '/zk/dashboard/prover/:id': {
     img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
@@ -307,7 +315,8 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Prover'
   },
   '/zk/dashboard/task/:id': {
     img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
@@ -315,7 +324,8 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh"
     },
-    needBack: true
+    needBack: true,
+    backContent: 'Task'
   },
 
 

@@ -3,11 +3,12 @@ import { isMobile } from "react-device-detect";
 import { cn, Pagination } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
-import { ShareIcon } from "lucide-react";
+import { ArrowRightIcon, ShareIcon } from "lucide-react";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
-import { commonPageSize, TaskStatus } from "@/config";
+import { commonPageSize } from "@/config";
+import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 interface ITask {
     "id": number,
@@ -60,15 +61,15 @@ const TaskPage = () => {
         {
             key: "status",
             label: "Status",
-            renderCell: (task) => (TaskStatus[task.status])
+            renderCell: (task) => (<TaskStatus status={task.status} />)
         },
         {
             key: "view",
             label: "View",
             renderCell: (task) => (
-                <Link to={`/zk/dashboard/task/${task.id}`} className="flex gap-1 items-center">
-                    <span>Detail</span>
-                    <img className="size-3" src={getImageUrl("@/assets/images/icon/share.svg")} />
+                <Link to={`/zk/dashboard/task/${task.id}`} className="flex gap-1 items-center justify-end">
+                    <span>View</span>
+                    <ArrowRightIcon className="size-3" />
                 </Link>
             )
         }
@@ -82,7 +83,7 @@ const TaskPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>Task</h1>
+                <h1 className={cn("unbounded font-light mb-12 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Task</h1>
 
                 {/* s3 */}
                 <GradientBorderCard className="mt-8 flex flex-col px-6 py-4">

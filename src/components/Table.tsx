@@ -37,7 +37,7 @@ const CysicTable = <T extends object>({
 }: CysicTableProps<T>) => {
   return (
     <Table
-    l
+      shadow="none"
       aria-label="Cysic custom table"
       className={`${className} [&>div]:p-0 `}
       isHeaderSticky
@@ -47,7 +47,8 @@ const CysicTable = <T extends object>({
       selectionMode="none"
       classNames={{
         wrapper: 'px-0 !bg-[transparent]',
-        th: '!bg-[#151515] !font-light',
+        th: '!bg-[#151515] !font-light [&:last-of-type]:!text-right',
+        td: '[&:last-of-type]:!text-right',
       }}
     >
       <TableHeader>
@@ -55,7 +56,7 @@ const CysicTable = <T extends object>({
           <TableColumn 
             key={column.key} 
             allowsSorting={sortable && column.sortable}
-            className="bg-black/50 text-sub uppercase text-sm py-2"
+            className="bg-black/50 text-sub  text-sm py-2"
           >
             {column.label}
           </TableColumn>

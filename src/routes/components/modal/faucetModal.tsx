@@ -6,8 +6,9 @@ import { useLocalStorageState, useRequest, useCountDown } from "ahooks";
 import useAccount from "@/hooks/useAccount";
 import { toast } from "react-toastify";
 import { Clock } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
 import useStatic from "@/models/_global";
+import { json } from "react-router-dom";
 
 // GIN-debug] GET    /api/v1/user/faucet       --> github.com/cysic-tech/cysic-api/router.claimFaucet (6 handlers)
 // [GIN-debug] GET    /api/v1/user/faucet/last  --> github.com/cysic-tech/cysic-api/router.getLastClaimFaucetRecord (6 handlers)
@@ -15,6 +16,9 @@ import useStatic from "@/models/_global";
 
 const cooldownTime = 24 * 60 * 60 * 1000
 const FaucetModal = () => {
+
+    const once = useRef(false)
+    
     const { faucetAmount } = useStatic()
     const { address, isSigned } = useAccount()
     // 获取模态框状态
@@ -23,6 +27,7 @@ const FaucetModal = () => {
     });
 
     const handleClose = () => {
+        once.current = false
         setVisible(false);
     }
 
@@ -42,12 +47,14 @@ const FaucetModal = () => {
 
 
     useRequest(() => {
+        if (once.current) return Promise.reject()
         if (currentAddressCountdown) return Promise.reject()
         return axios.get('/api/v1/user/faucet/last')
     }, {
-        ready: !!address && !currentAddressCountdown && !!isSigned,
-        refreshDeps: [address, currentAddressCountdown, isSigned],
+        ready: visible && !!address && !currentAddressCountdown && !!isSigned,
+        refreshDeps: [visible, address, currentAddressCountdown, isSigned],
         onSuccess: (res) => {
+            once.current = true
             setLastClaimTime((prev: any) => {
                 if (!address) return prev
                 const t = new Date(res.data.lastClaimAt).getTime()

@@ -144,7 +144,7 @@ const SocialTaskPage = () => {
       {/* content */}
       <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
         {/* title */}
-        <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>SOCIAL TASKS</h1>
+        <h1 className={cn("unbounded font-light mb-24 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>SOCIAL TASKS</h1>
 
         {/* 根据API数据渲染任务组 */}
         {loading ? (

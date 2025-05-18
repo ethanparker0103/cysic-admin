@@ -108,8 +108,8 @@ const DashboardPage = () => {
             key: "view",
             label: "View",
             renderCell: (task) => (
-                <Link to={`/zk/dashboard/task/${task.id}`} className="flex gap-1 items-center">
-                    <span className="teacher text-sm ">Detail</span>
+                <Link to={`/zk/dashboard/task/${task.id}`} className="flex gap-1 items-center justify-end">
+                    <span className="teacher text-sm ">View</span>
                     <ArrowRight className="size-3" />
                     {/* <img className="size-3" src={getImageUrl("@/assets/images/icon/share.svg")} /> */}
                 </Link>
@@ -125,7 +125,7 @@ const DashboardPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>Dashboard</h1>
+                <h1 className={cn("unbounded font-light mb-24 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Dashboard</h1>
 
                 {/* s1 */}
                 <div className="flex flex-col gap-8">
@@ -146,7 +146,7 @@ const DashboardPage = () => {
                             <div className="flex flex-col gap-4 justify-between h-full w-full">
                                 <div className="flex items-center gap-2 justify-between px-6">
                                     <span className="unbounded text-xl font-light">verifier</span>
-                                    <Link to={"/zk/dashboard/prover"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
+                                    <Link to={"/zk/dashboard/verifier"} className="teacher text-sm text-sub flex items-center gap-2" >Details <ArrowRight className="size-4" /></Link>
                                 </div>
                                 <Divider className="bg-[#FFFFFFCC]" />
 

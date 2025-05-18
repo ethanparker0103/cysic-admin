@@ -117,8 +117,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
             <div className="relative w-full" style={{ minHeight: height }}>
                 {
                     needBack ? (
-                        <Link to={backPath} className="absolute top-1 left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-[2rem] font-normal uppercase title">
-                            <ArrowLeft className="size-[2rem]" />
+                        <Link to={backPath} className="absolute top-1 left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-base font-light unbounded">
+                            <ArrowLeft className="size-5" />
                             <span>{backgroundConfig?.backContent ?? 'Back'}</span>
                         </Link>
                     ) : null

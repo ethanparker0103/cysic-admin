@@ -7,9 +7,11 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
 import { getImageUrl, shortStr } from "@/utils/tools";
-import { commonPageSize, explorerUrl, providerStatus, TaskStatus } from "@/config";
+import { commonPageSize, explorerUrl } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
+import { ArrowRight, ArrowUpRightIcon } from "lucide-react";
+import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 
 
@@ -44,12 +46,12 @@ const ProverDetail = () => {
                     <a target="_blank" href={explorerUrl + `/address/${item?.address}`}
                         className="flex items-center gap-2">
                         <span>{item?.address}</span>
-                        <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
+                        <ArrowUpRightIcon className="size-3" />
                     </a>
                     <a target="_blank" href={explorerUrl + `/address/${item?.cysicAddress}`}
                         className="flex items-center gap-2 text-[#737373]">
                         <span>{item?.cysicAddress}</span>
-                        <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
+                        <ArrowUpRightIcon className="size-3" />
                     </a>
                 </div>
             }
@@ -66,16 +68,15 @@ const ProverDetail = () => {
             key: "status",
             label: "Status",
             renderCell: (item: any) => {
-                return providerStatus[item?.status]
+                return <TaskStatus status={item?.status} />
             }
         },
         {
             key: "rewards",
             label: "Rewards",
-        },
-        {
-            key: "description",
-            label: "Description",
+            renderCell: (item: any) => {
+                return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
+            }
         },
     ];
 
@@ -117,16 +118,16 @@ const ProverDetail = () => {
             key: "status",
             label: "Status",
             renderCell: (item: any) => {
-                return TaskStatus[item?.status] || item?.status
+                return <TaskStatus status={item?.status} />
             }
         },
         {
             key: "detail",
             label: "Task Detail",
             renderCell: (item: any) => {
-                return <Link to={`/zk/dashboard/task/${item?.taskId}`} className="flex items-center gap-2">
+                return <Link to={`/zk/dashboard/task/${item?.taskId}`} className="flex items-center justify-end gap-2">
                     <span>View</span>
-                    <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
+                    <ArrowRight className="size-3" />
                 </Link>
             }
         },
@@ -136,13 +137,14 @@ const ProverDetail = () => {
     return (
         <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
             {/* title */}
-            <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[4rem]")}>Prover Detail</h1>
-            <GradientBorderCard className="px-4 py-6">
-                <div className="flex flex-col gap-6">
+            <h1 className={cn("unbounded font-light mb-12 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Prover Detail</h1>
+            <GradientBorderCard className="px-4 py-6 flex gap-6">
+                {rows?.avatar ? <img src={rows?.avatar} className="size-14 rounded-full" /> : <div className="size-14 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center" >{rows?.name?.slice(0, 2)}</div>}
+                <div className="flex flex-col gap-2">
                     {columns?.map((i, index) => {
                         return (
                             <div key={i?.key || index} className={cn(['verifier', 'provider', 'inputData'].includes(i?.key) && isMobile ? "flex-col !items-start" : "", isMobile ? "gap-2 flex-wrap" : "gap-10", "flex items-start")}>
-                                <div className="text-[#A3A3A3] w-[25%]">{t(i?.label)}</div>
+                                <div className="text-[#A3A3A3] w-[10rem]">{t(i?.label)}</div>
                                 <div className={cn(isMobile ? "break-all flex-wrap" : "", "flex-1")}>{renderCell(rows, i?.key, i)}</div>
                             </div>
                         );

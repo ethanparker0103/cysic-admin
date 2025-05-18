@@ -6,7 +6,7 @@ import { isMobile } from "react-device-detect";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
-import { TaskStatus } from "@/config";
+import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { getImageUrl } from "@/utils/tools";
 
 
@@ -38,16 +38,7 @@ const TaskDetail = () => {
             key: "reward",
             label: "Reward",
             renderCell: (item: any) => {
-                return <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-1">
-                        <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
-                        <span>{item?.rewardCYS} CYS</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
-                        <span>{item?.rewardCGT} CGT</span>
-                    </div>
-                </div>
+                return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
             }
         },
         {
@@ -66,7 +57,7 @@ const TaskDetail = () => {
             key: "status",
             label: "Status",
             renderCell: (item: any) => {
-                return TaskStatus[item?.status] || item?.status
+                return <TaskStatus status={item?.status} />
             }
         },
         {
@@ -84,6 +75,9 @@ const TaskDetail = () => {
         {
             key: "inputData",
             label: "Input Data",
+            renderCell: (item: any) => {
+                return item.inputData || '-'
+            }
         },
     ];
 
@@ -92,9 +86,9 @@ const TaskDetail = () => {
     return (
         <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
             {/* title */}
-            <h1 className={cn("title !font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[4rem]")}>Task Detail</h1>
+            <h1 className={cn("unbounded font-light mb-12 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Task Detail</h1>
             <GradientBorderCard className="px-4 py-6">
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
                     {columns?.map((i, index) => {
                         return (
                             <div key={i?.key || index} className={cn(['verifier', 'provider', 'inputData'].includes(i?.key) && isMobile ? "flex-col !items-start" : "", isMobile ? "gap-2 flex-wrap" : "gap-10", "flex items-start")}>

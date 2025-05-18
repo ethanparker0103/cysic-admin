@@ -11,10 +11,11 @@ import {
   commonPageSize,
   explorerUrl,
   providerStatus,
-  TaskStatus,
 } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
+import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 const VerifierDetail = () => {
   const { t } = useTranslation();
@@ -39,7 +40,7 @@ const VerifierDetail = () => {
   const columns = [
     {
       key: "name",
-      label: "Prover Name",
+      label: "Verifier Name",
     },
     {
       key: "address",
@@ -76,10 +77,6 @@ const VerifierDetail = () => {
     {
       key: "totalTask",
       label: "Task Amount",
-    },
-    {
-      key: "description",
-      label: "Description",
     },
   ];
 
@@ -119,21 +116,21 @@ const VerifierDetail = () => {
       key: "taskHash",
       label: "Task Hash",
       renderCell: (item: any) => {
-        return shortStr(item?.taskHash || item?.task_hash, 10);
+        return shortStr(item?.taskHash || item?.task_hash, 16);
       },
     },
     {
       key: "prover",
       label: "Prover",
       renderCell: (item: any) => {
-        return shortStr(item?.prover, 10);
+        return shortStr(item?.prover, 16);
       },
     },
     {
       key: "result",
       label: "Result",
       renderCell: (item: any) => {
-        return providerStatus[item?.verifyResult] || item?.verifyResult;
+        return <TaskStatus status={item?.verifyResult} />
       },
     },
     {
@@ -143,13 +140,10 @@ const VerifierDetail = () => {
         return (
           <Link
             to={`/zk/dashboard/task/${item?.taskId || item?.task_id}`}
-            className="flex items-center gap-2"
+            className="flex items-center justify-end gap-2"
           >
             <span>View</span>
-            <img
-              className="size-3"
-              src={getImageUrl("@/assets/images/icon/share.svg")}
-            />
+            <ArrowRightIcon className="size-3" />
           </Link>
         );
       },
@@ -166,39 +160,48 @@ const VerifierDetail = () => {
       {/* title */}
       <h1
         className={cn(
-          "title !font-[200] mb-24 text-center",
-          isMobile ? "text-7xl" : "text-[4rem]"
+          "unbounded font-light mb-12 text-center",
+          isMobile ? "text-7xl" : "text-[2.25rem]"
         )}
       >
         Verifier Detail
       </h1>
-      <GradientBorderCard className="px-4 py-6">
-        <div className="flex flex-col gap-6">
-          {columns?.map((i, index) => {
-            return (
-              <div
-                key={i?.key || index}
-                className={cn(
-                  ["verifier", "provider", "inputData"].includes(i?.key) &&
-                    isMobile
-                    ? "flex-col !items-start"
-                    : "",
-                  isMobile ? "gap-2 flex-wrap" : "gap-10",
-                  "flex items-start"
-                )}
-              >
-                <div className="text-[#A3A3A3] w-[25%]">{t(i?.label)}</div>
+      <GradientBorderCard className="px-4 py-6 flex gap-6">
+
+        {rows?.avatar ? <img src={rows?.avatar} className="size-14 rounded-full" /> : <div className="size-14 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center" >{rows?.name?.slice(0, 2)}</div>}
+        <div className="flex-1 flex">
+          <div className="flex flex-col gap-2 flex-1">
+            {columns?.map((i, index) => {
+              return (
                 <div
+                  key={i?.key || index}
                   className={cn(
-                    isMobile ? "break-all flex-wrap" : "",
-                    "flex-1"
+                    ["verifier", "provider", "inputData"].includes(i?.key) &&
+                      isMobile
+                      ? "flex-col !items-start"
+                      : "",
+                    isMobile ? "gap-2 flex-wrap" : "gap-10",
+                    "flex items-start"
                   )}
                 >
-                  {renderCell(rows, i?.key, i)}
+                  <div className="text-[#A3A3A3] w-[10rem]">{t(i?.label)}</div>
+                  <div
+                    className={cn(
+                      isMobile ? "break-all flex-wrap" : "",
+                      "flex-1"
+                    )}
+                  >
+                    {renderCell(rows, i?.key, i)}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div className="flex gap-10 flex-1">
+            <div className="text-[#A3A3A3] w-[10rem]">Description</div>
+            <div className="flex-1">{rows?.description || '-'}</div>
+          </div>
+
         </div>
       </GradientBorderCard>
 
