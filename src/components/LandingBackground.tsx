@@ -60,12 +60,13 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
         return path;
     }, [needBack, path, backgroundConfig?.backTo]);
 
+    const noContainer = path == '/' || ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path)
 
     if (!backgroundConfig?.img) {
         return (
             <main className={cn("relative min-h-screen w-full z-10 mx-auto",
-                ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "" : "main-container",
-                isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "pb-0" : "pb-12")}>
+                noContainer ? "" : "main-container",
+                isMobile ? "pb-6 px-3" : noContainer ? "pb-0" : "pb-12")}>
                 {children}
             </main>
         );
@@ -83,6 +84,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
 
     // 组合背景
     const backgroundImage = gradient ? `${gradient}, url(${img})` : `url(${img})`;
+
 
 
     return (
@@ -123,8 +125,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
                 }
                 <main className={
                     cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
-                        (['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) || path == '/') ? "" : "main-container ",
-                        isMobile ? "pb-6 px-3" : ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path) ? "pb-0" : "pb-12"
+                        noContainer ? "" : "main-container ",
+                        isMobile ? "pb-6 px-3" : noContainer? "pb-0" : "pb-12"
                     )
                 }>
                     {children}

@@ -6,6 +6,7 @@ WORKDIR /app
 
 # 复制 package.json 和 yarn.lock 文件
 COPY package.json yarn.lock ./
+COPY patches ./patches/
 
 # 安装依赖
 RUN npm install --force
