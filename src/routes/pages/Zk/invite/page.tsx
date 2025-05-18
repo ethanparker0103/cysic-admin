@@ -105,7 +105,7 @@ const InvitePage = () => {
             width: "33%",
             renderCell: (leader) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-[#19FFE0]" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
                     <span>{leader.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )
@@ -139,7 +139,7 @@ const InvitePage = () => {
             width: "15%",
             renderCell: (member) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <div className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-[#19FFE0]" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
                     <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )

@@ -129,7 +129,7 @@ const BoostingList = () => {
                                 <StatusButton status={stakeBoost.status}>
                                     {stakeBoost.status === 2 ? (
                                         <>
-                                            <Check className="w-3 h-3 text-green-500" />
+                                            <Check className="w-3 h-3 text-[#19FFE0]" />
                                             <span>Claimed</span>
                                         </>
                                     ) : stakeBoost.status === 1 ? (
@@ -154,7 +154,7 @@ const BoostingList = () => {
                             <StatusButton status={task.status}>
                                 {task.status === 2 ? (
                                     <>
-                                        <Check className="w-3 h-3 text-green-500" />
+                                        <Check className="w-3 h-3 text-[#19FFE0]" />
                                         <span>Claimed</span>
                                     </>
                                 ) : task.status === 1 ? (

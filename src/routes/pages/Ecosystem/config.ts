@@ -622,7 +622,7 @@ export const ecosystemSubLabelsTagColor: Record<string, string> = {
   "Identity": "bg-purple-700/30 border border-purple-700/60",
   "zkVM": "bg-rose-500/30 border border-rose-500/60",
   "Prover Network": "bg-rose-500/30 border border-rose-500/60",
-  "DEX": "bg-green-500/30 border border-green-500/60",
+  "DEX": "bg-[#19FFE0]/30 border border-[#19FFE0]/60",
   "Oracle": "bg-teal-500/30 border border-teal-500/60",
   "Prize Competition": "bg-amber-500/30 border border-amber-500/60",
   "Bridge": "bg-blue-500/30 border border-blue-500/60",

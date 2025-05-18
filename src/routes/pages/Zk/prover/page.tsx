@@ -13,6 +13,7 @@ import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import { Multiplier } from "@/routes/components/Multiplier";
 import { useProverStatus } from "@/routes/components/ZkProverStatus";
+import { useVerifierStatus } from "@/routes/components/ZkVerifierStatus";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ showLink, step, title, description, buttonText, children, onClick }: {
@@ -30,23 +31,23 @@ const SelfProverStepCard = ({ showLink, step, title, description, buttonText, ch
                 <div className={cn("w-full flex ", isMobile ? "flex-col" : "justify-between items-start")}>
                     <div className="flex flex-col">
                         <div className="!text-base !font-light title">Step {step}/2</div>
-                        <h3 className={cn("title uppercase !font-light mb-2", isMobile ? "!text-2xl" : "!text-3xl")}>{title}</h3>
+                        <h3 className={cn("title uppercase !font-light mb-2", isMobile ? "!text-2xl" : "!text-[36px]")}>{title}</h3>
                     </div>
                     {buttonText ? <Button
                         onClick={onClick}
                         type="light"
-                        className="rounded-lg px-12 py-3 min-h-fit h-fit !text-base !font-[400]"
+                        className="rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
                     >
                         {buttonText}
                     </Button> : null}
                 </div>
 
                 <div className="flex-1 mt-4">
-                    <p className="text-sub text-sm mb-4">{description}</p>
+                    <p className="text-sub text-sm mb-4 teacher !normal-case">{description}</p>
                 </div>
 
                 {
-                    showLink ? (<div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                    showLink ? (<div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
                         <span>Click here to know how to earn CGT</span>
                         <ArrowRight width={16} height={16} />
                     </div>) : null
@@ -82,10 +83,11 @@ const ProverPage = () => {
 
     const navigate = useNavigate()
 
-    const { ProverCardListComponent, VerifierCardListComponent } = useProverStatus()
+    const { ProverCardListComponent } = useProverStatus()
+    const { VerifierCardListComponent } = useVerifierStatus()
 
     return (
-        <div className="min-h-screen w-full pb-12 overflow-hidden">
+        <div className="min-h-screen w-full overflow-hidden">
 
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
@@ -101,14 +103,14 @@ const ProverPage = () => {
                     borderRadius={8}
                     className="mb-4"
                 >
-                    <div className={cn("w-full", isMobile ? "px-6 py-4" : "p-8")}>
+                    <div className={cn("w-full px-6 py-4")}>
                         <div className="flex flex-col gap-2 mb-6 ">
                             <h1 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>BECOME A CYSIC PROVER</h1>
                             <h1 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>AND EARN CYS & CGT</h1>
                             <h2 className={cn("title !font-light uppercase mt-2", isMobile ? "!text-base" : "text-xl")}>EASIER THAN EVER BEFORE!</h2>
-                                    </div>
+                        </div>
 
-                        <p className="text-white !font-[400] text-base mb-6">
+                        <p className="text-white !font-[400] text-base">
                             Contribute your own computational power or purchase a Digital Harvester to support ZK proofs and earn rewards now!
                             <br />
                             You can also boost your earnings by increasing your Multiplier. A higher Multiplier enhances task acquisition speed, maximizing your rewards!
@@ -121,90 +123,74 @@ const ProverPage = () => {
                     <VerifierCardListComponent />
 
                     {/* MULTIPLIER */}
-                    <Multiplier />
+                    <Multiplier actionPlacement="top" />
                 </div>
 
-                {/* 第二部分：Tabs */}
-                <GradientBorderCard
-                    borderRadius={8}
-                    className="mt-4"
-                >
-                    <div className="w-full">
-                        {/* Tabs 标签 */}
-                        <div className="flex gap-4 px-6 py-4">
-                            {/* <button
-                                className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'nft' ? 'border-white' : 'border-transparent'}`}
-                                onClick={() => setSelectedTab('nft')}
-                            >
-                                NFT
-                            </button> */}
-                            <button
-                                className={`title !font-light !text-xl uppercase pb-2 border-b-2 ${selectedTab === 'self' ? 'border-white' : 'border-transparent'}`}
-                                onClick={() => setSelectedTab('self')}
-                            >
-                                SELF
-                            </button>
-                        </div>
+                <div className={cn("text-center unbounded text-[36px] font-light", isMobile ? "my-6" : "my-12")}>Becoming a Cysic ZK Prover</div>
 
-                        {/* 当前选中 Tab 的内容 */}
-                        <div className="px-6 py-4">
-                            {selectedTab === 'nft' && (
-                                <>
-                                    {zkTaskLoading ? (
-                                        <div className="text-center py-6">正在加载Prover状态...</div>
-                                    ) : proverStatus.nftActive ? (
-                                        <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }}  className={isMobile ? "w-full" : "w-1/2"} />
-                                    ) : (
-                                        <div className="flex flex-col items-center gap-4 py-6">
-                                            <h3 className="title !font-light !text-2xl uppercase">NFT INACTIVE</h3>
-                                            <p className="text-center max-w-xl text-sub text-base mb-4">
-                                                Purchase a Digital Harvester to become a Prover on the Cysic Network. No technical setup required.
-                                            </p>
-                                            <Button
-                                                type="light"
-                                                className="rounded-lg px-12 py-6"
-                                                onClick={() => { navigate('/nft') }}
-                                            >
-                                                <div className="flex items-center gap-2 text-base !font-[400]">
-                                                    <span>PURCHASE A DIGITAL HARVESTER</span>
-                                                    <ArrowRight size={16} />
-                                                </div>
-                                            </Button>
-                                        </div>
-                                    )}
-                                </>
-                            )}
+                <div className="w-full">
+                    {/* 当前选中 Tab 的内容 */}
+                    <div className="px-6 py-4">
+                        {selectedTab === 'nft' && (
+                            <>
+                                {zkTaskLoading ? (
+                                    <div className="text-center py-6">正在加载Prover状态...</div>
+                                ) : proverStatus.nftActive ? (
+                                    <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }} className={isMobile ? "w-full" : "w-1/2"} />
+                                ) : (
+                                    <div className="flex flex-col items-center gap-4 py-6">
+                                        <h3 className="title !font-light !text-2xl uppercase">NFT INACTIVE</h3>
+                                        <p className="text-center max-w-xl text-sub text-base mb-4">
+                                            Purchase a Digital Harvester to become a Prover on the Cysic Network. No technical setup required.
+                                        </p>
+                                        <Button
+                                            type="light"
+                                            className="rounded-lg px-12 py-6"
+                                            onClick={() => { navigate('/nft') }}
+                                        >
+                                            <div className="flex items-center gap-2 text-base !font-[400]">
+                                                <span>PURCHASE A DIGITAL HARVESTER</span>
+                                                <ArrowRight size={16} />
+                                            </div>
+                                        </Button>
+                                    </div>
+                                )}
+                            </>
+                        )}
 
-                            {selectedTab === 'self' && (
-                                <div className="flex flex-col">
-                                    <SelfProverStepCard
-                                        showLink
-                                        step={1}
-                                        title="RESERVE 100 CGT"
-                                        description="Reserve 100 CGT tokens to enable your own computational resources to work as a prover on the Cysic Network."
-                                        buttonText="RESERVE"
-                                        onClick={handleReserveModal}
-                                    />
+                        {selectedTab === 'self' && (
+                            <div className="flex flex-col">
+                                <SelfProverStepCard
+                                    showLink
+                                    step={1}
+                                    title="RESERVE 100 CGT"
+                                    description={<>
+                                    To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br/>
+                                    Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
+                                    </>}
+                                    buttonText="RESERVE"
+                                    onClick={handleReserveModal}
+                                />
 
-                                    <SelfProverStepCard
-                                        step={2}
-                                        title="PROVIDE YOUR OWN COMPUTATIONAL POWER"
-                                        description={
-                                            <>
-                                            To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br/>
-                                            Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
-                                            </>
-                                        }
-                                    >
-                                        <div className="flex flex-col gap-5 mt-4">
-                                            <ProverCardListComponent />
-                                        </div>
-                                    </SelfProverStepCard>
-                                </div>
-                            )}
-                        </div>
+                                <SelfProverStepCard
+                                    showLink
+                                    step={2}
+                                    title="PROVIDE YOUR OWN COMPUTATIONAL POWER"
+                                    description={
+                                        <>
+                                            To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br />
+                                            Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation.
+                                        </>
+                                    }
+                                >
+                                    <div className="flex flex-col gap-5 mt-4">
+                                        <ProverCardListComponent />
+                                    </div>
+                                </SelfProverStepCard>
+                            </div>
+                        )}
                     </div>
-                </GradientBorderCard>
+                </div>
             </div>
         </div>
     );

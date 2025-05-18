@@ -16,7 +16,7 @@ const NFTProverCard = ({ status, className }: { status: { nft: boolean }, classN
                     <div className={cn("flex flex-col", isMobile ? "col-span-8" : "col-span-4 ")}>
                         <div className="bg-gray-300 w-full flex-1 rounded-lg mb-3 aspect-square max-w-[12rem] mx-auto"></div>
                         <div className={cn("flex items-center gap-2 mb-2", isMobile ? "justify-center" : "")}>
-                            <div className={`w-3 h-3 rounded-full ${status.nft ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                            <div className={`w-3 h-3 rounded-full ${status.nft ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
                             <span className="uppercase">NFT ACTIVE</span>
                         </div>
                         <div className="grid grid-cols-2 gap-2 mb-2 text-sm !font-[400]">

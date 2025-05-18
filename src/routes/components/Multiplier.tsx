@@ -20,7 +20,7 @@ export const MultiplierPercentBar = () => {
     )
 }
 
-export const Multiplier = () => {
+export const Multiplier = ({ actionPlacement = 'bottom' }: { actionPlacement?: 'bottom' | 'top' }) => {
     const { multiplierLevelList } = useStatic()
     const { zkPart } = useAccount()
     const currentMultiplier = multiplierLevelList?.find((item: { level: number | undefined; }) => item.level == zkPart?.multiplierLevel)
@@ -36,6 +36,20 @@ export const Multiplier = () => {
                             </div>
                             <Tooltip content={<div className="max-w-[16rem] py-2">A higher level Multiplier gives you a boost in rewards when earning rewards through Verifier/Prover.</div>}><div className="text-sub text-xs">ⓘ</div></Tooltip>
                         </div>
+
+
+                        {
+                            actionPlacement === 'top' && (
+                                <div
+                                    className="flex items-center justify-end gap-1 cursor-pointer"
+                                    onClick={handleMultiplierModal}
+                                >
+                                    <span className="text-sm text-sub text-sub">SPEED UP</span>
+                                    <ArrowRight size={12} />
+                                </div>
+                            )
+                        }
+
                     </div>
 
                     {/* 进度条 */}
@@ -54,13 +68,17 @@ export const Multiplier = () => {
 
 
 
-                    <div
-                        className="flex items-center justify-end gap-1 cursor-pointer"
-                        onClick={handleMultiplierModal}
-                    >
-                        <span className="text-sm text-sub text-sub">SPEED UP</span>
-                        <ArrowRight size={12} />
-                    </div>
+                    {
+                        actionPlacement === 'bottom' && (
+                            <div
+                                className="flex items-center justify-end gap-1 cursor-pointer"
+                                onClick={handleMultiplierModal}
+                            >
+                                <span className="text-sm text-sub text-sub">SPEED UP</span>
+                                <ArrowRight size={12} />
+                            </div>
+                        )
+                    }
                 </div>
 
 

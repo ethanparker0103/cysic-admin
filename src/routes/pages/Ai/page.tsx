@@ -64,7 +64,7 @@ const projectCards = [
         name: "DEEPSEEK R1",
         category: "code",
         tag: "code",
-        tagColor: "bg-green-500/30 border border-green-500/60",
+        tagColor: "bg-[#19FFE0]/30 border border-[#19FFE0]/60",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in tempor mi. Mauris justo arcu, tempus in porta hendrerit, egestas eget tellus. In tristique amet in sagittis eget id volutpat. Blandit in ultrices vel et nulla vel pulvinar. Nulla eget eros, accumsan in felis eu, eleifend adipiscing dolor. Nulla pharetra non, el malesuada vel, rutrum id."
     },
     {

@@ -49,7 +49,7 @@ const GradientBorderCard: React.FC<GradientBorderCardProps> = ({
       <div
         onClick={onClick}
         className={
-          cn('gradient-border-card w-full overflow-hidden z-[2] relative backdrop-blur', className)
+          cn('gradient-border-card w-full overflow-hidden z-[2] relative backdrop-blur bg-[#090A09CC]', className)
         }
         style={{
           ...cssVariables,

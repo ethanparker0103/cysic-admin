@@ -1,21 +1,16 @@
 
 import Button from "@/components/Button";
-import { getImageUrl, handleMultiplierModal, handleReserveModal } from "@/utils/tools";
-import { ArrowRight, Check, CircleHelp } from "lucide-react";
+import { getImageUrl, handleReserveModal } from "@/utils/tools";
+import { ArrowRight, Check } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import Tooltip from "@/components/Tooltip";
-import axios from "@/service";
-import { useRequest } from "ahooks";
-import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
 import { downloadLink } from "@/config";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
 import { github } from "react-syntax-highlighter/dist/esm/styles/hljs"; // 选择一个你喜欢的主题
 import copy from "copy-to-clipboard";
-import { toast } from "react-toastify";
 import { Multiplier } from "@/routes/components/Multiplier";
-import { useProverStatus } from "@/routes/components/ZkVerifierStatus";
+import { useVerifierStatus } from "@/routes/components/ZkVerifierStatus";
 import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 import { useState } from "react";
 
@@ -38,15 +33,16 @@ const guide = {
                                             "@/assets/images/tutorial/android_bot.svg"
                                         )}
                                     />
-                                    <div className="!text-[32px] !font-[400]">
-                                        Download the APK Android
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-4 justify-between mt-4">
-                                    <a href={downloadLink.andorid} className="flex items-center gap-1 text-sub text-sm">
+                                    <a href={downloadLink.andorid} className="flex items-center gap-1 text-sub text-sm teacher text-sm tracking-widest ml-auto">
                                         <span>Download</span>
                                         <ArrowRight width={16} height={16} />
                                     </a>
+
+                                </div>
+                                <div className="flex items-center gap-4 justify-between mt-4">
+                                    <div className="unbounded text-xl font-light flex-1">
+                                        Download the APK Android
+                                    </div>
                                     <DownloadQRCodeTooltip>
                                         <div className="p-2 rounded-[12px] cursor-pointer hover:bg-[#2A313B]">
                                             <img
@@ -68,21 +64,22 @@ const guide = {
                                             "@/assets/images/download/google-play_icon_white.svg"
                                         )}
                                     />
-                                    <div className="!text-[32px] !font-[400]">
-                                        Download from Google Play
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-4 justify-between mt-4">
-                                    <a href={downloadLink.googlePlay} className="flex items-center gap-1 text-sub text-sm">
+                                    <a href={downloadLink.googlePlay} className="flex items-center gap-1 text-sub text-sm teacher text-sm tracking-widest ml-auto">
                                         <span>Google Play </span>
                                         <ArrowRight width={16} height={16} />
                                     </a>
+
+                                </div>
+
+                                <div className="flex items-center gap-4 justify-between mt-4">
+                                    <div className="unbounded text-xl font-light flex-1">
+                                        Download from Google Play
+                                    </div>
                                     <div
                                         onClick={() =>
                                             window.open(downloadLink.googlePlay, "_blank")
                                         }
-                                        className="flex items-center pr-2 cursor-pointer"
+                                        className="flex items-center cursor-pointer"
                                     >
                                         <img
                                             className="w-[9.25rem]"
@@ -99,11 +96,23 @@ const guide = {
             },
             {
                 title: "Import Your Wallet",
-                desc: "Import your wallet seed phrase. Cysic does not store any seed phrases or private keys. Please ensure the security of your wallet information.",
+                desc: <p className="text-right teacher text-sm !normal-case">
+                    Import your wallet seed phrase.
+                    <br />
+                    Cysic does not store any seed phrases or private keys.
+                    <br />
+                    Please ensure the security of your wallet information.
+                </p>
             },
             {
                 title: "Start VerifIcation",
-                desc: "Click the Start Verification button on the main interface to begin the Verifier process. After starting verifier, Cysic App can switch to backstage operating. You can start or stop the verification work at any time. ",
+                desc: <p className="text-right teacher text-sm !normal-case">
+                    Click the Start Verification button on the main interface to begin the Verifier process.
+                    <br />
+                    After starting verifier, Cysic App can switch to backstage operating.
+                    <br />
+                    You can start or stop the verification work at any time.
+                </p>
             },
         ],
     },
@@ -112,7 +121,10 @@ const guide = {
         steps: [
             {
                 title: "Setup",
-                desc: "Start your terminal program on Linux. Copy the code below, replacing the address placeholder with your reward address, then run it in your terminal.",
+                desc: <p className="text-right teacher text-sm !normal-case">
+                    Start your terminal program on Linux. Copy the code below.<br />
+                    Replace the address placeholder with your reward address, then run it in your terminal.
+                </p>,
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
             
 curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
@@ -120,33 +132,26 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <div className="flex flex-col gap-1">
-                        <span>
-                            Wait a while for the setup process script to run. Then copy and
-                            paste the below code, press enter to run.
-                        </span>
-                        <span>
-                            · If you see “err: rpc error”, don’t worry—just wait a few minutes
-                            for the verifier to connect.{" "}
-                        </span>
-                        <span>
-                            · Once connected, you’ll see a message like “start sync data from
-                            server,” indicating it’s running successfully.
-                        </span>
-                    </div>
+                    <p className="text-right teacher text-sm !normal-case">
+                        Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
+                        <br />
+                        · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
+                        <br />
+                        · Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.
+                    </p>
                 ),
                 code: `cd ~/cysic-verifier/ && bash start.sh`,
             },
             {
                 title: "Success",
                 desc: (
-                    <>
+                    <p className="text-right teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2 again.
                         <br />
-                        *The verifier program will create mnemonic files for you. Your
-                        submitted address mnemonic file is in: ～/.cysic/keys/ folder,
-                        please keep it or you can not run the verifier program again.
-                    </>
+                        *The verifier program will create mnemonic files for you.
+                        <br />
+                        Your submitted address mnemonic file is in: ～/.cysic/keys/ folder, please keep it or you can not run the verifier program again.
+                    </p>
                 ),
             },
         ],
@@ -168,20 +173,13 @@ Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase2_libs/releases/downl
             {
                 title: "Start the verifier program",
                 desc: (
-                    <div className="flex flex-col gap-1">
-                        <span>
-                            Wait a while for the setup process script to run. Then copy and
-                            paste the below code, press enter to run.
-                        </span>
-                        <span>
-                            · If you see “err: rpc error”, don’t worry—just wait a few minutes
-                            for the verifier to connect.{" "}
-                        </span>
-                        <span>
-                            · Once connected, you’ll see a message like “start sync data from
-                            server,” indicating it’s running successfully.
-                        </span>
-                    </div>
+                    <p className="text-right teacher text-sm !normal-case">
+                        Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
+                        <br />
+                        · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
+                        <br />
+                        · Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.
+                    </p>
                 ),
                 code: `# run the verifier
 
@@ -192,17 +190,15 @@ cd $env:USERPROFILE\\cysic-verifier
             {
                 title: "Success",
                 desc: (
-                    <div className="flex flex-col gap-1">
-                        <span>
-                            If you need to reconnect the verifier, please execute Step 2
-                            again.
-                        </span>
-                        <span>
-                            *The verifier program will create mnemonic files for you. Your
-                            submitted address mnemonic file is in: ～/.cysic/keys/ folder,
-                            please keep it or you can not run the verifier program again.
-                        </span>
-                    </div>
+                    <p className="text-right teacher text-sm !normal-case">
+                        If you need to reconnect the verifier, please execute Step 2
+                        again.
+                        <br />
+                        *The verifier program will create mnemonic files for you.
+                        <br />
+                        Your submitted address mnemonic file is in: ～/.cysic/keys/ folder,
+                        please keep it or you can not run the verifier program again.
+                    </p>
                 ),
             },
         ],
@@ -220,37 +216,30 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <div className="flex flex-col gap-1">
-                        <span>
-                            Wait a while for the setup process script to run. Then copy and
-                            paste the below code, press enter to run.
-                        </span>
-                        <span>
-                            · If you see “err: network error”, don’t worry—just wait a few
-                            minutes for the verifier to connect.
-                        </span>
-                        <span>
-                            · Once connected, you’ll see a message like “start sync data from
-                            server,” indicating it’s running successfully.
-                        </span>
-                    </div>
+                    <p className="text-right teacher text-sm !normal-case">
+                        Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
+                        <br />
+                        · If you see “err: network error”, don’t worry—just wait a few minutes for the verifier to connect.
+                        <br />
+                        · Once connected, you’ll see a message like “start sync data from server,” indicating it’s running successfully.
+                    </p>
+
                 ),
                 code: `cd ~/cysic-verifier/ && bash start.sh`,
             },
             {
                 title: "Success",
                 desc: (
-                    <div className="flex flex-col gap-1">
-                        <span>
-                            If you need to reconnect the verifier, please execute Step 2
-                            again.
-                        </span>
-                        <span>
-                            *The verifier program will create mnemonic files for you. Your
-                            submitted address mnemonic file is in: ～/.cysic/keys/ folder,
-                            please keep it or you can not run the verifier program again.
-                        </span>
-                    </div>
+                    <p className="text-right teacher text-sm !normal-case">
+                        If you need to reconnect the verifier, please execute Step 2
+                        again.
+                        <br />
+                        *The verifier program will create mnemonic files for you.
+                        <br />
+                        Your submitted address mnemonic file is in: ～/.cysic/keys/ folder,
+                        please keep it or you can not run the verifier program again.
+                    </p>
+
                 ),
             },
         ],
@@ -284,11 +273,14 @@ const GuideStepCard = ({
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-                <div className="text-base font-[400]">
-                    Step {step}/{totalStep}
-                </div>
-                <div className="title !text-xl !font-light">{title}</div>
+
+
+
+            <div className="flex gap-4 items-center">
+                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">Step {step}/{totalStep}</div>
+                <h3 className={cn("unbounded text-2xl ")}>
+                    {title}
+                </h3>
             </div>
             {description ? (
                 <>
@@ -304,16 +296,16 @@ const GuideStepCard = ({
                     <SyntaxHighlighter
                         language="bash"
                         style={github}
-                        className="flex-1 w-full break-words rounded-md !bg-[#FFFFFF0D] !text-[#fff] [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
+                        className="flex-1 w-full break-words rounded-md !bg-[transparent] !text-[#fff] [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
                     >
                         {code}
                     </SyntaxHighlighter>
                     <Button
                         type="solid"
-                        className="cursor-pointer px-6 py-2 text-base max-h-10 h-10"
+                        className="cursor-pointer px-6 py-2 text-base max-h-10 h-10 flex items-center justify-center"
                         onClick={() => handleCopy(code)}
                     >
-                        {copied ? <div className="px-[0.625rem] mx-auto"><Check className="w-4 h-4 text-green-500" /></div> : "Copy"}
+                        {copied ? <div className="px-[0.625rem] mx-auto"><Check className="w-4 h-4 text-[#19FFE0]" /></div> : "Copy"}
                     </Button>
                 </div>
             ) : null}
@@ -332,14 +324,14 @@ const SelfProverStepCard = ({
 }: {
     linkContent?: string | React.ReactNode;
     step: number;
-    title: string;
+    title: string | React.ReactNode;
     description?: string | React.ReactNode;
     buttonText?: string;
     children?: React.ReactNode;
     onClick?: () => void;
 }) => {
     return (
-        <div className="mb-8">
+        <>
             <div className="flex flex-col items-start">
                 <div
                     className={cn(
@@ -347,14 +339,9 @@ const SelfProverStepCard = ({
                         isMobile ? "flex-col" : "justify-between items-start"
                     )}
                 >
-                    <div className="flex flex-col">
-                        <div className="!text-base !font-light title">Step {step}/2</div>
-                        <h3
-                            className={cn(
-                                "title uppercase !font-light mb-2",
-                                isMobile ? "!text-2xl" : "!text-3xl"
-                            )}
-                        >
+                    <div className="flex gap-4 items-center">
+                        <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">Step {step}/2</div>
+                        <h3 className={cn("unbounded text-2xl ")}>
                             {title}
                         </h3>
                     </div>
@@ -362,29 +349,34 @@ const SelfProverStepCard = ({
                         <Button
                             onClick={onClick}
                             type="light"
-                            className="rounded-lg px-12 py-3 min-h-fit h-fit !text-base !font-[400]"
+                            className="rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
                         >
                             {buttonText}
                         </Button>
                     ) : null}
                 </div>
 
-                <div className="flex-1 mt-4">
-                    <p className="text-sub text-sm mb-4">{description}</p>
+                <div className="flex-1 ">
+                    <p className="text-sub text-sm mb-4 teacher !normal-case">{description}</p>
                 </div>
 
-                <div className="flex items-center gap-2 uppercase text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                    <span>{linkContent}</span>
-                    <ArrowRight width={16} height={16} />
-                </div>
+
+
+                {
+                    linkContent ? (<div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                        <span>{linkContent}</span>
+                        <ArrowRight width={16} height={16} />
+                    </div>) : null
+                }
+
             </div>
-            {children || <div className="border-b border-white/10 mt-6"></div>}
-        </div>
+            {children}
+        </>
     );
 };
 
 const VerifierPage = () => {
-    const { VerifierCardListComponent } = useProverStatus()
+    const { VerifierCardListComponent } = useVerifierStatus()
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -400,35 +392,39 @@ const VerifierPage = () => {
             {/* 主要内容部分 */}
             <div className="container mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
-                <GradientBorderCard borderRadius={8} className="mb-4">
-                    <div className={cn("w-full", isMobile ? "px-6 py-4" : "p-8")}>
-                        <div className="flex flex-col gap-2 mb-6 ">
-                            <h1
-                                className={cn(
-                                    "title !font-light uppercase",
-                                    isMobile ? "!text-2xl" : "!text-4xl"
-                                )}
-                            >
-                                Scale Up, Verify More, Earn More
-                            </h1>
-                            <h2
-                                className={cn(
-                                    "title !font-light uppercase mt-2",
-                                    isMobile ? "!text-base" : "!text-xl"
-                                )}
-                            >
-                                Run a lightweight node to support proof verification,
-                                strengthening the network's security and scalability
-                            </h2>
-                        </div>
+                <GradientBorderCard borderRadius={8} className="mb-4  relative ">
+                    <>
+                        <div className="absolute purple-landing bg-[url('@/assets/images/_global/dashboard_verifier_landing_bg.png')] bg-cover bg-center w-[calc(100%-2px)] h-[calc(100%-2px)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg" />
+                        <div className={cn("w-full px-6 py-4 relative z-1")}>
+                            <div className="flex flex-col gap-2 mb-6 ">
+                                <h1
+                                    className={cn(
+                                        "title !font-light uppercase",
+                                        isMobile ? "!text-2xl" : "!text-4xl"
+                                    )}
+                                >
+                                    Scale Up,<br /> Verify More,<br /> Earn More
+                                </h1>
+                                <h2
+                                    className={cn(
+                                        "title !font-light uppercase mt-2",
+                                        isMobile ? "!text-base" : "!text-xl"
+                                    )}
+                                >
+                                    Run a lightweight node to support proof verification,<br />
+                                    strengthening the network's security and scalability
+                                </h2>
+                            </div>
 
-                        <p className="text-white !font-[400] text-base mb-6">
-                            You can also maximize your earnings as a Cysic ZK Verifier by
-                            running multiple devices-pC, servers, and Cysic official Android
-                            App. You can also boost your rewards by increasing your
-                            Multiplier, The more you verify, the more you earn.
-                        </p>
-                    </div>
+                            <p className="teacher text-white !normal-case text-base">
+                                You can also maximize your earnings as a Cysic ZK Verifier by
+                                running multiple devices-pC, servers, and Cysic official Android
+                                App.<br /> You can also boost your rewards by increasing your
+                                Multiplier, The more you verify, the more you earn.
+                            </p>
+                        </div>
+                    </>
+
                 </GradientBorderCard>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -436,12 +432,12 @@ const VerifierPage = () => {
                     <VerifierCardListComponent />
 
                     {/* MULTIPLIER */}
-                    <Multiplier />
+                    <Multiplier actionPlacement="top" />
                 </div>
 
                 <div
                     className={cn(
-                        "title text-center !text-[36px]",
+                        "unbounded text-center text-[36px] font-light",
                         isMobile ? "my-6" : "my-12"
                     )}
                 >
@@ -449,39 +445,59 @@ const VerifierPage = () => {
                 </div>
 
                 <div className="flex flex-col">
-                    <SelfProverStepCard
-                        step={1}
-                        linkContent="Click here to know how to earn CGT"
-                        title="RESERVE 100 CGT"
-                        description={
-                            <>
-                                To become a Verifier on Cysic ZK, you need to reserve at least
-                                100 CGT as collateral. <br /> Cysic will oversee Verifier
-                                actions, retaining this collateral if any irregular behavior
-                                occurs to protect Cysic ZK's operation.
-                            </>
-                        }
-                        buttonText="RESERVE"
-                        onClick={handleReserveModal}
-                    />
+                    <GradientBorderCard borderRadius={8} className="mb-4 relative px-6 py-4">
+                        <SelfProverStepCard
+                            step={1}
+                            linkContent="Click here to know how to earn CGT"
+                            title="RESERVE 100 CGT"
+                            description={
+                                <>
+                                    To become a Verifier on Cysic ZK, you need to reserve at least
+                                    100 CGT as collateral. <br /> Cysic will oversee Verifier
+                                    actions, retaining this collateral if any irregular behavior
+                                    occurs to protect Cysic ZK's operation.
+                                </>
+                            }
+                            buttonText="RESERVE"
+                            onClick={handleReserveModal}
+                        />
+                    </GradientBorderCard>
 
-                    <SelfProverStepCard
-                        step={2}
-                        linkContent="For more details, see the full Verifier Tutorial Doc"
-                        title="Follow the corresponding tutorials based on your terminal machine"
+                    <GradientBorderCard
+                        borderRadius={8}
+                        className="flex flex-col gap-4 py-4 px-6"
                     >
-                        <GradientBorderCard
-                            borderRadius={8}
-                            className="flex flex-col gap-4 py-8 px-6 mt-6"
+                        <SelfProverStepCard
+                            step={2}
+                            linkContent="For more details, see the full Verifier Tutorial Doc"
+                            buttonText="RESERVE"
+                            title={
+                                <>
+                                    <span className="text-2xl unbounded">Follow the corresponding tutorials</span> <br />
+                                    <span className="text-base unbounded font-light">based on your terminal machine</span>
+                                </>
+                            }
                         >
-                            <div className="!text-xl title !font-light">
-                                Tutorial: Run Cysic Verifier Node in simple steps
-                            </div>
-                            <div className="text-sm text-sub">
-                                For more details, see the full Verifier Tutorial Doc
+
+                            <Divider className="bg-[#FFFFFF4D] " />
+
+                            <div className="flex gap-4 items-center">
+                                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">TUTORIAL</div>
+                                <h3 className={cn("unbounded text-2xl ")}>
+                                    <>
+                                        <span className="text-2xl unbounded">Run Cysic Verifier Node</span> <br />
+                                        <span className="text-base unbounded font-light">in 2 simple steps</span>
+                                    </>
+                                </h3>
                             </div>
 
-                            <div className="flex flex-col gap-4">
+
+                            <div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                                <span>For more details, see the full Verifier Tutorial Doc</span>
+                                <ArrowRight width={16} height={16} />
+                            </div>
+
+                            <div className="flex flex-col gap-4 mt-4">
                                 <Tabs
                                     key={"underlined"}
                                     aria-label="Tabs variants"
@@ -489,13 +505,14 @@ const VerifierPage = () => {
                                     classNames={{
                                         tabList: "w-full border-b border-white/30 !p-0 !gap-0",
                                         cursor: "h-px w-full",
-                                        tab: "!p-0",
+                                        tab: "!p-0 ",
                                         panel: "!p-0",
+                                        tabContent: "teacher text-base font-medium !normal-case"
                                     }}
                                     className="w-full"
                                 >
                                     <Tab key="Android" title="Android">
-                                        <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", isMobile ?"flex-col" :"")}>
+                                        <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", isMobile ? "flex-col" : "")}>
                                             <div className="flex-1">
 
                                                 <GuideStepCard
@@ -523,19 +540,19 @@ const VerifierPage = () => {
                                                 />
                                             </div>
 
-                                            <div className="flex flex-col items-center gap-2">
+                                            <div className="flex flex-col items-center gap-2 ">
                                                 <div className="text-base text-sub">Cysic Verifier App Video Guide</div>
 
-                                                <div className="p-4 self-center mx-auto max-w-[20.625rem] min-w-[15rem] ">
+                                                <div className=" self-center mx-auto aspect-[240/520] min-w-[15rem] max-w-[16rem]">
                                                     <div className="rounded-[12px] p-3 bg-[#FFFFFF33]">
-                                                        <video controls preload="auto" className="aspect-[240/520]" poster="/tutorial_poster.png" muted>
+                                                        <video controls preload="auto" className="aspect-[240/520]" poster="https://testnet.prover.xyz/m/tutorial_poster.png" muted>
                                                             <source src="https://statics.prover.xyz/tutorial/video.mp4" type="video/mp4" />
                                                         </video>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            
+
                                         </div>
                                     </Tab>
                                     <Tab key="Linux" title="Linux">
@@ -621,8 +638,9 @@ const VerifierPage = () => {
                                     </Tab>
                                 </Tabs>
                             </div>
-                        </GradientBorderCard>
-                    </SelfProverStepCard>
+                        </SelfProverStepCard>
+                    </GradientBorderCard>
+
                 </div>
             </div>
         </div>

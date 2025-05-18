@@ -61,7 +61,7 @@ const switchStatusColor = (status: number) => {
         case 0:
             return "bg-yellow-500";
         case 1:
-            return "bg-green-500";
+            return "bg-[#19FFE0]";
         case 2:
             return "bg-red-500";
         case 3:
@@ -91,7 +91,7 @@ const switchStatusTextColor = (status: number) => {
         case 0:
             return "text-yellow-500";
         case 1:
-            return "text-green-500";
+            return "text-[#19FFE0]";
         case 2:
             return "text-red-500";
         case 3:

@@ -274,7 +274,7 @@ const UserDetailsPage = () => {
                             moreLink="MORE ABOUT ZK VERIFIER"
                             value={<div></div>}
                             status={[
-                                { label: "STANDARD ACTIVE", value: "", color: "bg-green-500" },
+                                { label: "STANDARD ACTIVE", value: "", color: "bg-[#19FFE0]" },
                                 { label: "MOBILE INACTIVE", value: "", color: "bg-red-500" }
                             ]}
                         />
@@ -285,7 +285,7 @@ const UserDetailsPage = () => {
                             moreLink="MORE ABOUT ZK PROVER"
                             value={<div></div>}
                             status={[
-                                { label: "NFT ACTIVE", value: "", color: "bg-green-500" },
+                                { label: "NFT ACTIVE", value: "", color: "bg-[#19FFE0]" },
                                 { label: "SELF INACTIVE", value: "", color: "bg-red-500" }
                             ]}
                         />
@@ -296,7 +296,7 @@ const UserDetailsPage = () => {
                             moreLink="MORE ABOUT ZK PROJECT"
                             value={<div></div>}
                             status={[
-                                { label: "100 ONGOING PROJECTS", value: "", color: "bg-green-500" },
+                                { label: "100 ONGOING PROJECTS", value: "", color: "bg-[#19FFE0]" },
                                 { label: "10 PROJECTS UNDER REVIEW", value: "", color: "bg-yellow-500" }
                             ]}
                         />

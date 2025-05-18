@@ -19,7 +19,7 @@ import { isMobile } from "react-device-detect";
 //   }
 // /zkTask/prover/status
 
-export const useProverStatus = () => {
+export const useVerifierStatus = () => {
     const { zkPart } = useAccount();
     const { data } = useRequest(() => {
         return axios.get('/api/v1/zkTask/prover/status')
@@ -57,11 +57,11 @@ export const useProverStatus = () => {
                 <div className="flex flex-col gap-4 w-full">
                     <h3 className="!text-base !font-light title uppercase">ZK VERIFIER STATUS</h3>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive ? 'bg-green-500' : 'bg-gray-500'}`}></div>
+                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
                         <span className="!font-light !text-sm title uppercase">Standard {zkPart?.verifierStatus?.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
                         <span className="!font-light !text-sm title uppercase">Mobile {zkPart?.verifierStatus?.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
@@ -112,7 +112,7 @@ export const ProverCard = ({ icon, name, description, isActive, btnText }: Prove
                         <div className={cn("flex mb-4", isMobile ? "flex-col" : "justify-between items-start")}>
                             <h3 className={cn("!font-light title", isMobile ? "!text-2xl mb-2" : "!text-3xl")}>{name}</h3>
                             <div className="flex items-center gap-2">
-                                <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                                <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
                                 <span className="uppercase !text-sm !font-light title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                             </div>
                         </div>

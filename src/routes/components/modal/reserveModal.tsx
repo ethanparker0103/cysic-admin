@@ -175,7 +175,7 @@ const ReserveModal = () => {
             className="max-w-[600px]"
         >
             {/* 选项卡头部 */}
-            <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6">
+            <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-6 border border-[#FFFFFF4D]">
                 <button
                     className={`py-4 uppercase text-center text-base ${activeTab === ReserveAction.RESERVE
                             ? "bg-white text-black"

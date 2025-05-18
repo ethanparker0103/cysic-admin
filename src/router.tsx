@@ -211,14 +211,14 @@ export const backgroundImageList = {
     backContent: 'User Portal'
   },
   '/zk/prover': {
-    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+    img: getImageUrl('@/assets/images/_global/prover_landing_bg.png'),
     className: "h-screen",
     needShadow: true
   },
   '/zk/verifier': {
-    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
-    className: "h-screen",
-    needShadow: true
+    // img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+    // className: "h-screen",
+    // needShadow: true
   },
   '/zk/project': {
     img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),

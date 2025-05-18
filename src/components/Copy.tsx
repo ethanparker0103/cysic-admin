@@ -20,7 +20,7 @@ const Copy = ({ className, value, children }: any) => {
     >
       {children}
       {
-        copied ? (<Check className="w-4 h-4 text-green-500" />) : (<CopyIcon className="w-4 h-4" />)
+        copied ? (<Check className="w-4 h-4 text-[#19FFE0]" />) : (<CopyIcon className="w-4 h-4" />)
       }
      
     </div>
