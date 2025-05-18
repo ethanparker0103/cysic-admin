@@ -141,7 +141,7 @@ const UserPortal = () => {
                 title="CYSIC ZK"
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
                 onClick={() => {
-                  navigate("/");
+                  navigate("/zk");
                 }}
               />
             </div>

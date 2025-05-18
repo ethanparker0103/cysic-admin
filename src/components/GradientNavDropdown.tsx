@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, cn } from "@nextui-org/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as NextUILink } from "@nextui-org/react";
+import HoverDropdown from "@/components/HoverDropdown";
 
 
 interface NavItem {
@@ -77,72 +78,71 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
 
     // 有子菜单时创建下拉菜单
     return (
-        <div onMouseLeave={handleMouseLeave} className={cn(className, 'h-full ')}>
-            <Dropdown
-                isOpen={isOpen}
-                classNames={{
-                    content: 'p-0 !pt-2 -mt-1 bg-[transparent]',
+        <HoverDropdown 
+        className={cn(className, 'h-full ')}
+        classNames={{
+            content: 'p-0 !pt-2 -mt-1 bg-[transparent]',
+        }}
+        trigger={
+            <Button
+                as={item?.href ? RouterLink : 'div'}
+                to={item?.href ? item.href : null}
+
+                variant="light"
+                className={cn("uppercase font-[400] text-sub w-full h-full rounded-none")}
+            >
+                {item.content}
+            </Button>
+        }>
+
+            <DropdownMenu
+                // disabledKeys={item?.children?.map(i=>i.disabled)}
+                disabledKeys={disabledKeys}
+                style={{
+                    '--gradient-direction': '0deg',
+                }}
+                aria-label={`${item.content} submenu`}
+                className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur gradient-border-card rounded-lg overflow-hidden"
+                variant="flat"
+                itemClasses={{
+                    base: cn("hover:!opacity-100 text-sub uppercase transition-colors "),
                 }}
             >
-                <DropdownTrigger onMouseEnter={handleMouseEnter}>
-                    <Button
-                        as={item?.href ? RouterLink : 'div'}
-                        to={item?.href ? item.href : null}
-                        
-                        variant="light"
-                        className={cn("uppercase font-[400] text-sub w-full h-full rounded-none")}
-                    >
-                        {item.content}
-                    </Button>
-                </DropdownTrigger>
+                {item.children.map((child) => {
+                    if (isExternalLink(child.href)) {
+                        // 外部链接
+                        return (
+                            <DropdownItem
+                                key={child.key}
+                                className="py-6 px-4 text-sm text-center hover-bright-gradient"
+                                // as={NextUILink}
+                                // href={child.href}
+                                // target="_blank"
+                                // rel="noopener noreferrer"
+                                onPress={() => handleNavigation(child.href)}
+                            >
+                                {child.content}
+                            </DropdownItem>
+                        );
+                    } else {
+                        // 内部链接
+                        return (
+                            <DropdownItem
+                                key={child.content}
+                                className={cn("py-6 px-4 text-sm text-center relative", !child?.disabled ? "hover-bright-gradient" : "")}
+                                onPress={() => child.disabled ? null : handleNavigation(child.href)}
+                            >
+                                {child?.disabled ? <div className="blur-[3px]">
+                                    {/* <div className="absolute top-0 -translate-x-1/2 left-1/2 w-[calc(100%-4px)] h-[calc(100%-4px)] bg-[transparent] backdrop-blur-[20px]"></div> */}
+                                    <span>{child.content}</span>
+                                </div> : child.content}
+                            </DropdownItem>
+                        );
+                    }
+                })}
+            </DropdownMenu>
 
-                <DropdownMenu
-                    // disabledKeys={item?.children?.map(i=>i.disabled)}
-                    disabledKeys={disabledKeys}
-                    style={{
-                        '--gradient-direction': '0deg',
-                    }}
-                    aria-label={`${item.content} submenu`}
-                    className="p-0 min-w-[180px] bg-[#090A09B2] backdrop-blur gradient-border-card rounded-lg overflow-hidden"
-                    variant="flat"
-                    itemClasses={{
-                        base: cn("hover:!opacity-100 text-sub uppercase transition-colors "),
-                    }}
-                >
-                    {item.children.map((child) => {
-                        if (isExternalLink(child.href)) {
-                            // 外部链接
-                            return (
-                                <DropdownItem
-                                    key={child.key}
-                                    className="py-6 px-4 text-sm text-center hover-bright-gradient"
-                                    // as={NextUILink}
-                                    // href={child.href}
-                                    // target="_blank"
-                                    // rel="noopener noreferrer"
-                                    onPress={() => handleNavigation(child.href)}
-                                >
-                                    {child.content}
-                                </DropdownItem>
-                            );
-                        } else {
-                            // 内部链接
-                            return (
-                                <DropdownItem
-                                    key={child.content}
-                                    className={cn("py-6 px-4 text-sm text-center relative", !child?.disabled ? "hover-bright-gradient" : "")}
-                                    onPress={() => child.disabled ? null : handleNavigation(child.href)}
-                                >
-                                    {child?.disabled ? <div className="blur-[3px]">
-                                        {/* <div className="absolute top-0 -translate-x-1/2 left-1/2 w-[calc(100%-4px)] h-[calc(100%-4px)] bg-[transparent] backdrop-blur-[20px]"></div> */}
-                                        <span>{child.content}</span>
-                                    </div> : child.content}
-                                </DropdownItem>
-                            );
-                        }
-                    })}
-                </DropdownMenu>
-            </Dropdown>
-        </div>
+        </HoverDropdown>
+
     );
 }

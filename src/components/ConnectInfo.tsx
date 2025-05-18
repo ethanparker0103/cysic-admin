@@ -13,6 +13,7 @@ import { useWriteContract } from "@/hooks/useWriteContract";
 import { routesConfig } from "@/config";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
+import HoverDropdown from "@/components/HoverDropdown";
 
 const ConnectInfo = () => {
     // 使用新的useAccount获取状态
@@ -43,44 +44,33 @@ const ConnectInfo = () => {
 
     const pathname = useLocation().pathname;
 
-
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    const handleMouseEnter = () => setIsOpen(true);
-    const handleMouseLeave = () => setIsOpen(false);
-
     return (
         <>
             <Button needLoading className="!p-0" onClick={handleFaucetModal}>
                 <img src={getImageUrl('@/assets/images/icon/faucet.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
             </Button>
 
-            <div onMouseLeave={handleMouseLeave} className={cn('h-full flex items-center')}>
-                <Dropdown
-                    isOpen={isOpen}
-                    placement="bottom-end"
-                    classNames={{
-                        content: 'p-0 mt-6 bg-[transparent]',
-                    }}>
-                    <DropdownTrigger onMouseEnter={handleMouseEnter}>
-                        <div className="px-6 flex items-center gap-4 cursor-pointer">
-                            <div className="flex items-center gap-2">
-                                <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
-                                <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
-                            </div>
-
-                            <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
+            <HoverDropdown
+                trigger={
+                    <div className="px-6 flex items-center gap-4 cursor-pointer">
+                        <div className="flex items-center gap-2">
+                            <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
                         </div>
-                    </DropdownTrigger>
 
-                    <DropdownMenu
-                        className="p-0 min-w-[330px] backdrop-blur gradient-border-card bg-[transparent] rounded-lg overflow-hidden"
-                        variant="flat"
-                        itemClasses={{
-                            base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
-                        }}
-                    >
-                        {/* {needCompleteProfile ? (
+                        <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
+                    </div>
+                }
+            >
+
+                <DropdownMenu
+                    className="p-0 min-w-[330px] backdrop-blur gradient-border-card bg-[transparent] rounded-lg overflow-hidden"
+                    variant="flat"
+                    itemClasses={{
+                        base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
+                    }}
+                >
+                    {/* {needCompleteProfile ? (
                             <DropdownItem
                                 key="complete-profile"
                                 className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between bg-gradient-to-r from-[#17D1B233] to-[#4C1F9933]"
@@ -95,50 +85,51 @@ const ConnectInfo = () => {
                             </DropdownItem>
                         ) : null} */}
 
-                        <DropdownItem as={Link} to={pathname.includes('/zk') ? '/zk/userPortal' : '/userPortal'} key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                            <div className="flex items-center gap-2" >
-                                <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
-                                <span>User Portal</span>
-                            </div>
-                        </DropdownItem>
+                    <DropdownItem as={Link} to={pathname.includes('/zk') ? '/zk/userPortal' : '/userPortal'} key="user-portal" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                        <div className="flex items-center gap-2" >
+                            <img src={avatarUrl || ''} className="rounded-full w-[1.875rem] h-[1.875rem] bg-[#D9D9D9]" />
+                            <span>User Portal</span>
+                        </div>
+                    </DropdownItem>
 
-                        <DropdownItem key="evm-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                            <div className="flex items-center gap-2">
-                                <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
-                                <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
-                            </div>
+                    <DropdownItem key="evm-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                        <div className="flex items-center gap-2">
+                            <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
+                        </div>
 
-                            <Button needLoading type="text" onClick={handleEVMDisconnect} className="uppercase !px-0">disconnect</Button>
-                        </DropdownItem>
+                        <Button needLoading type="text" onClick={handleEVMDisconnect} className="uppercase !px-0">disconnect</Button>
+                    </DropdownItem>
 
-                        <DropdownItem key="cosmos-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                            <div className="flex items-center gap-2">
-                                <img src={getImageUrl('@/assets/images/wallet/keplr.png')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
-                                <span className="text-sm text-sub font-[400] uppercase">{shortStr(cosmosAddress || '-', 10)}</span>
-                            </div>
+                    <DropdownItem key="cosmos-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                        <div className="flex items-center gap-2">
+                            <img src={getImageUrl('@/assets/images/wallet/keplr.png')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <span className="text-sm text-sub font-[400] uppercase">{shortStr(cosmosAddress || '-', 10)}</span>
+                        </div>
 
-                            <ConnectCosmosButton />
-                        </DropdownItem>
-
-
-                        <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
-                            <span className="">Referral Code</span>
-                            <Copy value={inviteCode}>
-                                {inviteCode || '-'}
-                            </Copy>
-                        </DropdownItem>
-
-                        <DropdownItem as={Link} to={routesConfig.invite} key="check-invite" className="py-4 px-6 ">
-                            <div className="flex items-center gap-2 text-[#00F0FF]">
-                                <span>Check invite details</span>
-                                <ArrowRight className="w-4 h-4" />
-                            </div>
-                        </DropdownItem>
+                        <ConnectCosmosButton />
+                    </DropdownItem>
 
 
-                    </DropdownMenu>
-                </Dropdown>
-            </div>
+                    <DropdownItem key="referral-code" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
+                        <span className="">Referral Code</span>
+                        <Copy value={inviteCode}>
+                            {inviteCode || '-'}
+                        </Copy>
+                    </DropdownItem>
+
+                    <DropdownItem as={Link} to={routesConfig.invite} key="check-invite" className="py-4 px-6 ">
+                        <div className="flex items-center gap-2 text-[#00F0FF]">
+                            <span>Check invite details</span>
+                            <ArrowRight className="w-4 h-4" />
+                        </div>
+                    </DropdownItem>
+
+
+                </DropdownMenu>
+            </HoverDropdown>
+
+
         </>
     );
 };
