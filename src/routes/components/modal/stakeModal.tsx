@@ -64,7 +64,8 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                     // }}
                     classNames={{
                         // base: "max-w-md",
-                        filler: "bg-gradient-to-r from-[#19FFE0] to-[#9D47FF]",
+                        filler: "bg-gradient-to-r from-[#19FFE0] to-[#9D47FF] rounded-[20px]",
+                        track: "border-none",
                         labelWrapper: "mb-2",
                         label: "font-medium text-default-700 text-medium",
                         value: "font-medium text-default-500 text-small",
