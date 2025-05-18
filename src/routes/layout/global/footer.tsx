@@ -40,14 +40,6 @@ const navs = [
     {
         content: 'Contact Us',
         href: '/'
-    },
-    {
-        content: 'About',
-        href: '/'
-    },
-    {
-        content: 'FAQ',
-        href: '/'
     }
 ]
 

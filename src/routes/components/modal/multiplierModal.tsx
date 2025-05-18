@@ -319,6 +319,8 @@ const MultiplierModal = () => {
     const currentMultiplier = multiplierLevelList?.find((item: { level: number | undefined; }) => item.level == zkPart?.multiplierLevel) || multiplierLevelList?.[0]
     const nextLevelMultiplierRequire = currentMultiplier?.nextLevelRequire - (zkPart?.multiplierFire || 0)
 
+    const hasNextLevel = multiplierLevelList?.find((item: { level: number | undefined; }) => item.level == Number(zkPart?.multiplierLevel) + 1)
+
     return (
         <Modal
             title="MULTIPLIER"
@@ -338,9 +340,11 @@ const MultiplierModal = () => {
                             <br /> in Progress
                         </div>
                         <MultiplierPercentBar />
-                        <span className="text-sub text-sm ml-auto teacher">
+                        {hasNextLevel ? <span className="text-sub text-sm ml-auto teacher">
                             Earn {nextLevelMultiplierRequire} more <span className="text-[#22D3EE] font-bold">🔥FIRE</span> to become {currentMultiplier?.name}
-                        </span>
+                        </span> : <span className="text-sub text-sm ml-auto teacher">
+                            <span className="text-[#22D3EE] font-bold">Highest</span> Multiplier Level ({currentMultiplier?.name}) Reached.
+                        </span>}
                     </>
                 </GradientBorderCard>
 

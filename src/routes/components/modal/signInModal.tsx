@@ -26,9 +26,9 @@ enum SignInStep {
 const SignInModal = () => {
   const { walletAddress, activeAddress, isSigned, isBinded } =
     useAccount();
-  const { login: _login, connectWallet, linkGoogle, linkTwitter, user} = usePrivy();
+  const { login: _login, connectWallet, linkGoogle, linkTwitter, linkDiscord, user} = usePrivy();
 
-  const login = async (type: 'google' | 'twitter' | 'wallet')=>{
+  const login = async (type: 'google' | 'twitter' | 'discord' | 'wallet')=>{
     if(user && user?.wallet?.address){
       if(type === 'wallet'){
         await connectWallet()
@@ -36,8 +36,10 @@ const SignInModal = () => {
         await linkGoogle()
       }else if(type === 'twitter'){
         await linkTwitter()
+      } else if (type === 'discord') {
+        await linkDiscord()
       }
-    }else{
+    } else {
       await _login({
         loginMethods: [type]
       })
@@ -47,6 +49,10 @@ const SignInModal = () => {
   const loginWithGoogle = () => {
     login('google')
   } 
+
+  const loginWithDiscord = () => {
+    login('discord')
+  }
 
   const loginWithX = () => {
     login('twitter')
@@ -435,6 +441,17 @@ const SignInModal = () => {
                   >
                     GOOGLE ACCOUNT
                   </Button>
+
+                  <Button
+                    type="solid"
+                    className="font-[400] w-full h-16 bg-transparent border border-gray-600 rounded-lg text-white hover:bg-gray-800 transition-colors"
+                    onClick={loginWithDiscord}
+                    needLoading
+                    loading={loading}
+                  >
+                    DISCORD ACCOUNT
+                  </Button>
+
 
                   <Button
                     type="solid"

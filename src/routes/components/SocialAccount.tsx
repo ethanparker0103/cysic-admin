@@ -1,9 +1,11 @@
+import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import useAccount from "@/hooks/useAccount";
 import { getImageUrl } from "@/utils/tools";
 import { usePrivy } from "@privy-io/react-auth";
+import axios from "axios";
 import { ArrowRight } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { toast } from "react-toastify";
 
 interface SocialAccountItemProps {
@@ -17,8 +19,8 @@ const SocialAccountItem = ({
   account,
   action,
 }: SocialAccountItemProps) => (
-  <div className="flex justify-between items-center py-2 w-full">
-    <div className="flex items-center gap-2">
+  <div className="flex justify-between items-center w-full">
+    <div className="flex items-center gap-2 flex-1 justify-between">
       {icon}
       {account ? <span className="text-white">{account}</span> : null}
     </div>
@@ -28,97 +30,73 @@ const SocialAccountItem = ({
 
 const showAllMedia = true;
 
-// Utility to generate a PKCE code challenge (for simplicity using a constant or integrate a proper PKCE lib)
-const generateCodeChallenge = (): string => {
-  // In production, implement PKCE generation: generate random code_verifier and derive code_challenge via SHA256
-  return "challenge_placeholder";
-};
 
 const SocialAccount = () => {
-  const { socialAccount } = useAccount();
-  const { login, linkDiscord, linkGoogle, linkTwitter } = usePrivy();
+  const { socialAccount, isSigned, address } = useAccount();
+  const { login, linkDiscord, linkGoogle, linkTwitter, user } = usePrivy();
 
-const handleLoginOrLink = async (type: string)=>{
-    try{
-        if(type === 'google'){
-            await linkGoogle()
-        }else if(type === 'twitter'){
-            await linkTwitter()
-        }else if(type === 'discord'){
-            await linkDiscord()
-        }
-    }catch(error: any){
-        console.error(error)
-        if(error.message.includes('User must be authenticated before linking an account')){
-            await login({
-                loginMethods: [type as 'google' | 'twitter' | 'discord']
-            })
-        }else{
-            toast.error(error.message)
-        }
+  const handleUploadSocialAccount = async ({accountType, account}: {accountType: string, account: string}) => {
+    axios.post('/api/v1/social/account/update', {
+      accountType,
+      account
+    })
+  }
+
+  useEffect(() => {
+    if(isSigned && address){
+      // CHECK SOCIAL ACCOUNT
+      if(!socialAccount?.discord?.name && user?.discord?.username){
+        handleUploadSocialAccount({
+          accountType: 'discord',
+          account: user?.discord?.username
+        })
+      }
+
+      if(!socialAccount?.google?.name && user?.google?.name){
+        handleUploadSocialAccount({
+          accountType: 'google',
+          account: user?.google?.name
+        })
+      }
+
+      if(!socialAccount?.x?.name && user?.twitter?.username){
+        handleUploadSocialAccount({
+          accountType: 'x',
+          account: user?.twitter?.username
+        })
+      }
+      
     }
-}
+  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.name, user?.twitter?.username])
 
-
-  const oauthConfig: Record<string, any> = {
-    google: {
-      url: "https://accounts.google.com/o/oauth2/v2/auth",
-      clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      redirectUri: `${window.location.origin}/auth/callback/google`,
-      responseType: "code",
-      scope: ["openid", "profile", "email"].join(" "),
-      extraParams: { access_type: "offline", prompt: "consent" },
-    },
-    x: {
-      url: "https://x.com/i/oauth2/authorize",
-      clientId: import.meta.env.VITE_TWITTER_CLIENT_ID,
-      redirectUri: `${window.location.origin}/auth/callback/x`,
-      responseType: "code",
-      scope: ["tweet.read", "users.read", "offline.access"].join(" "),
-      // PKCE params
-      extraParams: {
-        code_challenge: generateCodeChallenge(),
-        code_challenge_method: "plain",
-      },
-    },
-    discord: {
-      url: "https://discord.com/api/oauth2/authorize",
-      clientId: import.meta.env.VITE_DISCORD_CLIENT_ID,
-      redirectUri: `${window.location.origin}/auth/callback/discord`,
-      responseType: "code",
-      scope: ["identify", "email"].join(" "),
-    },
-  };
-
-  const handleOAuthRedirect = (provider: string) => {
-    const config = oauthConfig[provider];
-    if (!config) return;
-
-    const params = new URLSearchParams({
-      client_id: config.clientId,
-      redirect_uri: config.redirectUri,
-      response_type: config.responseType,
-      scope: config.scope,
-      state: provider, // implement robust state for CSRF protection
-      ...config.extraParams,
-    });
-
-    window.open(
-      `${config.url}?${params.toString()}`,
-      "_blank",
-      "width=500,height=600,scrollbars=yes"
-    );
-  };
+  const handleLoginOrLink = async (type: string) => {
+    try {
+      if (type === 'google') {
+        await linkGoogle()
+      } else if (type === 'twitter') {
+        await linkTwitter()
+      } else if (type === 'discord') {
+        await linkDiscord()
+      }
+    } catch (error: any) {
+      console.error(error)
+      if (error.message.includes('User must be authenticated before linking an account')) {
+        toast.error('Please Connect your wallet first')
+      } else {
+        toast.error(error.message)
+      }
+    }
+  }
 
   return (
     <GradientBorderCard borderRadius={8} className="h-full">
-      <div className="py-4 px-6 w-full h-full">
+      <div className="py-4 px-6 w-full h-full flex flex-col gap-2">
         <div className="text-base !font-light uppercase mb-2">
           SOCIAL ACCOUNT
         </div>
 
         {showAllMedia && (
-          <>
+          <div className="flex flex-col gap-2 flex-1 justify-between">
             <SocialAccountItem
               icon={
                 <img
@@ -129,13 +107,15 @@ const handleLoginOrLink = async (type: string)=>{
               account={socialAccount?.google?.name}
               action={
                 !socialAccount?.google?.name && (
-                  <div
-                    className="cursor-pointer flex items-center"
+                  <Button
+                    needLoading
+                    type="text"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
                     onClick={() => handleLoginOrLink('google')}
                   >
                     BIND GMAIL
                     <ArrowRight size={12} className="text-sub ml-2" />
-                  </div>
+                  </Button>
                 )
               }
             />
@@ -152,13 +132,15 @@ const handleLoginOrLink = async (type: string)=>{
               }
               action={
                 !socialAccount?.x?.name && (
-                  <div
-                    className="cursor-pointer flex items-center"
+                  <Button
+                    needLoading
+                    type="text"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
                     onClick={() => handleLoginOrLink('twitter')}
                   >
                     BIND X
                     <ArrowRight size={12} className="text-sub ml-2" />
-                  </div>
+                  </Button>
                 )
               }
             />
@@ -173,17 +155,19 @@ const handleLoginOrLink = async (type: string)=>{
               account={socialAccount?.discord?.name}
               action={
                 !socialAccount?.discord?.name && (
-                  <div
-                    className="cursor-pointer flex items-center"
+                  <Button
+                    needLoading
+                    type="text"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
                     onClick={() => handleLoginOrLink('discord')}
                   >
                     BIND DISCORD
                     <ArrowRight size={12} className="text-sub ml-2" />
-                  </div>
+                  </Button>
                 )
               }
             />
-          </>
+          </div>
         )}
       </div>
     </GradientBorderCard>

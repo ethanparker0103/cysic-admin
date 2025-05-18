@@ -54,7 +54,7 @@ const ConnectInfo = () => {
                 trigger={
                     <div className="px-6 flex items-center gap-4 cursor-pointer">
                         <div className="flex items-center gap-2">
-                            <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <img src={connector?.icon || getImageUrl('@/assets/images/tokens/CYS.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
                             <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
                         </div>
 
@@ -94,7 +94,7 @@ const ConnectInfo = () => {
 
                     <DropdownItem key="evm-disconnect" className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between ">
                         <div className="flex items-center gap-2">
-                            <img src={connector?.icon} className="rounded-full w-[1.875rem] h-[1.875rem]" />
+                            <img src={connector?.icon || getImageUrl('@/assets/images/tokens/CYS.svg')} className="rounded-full w-[1.875rem] h-[1.875rem]" />
                             <span className="text-sm text-sub font-[400] uppercase">{shortStr(address || '', 10)}</span>
                         </div>
 

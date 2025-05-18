@@ -12,7 +12,8 @@ const useSignMessage = () => {
         if (isEmbed) {
             // Type error: Argument of type 'string' is not assignable to parameter of type '{ message: string; }'.
             // strange error
-            return await signMessage(str as any)
+            const res = await signMessage({ message: str })
+            return res.signature
         }
         return await signMessageAsyncWagmi({ message: str })
     }

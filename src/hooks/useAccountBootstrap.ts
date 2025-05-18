@@ -50,7 +50,7 @@ const useAccountBootstrap = () => {
       // 保存签名结果
       userStore.setSignature(address, signature as string);
     } catch (error) {
-      console.error("签名失败", error);
+      console.error("Fail to sign message", error);
     }
   });
 
