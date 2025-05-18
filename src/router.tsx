@@ -105,7 +105,7 @@ export const router = createBrowserRouter(
               element: <MyProjectPage />,
             },
             {
-              path: "project/my/:id",
+              path: "project/:id",
               element: <MyProjectDetailPage />,
             },
 
@@ -228,8 +228,22 @@ export const backgroundImageList = {
     },
     needShadow: true
   },
+  '/zk/project/:id': {
+    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+    className: "h-screen brightness-[0.7]",
+    style: {
+      backgroundPosition: "center -25vh"
+    },
+    needShadow: true,
+    needBack: true,
+  },
   '/zk/project/my': {
-    img: '#000',
+    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+    className: "h-screen brightness-[0.7]",
+    style: {
+      backgroundPosition: "center -25vh"
+    },
+    needShadow: true,
     needBack: true
   },
   '/zk/dashboard': {

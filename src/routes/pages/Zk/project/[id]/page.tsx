@@ -5,6 +5,10 @@ import { cn } from "@nextui-org/react";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import Modal from "@/components/Modal";
 import useModalState from "@/hooks/useModalState";
+import { useRequest } from "ahooks";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useState } from "react";
 
 interface ITask {
     id: string;
@@ -17,53 +21,41 @@ interface ITask {
 }
 
 interface IProjectDetail {
+    
+    avatar: string;
+    id: number;
     name: string;
     proofCategory: string;
-    description: string;
     proofSize: string;
-    timebounds: string;
-    taskCount: string;
-    hardwareRequirements: string;
+    timeBounds: number;
+    taskCount: number;
+    hardwareRequirement: string;
+    description: string;
+    status: number;
 
-    tasks: ITask[];
 }
 
-const memberData: IProjectDetail = {
-    name: "Project 1",
-    proofCategory: "Proof Category",
-    description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras vitae erat id justo sodales volutpat. Ut ut rutrum nulla. In semper bibendum eros ultrices varius. Donec egestas luctus augue vel auctor. Sed ac eros ut dui mattis bibendum. Suspendisse faucibus ultricies ante, vitae vestibulum quam porta non. In vulputate, lacus in convallis suscipit, dolor mauris efficitur magna, ut molestie erat mi ut tortor. ",
-    proofSize: "Proof Size",
-    timebounds: "Time Bounds",
-    taskCount: "Task Count",
-    hardwareRequirements: "Hardware Requirements",
 
-    tasks: [
-        {
-            id: "1",
-            hash: "Hash",
-            bonus: "Bonus",
-            latency: 100,
-            proofType: "Proof Type",
-            status: 0,
-            detail: "Detail",
-        },
-        {
-            id: "2",
-            hash: "Hash",
-            bonus: "Bonus",
-            latency: 100,
-            proofType: "Proof Type",
-            status: 1,
-            detail: "Detail",
-        },
-    ],
-};
 
 const ProjectDetailPage = () => {
-    const detailData = memberData;
-    const tasks = memberData.tasks;
+    const { id } = useParams();
+    const [projectDetail, setProjectDetail] = useState<IProjectDetail>({} as IProjectDetail);
+    useRequest(() => {
+        // /zkTask/project/detail
+        return axios.get(`/api/v1/zkTask/project/detail`, {
+            params: {
+                id: id
+            }
+        });
+    }, {
+        onSuccess: (res) => {
+            console.log('res',res);
+            setProjectDetail(res.data as IProjectDetail);
+        }
+    });
 
+    
+    
     const projectColumns: CysicTableColumn<ITask>[] = [
         {
             key: "taskID",
@@ -148,14 +140,20 @@ const ProjectDetailPage = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        <div className="size-8 rounded-full bg-white" />
+                                        {projectDetail.avatar ? (
+                                            <img src={projectDetail.avatar} alt="avatar" className="size-8 rounded-full" />
+                                        ) : (
+                                            <div className="size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center">
+                                                <span className="text-white">{projectDetail?.name?.slice(0, 2)}</span>
+                                            </div>
+                                        )}
                                         <h2
                                             className={cn(
                                                 "title !font-light uppercase mt-2",
                                                 isMobile ? "!text-base" : "!text-xl"
                                             )}
                                         >
-                                            {detailData.name}
+                                            {projectDetail?.name}
                                         </h2>
                                     </div>
                                     <div className="flex items-center gap-2">
@@ -179,32 +177,32 @@ const ProjectDetailPage = () => {
                                     <div className="flex flex-col gap-1 flex-1">
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Proof Category</div>
-                                            <div>{detailData.proofCategory}</div>
+                                            <div>{projectDetail.proofCategory}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Proof Size</div>
-                                            <div>{detailData.proofSize}</div>
+                                            <div>{projectDetail.proofSize}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Time Bounds</div>
-                                            <div>{detailData.timebounds}</div>
+                                            <div>{projectDetail.timeBounds}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Task Count</div>
-                                            <div>{detailData.taskCount}</div>
+                                            <div>{projectDetail.taskCount}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Hardware Requirements</div>
-                                            <div>{detailData.hardwareRequirements}</div>
+                                            <div>{projectDetail.hardwareRequirement}</div>
                                         </div>
                                     </div>
                                     <div className="flex flex-col gap-1 text-sm flex-1">
                                         <div className="text-sub">Description</div>
-                                        <div>{detailData.description}</div>
+                                        <div>{projectDetail.description}</div>
                                     </div>
                                 </div>
                             </div>
@@ -222,9 +220,8 @@ const ProjectDetailPage = () => {
                                 My projects
                             </h2>
                             <CysicTable
-                                data={tasks}
+                                data={projectDetail?.tasks || []}
                                 columns={projectColumns}
-                            // keyExtractor={(member) => member.address}
                             />
                         </div>
                     </GradientBorderCard>

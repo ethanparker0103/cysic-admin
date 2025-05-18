@@ -7,39 +7,30 @@ import { cn } from "@nextui-org/react";
 import CysicTable from "@/components/Table";
 import { Link } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
+import usePagnation from "@/hooks/usePagnation";
+import axios from "axios";
+import { shortStr } from "@/utils/tools";
 
-
-interface IProject {
+export interface IProject {
+    id: number;
     name: string;
     domain: string;
     workerAddress: string;
-    id: string;
+    status: number;
+    avatar: string;
 }
 
 
-const memberData: IProject[] = [
-    {
-        name: "Project 1",
-        domain: "https://project1.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "1"
-    },
-    {
-        name: "Project 2",
-        domain: "https://project2.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "2"
-    },
-    {
-        name: "Project 3",
-        domain: "https://project3.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "3"
-    }
-]
 
 const ProjectPage = () => {
-    const { address } = useAccount()
+    const { address } = useAccount();
+
+    const { data } =
+        usePagnation(() => {
+            return axios.get(`/api/v1/zkTask/project/list`);
+        });
+
+    const memberData = data?.data?.list || [];
 
     const projectColumns: CysicTableColumn<IProject>[] = [
         {
@@ -48,40 +39,54 @@ const ProjectPage = () => {
             width: "33%",
             renderCell: (project) => (
                 <div className="flex items-center gap-2">
-                    <div className="size-6 bg-sub rounded-full"></div>
+                    {project.avatar ? (
+                        <img
+                            src={project.avatar}
+                            alt="avatar"
+                            className="size-6 rounded-full"
+                        />
+                    ) : (
+                        <div className="size-6 bg-gradient-to-b from-[#2744FF] to-[#589EFF] rounded-full flex items-center justify-center">
+                            {project.name.slice(0, 2)}
+                        </div>
+                    )}
+                    {/* <div className="size-6 bg-sub rounded-full"></div> */}
                     <span>{project.name}</span>
                 </div>
-            )
+            ),
         },
         {
             key: "domain",
             label: "Domain",
             width: "33%",
             renderCell: (project) => (
-                <div className="flex items-center">
+                <a href={project.domain} target="_blank" className="flex items-center">
                     <span>{project.domain}</span>
-                </div>
-            )
+                </a>
+            ),
         },
         {
             key: "workerAddress",
             label: <div className="text-right">Worker Address</div>,
             width: "33%",
             renderCell: (project) => (
-                <div className="text-right">{project.workerAddress}</div>
-            )
+                <div className="text-right">{shortStr(project.workerAddress, 14)}</div>
+            ),
         },
         {
             key: "action",
             label: "",
             width: "10%",
-            renderCell: () => (
-                <Link to="/zk/project/my" className="flex items-center gap-2 text-sm justify-end">
+            renderCell: (project) => (
+                <Link
+                    to={`/zk/project/${project.id}`}
+                    className="flex items-center gap-2 text-sm justify-end"
+                >
                     <span>VIEW</span>
                     <ArrowRight size={16} />
                 </Link>
-            )
-        }
+            ),
+        },
     ];
 
     return (
@@ -93,11 +98,16 @@ const ProjectPage = () => {
                         PROJECT
                     </span>
                     <div className="flex items-center gap-2">
-                        <span className="!text-base title">learn about Cysic ZK Project and how to fully utilize it</span>
+                        <span className="font-light unbounded">
+                            learn about Cysic ZK Project and how to fully utilize it
+                        </span>
                         <ArrowRight size={16} />
                     </div>
 
-                    <Button type="solid" className="uppercase !p-6 text-base flex gap-2 items-center ">
+                    <Button
+                        type="solid"
+                        className="uppercase !p-6 text-base flex gap-2 items-center "
+                    >
                         <span>apply</span>
                         <ArrowRight size={16} />
                     </Button>
@@ -107,53 +117,50 @@ const ProjectPage = () => {
             {/* 主要内容部分 */}
             <div className="mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
-               {
-                address ? ( <GradientBorderCard borderRadius={8} className="mb-4">
-                    <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
-                        <div className="flex items-center justify-between gap-2 mb-6 ">
-                            <h2
-                                className={cn(
-                                    "title !font-light uppercase mt-2",
-                                    isMobile ? "!text-base" : "!text-xl"
-                                )}
-                            >
-                                My projects
-                            </h2>
+                {address ? (
+                    <GradientBorderCard borderRadius={8} className="mb-4 px-6 py-4">
+                        <div className={cn("w-full ")}>
+                            <div className="flex items-center justify-between gap-2 mb-6 ">
+                                <h2
+                                    className={cn(
+                                        "title !font-light uppercase",
+                                        isMobile ? "!text-base" : "!text-xl"
+                                    )}
+                                >
+                                    My projects
+                                </h2>
 
-                            <Link to="/zk/project/my" className="flex items-center gap-2 text-sm">
-                                <span className="uppercase">see all</span>
-                                <ArrowRight size={16} />
-                            </Link>
+                                <Link
+                                    to="/zk/project/my"
+                                    className="flex items-center gap-2 text-sm"
+                                >
+                                    <span className="uppercase">see all</span>
+                                    <ArrowRight size={16} />
+                                </Link>
+                            </div>
+
+                            <p className="!font-light text-[32px] text-right title">{data?.data?.total || 0}</p>
                         </div>
+                    </GradientBorderCard>
+                ) : null}
 
-                        <p className="!font-light text-[32px] text-right title">
-                            12
-                        </p>
-                    </div>
-                </GradientBorderCard>) : null 
-               }
-
-
-                <GradientBorderCard borderRadius={8}>
-                    <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
+                <GradientBorderCard borderRadius={8} className="px-6 py-4">
+                    <div className={cn("w-full")}>
                         <h2
                             className={cn(
-                                "title !font-light uppercase mt-2",
+                                "title !font-light uppercase",
                                 isMobile ? "!text-base" : "!text-xl"
                             )}
                         >
-                            All projects
+                            My projects
                         </h2>
                         <CysicTable
                             data={memberData}
                             columns={projectColumns}
-                            keyExtractor={(member) => member.address}
+                            keyExtractor={(member) => member.id}
                         />
                     </div>
                 </GradientBorderCard>
-
-
-
             </div>
         </div>
     );

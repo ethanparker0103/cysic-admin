@@ -1,8 +1,8 @@
 import Button from "@/components/Button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, TriangleAlert } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { isMobile } from "react-device-detect";
-import { cn } from "@nextui-org/react";
+import { cn, Pagination } from "@nextui-org/react";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
@@ -10,64 +10,31 @@ import useModalState from "@/hooks/useModalState";
 import { getImageUrl } from "@/utils/tools";
 import { useState } from "react";
 import useCosmos from "@/models/_global/cosmos";
+import { commonPageSize } from "@/config";
+import axios from "axios";
+import usePagnation from "@/hooks/usePagnation";
+import { IProject } from "@/routes/pages/Zk/project/page";
 
-interface IProject {
-    name: string;
-    domain: string;
-    workerAddress: string;
-    id: string;
-    status: number; // 0: pending, 1: Ongoing, 2: Under Review, 3: Pause, 4: Ended
-}
-const memberData: IProject[] = [
-    {
-        name: "Project 1",
-        domain: "https://project1.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "1",
-        status: 0
-    },
-    {
-        name: "Project 2",
-        domain: "https://project2.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "2",
-        status: 1
-    },
-    {
-        name: "Project 3",
-        domain: "https://project3.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "3",
-        status: 2
-    },
-    {
-        name: "Project 4",
-        domain: "https://project4.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "4",
-        status: 3
-    },
-    {
-        name: "Project 5",
-        domain: "https://project5.com",
-        workerAddress: "0x1234567890abcdef",
-        id: "5",
-        status: 4
-    }
-]
+
+
+// pending - #EE6700
+// ongoing - #33CD0E
+// underreview - #316BD9
+// pause -#D0221C
+// ended - #FFFFFF33
 
 const switchStatusColor = (status: number) => {
     switch (status) {
         case 0:
-            return "bg-yellow-500";
+            return "bg-[#EE6700]";
         case 1:
-            return "bg-[#19FFE0]";
+            return "bg-[#33CD0E]";
         case 2:
-            return "bg-red-500";
+            return "bg-[#316BD9]";
         case 3:
-            return "bg-blue-500";
+            return "bg-[#D0221C]";
         case 4:
-            return "bg-gray-500";
+            return "bg-[#FFFFFF33]";
     }
 }
 
@@ -89,19 +56,25 @@ const switchStatusText = (status: number) => {
 const switchStatusTextColor = (status: number) => {
     switch (status) {
         case 0:
-            return "text-yellow-500";
+            return "text-[#EE6700]";
         case 1:
-            return "text-[#19FFE0]";
         case 2:
-            return "text-red-500";
         case 3:
-            return "text-blue-500";
         case 4:
-            return "text-gray-500";
+            return "text-[#75FF52CC]"
     }
 }
 
 const MyProjectPage = () => {
+
+    const { data, total, setCurrentPage, currentPage } =
+        usePagnation(() => {
+            return axios.get(`/api/v1/zkTask/project/list`);
+        });
+
+    const memberData = data?.data?.list || [];
+
+
     const projectColumns: CysicTableColumn<IProject>[] = [
         {
             key: "projectName",
@@ -109,7 +82,18 @@ const MyProjectPage = () => {
             width: "33%",
             renderCell: (project) => (
                 <div className="flex items-center gap-2">
-                    <div className="size-6 bg-sub rounded-full"></div>
+
+                    {project.avatar ? (
+                        <img
+                            src={project.avatar}
+                            alt="avatar"
+                            className="size-6 rounded-full"
+                        />
+                    ) : (
+                        <div className="size-6 bg-gradient-to-b from-[#2744FF] to-[#589EFF] rounded-full flex items-center justify-center">
+                            {project.name.slice(0, 2)}
+                        </div>
+                    )}
                     <span>{project.name}</span>
                 </div>
             )
@@ -141,7 +125,7 @@ const MyProjectPage = () => {
             label: "Detail",
             width: "33%",
             renderCell: (project) => (
-                <Link to={`/zk/project/my/${project.id}`} className="flex items-center gap-2">
+                <Link to={`/zk/project/${project.id}`} className="flex items-center gap-2">
                     <span className="uppercase text-sm">Detail</span>
                     <ArrowRight size={16} />
                 </Link>
@@ -160,8 +144,16 @@ const MyProjectPage = () => {
                         }
                     }))
                 }} className={cn("cursor-pointer flex items-center gap-2 justify-end", switchStatusTextColor(project.status))}>
+
+                    {
+                        project.status === 0 ? (
+                            <>
+                                <TriangleAlert size={16} className=""/>
+                            </>
+                        ) : null
+                    }
                     <span className="uppercase text-sm">Start</span>
-                    <ArrowRight size={16} />
+                    <ArrowRight size={16} className="text-white" />
                 </div>
             )
         },
@@ -203,8 +195,8 @@ const MyProjectPage = () => {
 
                 {/* 主要内容部分 */}
                 <div className="mx-auto mt-12 relative z-[2]">
-                    <GradientBorderCard borderRadius={8}>
-                        <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
+                    <GradientBorderCard borderRadius={8} className="px-6 py-4">
+                        <div className={cn("w-full")}>
                             <h2
                                 className={cn(
                                     "title !font-light uppercase mt-2",
@@ -218,6 +210,19 @@ const MyProjectPage = () => {
                                 columns={projectColumns}
                             // keyExtractor={(member) => member.address}
                             />
+
+                            {total >= commonPageSize && (
+                                <div className="flex justify-center mb-4">
+                                    <Pagination
+                                        total={Math.ceil(total / commonPageSize)}
+                                        initialPage={1}
+                                        page={currentPage}
+                                        onChange={setCurrentPage}
+                                        color="primary"
+                                        size="sm"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </GradientBorderCard>
                 </div>
