@@ -40,7 +40,7 @@ const Profile = () => {
                 </div>
                 <div
                     onClick={handleEditName}
-                    className="cursor-pointer flex self-center h-[calc(100%-2rem)] aspect-square">
+                    className="cursor-pointer flex self-center h-[calc(100%-2rem)] aspect-square max-h-[10rem]">
                     <img
                         src={avatarUrl}
                         alt="Profile"

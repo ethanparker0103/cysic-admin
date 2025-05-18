@@ -104,7 +104,7 @@ const UserPortal = () => {
                   rebate rate
                 </div>
                 <div className="flex items-center gap-2 self-end text-2xl unbounded">
-                  {currentRebateRate || "-"}
+                  {currentRebateRate || "0"}%
                 </div>
               </div>
             </GradientBorderCard>
