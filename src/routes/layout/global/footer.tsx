@@ -1,8 +1,9 @@
-import Button from "@/components/Button"
 import Media from "@/components/Media"
+import { explorerUrl, mediasLink, routesConfig } from "@/config"
 import { getImageUrl } from "@/utils/tools"
-import { cn } from "@nextui-org/react"
+import { Button, cn, Link as NextLink } from "@nextui-org/react"
 import { isMobile } from "react-device-detect"
+import { Link } from "react-router-dom"
 
 const navs = [
     {
@@ -10,36 +11,32 @@ const navs = [
         href: '/'
     },
     {
-        content: 'Product',
-        href: '/'
+        content: 'Cysic ZK',
+        href: '/zk'
     },
     {
-        content: 'Company',
-        href: '/'
-    },
-    {
-        content: 'Blog',
-        href: '/'
-    },
-    {
-        content: 'Join Testnet',
-        href: '/'
+        content: 'Hardware',
+        href: routesConfig.hardware
     },
     {
         content: 'Explorer',
-        href: '/'
+        href: explorerUrl
     },
     {
-        content: 'Media Kit',
-        href: '/'
+        content: 'Academy',
+        href: routesConfig.academy
     },
     {
-        content: 'Careers',
-        href: '/'
+        content: 'Docs',
+        href: mediasLink.doc
+    },
+    {
+        content: 'Blog',
+        href: mediasLink.medium
     },
     {
         content: 'Contact Us',
-        href: '/'
+        href: 'https://cysic.xyz/contact-us'
     }
 ]
 
@@ -49,8 +46,24 @@ export default function Footer() {
             <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[6rem]" />
             <div className={cn("flex items-center flex-wrap", isMobile ? "flex-col gap-4" : 'gap-6')}>
                 {
-                    navs.map((nav) => (
+                    navs.map((nav) => nav.href?.startsWith('http') ? (
                         <Button
+                            // @ts-ignore
+                            variant={'undefined'}
+                            as={NextLink}
+                            key={nav.content}
+                            href={nav.href}
+                            target="_blank"
+                            className="uppercase font-[400] text-sub hover:text-[#fff]"
+                        >
+                            {nav.content}
+                        </Button>
+                    ) : (
+                        <Button
+                            // @ts-ignore
+                            variant={'undefined'}
+                            as={Link}
+                            to={nav.href}
                             key={nav.content}
                             className="uppercase font-[400] text-sub hover:text-[#fff]"
                         >

@@ -115,11 +115,14 @@ export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryStri
 export const mediasLink = {
   gitbook: "https://gitbook.prover.xyz/cysic-network/cysic-network-whitepaper",
   whitePaper: "https://bit.ly/cysicnetworkwhitepaper",
-  discord: "https://bit.ly/CysicDC",
-  twitter: "https://bit.ly/Cysic_xyz",
-  medium: "https://bit.ly/CysicMedium",
+  discord: "https://t.co/V7D83oIVWE",
+  twitter: "https://x.com/cysic_xyz",
+  medium: "https://medium.com/@cysic",
   twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
   bridge: "https://testnet-bridge.prover.xyz/bridge",
+  telegram: "https://t.me/CysicHQ",
+  github: "https://github.com/cysic-labs",
+  doc: "https://hackmd.io/@Cysic"
 };
 
 export const downloadLink = {
