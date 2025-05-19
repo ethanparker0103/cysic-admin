@@ -698,13 +698,11 @@ const Home = () => {
               title="Cysic AI"
               desc="Low-cost AI infra for custom models"
               imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-              onClick={() => { }}
             />
             <AdCard
               title="Cysic digital mining"
               desc="Compute-backed digital assets"
               imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-              onClick={() => { }}
             />
           </div>
         </div>

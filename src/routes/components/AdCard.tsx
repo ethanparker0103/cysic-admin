@@ -13,7 +13,7 @@ const AdCard = ({
   title: string | React.ReactNode;
   desc?: string | React.ReactNode;
   imageSrc: string;
-  onClick: () => void;
+  onClick?: () => void;
   className?: string;
 }) => {
   return (
@@ -35,7 +35,7 @@ const AdCard = ({
           <h3 className="unbounded text-2xl font-light text-white">{title}</h3>
           {desc? <p className="teacher normal-case text-base text-white mt-2">{desc}</p> : null}
         </div>
-        <ArrowRight size={20} className="text-white self-end" />
+        {onClick ? <ArrowRight size={20} className="text-white self-end" /> : null}
       </GradientBorderCard>
     </div>
   );
