@@ -10,6 +10,7 @@ export interface IUserProfile {
   id: number;
   name: string;
   avatarUrl: string;
+  hasMatchedWithCosmos: boolean;
 }
 
 export interface IBalance {

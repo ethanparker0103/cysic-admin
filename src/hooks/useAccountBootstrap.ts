@@ -11,12 +11,14 @@ import { useLocation } from 'react-router-dom';
 import { usePrivy } from '@privy-io/react-auth';
 import { handleSignIn, sleep } from '@/utils/tools';
 import axios from 'axios';
+import useCheckMatchedCosmosAddressWithEVM from './useCheckMatchedCosmosAddressWithEVM';
 
 /**
  * 账户状态初始化Hook
  * 只处理基础的钱包连接、切换和签名
  */
 const useAccountBootstrap = () => {
+  useCheckMatchedCosmosAddressWithEVM()
   const { socialAccount, address, isBinded, addressMap } = useAccount()
   const { user } = usePrivy()
   const isEmbed = user?.wallet?.connectorType == "embedded"

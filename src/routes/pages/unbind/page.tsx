@@ -1,4 +1,4 @@
-import Button from "@/components/button";
+import Button from "@/components/Button";
 import { usePrivy } from "@privy-io/react-auth";
 
 const UnbindPage = () => {
@@ -23,7 +23,7 @@ const UnbindPage = () => {
                 await unlinkGoogle(user?.google?.subject)
             }
         }}>Unbind Google</Button>
-
+ 
   </div>;
 };
 
