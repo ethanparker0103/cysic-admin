@@ -29,8 +29,6 @@ const PrivyAccountMismatchModal = () => {
   const accountMismatch =
     hasTryToConnectedOnce && !!user?.wallet?.address && user?.wallet?.address != walletAddress;
 
-    console.log(user?.wallet?.address, user)
-
   const accountDisconnectedOrMatched =
     !user?.wallet?.address ||
     (user?.wallet?.address && user?.wallet?.address == walletAddress);
