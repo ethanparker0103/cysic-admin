@@ -448,12 +448,12 @@ const VerifierPage = () => {
                     <GradientBorderCard borderRadius={8} className="mb-4 relative px-6 py-4">
                         <SelfProverStepCard
                             step={1}
-                            linkContent="Click here to know how to earn CGT"
-                            title="RESERVE 100 CGT"
+                            linkContent="Click here to know how to earn CYS"
+                            title="RESERVE 100 CYS"
                             description={
                                 <>
                                     To become a Verifier on Cysic ZK, you need to reserve at least
-                                    100 CGT as collateral. <br /> Cysic will oversee Verifier
+                                    100 CYS as collateral. <br /> Cysic will oversee Verifier
                                     actions, retaining this collateral if any irregular behavior
                                     occurs to protect Cysic ZK's operation.
                                 </>

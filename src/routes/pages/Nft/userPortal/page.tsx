@@ -157,7 +157,6 @@ const UserPortal = () => {
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-                onClick={() => null}
               />
             </div>
 
@@ -172,7 +171,6 @@ const UserPortal = () => {
                   </>
                 }
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
-                onClick={() => null}
               />
             </div>
           </div>

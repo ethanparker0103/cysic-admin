@@ -17,13 +17,13 @@
     "@rollup/rollup-linux-x64-gnu": "4.6.1"
   },
   "dependencies": {
-    "cosmjs-types": "0.9.0",
     "@arco-design/web-react": "^2.62.0",
     "@cosmjs/crypto": "0.32.4",
     "@cosmjs/proto-signing": "0.32.4",
     "@cosmjs/stargate": "0.32.4",
     "@cosmjs/tendermint-rpc": "0.32.4",
     "@eth-optimism/sdk": "^3.2.0",
+    "@fullpage/react-fullpage": "^0.1.48",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/tabs": "^2.0.37",
     "@privy-io/react-auth": "^2.9.1",
@@ -43,6 +43,7 @@
     "buffer": "^6.0.3",
     "canvas-confetti": "^1.9.3",
     "copy-to-clipboard": "^3.3.3",
+    "cosmjs-types": "0.9.0",
     "dayjs": "^1.11.10",
     "ethers": "v5",
     "framer-motion": "^11.2.10",

@@ -170,6 +170,14 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.27.1"
 
+"@babel/polyfill@^7.2.5":
+  version "7.12.1"
+  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.12.1.tgz#1f2d6371d1261bbd961f3c5d5909150e12d0bd96"
+  integrity sha512-X0pi0V6gxLi6lFZpGmeNa4zxtwEmCs42isWLNjZZDE0Y8yVfgu0T2OAHlzBbdYlqbW/YXVvoBHpATEM+goCj8g==
+  dependencies:
+    core-js "^2.6.5"
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.0.0", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.13.10", "@babel/runtime@^7.20.13", "@babel/runtime@^7.21.0", "@babel/runtime@^7.23.2", "@babel/runtime@^7.23.9", "@babel/runtime@^7.26.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.1.tgz#9fce313d12c9a77507f264de74626e87fd0dc541"
@@ -233,7 +241,7 @@
     "@cosmjs/math" "^0.32.4"
     "@cosmjs/utils" "^0.32.4"
 
-"@cosmjs/crypto@^0.32.4":
+"@cosmjs/crypto@0.32.4", "@cosmjs/crypto@^0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/crypto/-/crypto-0.32.4.tgz#5d29633b661eaf092ddb3e7ea6299cfd6f4507a2"
   integrity sha512-zicjGU051LF1V9v7bp8p7ovq+VyC91xlaHdsFOTo2oVry3KQikp8L/81RkXmUIT8FxMwdx1T7DmFwVQikcSDIw==
@@ -270,7 +278,7 @@
   dependencies:
     bn.js "^5.2.0"
 
-"@cosmjs/proto-signing@^0.32.4":
+"@cosmjs/proto-signing@0.32.4", "@cosmjs/proto-signing@^0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/proto-signing/-/proto-signing-0.32.4.tgz#5a06e087c6d677439c8c9b25b5223d5e72c4cd93"
   integrity sha512-QdyQDbezvdRI4xxSlyM1rSVBO2st5sqtbEIl3IX03uJ7YiZIQHyv6vaHVf1V4mapusCqguiHJzm4N4gsFdLBbQ==
@@ -292,7 +300,7 @@
     ws "^7"
     xstream "^11.14.0"
 
-"@cosmjs/stargate@^0.32.4":
+"@cosmjs/stargate@0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/stargate/-/stargate-0.32.4.tgz#bd0e4d3bf613b629addbf5f875d3d3b50f640af1"
   integrity sha512-usj08LxBSsPRq9sbpCeVdyLx2guEcOHfJS9mHGCLCXpdAPEIEQEtWLDpEUc0LEhWOx6+k/ChXTc5NpFkdrtGUQ==
@@ -315,7 +323,7 @@
   dependencies:
     xstream "^11.14.0"
 
-"@cosmjs/tendermint-rpc@^0.32.4":
+"@cosmjs/tendermint-rpc@0.32.4", "@cosmjs/tendermint-rpc@^0.32.4":
   version "0.32.4"
   resolved "https://registry.yarnpkg.com/@cosmjs/tendermint-rpc/-/tendermint-rpc-0.32.4.tgz#b36f9ec657498e42c97e21bb7368798ef6279752"
   integrity sha512-MWvUUno+4bCb/LmlMIErLypXxy7ckUuzEmpufYYYd9wgbdCXaTaO08SZzyFM5PI8UJ/0S2AmUrgWhldlbxO8mw==
@@ -1099,6 +1107,14 @@
     "@formatjs/intl-listformat" "7.7.5"
     intl-messageformat "10.7.7"
     tslib "2"
+
+"@fullpage/react-fullpage@^0.1.48":
+  version "0.1.48"
+  resolved "https://registry.yarnpkg.com/@fullpage/react-fullpage/-/react-fullpage-0.1.48.tgz#99370645f61cbe7e8a7a436379dddf111eee0a73"
+  integrity sha512-QeIfQJyMW/35Ckj7FksOJHxypvarzTgrdM8UAas5kTf6W+8WEybt0CYPfsy1jEStl8SoRPrmYjGWwxBeja7pxA==
+  dependencies:
+    "@babel/polyfill" "^7.2.5"
+    fullpage.js "^4.0.33"
 
 "@gilbarbara/deep-equal@^0.1.1":
   version "0.1.2"
@@ -7255,12 +7271,17 @@ copy-to-clipboard@^3.3.3:
   dependencies:
     toggle-selection "^1.0.6"
 
+core-js@^2.6.5:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.12.tgz#d9333dfa7b065e347cc5682219d6f690859cc2ec"
+  integrity sha512-Kb2wC0fvsWfQrgk8HU5lW6U/Lcs8+9aaYcy4ZFc6DDlo4nZ7n70dEgE5rtR0oG6ufKDUnrwfWL1mXR5ljDatrQ==
+
 core-util-is@~1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cosmjs-types@^0.9.0:
+cosmjs-types@0.9.0, cosmjs-types@^0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/cosmjs-types/-/cosmjs-types-0.9.0.tgz#c3bc482d28c7dfa25d1445093fdb2d9da1f6cfcc"
   integrity sha512-MN/yUe6mkJwHnCFfsNPeCfXVhyxHYW6c/xDUzrSbBycYzw++XvWDMJArXp2pLdgD6FQ8DW79vkPjeNKVrXaHeQ==
@@ -8280,6 +8301,11 @@ fsevents@~2.3.2, fsevents@~2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
+
+fullpage.js@^4.0.33:
+  version "4.0.35"
+  resolved "https://registry.yarnpkg.com/fullpage.js/-/fullpage.js-4.0.35.tgz#00c6e2a9050451c36edc1c74a94a610aa0fcb451"
+  integrity sha512-kER2zF32Ah402tgLVNa9Er+3l615a5jV6sZK2D7R8g1rivsiUejKZsIpyTdBi7h3YAx/FX1oFDUKGlM9sqrCbw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -10378,6 +10404,11 @@ refractor@^3.6.0:
     hastscript "^6.0.0"
     parse-entities "^2.0.0"
     prismjs "~1.27.0"
+
+regenerator-runtime@^0.13.4:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
+  integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
 require-directory@^2.1.1:
   version "2.1.1"

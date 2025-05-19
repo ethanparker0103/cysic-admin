@@ -48,7 +48,7 @@ const SelfProverStepCard = ({ showLink, step, title, description, buttonText, ch
 
                 {
                     showLink ? (<div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
-                        <span>Click here to know how to earn CGT</span>
+                        <span>Click here to know how to earn CYS</span>
                         <ArrowRight width={16} height={16} />
                     </div>) : null
                 }
@@ -163,9 +163,9 @@ const ProverPage = () => {
                                 <SelfProverStepCard
                                     showLink
                                     step={1}
-                                    title="RESERVE 100 CGT"
+                                    title="RESERVE 100 CYS"
                                     description={<>
-                                    To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br/>
+                                    To become a self Prover on Cysic ZK, you need to reserve at least 100 CYS as collateral. <br/>
                                     Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
                                     </>}
                                     buttonText="RESERVE"
@@ -178,7 +178,7 @@ const ProverPage = () => {
                                     title="PROVIDE YOUR OWN COMPUTATIONAL POWER"
                                     description={
                                         <>
-                                            To become a self Prover on Cysic ZK, you need to reserve at least 100 CGT as collateral. <br />
+                                            To become a self Prover on Cysic ZK, you need to reserve at least 100 CYS as collateral. <br />
                                             Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation.
                                         </>
                                     }

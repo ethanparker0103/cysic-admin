@@ -15,6 +15,8 @@ import { ReactNode, useRef } from "react";
 import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
 
+
+
 const asSeenOnList = [
   {
     name: "TechCrunch",

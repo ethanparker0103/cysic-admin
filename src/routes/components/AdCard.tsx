@@ -28,9 +28,8 @@ const AdCard = ({
         )}
       />
 
-      <div className="absolute inset-0 bg-black/30 z-10" />
-
-      <GradientBorderCard borderRadius={8} className="relative z-20 p-4 flex flex-col justify-between backdrop-filter-none h-full">
+      {!onClick ? <div className="absolute inset-0 bg-black/30 z-10" /> : null}
+      <GradientBorderCard borderRadius={8} className="relative z-20 p-4 flex flex-col justify-between backdrop-filter-none h-full bg-[transparent]">
         <div>
           <h3 className="unbounded text-2xl font-light text-white">{title}</h3>
           {desc? <p className="teacher normal-case text-base text-white mt-2">{desc}</p> : null}

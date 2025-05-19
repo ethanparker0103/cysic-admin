@@ -211,7 +211,7 @@ const ReserveModal = () => {
                             type="text"
                             value={amount}
                             onChange={handleAmountChange}
-                            placeholder="1,234"
+                            placeholder="100"
                             className="bg-transparent border-none outline-none w-full max-w-[200px] text-white"
                         />
                     </div>
