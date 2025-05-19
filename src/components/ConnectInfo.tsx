@@ -16,6 +16,7 @@ import { useWriteContract } from "@/hooks/useWriteContract";
 import { routesConfig } from "@/config";
 import { ArrowRight } from "lucide-react";
 import HoverDropdown from "@/components/HoverDropdown";
+import { useState } from "react";
 
 const ConnectInfo = () => {
   // 使用新的useAccount获取状态
@@ -26,13 +27,29 @@ const ConnectInfo = () => {
   const { disconnectAsync } = useDisconnect();
   const { reset } = useUser();
 
-  // 状态：已注册但未完成资料填写
-
+  const [loading, setLoading] = useState(false);
   // 处理断开连接
   const handleEVMDisconnect = async () => {
-    await logout();
-    await disconnectAsync();
-    reset();
+    try {
+      setLoading(true);
+      await logout();
+      await disconnectAsync();
+
+
+      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
+        window.localStorage.setItem('wagmi.com.okex.wallet.disconnected', 'true');
+      }
+      window.localStorage.removeItem('wagmi.recentConnectorId');
+      reset();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+
+
+
+
   };
 
   // 处理测试代币领取
@@ -98,11 +115,8 @@ const ConnectInfo = () => {
             key="evm-disconnect"
             className="!p-0"
           >
-            <div className="py-4 px-6 flex items-center gap-2 justify-between w-full">
-              <div
-                className="flex items-center gap-2 w-full"
-                onClick={handleEVMDisconnect}
-              >
+            <div className="py-4 px-6 flex items-center gap-2 justify-between w-full" onClick={handleEVMDisconnect}>
+              <div className="flex items-center gap-2 w-full">
                 <img
                   src={
                     connector?.icon ||
@@ -115,7 +129,7 @@ const ConnectInfo = () => {
                 </span>
               </div>
 
-              <Button needLoading type="text" className="uppercase !px-0">
+              <Button loading={loading} needLoading type="text" className="uppercase !px-0">
                 disconnect
               </Button>
             </div>
