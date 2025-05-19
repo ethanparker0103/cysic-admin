@@ -13,9 +13,11 @@ import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import useStatic from "@/models/_global";
+import { TableAvatar, TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 // 团队成员类型
 interface TeamMember {
+    avatar: string;
     address: string;
     status: number;
     joinAt: string;
@@ -27,6 +29,7 @@ interface TeamMember {
 
 // 团队领导类型
 interface TeamLeader {
+    avatar: string;
     address: string;
     status: number;
     joinAt: string;
@@ -91,18 +94,15 @@ const InvitePage = () => {
         {
             key: "address",
             label: "Address",
-            width: "33%",
+            width: "25%",
             renderCell: (leader) => (
-                <div className="flex items-center">
-                    <div className="h-5 w-5 rounded-full bg-white mr-2 flex-shrink-0"></div>
-                    <span>{shortStr(leader.address, 12)}</span>
-                </div>
+                <TableAvatar avatar={leader.avatar} name={leader.address} />
             )
         },
         {
             key: "status",
             label: "Status",
-            width: "33%",
+            width: "35%",
             renderCell: (leader) => (
                 <div className="flex items-center">
                     <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
@@ -113,7 +113,7 @@ const InvitePage = () => {
         {
             key: "time",
             label: "Time",
-            width: "33%",
+            width: "40%",
             renderCell: (leader) => (
                 <div className="">{leader.joinAt}</div>
             )
@@ -127,10 +127,7 @@ const InvitePage = () => {
             label: "Address",
             width: "25%",
             renderCell: (member) => (
-                <div className="flex items-center">
-                    <div className="h-5 w-5 rounded-full bg-white mr-2 flex-shrink-0"></div>
-                    <span>{shortStr(member.address, 12)}</span>
-                </div>
+                <TableAvatar avatar={member.avatar} name={member.address} />
             )
         },
         {
@@ -146,15 +143,12 @@ const InvitePage = () => {
         },
         {
             key: "referral",
-            label: "Referral",
+            label: "Referral Rewards",
             width: "35%",
             renderCell: (member) => (
-                <div className="text-left">
+                <div className="text-left flex gap-2">
                     {member?.referralRewardList?.map((reward: { amount: string, symbol: string }, index: number) => (
-                        <span key={index} className="text-sm">
-                            {index > 0 && " | "}
-                            {reward.amount} {reward.symbol}
-                        </span>
+                        <TaskReward key={index} rewardCYS={reward.symbol === "CYS" ? reward.amount : undefined} rewardCGT={reward.symbol === "CGT" ? reward.amount : undefined} />
                     ))}
                 </div>
             )
@@ -164,7 +158,7 @@ const InvitePage = () => {
             label: "Time",
             width: "25%",
             renderCell: (member) => (
-                <div className="text-left">{member.joinAt}</div>
+                <div className="text-right">{member.joinAt}</div>
             )
         }
     ];
