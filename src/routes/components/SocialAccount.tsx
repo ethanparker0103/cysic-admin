@@ -20,11 +20,13 @@ const SocialAccountItem = ({
   action,
 }: SocialAccountItemProps) => (
   <div className="flex justify-between items-center w-full">
-    <div className="flex items-center gap-2 flex-1 justify-between">
+    <div className="flex items-center gap-2 justify-between">
       {icon}
-      {account ? <span className="text-white">{account}</span> : null}
     </div>
-    {action}
+    {account ? <span className="text-white text-right flex-1">{account}</span> : null}
+    {action ? <div className="flex-1 text-right flex justify-end">
+      {action}
+    </div> : null}
   </div>
 );
 
@@ -32,18 +34,48 @@ const showAllMedia = true;
 
 
 const SocialAccount = () => {
-  const { socialAccount } = useAccount();
-  const { linkDiscord, linkGoogle, linkTwitter } = usePrivy();
+  const { socialAccount, walletAddress } = useAccount();
+  // const { linkDiscord, linkGoogle, linkTwitter } = usePrivy();
+
+
+  const linkDiscord = async () => {
+    const res = await axios.post('/api/v1/social/bind/discord', {
+      ref: window.location.href
+    })
+    return res.data.authURL
+  }
+
+  const linkGoogle = async () => {
+    const res = await axios.post('/api/v1/social/bind/google', {
+      ref: window.location.href
+    })
+    return res.data.authURL
+  }
+
+  const linkTwitter = async () => {
+    const res = await axios.post('/api/v1/social/bind/twitter', {
+      ref: window.location.href
+    })
+    return res.data.authURL
+  }
+
 
   const handleLoginOrLink = async (type: string) => {
     try {
+
+      let bindLink = '';
       if (type === 'google') {
-        await linkGoogle()
+        bindLink = await linkGoogle()
       } else if (type === 'twitter') {
-        await linkTwitter()
+        bindLink = await linkTwitter()
       } else if (type === 'discord') {
-        await linkDiscord()
+        bindLink = await linkDiscord()
       }
+
+      if (bindLink) {
+        window.open(bindLink, '_self')
+      }
+
     } catch (error: any) {
       console.error(error)
       if (error.message.includes('User must be authenticated before linking an account')) {
@@ -72,8 +104,9 @@ const SocialAccount = () => {
               }
               account={socialAccount?.google?.name}
               action={
-                !socialAccount?.google?.name && (
+                !socialAccount?.google?.name ? (
                   <Button
+                    disabled={!walletAddress}
                     needLoading
                     type="text"
                     className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
@@ -82,7 +115,7 @@ const SocialAccount = () => {
                     BIND GMAIL
                     <ArrowRight size={12} className="text-sub ml-2" />
                   </Button>
-                )
+                ) : null
               }
             />
 
@@ -97,8 +130,9 @@ const SocialAccount = () => {
                 socialAccount?.x?.name ? `@${socialAccount.x.name}` : ""
               }
               action={
-                !socialAccount?.x?.name && (
+                !socialAccount?.x?.name ? (
                   <Button
+                    disabled={!walletAddress}
                     needLoading
                     type="text"
                     className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
@@ -107,7 +141,7 @@ const SocialAccount = () => {
                     BIND X
                     <ArrowRight size={12} className="text-sub ml-2" />
                   </Button>
-                )
+                ) : null
               }
             />
 
@@ -120,8 +154,9 @@ const SocialAccount = () => {
               }
               account={socialAccount?.discord?.name}
               action={
-                !socialAccount?.discord?.name && (
+                !socialAccount?.discord?.name ? (
                   <Button
+                    disabled={!walletAddress}
                     needLoading
                     type="text"
                     className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
@@ -130,7 +165,7 @@ const SocialAccount = () => {
                     BIND DISCORD
                     <ArrowRight size={12} className="text-sub ml-2" />
                   </Button>
-                )
+                ) : null
               }
             />
           </div>
