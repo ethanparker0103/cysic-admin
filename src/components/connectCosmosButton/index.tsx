@@ -1,5 +1,5 @@
 import Spinner from "../spinner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import { connectWallet } from "@/utils/cosmos";
 import useCosmos from "@/models/_global/cosmos";
@@ -10,9 +10,12 @@ import useAccount from "@/hooks/useAccount";
 export default function ConnectCosmosButton({ className, content }: any) {
   const { isConnected, isConnecting, init } = useCosmos();
   const { cosmosAddress } = useAccount();
+  const [loading, setLoading] = useState(false);
 
   const handleDisconnect = () => {
+    setLoading(true);
     init();
+    setLoading(false);
   };
 
   const handleConnect = async () => {
@@ -41,6 +44,8 @@ export default function ConnectCosmosButton({ className, content }: any) {
         </div>
       ) : (
         <Button
+          loading={loading}
+          needLoading
           className="!bg-[transparent] flex items-center justify-end gap-2 !px-0"
         >
           {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
