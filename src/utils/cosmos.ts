@@ -31,7 +31,14 @@ declare global {
 }
 
 let provider = !window?.keplr?.isOkxWallet && window?.keplr;
-export const updateProvider = () => (provider = window?.keplr);
+export const updateProvider = () => {
+    
+    if(!window?.keplr?.isOkxWallet && window?.keplr){
+        provider = window?.keplr;
+    }
+
+    return provider;
+};
 
 const set = useCosmos.getState().setState;
 // const rpc = 'http://dev-node-1.prover.xyz'
@@ -49,6 +56,8 @@ async function connectWallet(props?: {mode?: 'soft' | 'hard'}) {
     const {mode = 'hard'} = props || {}
     const chainId = cosmosConfig[chain]?.chainId;
     const rpc = cosmosConfig[chain]?.rpc;
+
+    const provider = updateProvider()
 
     // 检查是否安装了 Keplr
     if (!provider) {
