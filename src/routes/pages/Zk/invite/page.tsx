@@ -319,10 +319,10 @@ const InvitePage = () => {
                                                     content={<>
                                                         <GradientBorderCard className="p-4 flex flex-col gap-1 w-[12.5rem]">
                                                             <>
-                                                                <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                {/* <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                                                     <div className="!text-sub w-20">Reward</div>
                                                                     <div>+{tier.reward.amount} {tier.reward.symbol}</div>
-                                                                </div>
+                                                                </div> */}
                                                                 <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                                                     <div className="!text-sub w-20">Rebate Rate</div>
                                                                     <div>+{tier.rebateRate} %</div>
