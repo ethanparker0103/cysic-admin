@@ -23,7 +23,7 @@ import CheckKeplrModal from "@/routes/components/modal/checkKeplrModal";
 import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import FaucetModal from "@/routes/components/modal/faucetModal";
 import useBootstrap from "@/hooks/useBootstrap";
-
+import PrivyAccountMismatchModal from "@/routes/components/modal/privyAccountMismatchModal";
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
     useCosmosUpdate()
@@ -37,7 +37,7 @@ export default function App({ children }: { children: React.ReactNode }) {
             <NextUIProvider>
                 <>
                     <FaucetModal />
-
+                    <PrivyAccountMismatchModal />
                     <VoucherModal />
                     <MultiplierModal />
                     <SignInModal />
