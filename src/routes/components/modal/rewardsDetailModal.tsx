@@ -85,7 +85,7 @@ const RewardsDetailModal = () => {
 
     // 处理领取奖励
     const handleClaim = async () => {
-        await axios.post(`/api/v1/zkTask/reward/phase2/claim`)
+        await axios.get(`/api/v1/zkTask/reward/phase2/claim`)
         run()
     };
 
