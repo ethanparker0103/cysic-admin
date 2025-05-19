@@ -48,6 +48,7 @@
     "ethers": "v5",
     "framer-motion": "^11.2.10",
     "google-protobuf": "^3.21.4",
+    "gsap": "^3.13.0",
     "highlight.js": "^11.10.0",
     "highlightjs-copy": "^1.0.6",
     "i18next": "^23.11.5",

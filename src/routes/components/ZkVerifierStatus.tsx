@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { downloadLink, verifierStatus } from "@/config";
 import useAccount from "@/hooks/useAccount";
+import useStatic, { IProofType } from "@/models/_global";
 import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 import { cn } from "@nextui-org/react";
 import { useRequest } from "ahooks";
@@ -20,6 +21,7 @@ import { isMobile } from "react-device-detect";
 // /zkTask/prover/status
 
 export const useVerifierStatus = () => {
+    const { proofTypeList } = useStatic()
     const { zkPart } = useAccount();
     const { data } = useRequest(() => {
         return axios.get('/api/v1/zkTask/prover/status')
@@ -33,22 +35,24 @@ export const useVerifierStatus = () => {
 
     // 返回组件函数而不是组件实例
     const ProverCardListComponent = () => (
-        <div className={cn("flex gap-4", isMobile ? "flex-col" : "")}>
-            <ProverCard
-                icon={<span>ZS</span>}
-                name="zkSync Prover"
-                description="For Scroll Prover, please first click here to register on the Cysic Network as a Prover. Then, please click here and follow these steps to complete the Prover test. *Scroll Provers need to fully complete these two steps to unlock subsequent rewards."
-                isActive={!!proverStatusData.zkSync}
-                btnText="Become a zkSync Prover"
-            />
-            <ProverCard
-                icon={<span>EP</span>}
-                name="ETHProve Prover"
-                description="Run an ETHProve on your GPU-compatible machine to process proofs for Aleo applications."
-                isActive={!!proverStatusData.ethProve}
-                btnText="Become a ETHProve Prover"
-            />
-        </div>
+
+        <GradientBorderCard borderRadius={8}>
+            <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
+                <div className="flex flex-col gap-4 w-full">
+                    <h3 className="!text-base !font-light title uppercase">ZK PROVER STATUS</h3>
+
+                    {
+                        proofTypeList.map((item: IProofType, index: number) => (
+                            <div className="flex items-center gap-2" key={index}>
+                                <div className={`w-3 h-3 rounded-full ${proverStatusData[item.name as keyof typeof proverStatusData] ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
+                                <span className="!font-light !text-sm title uppercase">{item.name} PROVER {proverStatusData[item.name as keyof typeof proverStatusData] ? 'ACTIVE' : 'INACTIVE'}</span>
+                            </div>
+                        ))
+                    }
+
+                </div>
+            </div>
+        </GradientBorderCard>
     );
 
     const VerifierCardListComponent = () => (

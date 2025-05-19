@@ -376,7 +376,7 @@ const SelfProverStepCard = ({
 };
 
 const VerifierPage = () => {
-    const { VerifierCardListComponent } = useVerifierStatus()
+    const { VerifierCardListComponent, ProverCardListComponent } = useVerifierStatus()
 
     return (
         <div className="min-h-screen w-full pb-12 overflow-hidden">
@@ -429,7 +429,7 @@ const VerifierPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <VerifierCardListComponent />
+                    <ProverCardListComponent />
 
                     {/* MULTIPLIER */}
                     <Multiplier actionPlacement="top" />

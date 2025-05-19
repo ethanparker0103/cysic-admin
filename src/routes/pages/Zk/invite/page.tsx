@@ -105,7 +105,7 @@ const InvitePage = () => {
             width: "33%",
             renderCell: (leader) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-[#19FFE0]" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <div className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
                     <span>{leader.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )
@@ -139,7 +139,7 @@ const InvitePage = () => {
             width: "15%",
             renderCell: (member) => (
                 <div className="flex items-center">
-                    <div className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-[#19FFE0]" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
+                    <div className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-green-500" : "bg-red-500"} mr-2 flex-shrink-0`}></div>
                     <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             )
@@ -186,6 +186,7 @@ const InvitePage = () => {
     const getCurrentLevelId = () => {
         return overviewData?.data?.currentLevelID || 1;
     };
+
 
     return (
         <>
@@ -298,7 +299,7 @@ const InvitePage = () => {
                         {/* 邀请等级 */}
                         <div className={cn("grid grid-cols-5 overflow-x-scroll", isMobile ? "gap-[9rem]" : "gap-[10.25rem]")}>
                             {tiers.sort((a, b) => a.level - b.level).map((tier, index) => (
-                                <div key={tier.id} className="relative h-full min-w-[7rem]">
+                                <div key={tier.id} className="relative h-full min-w-[10rem]">
                                     <GradientBorderCard
                                         borderRadius={8}
                                         borderWidth={1}
@@ -312,15 +313,19 @@ const InvitePage = () => {
                                                         content: '!p-0',
                                                     }}
                                                     content={<>
-                                                        <GradientBorderCard className="p-4 flex flex-col gap-1">
+                                                        <GradientBorderCard className="p-4 flex flex-col gap-1 w-[12.5rem]">
                                                             <>
-                                                                <div className="w-full flex items-center justify-between text-sm">
+                                                                <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                                                     <div className="!text-sub w-20">Reward</div>
                                                                     <div>+{tier.reward.amount} {tier.reward.symbol}</div>
                                                                 </div>
-                                                                <div className="w-full flex items-center justify-between text-sm">
-                                                                    <div className="!text-sub w-20">Pool Fee</div>
-                                                                    <div>{tier.poolFee}</div>
+                                                                <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                    <div className="!text-sub w-20">Rebate Rate</div>
+                                                                    <div>+{tier.rebateRate} %</div>
+                                                                </div>
+                                                                <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                    <div className="!text-sub w-20">Multiplier</div>
+                                                                    <div>+{tier.multiplier} 🔥FIRE</div>
                                                                 </div>
                                                             </>
                                                         </GradientBorderCard>
@@ -351,10 +356,14 @@ const InvitePage = () => {
 
                                     {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
                                     {index < tiers.length - 1 && (
-                                        <div className={
+                                        <div
+                                            style={{
+                                                width: isMobile ? "1.2rem" : `calc(100% / ${tiers.length})`
+                                            }}
+                                        className={
                                             cn("absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
-
-                                                isMobile ? "w-[1.2rem] translate-x-[calc(calc(2rem-1.2rem)/2)] " : "w-[6.75rem] translate-x-[calc(calc(10.25rem-6.75rem)/2)]"
+                                                // (100% - 10rem*tiers.length )/tiers.length
+                                                isMobile ? " translate-x-[calc(calc(2rem-1.2rem)/2)] " : `translate-x-1/2`
 
                                             )
                                         } />

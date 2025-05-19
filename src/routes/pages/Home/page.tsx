@@ -14,6 +14,7 @@ import { ArrowRight } from "lucide-react";
 import { ReactNode, useRef } from "react";
 import { isMobile } from "react-device-detect";
 import { Link, useNavigate } from "react-router-dom";
+import HorizontalScroll from "./HorizontalScroll";
 
 
 
@@ -710,7 +711,7 @@ const Home = () => {
         </div>
       </div>
 
-      <>
+      <HorizontalScroll>
         {navScreenList.map((i) => {
           return (
             <ScreenNavCard
@@ -722,7 +723,7 @@ const Home = () => {
             />
           );
         })}
-      </>
+      </HorizontalScroll>
 
       <div className="w-full">
         <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
