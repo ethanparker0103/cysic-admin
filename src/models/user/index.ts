@@ -62,7 +62,7 @@ export interface IRawUserInfo {
   "currentRebateRate": number,
   "balance": IBalance,
   "voucherCnt": number,
-  voucherValidCnt: number,
+  // voucherValidCnt: number,
   "rewardList": IRewardList[],
   "socialAccount": ISocialAccount,
   "nftCnt": number,

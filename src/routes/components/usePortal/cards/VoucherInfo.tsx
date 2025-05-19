@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const VoucherInfo = () => {
     const { 
-        voucherValidCnt = 0 
+        voucherCnt = 0 
     } = useAccount();
 
     return (
@@ -52,7 +52,7 @@ const VoucherInfo = () => {
                         )}
                     >
                         <div className="unbounded text-2xl font-light">
-                            {voucherValidCnt}
+                            {voucherCnt}
                         </div>
                     </div>
                 </div>
