@@ -297,7 +297,11 @@ const InvitePage = () => {
                         </div>
 
                         {/* 邀请等级 */}
-                        <div className={cn("grid grid-cols-5 overflow-x-scroll", isMobile ? "gap-[9rem]" : "gap-[10.25rem]")}>
+                        <div 
+                        style={{
+                            gap: isMobile?'9rem':`calc(calc(100% - 10rem * ${tiers.length}) / ${tiers.length})`
+                        }}
+                        className={cn("grid grid-cols-5 overflow-x-scroll")}>
                             {tiers.sort((a, b) => a.level - b.level).map((tier, index) => (
                                 <div key={tier.id} className="relative h-full min-w-[10rem]">
                                     <GradientBorderCard
@@ -358,7 +362,7 @@ const InvitePage = () => {
                                     {index < tiers.length - 1 && (
                                         <div
                                             style={{
-                                                width: isMobile ? "1.2rem" : `calc(100% / ${tiers.length})`
+                                                width: isMobile ? "1.2rem" : `calc(calc(100% / ${tiers.length - 1})`
                                             }}
                                         className={
                                             cn("absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
