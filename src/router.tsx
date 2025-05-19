@@ -32,6 +32,7 @@ import ProjectDetailPage from "@/routes/pages/Zk/dashboard/project/[id]/page";
 import VerifierDetailPage from "@/routes/pages/Zk/dashboard/verifier/[id]/page";
 import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
 import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page"
+import UnbindPage from "@/routes/pages/unbind/page";
 
 
 
@@ -61,6 +62,10 @@ export const router = createBrowserRouter(
           element: <Home />,
         },
         portalModules,
+        {
+          path: "/unbind",
+          element: <UnbindPage />,
+        },
         {
           path: "/ecosystem",
           element: <EcosystemPage />,
