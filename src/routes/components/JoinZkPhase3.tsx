@@ -1,9 +1,6 @@
-import Button from "@/components/Button";
 import { classes } from "@/config";
-import { ArrowRight } from "lucide-react";
 import { cn } from "@nextui-org/react";
-import { JoinTestnetPhaseIIIButton } from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
-import { Link } from "react-router-dom";
+import { AboutTestnetButton, JoinTestnetPhaseIIIButton } from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
 
 const JoinZkPhase3 = ({ slogen, title = 'Phase III', subTitle, className }: { slogen: string, title?: string, subTitle?: string, className?: string }) => {
     return (
@@ -13,12 +10,7 @@ const JoinZkPhase3 = ({ slogen, title = 'Phase III', subTitle, className }: { sl
             {subTitle && <span className={cn('subTitle', classes.subTitle)}>{subTitle}</span>}
             <div className="flex gap-6">
                 <JoinTestnetPhaseIIIButton />
-                <Link to="/">
-                    <Button type="solid" className="backdrop-blur-sm !p-6 !py-4 flex gap-4 flex items-center uppercase">
-                        <span className="text-base">About Testnet</span>
-                        <ArrowRight className="w-4 h-4" />
-                    </Button>
-                </Link>
+                <AboutTestnetButton />
             </div>
         </div>
     )
