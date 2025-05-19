@@ -35,21 +35,16 @@ const ConnectInfo = () => {
       await logout();
       await disconnectAsync();
 
-
-      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
+//      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
         window.localStorage.setItem('wagmi.com.okex.wallet.disconnected', 'true');
-      }
-      window.localStorage.removeItem('wagmi.recentConnectorId');
+//    }
+//      window.localStorage.removeItem('wagmi.recentConnectorId');
       reset();
     } catch (e) {
       console.error(e);
     } finally {
       setLoading(false);
     }
-
-
-
-
   };
 
   // 处理测试代币领取
