@@ -9,7 +9,7 @@ import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
 import { usePrivy } from '@privy-io/react-auth';
-import { handleSignIn } from '@/utils/tools';
+import { handleSignIn, sleep } from '@/utils/tools';
 import axios from 'axios';
 
 /**
