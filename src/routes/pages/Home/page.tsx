@@ -13,7 +13,7 @@ import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { ReactNode, useRef } from "react";
 import { isMobile } from "react-device-detect";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const asSeenOnList = [
   {
@@ -468,12 +468,14 @@ const navScreenList = [
     subTitle: "Growing with the Builders in the industry",
     title: "ecosystem",
     slogen: (
-      <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-        <div className="flex items-center gap-2 ">
-          <span>Explore Cysic Partners</span>
-          <ArrowRight width={16} height={16} />
-        </div>
-      </Button>
+      <Link to="/ecosystem">
+        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
+          <div className="flex items-center gap-2 ">
+            <span>Explore Cysic Partners</span>
+            <ArrowRight width={16} height={16} />
+          </div>
+        </Button>
+      </Link>
     ),
     action: (
       <div className="flex flex-wrap gap-4 main-container">
@@ -575,6 +577,7 @@ const ScreenNavCard = ({
 };
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -672,13 +675,17 @@ const Home = () => {
               title="Cysic Network"
               desc="Verifiable compute network"
               imageSrc={getImageUrl("@/assets/images/nft/preset3.png")}
-              onClick={() => { }}
+              onClick={() => {
+                navigate("/zk");
+              }}
             />
             <AdCard
               title="Cysic hardware"
               desc="ZK accelerators & beyond"
               imageSrc={getImageUrl("@/assets/images/nft/preset4.png")}
-              onClick={() => { }}
+              onClick={() => {
+                navigate("/hardware");
+              }}
             />
           </div>
         </div>
@@ -688,14 +695,14 @@ const Home = () => {
           </div>
           <div className="flex flex-col gap-4">
             <AdCard
-              title="Cysic Network"
-              desc="Verifiable compute network"
+              title="Cysic AI"
+              desc="Low-cost AI infra for custom models"
               imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
               onClick={() => { }}
             />
             <AdCard
-              title="Cysic hardware"
-              desc="ZK accelerators & beyond"
+              title="Cysic digital mining"
+              desc="Compute-backed digital assets"
               imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
               onClick={() => { }}
             />
