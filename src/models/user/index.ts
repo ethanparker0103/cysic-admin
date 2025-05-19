@@ -104,6 +104,9 @@ interface UserState {
   fetchUserInfo: (address: string) => Promise<IUserInfo | null>;
   checkBindStatus: (address: string) => Promise<boolean>; // 新增检查绑定状态
   registerUser: (address: string, userData: Partial<IUserInfo>) => Promise<boolean>;
+
+  // 更新hasMatchedWithCosmos
+  updateHasMatchedWithCosmos: (address: string, hasMatchedWithCosmos: boolean) => void;
 }
 
 // 默认初始状态
@@ -119,6 +122,12 @@ const useUser = create<UserState>()(
       ({
         ...defaultInitState,
 
+        updateHasMatchedWithCosmos: (address: string, hasMatchedWithCosmos: boolean) =>
+          set((draft) => {
+            if(draft.addressMap[address]?.userProfile){
+              draft.addressMap[address].userProfile.hasMatchedWithCosmos = hasMatchedWithCosmos;
+            }
+          }),
         // 设置当前活跃地址
         setActiveAddress: (address?: string) =>
           set((draft) => {
