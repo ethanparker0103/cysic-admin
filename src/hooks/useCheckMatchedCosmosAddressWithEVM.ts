@@ -6,19 +6,19 @@ import { useEffect, useMemo } from "react";
 
 const useCheckMatchedCosmosAddressWithEVM = () => {
   const { updateHasMatchedWithCosmos } = useUser();
-  const { address, cosmosAddress, userProfile } = useAccount();
+  const { address, cosmosAddress, userProfile, isSigned } = useAccount();
 
   const hasMatchedWithCosmos = userProfile?.hasMatchedWithCosmos
 
   const calculatedEthAddress = useMemo(() => {
-    if (!cosmosAddress) return null;
+    if (!cosmosAddress || !isSigned) return null;
     return cosmosToEthAddress(cosmosAddress);
-  }, [cosmosAddress]);
+  }, [cosmosAddress, isSigned]);
 
   const ifMatchedCosmosWithEvm = useMemo(() => {
-    if (!calculatedEthAddress || !address) return false;
+    if (!calculatedEthAddress || !address || !isSigned) return false;
     return calculatedEthAddress?.toLowerCase() == address?.toLowerCase();
-  }, [calculatedEthAddress, address]);
+  }, [calculatedEthAddress, address, isSigned]);
 
   const uploadState = async () => {
     if (hasMatchedWithCosmos || !address) return;
@@ -29,10 +29,10 @@ const useCheckMatchedCosmosAddressWithEVM = () => {
   };
 
   useEffect(() => {
-    if (ifMatchedCosmosWithEvm && !hasMatchedWithCosmos) {
+    if (ifMatchedCosmosWithEvm && !hasMatchedWithCosmos && isSigned) {
       uploadState();
     }
-  }, [ifMatchedCosmosWithEvm, hasMatchedWithCosmos]);
+  }, [ifMatchedCosmosWithEvm, hasMatchedWithCosmos, isSigned]);
 };
 
 export default useCheckMatchedCosmosAddressWithEVM;
