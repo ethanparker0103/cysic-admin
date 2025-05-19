@@ -10,19 +10,20 @@ import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
 import { usePrivy } from '@privy-io/react-auth';
 import { handleSignIn } from '@/utils/tools';
+import axios from 'axios';
 
 /**
  * 账户状态初始化Hook
  * 只处理基础的钱包连接、切换和签名
  */
 const useAccountBootstrap = () => {
-  const { address, isBinded, addressMap } = useAccount()
+  const { socialAccount, address, isBinded, addressMap } = useAccount()
   const { user } = usePrivy()
   const isEmbed = user?.wallet?.connectorType == "embedded"
   const isSigned = !!addressMap?.[address || '']?.signature
 
-  useEffect(()=>{
-    if(isEmbed && address && !isSigned){
+  useEffect(() => {
+    if (isEmbed && address && !isSigned) {
       handleSignIn()
     }
   }, [isEmbed, address, isSigned])
@@ -67,8 +68,8 @@ const useAccountBootstrap = () => {
     }
   });
 
-  useEffect(()=>{
-    if(address && isSigned){
+  useEffect(() => {
+    if (address && isSigned) {
       userStore.fetchUserInfo(address).catch(console.error);
     }
   }, [address, isSigned])
@@ -106,6 +107,52 @@ const useAccountBootstrap = () => {
       unwatch();
     };
   }, [address]);
+
+
+
+
+
+  // social account
+  const handleUploadSocialAccount = async ({ accountType, account }: { accountType: string, account: string }) => {
+
+    if (!address) return;
+    await axios.post('/api/v1/social/account/update', {
+      accountType,
+      account
+    })
+
+    await sleep(1000)
+    userStore.fetchUserInfo(address)
+
+  }
+
+  useEffect(() => {
+    if (isSigned && address) {
+      // CHECK SOCIAL ACCOUNT
+      if (socialAccount?.discord?.name == '' && user?.discord?.username) {
+        handleUploadSocialAccount({
+          accountType: 'discord',
+          account: user?.discord?.username
+        })
+      }
+
+      if (socialAccount?.google?.name == '' && user?.google?.name) {
+        handleUploadSocialAccount({
+          accountType: 'google',
+          account: user?.google?.name
+        })
+      }
+
+      if (socialAccount?.x?.name == '' && user?.twitter?.username) {
+        handleUploadSocialAccount({
+          accountType: 'x',
+          account: user?.twitter?.username
+        })
+      }
+
+    }
+  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.name, user?.twitter?.username])
+
 
   return null;
 };

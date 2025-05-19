@@ -32,42 +32,8 @@ const showAllMedia = true;
 
 
 const SocialAccount = () => {
-  const { socialAccount, isSigned, address } = useAccount();
-  const { login, linkDiscord, linkGoogle, linkTwitter, user } = usePrivy();
-
-  const handleUploadSocialAccount = async ({accountType, account}: {accountType: string, account: string}) => {
-    axios.post('/api/v1/social/account/update', {
-      accountType,
-      account
-    })
-  }
-
-  useEffect(() => {
-    if(isSigned && address){
-      // CHECK SOCIAL ACCOUNT
-      if(!socialAccount?.discord?.name && user?.discord?.username){
-        handleUploadSocialAccount({
-          accountType: 'discord',
-          account: user?.discord?.username
-        })
-      }
-
-      if(!socialAccount?.google?.name && user?.google?.name){
-        handleUploadSocialAccount({
-          accountType: 'google',
-          account: user?.google?.name
-        })
-      }
-
-      if(!socialAccount?.x?.name && user?.twitter?.username){
-        handleUploadSocialAccount({
-          accountType: 'x',
-          account: user?.twitter?.username
-        })
-      }
-      
-    }
-  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.name, user?.twitter?.username])
+  const { socialAccount } = useAccount();
+  const { linkDiscord, linkGoogle, linkTwitter } = usePrivy();
 
   const handleLoginOrLink = async (type: string) => {
     try {
