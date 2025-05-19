@@ -27,7 +27,7 @@ const HoverDropdown = ({ trigger, children, className, classNames }: { trigger: 
     const handleMouseLeave = (e: React.MouseEvent) => {
         // 检查鼠标是否真的离开了整个下拉区域
         const relatedTarget = e.relatedTarget as Node;
-        if (!dropdownRef.current?.contains(relatedTarget)) {
+        if (!dropdownRef.current?.contains?.(relatedTarget)) {
             // 清除任何可能存在的进入定时器
             if (timeoutRef.current) {
                 clearTimeout(timeoutRef.current);

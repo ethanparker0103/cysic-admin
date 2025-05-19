@@ -22,11 +22,6 @@ interface GradientNavDropdownProps {
 export default function GradientNavDropdown({ item, className }: GradientNavDropdownProps) {
     const navigate = useNavigate();
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    const handleMouseEnter = () => setIsOpen(true);
-    const handleMouseLeave = () => setIsOpen(false);
-
     // 判断是否为外部链接
     const isExternalLink = (url?: string) => {
         return url?.startsWith('http://') || url?.startsWith('https://');

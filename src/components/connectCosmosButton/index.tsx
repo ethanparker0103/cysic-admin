@@ -3,36 +3,50 @@ import { useEffect } from "react";
 import Button from "@/components/Button";
 import { connectWallet } from "@/utils/cosmos";
 import useCosmos from "@/models/_global/cosmos";
-
-
+import { shortStr } from "@/utils/tools";
+import { getImageUrl } from "@/utils/tools";
+import useAccount from "@/hooks/useAccount";
 
 export default function ConnectCosmosButton({ className, content }: any) {
+  const { isConnected, isConnecting, init } = useCosmos();
+  const { cosmosAddress } = useAccount();
 
-  const {
-    isConnected,
-    isConnecting,
-    init,
-  } = useCosmos();
+  const handleDisconnect = () => {
+    init();
+  };
 
-  const handleDisconnect = ()=>{
-    init()
-  }
-
-  if (isConnected) {
-    return (
-      <div onClick={handleDisconnect} className="">disconnect</div>
-    )
-  }
+  const handleConnect = async () => {
+    if (isConnected) {
+      await handleDisconnect();
+    } else {
+      await connectWallet();
+    }
+  };
 
   return (
-    <Button
-      className="!bg-[transparent] flex items-center justify-end gap-2 !px-0"
-      onClick={connectWallet}
-    >
-      {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
-      {content || (
-        <span className="text-sm uppercase">Connect Keplr</span>
+    <div className="py-4 px-6 flex items-center justify-between gap-2 w-full" onClick={handleConnect}>
+      <div className="flex items-center gap-2">
+        <img
+          src={getImageUrl("@/assets/images/wallet/keplr.png")}
+          className="rounded-full w-[1.875rem] h-[1.875rem]"
+        />
+        <span className="text-sm text-sub font-[400] uppercase">
+          {shortStr(cosmosAddress || "-", 10)}
+        </span>
+      </div>
+
+      {isConnected ? (
+        <div  className="">
+          disconnect
+        </div>
+      ) : (
+        <Button
+          className="!bg-[transparent] flex items-center justify-end gap-2 !px-0"
+        >
+          {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
+          {content || <span className="text-sm uppercase">Connect Keplr</span>}
+        </Button>
       )}
-    </Button>
+    </div>
   );
 }

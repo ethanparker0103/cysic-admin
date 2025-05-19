@@ -24,7 +24,7 @@ enum SignInStep {
 }
 
 const SignInModal = () => {
-  const { walletAddress, activeAddress, isSigned, isBinded } =
+  const { walletAddress, activeAddress, isSigned, isBinded, inviteCode: userInviteCode } =
     useAccount();
   const { login: _login, connectWallet, linkGoogle, linkTwitter, linkDiscord, user} = usePrivy();
 
@@ -97,6 +97,7 @@ const SignInModal = () => {
 
   // 邀请码状态
   const [inviteCode, setInviteCode] = useState("");
+  const sameInviteCodeAsUserSelf = inviteCode && userInviteCode && inviteCode.toLowerCase() === userInviteCode.toLowerCase()
 
   // 第二步表单数据
   const [formData, setFormData] = useState({
@@ -170,6 +171,11 @@ const SignInModal = () => {
   // 验证邀请码 - 直接在组件内实现，简化版本
   const bindWalletWithCode = async () => {
     if (inviteCode.length !== 5 || !walletAddress) return;
+
+    if (inviteCode?.toLowerCase() === userInviteCode?.toLowerCase()) {
+      setError("You cannot bind your own invite code");
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -409,7 +415,7 @@ const SignInModal = () => {
                   onClick={handleVerifyInviteCode}
                   needLoading
                   loading={loading}
-                  disabled={inviteCode.length < 5}
+                  disabled={inviteCode.length < 5 || !!sameInviteCodeAsUserSelf}
                 >
                   VERIFY INVITE CODE
                 </Button>

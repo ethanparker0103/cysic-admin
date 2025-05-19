@@ -110,7 +110,7 @@ const SocialAccount = () => {
                   <Button
                     needLoading
                     type="text"
-                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
                     onClick={() => handleLoginOrLink('google')}
                   >
                     BIND GMAIL
@@ -135,7 +135,7 @@ const SocialAccount = () => {
                   <Button
                     needLoading
                     type="text"
-                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
                     onClick={() => handleLoginOrLink('twitter')}
                   >
                     BIND X
@@ -158,7 +158,7 @@ const SocialAccount = () => {
                   <Button
                     needLoading
                     type="text"
-                    className="cursor-pointer flex items-center !p-0 min-h-fit flex-1 justify-end"
+                    className="cursor-pointer flex items-center !p-0 min-h-fit justify-end"
                     onClick={() => handleLoginOrLink('discord')}
                   >
                     BIND DISCORD
