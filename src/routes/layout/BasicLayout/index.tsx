@@ -24,6 +24,8 @@ import FaucetModal from "@/routes/components/modal/faucetModal";
 import useBootstrap from "@/hooks/useBootstrap";
 import PrivyAccountMismatchModal from "@/routes/components/modal/privyAccountMismatchModal";
 import useScrollToTop from "@/hooks/useScrollToTop";
+import BridgeHistoryModal from "@/routes/components/modal/bridgeHistoryModal";
+
 
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
@@ -37,6 +39,7 @@ export default function App({ children }: { children: React.ReactNode }) {
 
             <NextUIProvider>
                 <>
+                    <BridgeHistoryModal />
                     <FaucetModal />
                     <PrivyAccountMismatchModal />
                     <VoucherModal />

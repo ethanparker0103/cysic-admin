@@ -1,7 +1,7 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
-import { handleConvertHistoryModal } from "@/utils/tools";
+import { handleBridgeHistoryModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { isMobile } from "react-device-detect";
@@ -31,7 +31,7 @@ const CysicBalance = () => {
               BRIDGE <ArrowRight size={12} className="ml-1" />
             </a>
             <div
-              onClick={handleConvertHistoryModal}
+              onClick={handleBridgeHistoryModal}
               className="flex items-center text-sub text-sm hover:text-white cursor-pointer"
             >
               HISTORY <ArrowRight size={12} className="ml-1" />

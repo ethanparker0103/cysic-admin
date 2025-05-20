@@ -748,3 +748,10 @@ export const handleFaucetModal = () => {
   });
   window.dispatchEvent(event);
 }
+
+export const handleBridgeHistoryModal = ()=>{
+  const event = new CustomEvent('modal_bridge_history_visible', {
+    detail: { visible: true }
+  });
+  window.dispatchEvent(event);
+}

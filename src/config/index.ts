@@ -136,7 +136,9 @@ export const mediasLink = {
   bridge: "https://testnet-bridge.prover.xyz/bridge",
   telegram: "https://t.me/CysicHQ",
   github: "https://github.com/cysic-labs",
-  doc: "https://hackmd.io/@Cysic"
+  doc: "https://hackmd.io/@Cysic",
+  cosmosExplorer: "https://explorer-testnet.prover.xyz",
+  evmExplorer: "https://cys-dev.prover.xyz"
 };
 
 export const downloadLink = {

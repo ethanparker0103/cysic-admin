@@ -10,20 +10,26 @@ export const MultiplierPercentBar = () => {
   const { zkPart } = useAccount();
   const multiplierPercent = zkPart?.multiplierFire || 0;
   return (
-    <Tooltip
-      content={
-        <div className="max-w-[16rem] py-2">
-          {multiplierPercent}%
-        </div>
-      }
-    >
+    <div className="relative group py-2">
+
+      <div className="opacity-0 group-hover:opacity-100 absolute top-0 text-sm unbounded font-light px-2 py-1 bg-[#292929] rounded-md whitespace-nowrap"
+        style={{
+          left: `${multiplierPercent < 7 ? '6' : multiplierPercent > 92 ? '92' : multiplierPercent}%`,
+          transform: `translate(-50%, -100%)`,
+        }}
+      >
+        {multiplierPercent} FIRE
+      </div>
+
       <div className="relative w-full h-2 bg-gray-500 rounded-full overflow-hidden">
         <div
           style={{ width: `${multiplierPercent}%` }}
           className="absolute inset-0 left-0 h-full bg-gradient-to-r from-purple-500 via-blue-400 to-green-300 rounded-full"
         ></div>
       </div>
-    </Tooltip>
+
+    </div>
+
   );
 };
 
@@ -74,19 +80,22 @@ export const Multiplier = ({
           {/* 进度条 */}
           <MultiplierPercentBar />
 
-          {/* HIGH SPEED 指示器 */}
-          <div
-            className={cn(
-              "flex items-center gap-2",
-              isMobile ? "self-start" : "self-end"
-            )}
-          >
-            <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-            <span className="!text-sm title">
-              {currentMultiplier?.name || "-"}
-            </span>
+          <div className="flex items-center justify-between">
+            <div className="text-sm unbounded font-light">
+              🔥 {zkPart?.multiplierFire || 0} FIRE
+            </div>
+            <div
+              className={cn(
+                "flex items-center gap-2",
+                isMobile ? "self-start" : "self-end"
+              )}
+            >
+              <div className="w-3 h-3 rounded-full bg-blue-400"></div>
+              <span className="text-sm unbounded font-light">
+                {currentMultiplier?.name || "-"}
+              </span>
+            </div>
           </div>
-
           {actionPlacement === "bottom" && (
             <div
               className="flex items-center justify-end gap-1 cursor-pointer"
