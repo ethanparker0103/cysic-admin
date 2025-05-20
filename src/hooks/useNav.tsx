@@ -205,33 +205,34 @@ const computeNavs = navs.map((i, index) => {
 
 const stakeeNavs = navs.map((i, index) => {
     if (index == 0) {
-        return {
-            content: 'Cysic Mining',
-            children: [
-                {
-                    content: 'Service',
-                    key: 'service',
-                    href: '/'
-                },
-                {
-                    content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
-                    key: 'nft',
-                    href: '/nft',
-                    disabled: true
-                },
-                {
-                    content: 'Cysic ZK',
-                    key: 'zk',
-                    href: '/zk'
-                },
-                {
-                    content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
-                    key: 'ai',
-                    href: '/ai',
-                    disabled: true
-                },
-            ]
-        }
+        return navs[0]
+        // return {
+        //     content: 'Cysic Mining',
+        //     children: [
+        //         {
+        //             content: 'Service',
+        //             key: 'service',
+        //             href: '/'
+        //         },
+        //         {
+        //             content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
+        //             key: 'nft',
+        //             href: '/nft',
+        //             disabled: true
+        //         },
+        //         {
+        //             content: 'Cysic ZK',
+        //             key: 'zk',
+        //             href: '/zk'
+        //         },
+        //         {
+        //             content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
+        //             key: 'ai',
+        //             href: '/ai',
+        //             disabled: true
+        //         },
+        //     ]
+        // }
     }
     return i
 })

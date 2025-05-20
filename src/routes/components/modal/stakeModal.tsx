@@ -3,7 +3,7 @@ import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
 import Button from "@/components/Button";
-import { showStatusModal, sleep } from "@/utils/tools";
+import { formatReward, showStatusModal, sleep } from "@/utils/tools";
 import { Slider } from "@nextui-org/react";
 import { StatusType } from "./statusModal"; // 导入状态类型枚举
 import useCosmos from "@/models/_global/cosmos";
@@ -686,7 +686,7 @@ const StakeModal = () => {
                     <div className="space-y-3 mb-6">
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">APR</div>
-                            <div className="text-white">{selectedValidator?.apr || "0%"}</div>
+                            <div className="text-white">{formatReward(selectedValidator?.apr || "0", 2)}%</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Voting Power</div>
