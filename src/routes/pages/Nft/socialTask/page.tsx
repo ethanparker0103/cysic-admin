@@ -108,8 +108,8 @@ const TaskSection = ({
 
 const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
   const { isSigned, updateUserProfile, address } = useAccount();
+  const [taskList, setTaskList] = useState<ITask[]>([]);
   const {
-    data,
     loading: _loading,
     run,
   } = usePagnation(
@@ -122,10 +122,13 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
     {
       ready: !!taskGroup.id,
       refreshDeps: [taskGroup.id],
+      onSuccess: (res) => {
+        setTaskList(res.data.taskList);
+      },
     }
   );
 
-  const tasks = data?.data?.taskList as ITask[];
+  const tasks = taskList as ITask[];
   const loading = !tasks?.length && _loading;
 
   // 处理任务认领和检查
@@ -137,9 +140,14 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
       });
 
       const response = res.data as IClaimResponse;
+      console.log('res', response)
 
       if(response?.userProfile){
         updateUserProfile(address, response?.userProfile);
+      }
+
+      if(response?.taskList?.length){
+        setTaskList(response?.taskList);
       }
       dispatchEvent(
         new CustomEvent("update_groupTask", {
@@ -216,11 +224,13 @@ const SocialTaskPage = () => {
           }
           return group;
         });
+
         return updatedGroups;
       });
     }
   }
   );
+
 
   return (
     <>
