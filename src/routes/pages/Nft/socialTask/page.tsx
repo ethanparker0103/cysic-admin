@@ -13,25 +13,27 @@ import Spinner from "@/components/spinner";
 // 任务卡片组件
 interface TaskCardProps {
   title: string;
-  status: string;
-  buttonText: "CLAIM" | "CHECK";
+  status: number; // 0: 未开始, 1: 已完成, 2: 进行中
+  buttonText: "CLAIM" | "CHECK" | string;
+  description: string;
   onClick?: () => void;
 }
 
-const TaskCard = ({ title, status, buttonText, onClick }: TaskCardProps) => (
+const TaskCard = ({ title, status, buttonText, description, onClick }: TaskCardProps) => (
   <GradientBorderCard borderRadius={8} className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]">
     <div className="py-4 px-6 w-full flex justify-between items-center">
       <div className="flex flex-col">
-        <div className="text-base text-white">{title}</div>
-        <div className="text-sm text-sub">Complete {status}</div>
+        <div className="text-sm teacher !normal-case text-sub">{title}</div>
+        <div className="text-xl teacher !normal-case text-white">{description}</div>
       </div>
       <Button
         needLoading
         type="light"
         onClick={onClick}
-        className="min-w-[90px] py-2 px-3 text-sm rounded-md"
+        className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
+        disabled={status == 2}
       >
-        {buttonText}
+        { status == 1 ? buttonText : "CLAIMED" }
       </Button>
     </div>
   </GradientBorderCard>
@@ -42,12 +44,16 @@ interface TaskSectionProps {
   title: string;
   children: ReactNode;
   rightAction?: ReactNode;
+  description?: string;
 }
 
-const TaskSection = ({ title, children, rightAction }: TaskSectionProps) => (
+const TaskSection = ({ title, children, rightAction, description }: TaskSectionProps) => (
   <div className="mb-12">
     <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
+      <div className="flex flex-col gap-2">
       <h2 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>{title}</h2>
+      {description && <div className="text-sub text-lg teacher !normal-case">{description}</div>}
+      </div>
       {rightAction && (
         <div>{rightAction}</div>
       )}
@@ -61,6 +67,7 @@ interface TaskGroup {
   id: number;
   name: string;
   sort: number;
+  description: string;
 }
 
 // 任务类型
@@ -69,6 +76,7 @@ interface Task {
   title: string;
   description: string;
   status: number; // 0: 未开始, 1: 已完成, 2: 进行中
+  actionText: string;
 }
 
 
@@ -100,6 +108,7 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
     <TaskSection
       key={taskGroup.id}
       title={taskGroup.name}
+      description={taskGroup.description}
       rightAction={
         <div onClick={handleVoucherModal} className={cn("flex items-center text-sub hover:text-white", isMobile ? "text-base" : "text-sm")}>
           CHECK ALL YOUR VOUCHERS <ArrowRight size={16} className="ml-1" />
@@ -115,8 +124,9 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
             <TaskCard
               key={task.id}
               title={task.title}
-              status={task.description}
-              buttonText={"CHECK"}
+              status={task.status}
+              description={task.description}
+              buttonText={task?.actionText || "CHECK"}
               onClick={() => handleClaim(task)}
             />
           ))

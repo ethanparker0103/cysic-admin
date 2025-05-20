@@ -570,9 +570,9 @@ const ScreenNavCard = ({
     >
       <div className={cn("absolute inset-0 -z-[1]", background)} />
       {subTitle ? (
-        <span className="teacher tracking-[0.3em] text-2xl">{subTitle}</span>
+        <span className="teacher tracking-[0.3em] text-2xl text-center">{subTitle}</span>
       ) : null}
-      <span className="mt-2 unbounded text-[6rem] font-light">{title}</span>
+      <span className="mt-2 unbounded text-[6rem] font-light text-center">{title}</span>
       {slogen ? <div className="mt-6">{slogen}</div> : null}
       {action ? <div className="mt-6">{action}</div> : null}
     </div>
