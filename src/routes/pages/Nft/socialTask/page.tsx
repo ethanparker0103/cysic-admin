@@ -9,6 +9,7 @@ import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import usePagnation from "@/hooks/usePagnation";
 import Spinner from "@/components/spinner";
+import useAccount from "@/hooks/useAccount";
 
 // 任务卡片组件
 interface TaskCardProps {
@@ -17,24 +18,27 @@ interface TaskCardProps {
   buttonText: "CLAIM" | "CHECK" | string;
   description: string;
   onClick?: () => void;
+  hideBtn?: boolean;
 }
 
-const TaskCard = ({ title, status, buttonText, description, onClick }: TaskCardProps) => (
+const TaskCard = ({ title, status, buttonText, description, onClick, hideBtn }: TaskCardProps) => (
   <GradientBorderCard borderRadius={8} className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]">
     <div className="py-4 px-6 w-full flex justify-between items-center">
       <div className="flex flex-col">
         <div className="text-sm teacher !normal-case text-sub">{title}</div>
         <div className="text-xl teacher !normal-case text-white">{description}</div>
       </div>
-      <Button
-        needLoading
-        type="light"
-        onClick={onClick}
-        className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
-        disabled={status == 2}
+      {!hideBtn && (
+        <Button
+          needLoading
+          type="light"
+          onClick={onClick}
+          className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
+          disabled={status == 2}
       >
-        {status == 1 ? buttonText : "CLAIMED"}
-      </Button>
+          {status == 1 ? buttonText : "CLAIMED"}
+        </Button>
+      )}
     </div>
   </GradientBorderCard>
 );
@@ -82,6 +86,7 @@ interface Task {
 
 const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
 
+  const { isSigned } = useAccount()
   const { data, loading: _loading, run } = usePagnation(() => axios.get('/api/v1/social/task/list', {
     params: {
       groupId: taskGroup.id,
@@ -98,6 +103,7 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
   // 处理任务认领和检查
   const handleClaim = async (task: Task) => {
     try{
+        if(!isSigned) return;
          await axios.post('/api/v1/social/task/claim', {
         taskId: task.id
       })
@@ -132,6 +138,7 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
               description={task.description}
               buttonText={task?.actionText || "CHECK"}
               onClick={() => handleClaim(task)}
+              hideBtn={!isSigned}
             />
           ))
         )}
