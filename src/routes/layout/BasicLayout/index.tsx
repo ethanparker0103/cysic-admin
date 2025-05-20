@@ -1,4 +1,3 @@
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "@arco-design/web-react/dist/css/arco.css";
@@ -24,11 +23,13 @@ import HowInviteWorkModal from "@/routes/components/modal/howInviteWorkModal";
 import FaucetModal from "@/routes/components/modal/faucetModal";
 import useBootstrap from "@/hooks/useBootstrap";
 import PrivyAccountMismatchModal from "@/routes/components/modal/privyAccountMismatchModal";
+import useScrollToTop from "@/hooks/useScrollToTop";
+
 export default function App({ children }: { children: React.ReactNode }) {
     useAccountBootstrap();
     useCosmosUpdate()
-
     useBootstrap()
+    useScrollToTop();
 
     return (
         <>
