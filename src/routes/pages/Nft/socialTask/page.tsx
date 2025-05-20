@@ -52,7 +52,7 @@ const TaskSection = ({ title, children, rightAction, description }: TaskSectionP
     <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
       <div className="flex flex-col gap-2">
       <h2 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>{title}</h2>
-      {description && <div className="text-sub text-lg teacher !normal-case">{description}</div>}
+      {description && <div className="text-sub text-sm teacher !normal-case">{description}</div>}
       </div>
       {rightAction && (
         <div>{rightAction}</div>
