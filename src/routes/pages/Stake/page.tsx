@@ -3,7 +3,7 @@
 import Button, { BtnType } from "@/components/Button";
 import { formatReward, getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
 import { Search, History } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import axios from "@/service";
@@ -21,6 +21,7 @@ import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx"
 import {
   checkKeplrWallet,
   checkkTx,
+  connectWallet,
   signAndBroadcastDirect,
 } from "@/utils/cosmos";
 import BigNumber from "bignumber.js";
@@ -302,17 +303,14 @@ const StakePage = () => {
 
 
   const { address, connector } = useCosmos()
-  const handleClaim = async (closeLoading?: any) => {
+  const handleClaim = async () => {
     try {
-      checkKeplrWallet();
-
-
       showStatusModal({
         type: StatusType.LOADING,
         message: `Claiming rewards, please confirm this transaction in your wallet`
       });
       const queryClient = QueryClient.withExtensions(
-        connector.getQueryClient(),
+        connector?.getQueryClient(),
         setupDistributionExtension
       );
       const result = await queryClient.distribution.delegatorValidators(
@@ -357,13 +355,15 @@ const StakePage = () => {
     } catch (error) {
       console.error("Error claiming rewards:", error);
 
-      // 显示错误状态
-      showStatusModal({
-        type: StatusType.ERROR,
-        title: "Transaction Failed",
-        message: "Failed to claim rewards. Please try again.",
-        onRetry: () => handleClaim()
-      });
+      if (error?.message !== 'Keplr Wallet is not available') {
+        // 显示错误状态
+        showStatusModal({
+          type: StatusType.ERROR,
+          title: "Transaction Failed",
+          message: "Failed to claim rewards. Please try again.",
+          onRetry: () => handleClaim()
+        });
+      }
     }
   };
 
@@ -371,7 +371,7 @@ const StakePage = () => {
 
   const queryRewards = async () => {
     const queryClient = QueryClient.withExtensions(
-      connector.getQueryClient(),
+      connector?.getQueryClient(),
       setupDistributionExtension
     );
     const result_ = await queryClient.distribution.delegationTotalRewards(
@@ -407,6 +407,13 @@ const StakePage = () => {
     setRewardsAmount(res)
     return res
   };
+
+
+  useEffect(() => {
+    if (!address && rewardsAmount) {
+      setRewardsAmount("0")
+    }
+  }, [address, rewardsAmount])
 
   useRequest(
     () => queryRewards(),
@@ -475,12 +482,12 @@ const StakePage = () => {
               <div className={cn("!text-2xl !font-[400] title mb-4", isMobile ? "text-left" : "text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
-                disabled={!Number(rewardsAmount) || !address}
-                onClick={handleClaim}
+                // disabled={!Number(rewardsAmount) || !address}
+                onClick={address ? handleClaim : connectWallet}
                 type={BtnType.light}
-                className="rounded-lg w-full py-3 !text-base"
+                className="rounded-lg w-full py-3 text-base"
               >
-                CLAIM ALL
+                {!address ? 'CONNECT KEPLR' : 'CLAIM ALL'}
               </Button>
             </div>
           </GradientBorderCard>

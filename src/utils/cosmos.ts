@@ -65,7 +65,7 @@ async function connectWallet(props?: {mode?: 'soft' | 'hard'}) {
             return;
         }
         checkKeplrWallet();
-        throw { message: "Keplr is not available" };
+        throw { message: "Keplr Wallet is not available" };
     }
     set({ isConnecting: true });
 
@@ -254,7 +254,7 @@ export const checkKeplrWallet = (onlyClient?: boolean) => {
 
     if (!status) {
         handleCheckKeplrModal()
-        throw { message: "Invalid Cosmos Wallet" };
+        throw { message: "Keplr Wallet is not available" };
         // return;
     }
 
