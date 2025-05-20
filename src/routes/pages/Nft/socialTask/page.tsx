@@ -1,17 +1,34 @@
-import { ArrowRight } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
-import { getImageUrl, handleVoucherModal } from "@/utils/tools";
-import { ReactNode, useState, useEffect, Key } from "react";
+import { ReactNode, useState } from "react";
 import axios from "@/service";
-import { useRequest } from "ahooks";
+import { useEventListener, useRequest } from "ahooks";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import usePagnation from "@/hooks/usePagnation";
 import Spinner from "@/components/spinner";
 import useAccount from "@/hooks/useAccount";
+import { IUserProileResponseInSocialTask } from "@/models/user";
 
-// 任务卡片组件
+interface ITaskGroup {
+  id: number;
+  name: string;
+  sort: number;
+  description: string;
+}
+
+interface ITask {
+  id: number;
+  title: string;
+  description: string;
+  status: number; // 0: 未开始, 1: 已完成, 2: 进行中
+  actionText: string;
+}
+
+interface IClaimResponse {
+  taskList: ITask[];
+  userProfile: IUserProileResponseInSocialTask;
+}
 interface TaskCardProps {
   title: string;
   status: number; // 0: 未开始, 1: 已完成, 2: 进行中
@@ -21,12 +38,31 @@ interface TaskCardProps {
   hideBtn?: boolean;
 }
 
-const TaskCard = ({ title, status, buttonText, description, onClick, hideBtn }: TaskCardProps) => (
-  <GradientBorderCard borderRadius={8} className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]">
+interface TaskSectionProps {
+  title: string;
+  children: ReactNode;
+  rightAction?: ReactNode;
+  description?: string;
+}
+
+const TaskCard = ({
+  title,
+  status,
+  buttonText,
+  description,
+  onClick,
+  hideBtn,
+}: TaskCardProps) => (
+  <GradientBorderCard
+    borderRadius={8}
+    className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]"
+  >
     <div className="py-4 px-6 w-full flex justify-between items-center">
       <div className="flex flex-col">
         <div className="text-sm teacher !normal-case text-sub">{title}</div>
-        <div className="text-xl teacher !normal-case text-white">{description}</div>
+        <div className="text-xl teacher !normal-case text-white">
+          {description}
+        </div>
       </div>
       {!hideBtn && (
         <Button
@@ -35,7 +71,7 @@ const TaskCard = ({ title, status, buttonText, description, onClick, hideBtn }: 
           onClick={onClick}
           className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
           disabled={status == 2}
-      >
+        >
           {status == 1 ? buttonText : "CLAIMED"}
         </Button>
       )}
@@ -43,75 +79,81 @@ const TaskCard = ({ title, status, buttonText, description, onClick, hideBtn }: 
   </GradientBorderCard>
 );
 
-// 任务分类组件
-interface TaskSectionProps {
-  title: string;
-  children: ReactNode;
-  rightAction?: ReactNode;
-  description?: string;
-}
-
-const TaskSection = ({ title, children, rightAction, description }: TaskSectionProps) => (
+const TaskSection = ({
+  title,
+  children,
+  rightAction,
+  description,
+}: TaskSectionProps) => (
   <div className="mb-12">
-    <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
+    <div
+      className={cn(
+        "flex mb-6 gap-4",
+        isMobile ? "flex-col" : " justify-between items-center"
+      )}
+    >
       <div className="flex flex-col gap-1">
         <h2 className={cn("unbounded font-light text-2xl ")}>{title}</h2>
-        {description && <div className="text-sub text-sm teacher !normal-case">{description}</div>}
+        {description && (
+          <div className="text-sub text-sm teacher !normal-case">
+            {description}
+          </div>
+        )}
       </div>
-      {rightAction && (
-        <div>{rightAction}</div>
-      )}
+      {rightAction && <div>{rightAction}</div>}
     </div>
     {children}
   </div>
 );
 
-// 任务组类型
-interface TaskGroup {
-  id: number;
-  name: string;
-  sort: number;
-  description: string;
-}
-
-// 任务类型
-interface Task {
-  id: number;
-  title: string;
-  description: string;
-  status: number; // 0: 未开始, 1: 已完成, 2: 进行中
-  actionText: string;
-}
-
-
-const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
-
-  const { isSigned } = useAccount()
-  const { data, loading: _loading, run } = usePagnation(() => axios.get('/api/v1/social/task/list', {
-    params: {
-      groupId: taskGroup.id,
+const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
+  const { isSigned, updateUserProfile, address } = useAccount();
+  const {
+    data,
+    loading: _loading,
+    run,
+  } = usePagnation(
+    () =>
+      axios.get("/api/v1/social/task/list", {
+        params: {
+          groupId: taskGroup.id,
+        },
+      }),
+    {
+      ready: !!taskGroup.id,
+      refreshDeps: [taskGroup.id],
     }
-  }), {
-    ready: !!taskGroup.id,
-    refreshDeps: [taskGroup.id]
-  })
+  );
 
-  const tasks = data?.data?.taskList as Task[]
-  const loading = !tasks?.length && _loading
-
+  const tasks = data?.data?.taskList as ITask[];
+  const loading = !tasks?.length && _loading;
 
   // 处理任务认领和检查
-  const handleClaim = async (task: Task) => {
-    try{
-        if(!isSigned) return;
-         await axios.post('/api/v1/social/task/claim', {
-        taskId: task.id
-      })
+  const handleClaim = async (task: ITask, groupId: number) => {
+    try {
+      if (!isSigned || !address) return;
+      const res = await axios.post("/api/v1/social/task/claim", {
+        taskId: task.id,
+      });
+
+      const response = res.data as IClaimResponse;
+
+      if(response?.userProfile){
+        updateUserProfile(address, response?.userProfile);
+      }
+      dispatchEvent(
+        new CustomEvent("update_groupTask", {
+          detail: {
+            groupId,
+            taskList: response?.taskList,
+          },
+        })
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
-    run()
+    // run();
   };
 
   return (
@@ -125,47 +167,79 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
     //   </div>
     // }
     >
-      {loading ?
+      {loading ? (
         <Spinner />
-        : tasks?.length === 0 ? (
-          <GradientBorderCard className="text-center py-12 text-gray-400">No task data...</GradientBorderCard>
-        ) : (
-          tasks?.map((task: Task) => (
-            <TaskCard
-              key={task.id}
-              title={task.title}
-              status={task.status}
-              description={task.description}
-              buttonText={task?.actionText || "CHECK"}
-              onClick={() => handleClaim(task)}
-              hideBtn={!isSigned}
-            />
-          ))
-        )}
+      ) : tasks?.length === 0 ? (
+        <GradientBorderCard className="text-center py-12 text-gray-400">
+          No task data...
+        </GradientBorderCard>
+      ) : (
+        tasks?.map((task: ITask) => (
+          <TaskCard
+            key={task.id}
+            title={task.title}
+            status={task.status}
+            description={task.description}
+            buttonText={task?.actionText || "CHECK"}
+            onClick={() => handleClaim(task, taskGroup.id)}
+            hideBtn={!isSigned}
+          />
+        ))
+      )}
     </TaskSection>
-  )
-}
+  );
+};
 // 社交任务页面组件
 const SocialTaskPage = () => {
   // 状态管理
-  const [taskGroups, setTaskGroups] = useState<TaskGroup[]>([]);
+  const [taskGroups, setTaskGroups] = useState<ITaskGroup[]>([]);
 
-  const { loading: _loading } = useRequest(() => axios.get("/api/v1/social/task/group/list"), {
-    onSuccess: (res) => {
-      setTaskGroups(res.data.taskGroupList)
+  const { loading: _loading } = useRequest(
+    () => axios.get("/api/v1/social/task/group/list"),
+    {
+      onSuccess: (res) => {
+        setTaskGroups(res.data.taskGroupList);
+      },
     }
-  })
+  );
 
-  const loading = !taskGroups?.length && _loading
+  const loading = !taskGroups?.length && _loading;
+
+  useEventListener("update_groupTask", (event: Event) => {
+    const customEvent = event as CustomEvent<{ groupId: number; taskList: ITask[] }>;
+    const { groupId, taskList } = customEvent.detail;
+    if (taskList?.length && groupId) {
+      setTaskGroups(prev => {
+        const updatedGroups = prev.map((group) => {
+          if (group.id == groupId) {
+            return { ...group, taskList };
+          }
+          return group;
+        });
+        return updatedGroups;
+      });
+    }
+  }
+  );
 
   return (
     <>
-
-
       {/* content */}
-      <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
+      <div
+        className={cn(
+          "mx-auto mb-auto relative z-10 pt-20 pb-16 w-full",
+          isMobile ? "break-words" : ""
+        )}
+      >
         {/* title */}
-        <h1 className={cn("unbounded font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>SOCIAL TASKS</h1>
+        <h1
+          className={cn(
+            "unbounded font-[200] mb-24 text-center",
+            isMobile ? "text-7xl" : "text-[8rem]"
+          )}
+        >
+          SOCIAL TASKS
+        </h1>
 
         {/* 根据API数据渲染任务组 */}
         {loading ? (
@@ -174,7 +248,7 @@ const SocialTaskPage = () => {
           // 按sort排序并渲染每个任务组
           taskGroups
             .sort((a, b) => a.sort - b.sort)
-            .map(group => <TaskGroup key={group.id} taskGroup={group} />)
+            .map((group) => <TaskGroup key={group.id} taskGroup={group} />)
         )}
       </div>
     </>

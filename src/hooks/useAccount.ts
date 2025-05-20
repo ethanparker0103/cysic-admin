@@ -13,7 +13,7 @@ const useAccount = () => {
 
   // 直接获取用户状态，而不是通过方法
   const userStore = useUser();
-  const { activeAddress, addressMap, setState, setActiveAddress, getUserByAddress } = userStore;
+  const { activeAddress, addressMap, setState, setActiveAddress, getUserByAddress, updateUserProfile } = userStore;
   
   // 获取当前活跃用户信息
   const activeUser = activeAddress ? addressMap[activeAddress] : undefined;
@@ -52,6 +52,7 @@ const useAccount = () => {
     addressMap,                                 // 暴露整个地址映射供需要时使用
     
     // 操作方法
+    updateUserProfile,
     setActiveAddress,                           // 设置活跃地址
     getUserByAddress,                           // 获取特定地址的用户信息
     updateUserState: setState,                  // 更新用户状态

@@ -5,6 +5,14 @@ import { immer } from "zustand/middleware/immer";
 import axios from "@/service";
 import { responseSuccessCode } from "@/config";
 
+export interface IUserProileResponseInSocialTask{
+    currentRebateRate: number,
+    inviteLevelId: number,
+    multiplierFire: number,
+    multiplierFireInTotal: number,
+    multiplierLevel: number,
+    voucherCnt: number,
+}
 
 export interface IUserProfile {
   id: number;
@@ -107,6 +115,7 @@ interface UserState {
 
   // 更新hasMatchedWithCosmos
   updateHasMatchedWithCosmos: (address: string, hasMatchedWithCosmos: boolean) => void;
+  updateUserProfile: (address: string, userProfile: IUserProileResponseInSocialTask) => void;
 }
 
 // 默认初始状态
@@ -121,6 +130,30 @@ const useUser = create<UserState>()(
       (set, get) =>
       ({
         ...defaultInitState,
+
+        updateUserProfile: (address: string, userProfile?: IUserProileResponseInSocialTask) =>
+          set((draft) => {
+            if(draft.addressMap[address]){
+              if(userProfile?.inviteLevelId){
+                draft.addressMap[address].inviteLevelId = userProfile.inviteLevelId
+              }
+              if(userProfile?.currentRebateRate){
+                draft.addressMap[address].currentRebateRate = userProfile.currentRebateRate
+              }
+              if(userProfile?.voucherCnt){
+                draft.addressMap[address].voucherCnt = userProfile.voucherCnt
+              }
+              if(userProfile?.multiplierFire){
+                draft.addressMap[address].zkPart.multiplierFire = userProfile.multiplierFire
+              }
+              if(userProfile?.multiplierFireInTotal){
+                draft.addressMap[address].zkPart.multiplierFireInTotal = userProfile.multiplierFireInTotal
+              }
+              if(userProfile?.multiplierLevel){
+                draft.addressMap[address].zkPart.multiplierLevel = userProfile.multiplierLevel
+              }
+            }
+          }),
 
         updateHasMatchedWithCosmos: (address: string, hasMatchedWithCosmos: boolean) =>
           set((draft) => {
