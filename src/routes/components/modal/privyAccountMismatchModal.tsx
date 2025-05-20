@@ -29,13 +29,13 @@ const PrivyAccountMismatchModal = () => {
     (user?.wallet?.address && user?.wallet?.address == walletAddress);
 
   useEffect(() => {
-    if (accountDisconnectedOrMatched && !disable) {
+    if (accountDisconnectedOrMatched) {
       setVisible(false);
     }
   }, [accountDisconnectedOrMatched]);
 
   useEffect(() => {
-    if (accountMismatch) {
+    if (accountMismatch && !disable) {
       setVisible(true);
     }
   }, [accountMismatch]);
