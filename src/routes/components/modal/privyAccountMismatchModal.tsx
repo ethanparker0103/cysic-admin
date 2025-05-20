@@ -8,6 +8,7 @@ import { usePrivy } from "@privy-io/react-auth";
 import { useEffect } from "react";
 import { useDisconnect } from "wagmi";
 
+const disable = true
 const PrivyAccountMismatchModal = () => {
   const { visible, setVisible } = useModalState({
     eventName: "modal_privy_account_mismatch_visible",
@@ -28,7 +29,7 @@ const PrivyAccountMismatchModal = () => {
     (user?.wallet?.address && user?.wallet?.address == walletAddress);
 
   useEffect(() => {
-    if (accountDisconnectedOrMatched) {
+    if (accountDisconnectedOrMatched && !disable) {
       setVisible(false);
     }
   }, [accountDisconnectedOrMatched]);
