@@ -1,6 +1,6 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
-import { BIND_CHECK_PATHS } from "@/config";
+import { BIND_CHECK_PATHS, NO_BIND_CHECK_PATHS } from "@/config";
 import { getImageUrl, handleLoginPersonalMessage, handleSignIn } from "@/utils/tools";
 
 import { ArrowRight, Menu } from 'lucide-react';
@@ -13,6 +13,8 @@ import { isMobile } from "react-device-detect";
 import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
+import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
+import Spinner from "@/components/spinner";
 
 const size = 'full'
 
@@ -21,11 +23,13 @@ export default function Header() {
     const { currentNavs } = useNav();
     const location = useLocation();
 
+    const { hasTryToConnectedOnce } = useTriedConnectedOnce();
+
     // 检查当前路径是否需要绑定邀请码
     const needsBindCheck = useMemo(() => {
         const path = location.pathname;
-        // 使用 includes 检查路径是否包含特定字符串
-        return BIND_CHECK_PATHS.some(checkPath => path.includes(checkPath));
+
+        return BIND_CHECK_PATHS.some(checkPath => path.includes(checkPath) && !NO_BIND_CHECK_PATHS.includes(path));
     }, [location.pathname]);
 
     // 需要显示绑定提示的条件
@@ -100,7 +104,7 @@ export default function Header() {
                                     ))}
                                 </div>
                                 <div className="h-full flex items-center justify-end w-[26.75rem]">
-                                    {walletAddress ? (
+                                    {!hasTryToConnectedOnce ? <Spinner className="px-10" /> : walletAddress ? (
                                         !isSigned ? (
                                             <div onClick={handleLoginPersonalMessage} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                                 <span className="text-sub font-[400] uppercase text-sm">SIGN MESSAGE</span>

@@ -13,7 +13,7 @@ import { useLocation } from "react-router-dom";
 
 // import { useAppKit } from "@reown/appkit/react";
 import { usePrivy } from "@privy-io/react-auth";
-import { BIND_CHECK_PATHS, mediasLink, responseSuccessCode } from "@/config";
+import { BIND_CHECK_PATHS, mediasLink, NO_BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
 
 // 流程状态枚举
@@ -67,7 +67,7 @@ const SignInModal = () => {
 
   // 检查当前路径是否需要绑定邀请码
   const needsBindCheck = BIND_CHECK_PATHS.some((path) =>
-    location.pathname.includes(path)
+    location.pathname.includes(path) && !NO_BIND_CHECK_PATHS.includes(location.pathname)
   );
 
   // 根据当前路径和绑定状态判断是否需要显示绑定步骤

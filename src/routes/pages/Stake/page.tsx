@@ -336,7 +336,7 @@ const StakePage = () => {
       const result2 = await signAndBroadcastDirect(
         address,
         withdrawMsgs,
-        { ...cosmosFee, gas: (+cosmosFee.gas * 1.5).toString() },
+        { ...cosmosFee, gas: (+cosmosFee.gas * 1.5)?.toString() },
         connector
       );
 
@@ -475,6 +475,7 @@ const StakePage = () => {
               <div className={cn("!text-2xl !font-[400] title mb-4", isMobile ? "text-left" : "text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
+                disabled={!Number(rewardsAmount) || !address}
                 onClick={handleClaim}
                 type={BtnType.light}
                 className="rounded-lg w-full py-3 !text-base"

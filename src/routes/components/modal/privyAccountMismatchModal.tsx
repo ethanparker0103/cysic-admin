@@ -2,9 +2,9 @@ import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import useAccount from "@/hooks/useAccount";
 import useModalState from "@/hooks/useModalState";
+import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
 import { handleSignIn, shortStr } from "@/utils/tools";
 import { usePrivy } from "@privy-io/react-auth";
-import { usePrevious } from "ahooks";
 import { useEffect } from "react";
 import { useDisconnect } from "wagmi";
 
@@ -13,16 +13,10 @@ const PrivyAccountMismatchModal = () => {
     eventName: "modal_privy_account_mismatch_visible",
   });
 
-  const { walletAddress, isReconnecting, isConnecting } = useAccount();
+  const { walletAddress } = useAccount();
   const { disconnectAsync } = useDisconnect();
 
-  // connecting：false->true->false
-  const prevIsReconnecting = usePrevious(isReconnecting);
-  const prevIsConnecting = usePrevious(isConnecting);
-
-  const hasTryToConnectedOnce =
-    (prevIsReconnecting && !isReconnecting) ||
-    (prevIsConnecting && !isConnecting);
+  const {hasTryToConnectedOnce} = useTriedConnectedOnce()
 
   const { user, logout, connectWallet } = usePrivy();
 

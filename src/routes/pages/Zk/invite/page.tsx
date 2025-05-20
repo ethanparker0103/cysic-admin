@@ -33,6 +33,7 @@ interface TeamLeader {
     address: string;
     status: number;
     joinAt: string;
+    invitedBy: string;
     referralRewardList: Array<{
         amount: string;
         symbol: string;
@@ -116,6 +117,14 @@ const InvitePage = () => {
             width: "40%",
             renderCell: (leader) => (
                 <div className="">{leader.joinAt}</div>
+            )
+        },
+        {
+            key: "invitedBy",
+            label: "Invited by",
+            width: "40%",
+            renderCell: (leader) => (
+                <div className="">{leader.invitedBy || '-'}</div>
             )
         }
     ];

@@ -5,6 +5,7 @@ import { coins } from "@cosmjs/proto-signing";
 import { arbitrumSepolia } from "viem/chains";
 
 export const BIND_CHECK_PATHS = ["/zk", "/ai"];
+export const NO_BIND_CHECK_PATHS = ["/userPortal", "/zk/userPortal"];
 
 export const defaultChainId = "9527";
 
