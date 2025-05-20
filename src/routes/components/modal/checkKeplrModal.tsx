@@ -1,10 +1,10 @@
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
-import { connectWallet } from "@/utils/cosmos";
+import { checkKeplrWallet, connectWallet, updateProvider } from "@/utils/cosmos";
 import { keplrDownloadLink } from "@/config";
 import useCosmos from "@/models/_global/cosmos";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 const CheckKeplrModal = () => {
@@ -23,6 +23,15 @@ const CheckKeplrModal = () => {
     }
   }, [address])
 
+  const [checkingKeplrExist, setCheckingKeplrExist] = useState(false)
+
+  useEffect(()=>{
+    if(visible){
+      const ifExist = !!updateProvider()
+      setCheckingKeplrExist(ifExist)
+    }
+  }, [visible])
+
   return (
     <Modal
       isOpen={visible}
@@ -32,7 +41,7 @@ const CheckKeplrModal = () => {
     >
       <div className="flex flex-col gap-6">
         <span className="text-base font-[400]">To unlock Staking and Reserving $CYS, your need to connect your Keplr wallet to continue.</span>
-        <Button onClick={connectWallet} type="light" className="w-full py-5 text-base font-normal">Connect Keplr</Button>
+        <Button disabled={!checkingKeplrExist} needLoading onClick={connectWallet} type="light" className="w-full py-5 text-base font-normal">Connect Keplr</Button>
         <span className="text-base font-[400]">Not yet setup your Keplr wallet? Simply follow these 2 steps:</span>
         
 
