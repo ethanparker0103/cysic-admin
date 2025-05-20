@@ -33,7 +33,7 @@ const TaskCard = ({ title, status, buttonText, description, onClick }: TaskCardP
         className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
         disabled={status == 2}
       >
-        { status == 1 ? buttonText : "CLAIMED" }
+        {status == 1 ? buttonText : "CLAIMED"}
       </Button>
     </div>
   </GradientBorderCard>
@@ -50,9 +50,9 @@ interface TaskSectionProps {
 const TaskSection = ({ title, children, rightAction, description }: TaskSectionProps) => (
   <div className="mb-12">
     <div className={cn("flex mb-6 gap-4", isMobile ? "flex-col" : " justify-between items-center")}>
-      <div className="flex flex-col gap-2">
-      <h2 className={cn("title !font-light uppercase", isMobile ? "!text-2xl" : "text-4xl")}>{title}</h2>
-      {description && <div className="text-sub text-sm teacher !normal-case">{description}</div>}
+      <div className="flex flex-col gap-1">
+        <h2 className={cn("unbounded font-light text-2xl ")}>{title}</h2>
+        {description && <div className="text-sub text-sm teacher !normal-case">{description}</div>}
       </div>
       {rightAction && (
         <div>{rightAction}</div>
@@ -97,9 +97,13 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
 
   // 处理任务认领和检查
   const handleClaim = async (task: Task) => {
-    await axios.post('/api/v1/social/task/claim', {
-      taskId: task.id
-    })
+    try{
+         await axios.post('/api/v1/social/task/claim', {
+        taskId: task.id
+      })
+    } catch (error) {
+      console.log(error)
+    }
 
     run()
   };
@@ -109,11 +113,11 @@ const TaskGroup = ({ taskGroup }: { taskGroup: TaskGroup }) => {
       key={taskGroup.id}
       title={taskGroup.name}
       description={taskGroup.description}
-      rightAction={
-        <div onClick={handleVoucherModal} className={cn("flex items-center text-sub hover:text-white", isMobile ? "text-base" : "text-sm")}>
-          CHECK ALL YOUR VOUCHERS <ArrowRight size={16} className="ml-1" />
-        </div>
-      }
+    // rightAction={
+    //   <div onClick={handleVoucherModal} className={cn("flex items-center text-sub hover:text-white", isMobile ? "text-base" : "text-sm")}>
+    //     CHECK ALL YOUR VOUCHERS <ArrowRight size={16} className="ml-1" />
+    //   </div>
+    // }
     >
       {loading ?
         <Spinner />
@@ -154,7 +158,7 @@ const SocialTaskPage = () => {
       {/* content */}
       <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
         {/* title */}
-        <h1 className={cn("unbounded font-light mb-24 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>SOCIAL TASKS</h1>
+        <h1 className={cn("unbounded font-[200] mb-24 text-center", isMobile ? "text-7xl" : "text-[8rem]")}>SOCIAL TASKS</h1>
 
         {/* 根据API数据渲染任务组 */}
         {loading ? (
