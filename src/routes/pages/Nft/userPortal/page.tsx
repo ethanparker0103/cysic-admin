@@ -1,14 +1,13 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { formatReward, getImageUrl } from "@/utils/tools";
-import { Link, useNavigate } from "react-router-dom";
+import { getImageUrl } from "@/utils/tools";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
-import useCosmos from "@/models/_global/cosmos";
 import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import { Multiplier } from "@/routes/components/Multiplier";
 import SocialAccount from "@/routes/components/SocialAccount";
 import Profile from "@/routes/components/Profile";
-import InviteCard from "@/routes/components/usePortal/cards/InviteCard";
+import InviteCardWithStatus from "@/routes/components/usePortal/cards/InviteCard";
 import ZkBalanceCard from "@/routes/components/usePortal/cards/ZkBalanceCard";
 import CysicBalance from "@/routes/components/usePortal/cards/CysicBalance";
 import VoucherInfo from "@/routes/components/usePortal/cards/VoucherInfo";
@@ -30,10 +29,13 @@ const UserPortal = () => {
   )?.name;
   const levelLogo = getTierIcon(levelName);
 
+  const pathname = useLocation().pathname;
+
+
   return (
     <>
       {/* content */}
-      <div className="main-container mx-auto relative z-10 pt-20 pb-16 w-full">
+      <div className="main-container mx-auto relative z-10 pt-20 pb-12 w-full">
         {/* title */}
         <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">
           USER PORTAL
@@ -94,7 +96,7 @@ const UserPortal = () => {
           </h2>
 
           <div className="flex flex-wrap gap-4">
-            <InviteCard />
+            <InviteCardWithStatus />
             <GradientBorderCard
               borderRadius={8}
               className="flex-1 w-full h-full"
@@ -141,7 +143,7 @@ const UserPortal = () => {
                 title="CYSIC ZK"
                 imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
                 onClick={() => {
-                  navigate("/zk");
+                  navigate(pathname.includes("/zk") ? "/zk/userPortal/serviceHub" : "/userPortal/serviceHub");
                 }}
               />
             </div>

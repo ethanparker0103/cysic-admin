@@ -148,7 +148,7 @@ const ProjectPage = () => {
                     <div className={cn("w-full")}>
                         <h2
                             className={cn(
-                                "title !font-light uppercase",
+                                "title !font-light uppercase mb-4",
                                 isMobile ? "!text-base" : "!text-xl"
                             )}
                         >

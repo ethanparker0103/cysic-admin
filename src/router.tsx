@@ -31,10 +31,8 @@ import ProverListPage from "@/routes/pages/Zk/dashboard/prover/page";
 import ProjectDetailPage from "@/routes/pages/Zk/dashboard/project/[id]/page";
 import VerifierDetailPage from "@/routes/pages/Zk/dashboard/verifier/[id]/page";
 import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
-import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page"
+import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page";
 import UnbindPage from "@/routes/pages/unbind/page";
-
-
 
 const portalModules = {
   path: "userPortal",
@@ -47,9 +45,8 @@ const portalModules = {
       path: "serviceHub",
       element: <NftServiceHub />,
     },
-
-  ]
-}
+  ],
+};
 
 export const router = createBrowserRouter(
   [
@@ -119,39 +116,39 @@ export const router = createBrowserRouter(
               element: <DashboardPage />,
             },
             {
-              path: 'dashboard/project',
+              path: "dashboard/project",
               element: <ProjectListPage />,
             },
             {
-              path: 'dashboard/verifier',
-              element: <VerifierListPage />
+              path: "dashboard/verifier",
+              element: <VerifierListPage />,
             },
             {
-              path: 'dashboard/prover',
-              element: <ProverListPage />
+              path: "dashboard/prover",
+              element: <ProverListPage />,
             },
             {
-              path: 'dashboard/task',
-              element: <TaskListPage />
+              path: "dashboard/task",
+              element: <TaskListPage />,
             },
             {
-              path: 'dashboard/project/:id',
-              element: <ProjectDetailPage />
+              path: "dashboard/project/:id",
+              element: <ProjectDetailPage />,
             },
             {
-              path: 'dashboard/verifier/:id',
-              element: <VerifierDetailPage />
+              path: "dashboard/verifier/:id",
+              element: <VerifierDetailPage />,
             },
             {
-              path: 'dashboard/prover/:id',
-              element: <ProverDetailPage />
+              path: "dashboard/prover/:id",
+              element: <ProverDetailPage />,
             },
             {
-              path: 'dashboard/task/:id',
-              element: <TaskDetailPage />
+              path: "dashboard/task/:id",
+              element: <TaskDetailPage />,
             },
-            portalModules
-          ]
+            portalModules,
+          ],
         },
         {
           path: "/ai",
@@ -164,8 +161,8 @@ export const router = createBrowserRouter(
               index: true,
               element: <Nft />,
             },
-            portalModules
-          ]
+            portalModules,
+          ],
         },
         {
           path: "/stake",
@@ -180,201 +177,216 @@ export const router = createBrowserRouter(
 );
 
 export const backgroundImageList = {
-  '/': {
-    img: getImageUrl('@/assets/images/_global/home_landing_bg.png'),
+  "/": {
+    img: getImageUrl("@/assets/images/_global/home_landing_bg.png"),
     className: "grayscale h-[160vh]",
   },
-  '/ecosystem': {
-    img: getImageUrl('@/assets/images/_global/zk_ecosystem_bg.png'),
+  "/ecosystem": {
+    img: getImageUrl("@/assets/images/_global/zk_ecosystem_bg.png"),
     className: "h-[50vh]",
-    style: { filter: "grayscale(1) brightness(0.3) ", backgroundPosition: "center -25vh" },
-    needShadow: true
+    style: {
+      filter: "grayscale(1) brightness(0.3) ",
+      backgroundPosition: "center -25vh",
+    },
+    needShadow: true,
   },
-  '/academy': {
-    img: getImageUrl('@/assets/images/_global/zk_academy_bg.png'),
+  "/academy": {
+    img: getImageUrl("@/assets/images/_global/zk_academy_bg.png"),
     className: "h-[100vh]",
     style: { backgroundPosition: "center -50vh" },
-    needShadow: true
+    needShadow: true,
   },
-  '/hardware': {
-    img: getImageUrl('@/assets/images/_global/zk_hardware_bg.png'),
+  "/hardware": {
+    img: getImageUrl("@/assets/images/_global/zk_hardware_bg.png"),
     className: "h-screen",
     style: { backgroundPosition: "center -10vh" },
     // needShadow: true
   },
-  '/zk': {
-    img: getImageUrl('@/assets/images/_global/zk_landing_bg.png'),
+  "/zk": {
+    img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
     className: isMobile ? "h-[90%]" : "h-[180vh]",
     // needShadow: true
   },
-  '/zk/invite': {
-    img: getImageUrl('@/assets/images/_global/invite_landing_bg.png'),
+  "/zk/invite": {
+    img: getImageUrl("@/assets/images/_global/invite_landing_bg.png"),
     className: "h-screen",
     needShadow: true,
     needBack: true,
-    backTo: '/zk/userPortal',
-    backContent: 'User Portal'
+    backTo: "/zk/userPortal",
+    backContent: "User Portal",
   },
-  '/zk/prover': {
-    img: getImageUrl('@/assets/images/_global/prover_landing_bg.png'),
+  "/zk/prover": {
+    img: getImageUrl("@/assets/images/_global/prover_landing_bg.png"),
     className: "h-screen",
-    needShadow: true
+    needShadow: true,
   },
-  '/zk/verifier': {
+  "/zk/verifier": {
     // img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
     // className: "h-screen",
     // needShadow: true
   },
-  '/zk/project': {
-    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+  "/zk/project": {
+    img: getImageUrl("@/assets/images/_global/project_landing_bg.png"),
     className: "h-screen brightness-[0.7]",
     style: {
-      backgroundPosition: "center -25vh"
+      backgroundPosition: "center -25vh",
     },
-    needShadow: true
+    needShadow: true,
   },
-  '/zk/project/:id': {
-    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+  "/zk/project/:id": {
+    img: getImageUrl("@/assets/images/_global/project_landing_bg.png"),
     className: "h-screen brightness-[0.7]",
     style: {
-      backgroundPosition: "center -25vh"
+      backgroundPosition: "center -25vh",
     },
     needShadow: true,
     needBack: true,
   },
-  '/zk/project/my': {
-    img: getImageUrl('@/assets/images/_global/project_landing_bg.png'),
+  "/zk/project/my": {
+    img: getImageUrl("@/assets/images/_global/project_landing_bg.png"),
     className: "h-screen brightness-[0.7]",
     style: {
-      backgroundPosition: "center -25vh"
+      backgroundPosition: "center -25vh",
     },
     needShadow: true,
-    needBack: true
+    needBack: true,
   },
-  '/zk/dashboard': {
-    img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
+  "/zk/dashboard": {
+    img: getImageUrl("@/assets/images/_global/dashboard_landing_bg.png"),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
   },
-  '/zk/dashboard/project': {
-    img: '#000',
+  "/zk/dashboard/project": {
+    img: "#000",
     // img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
     // className: "h-screen purple-landing",
     // style: {
     //   backgroundPosition: "center -20vh"
     // },
     needBack: true,
-    backContent: 'Dashboard'
+    backContent: "Dashboard",
   },
-  '/zk/dashboard/verifier': {
-    img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
+  "/zk/dashboard/verifier": {
+    img: getImageUrl(
+      "@/assets/images/_global/dashboard_verifier_landing_bg.png"
+    ),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Dashboard'
+    backContent: "Dashboard",
   },
-  '/zk/dashboard/prover': {
-    img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
+  "/zk/dashboard/prover": {
+    img: getImageUrl("@/assets/images/_global/dashboard_prover_landing_bg.png"),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Dashboard'
+    backContent: "Dashboard",
   },
-  '/zk/dashboard/task': {
-    img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
+  "/zk/dashboard/task": {
+    img: getImageUrl("@/assets/images/_global/dashboard_task_landing_bg.png"),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Dashboard'
+    backContent: "Dashboard",
   },
-  '/zk/dashboard/project/:id': {
-    img: '#000',
+  "/zk/dashboard/project/:id": {
+    img: "#000",
     // img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
     // className: "h-screen purple-landing",
     // style: {
     //   backgroundPosition: "center -20vh"
     // },
     needBack: true,
-    backContent: 'Project'
+    backContent: "Project",
   },
-  '/zk/dashboard/verifier/:id': {
-    img: getImageUrl('@/assets/images/_global/dashboard_verifier_landing_bg.png'),
+  "/zk/dashboard/verifier/:id": {
+    img: getImageUrl(
+      "@/assets/images/_global/dashboard_verifier_landing_bg.png"
+    ),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Verifier'
+    backContent: "Verifier",
   },
-  '/zk/dashboard/prover/:id': {
-    img: getImageUrl('@/assets/images/_global/dashboard_prover_landing_bg.png'),
+  "/zk/dashboard/prover/:id": {
+    img: getImageUrl("@/assets/images/_global/dashboard_prover_landing_bg.png"),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Prover'
+    backContent: "Prover",
   },
-  '/zk/dashboard/task/:id': {
-    img: getImageUrl('@/assets/images/_global/dashboard_task_landing_bg.png'),
+  "/zk/dashboard/task/:id": {
+    img: getImageUrl("@/assets/images/_global/dashboard_task_landing_bg.png"),
     className: "h-screen purple-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
     needBack: true,
-    backContent: 'Task'
+    backContent: "Task",
   },
 
-
-  '/ai': {
-    img: getImageUrl('@/assets/images/_global/ai_landing_bg.png'),
+  "/ai": {
+    img: getImageUrl("@/assets/images/_global/ai_landing_bg.png"),
     className: "h-screen grayscale brightness-[0.3]",
-    needShadow: true
+    needShadow: true,
   },
-  '/stake': {
-    img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
+  "/stake": {
+    img: getImageUrl("@/assets/images/_global/stake_landing_bg.png"),
     className: "h-screen",
   },
-  '/nft': {
-    img: getImageUrl('@/assets/images/_global/nft_landing_bg.png'),
+  "/nft": {
+    img: getImageUrl("@/assets/images/_global/nft_landing_bg.png"),
     className: "h-screen",
     style: {
-      backgroundPosition: "center -10vh"
+      backgroundPosition: "center -10vh",
     },
-    needShadow: true
+    needShadow: true,
   },
-  
-  '/userPortal': {
-    img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
+
+  "/userPortal": {
+    img: getImageUrl("@/assets/images/_global/userPortal_landing_bg.png"),
     className: "h-screen green-landing",
     style: {
       backgroundPosition: "center 12vh",
     },
-    needShadow: true
+    needShadow: true,
   },
-  '/zk/userPortal': {
-    img: getImageUrl('@/assets/images/_global/userPortal_landing_bg.png'),
+  "/zk/userPortal": {
+    img: getImageUrl("@/assets/images/_global/userPortal_landing_bg.png"),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center 12vh"
+      backgroundPosition: "center 12vh",
     },
-    needShadow: true
+    needShadow: true,
   },
-  '/socialTask': {
-    img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
+  "/userPortal/serviceHub": {
+    img: "#000",
+    needBack: true,
+    backContent: "User Portal",
+  },
+  "/zk/userPortal/serviceHub": {
+    img: "#000",
+    needBack: true,
+    backContent: "User Portal",
+  },
+  "/socialTask": {
+    img: getImageUrl("@/assets/images/_global/socialTask_landing_bg.png"),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center -20vh"
+      backgroundPosition: "center -20vh",
     },
-    needShadow: true
-
+    needShadow: true,
   },
-}
+};

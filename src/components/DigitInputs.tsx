@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { isMobile } from 'react-device-detect';
+import React, { useRef, useCallback } from 'react';
 
 const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] text-center'
 
@@ -58,7 +57,7 @@ function ensureArrayLength(value: any, n: any) {
 
       const handlePaste = useCallback((e: React.ClipboardEvent<HTMLInputElement>, startIndex: number) => {
         e.preventDefault();
-        const pasteData = e.clipboardData.getData('text').replace(/\D/g, ''); // 只保留数字
+        const pasteData = e.clipboardData.getData('text').replace(/[^a-zA-Z0-9]/g, ''); // 只保留数字和字母
         const newDigits = [...digits];
         
         // 从起始位置开始填充粘贴的数字

@@ -1,9 +1,6 @@
 import { getImageUrl, shortStr, handleFaucetModal } from "@/utils/tools";
 
-import {
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/react";
+import { DropdownMenu, DropdownItem } from "@nextui-org/react";
 import Copy from "@/components/Copy";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
@@ -35,10 +32,10 @@ const ConnectInfo = () => {
       await logout();
       await disconnectAsync();
 
-//      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
-        window.localStorage.setItem('wagmi.com.okex.wallet.disconnected', 'true');
-//    }
-//      window.localStorage.removeItem('wagmi.recentConnectorId');
+      //      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
+      window.localStorage.setItem("wagmi.com.okex.wallet.disconnected", "true");
+      //    }
+      //      window.localStorage.removeItem('wagmi.recentConnectorId');
       reset();
     } catch (e) {
       console.error(e);
@@ -106,11 +103,11 @@ const ConnectInfo = () => {
             </div>
           </DropdownItem>
 
-          <DropdownItem
-            key="evm-disconnect"
-            className="!p-0"
-          >
-            <div className="py-4 px-6 flex items-center gap-2 justify-between w-full" onClick={handleEVMDisconnect}>
+          <DropdownItem key="evm-disconnect" className="!p-0">
+            <div
+              className="py-4 px-6 flex items-center gap-2 justify-between w-full"
+              onClick={handleEVMDisconnect}
+            >
               <div className="flex items-center gap-2 w-full">
                 <img
                   src={
@@ -124,25 +121,29 @@ const ConnectInfo = () => {
                 </span>
               </div>
 
-              <Button loading={loading} needLoading type="text" className="uppercase !px-0">
+              <Button
+                loading={loading}
+                needLoading
+                type="text"
+                className="uppercase !px-0"
+              >
                 disconnect
               </Button>
             </div>
           </DropdownItem>
 
-          <DropdownItem
-            key="cosmos-disconnect"
-            className="!p-0"
-          >
+          <DropdownItem key="cosmos-disconnect" className="!p-0">
             <ConnectCosmosButton />
           </DropdownItem>
 
-          <DropdownItem
-            key="referral-code"
-            className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between "
-          >
-            <span className="">Referral Code</span>
-            <Copy value={inviteCode}>{inviteCode || "-"}</Copy>
+          <DropdownItem key="referral-code" className="!p-0">
+            <Copy
+              value={inviteCode}
+              className="flex items-center gap-2 justify-between py-4 px-6"
+            >
+              <span className="">Referral Code</span>
+              <span className="ml-auto">{inviteCode || "-"}</span>
+            </Copy>
           </DropdownItem>
 
           <DropdownItem

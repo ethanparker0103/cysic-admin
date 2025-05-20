@@ -4,6 +4,7 @@ import React, { useMemo } from "react";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
 import { ArrowLeft } from "lucide-react";
+import { NO_CONTAINER_PATHS } from "@/config";
 
 interface BackgroundConfig {
     img: string;
@@ -60,7 +61,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
         return path;
     }, [needBack, path, backgroundConfig?.backTo]);
 
-    const noContainer = path == '/' || ['/hardware', '/zk', '/userPortal', '/zk/userPortal'].includes(path)
+    const noContainer = path == '/' || NO_CONTAINER_PATHS.includes(path)
 
     if (!backgroundConfig?.img) {
         return (
