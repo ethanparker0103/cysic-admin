@@ -725,8 +725,8 @@ const Home = () => {
         <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
-        <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-[200]">
-          Cysic Raises <span className="unbounded text-[2rem] font-[300]">$12M in Pre-A Round</span> <br />
+        <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-light">
+          Cysic Raises <span className="unbounded text-[2rem] font-medium">$12M</span> in<span className="unbounded text-[2rem] font-medium"> Pre-A Round</span> <br />
           To Advance the ZK Revolution
 
         </div>
