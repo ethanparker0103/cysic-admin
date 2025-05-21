@@ -49,10 +49,7 @@ const drawerCardList = [
     title: "product layer",
     subTitle: (
       <>
-        Relying on the blockchain and compute infra, multiple products are
-        deployed, <br />
-        such as ZK proof market, AI inference/training, AI Agent Platform,
-        Digital Compute.
+        Where decentralized compute meets real-world impact.
       </>
     ),
     desc: [
@@ -98,13 +95,10 @@ const drawerCardList = [
     className:
       "w-[59rem] top-[5.625rem] z-[2] bg-gradient-to-b from-[#196DFF] to-[#196DFF00] ",
     borderGradientFrom: "#6AD8FF",
-    title: "compute infra layer",
+    title: "COMPUTE INFRASTRUCTURE LAYER",
     subTitle: (
       <>
-        Above the execution layer, we have different kinds of machines working
-        on ZK, AI and mining.
-        <br />
-        These machines are used to do different computing tasks.
+        The engine behind the machines.
       </>
     ),
     desc: [
@@ -150,12 +144,10 @@ const drawerCardList = [
     className:
       "w-[56rem] top-[11.25rem] z-[3] bg-gradient-to-b from-[#3C19FF] to-[#3C19FF00] ",
     borderGradientFrom: "#85BCFF",
-    title: "execution layer",
+    title: "EXECUTION LAYER",
     subTitle: (
       <>
-        Above the consensus layer, various smart contracts are deployed on the
-        blockchain for different purposes, <br />
-        such as bridge, voting, swapping.
+        Logic that runs the system.
       </>
     ),
     desc: [
@@ -201,14 +193,10 @@ const drawerCardList = [
     className:
       "w-[52rem] top-[16.875rem] z-[4] bg-gradient-to-b from-[#5B0995] to-[#5B099500] ",
     borderGradientFrom: "#D1A9FF",
-    title: "consensus layer",
+    title: "CONSENSUS LAYER",
     subTitle: (
       <>
-        The Cosmos CDK blockchain, where the validators and miners are working
-        on the consensus and block producing.
-        <br />
-        The blocks are made up of transactions, zk proofs, tee attestation and
-        other data.{" "}
+        CONSENSUS LAYER The foundation of trust.
       </>
     ),
     desc: [
