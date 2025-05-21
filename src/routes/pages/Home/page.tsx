@@ -4,12 +4,12 @@ import { investors1, investors2 } from "@/config/investor";
 import AdCard from "@/routes/components/AdCard";
 import { JoinTestnetPhaseIIIButton, CysicHardwareStackButton, SeeWhatsComingButton } from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
 import ScrollingText from "@/routes/components/ScrollingText";
-import { academyConfigShowInHome } from "@/routes/pages/Academy/config";
+import { academyConfigShowInHome, otherArticleShowInHome } from "@/routes/pages/Academy/config";
 import { AcademyCard } from "@/routes/pages/Academy/page";
 import { ecosystemProjectsShowInHome } from "@/routes/pages/Ecosystem/config";
 import { EcosystemCard } from "@/routes/pages/Ecosystem/page";
 import { getImageUrl } from "@/utils/tools";
-import { cn } from "@nextui-org/react";
+import { cn, Divider } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { ReactNode, useRef } from "react";
 import { isMobile } from "react-device-detect";
@@ -78,7 +78,7 @@ const drawerCardList = [
             className="size-12"
           />
         ),
-        title: "AI Agent Platform",
+        title: "Agent Platform",
       },
       {
         icon: (
@@ -98,7 +98,7 @@ const drawerCardList = [
     title: "COMPUTE INFRASTRUCTURE LAYER",
     subTitle: (
       <>
-        The engine behind the machines.
+        Hardware that power up the protocol.
       </>
     ),
     desc: [
@@ -109,7 +109,7 @@ const drawerCardList = [
             className="size-12"
           />
         ),
-        title: "ZK",
+        title: "ZK ASIC",
       },
       {
         icon: (
@@ -118,16 +118,7 @@ const drawerCardList = [
             className="size-12"
           />
         ),
-        title: "AI",
-      },
-      {
-        icon: (
-          <img
-            src={getImageUrl("@/assets/images/icon/hardware.svg")}
-            className="size-12"
-          />
-        ),
-        title: "Hardware",
+        title: "GPU SERVER",
       },
       {
         icon: (
@@ -136,7 +127,7 @@ const drawerCardList = [
             className="size-12"
           />
         ),
-        title: "Mining",
+        title: "Mining RIG",
       },
     ],
   },
@@ -185,7 +176,7 @@ const drawerCardList = [
             className="size-12"
           />
         ),
-        title: "Smart Contracts",
+        title: "More Functions",
       },
     ],
   },
@@ -455,6 +446,9 @@ const navScreenList = [
       </Button>
     ),
   },
+];
+
+const otherScreenList = [
   {
     subTitle: "Growing with the Builders in the industry",
     title: "ecosystem",
@@ -532,7 +526,7 @@ const navScreenList = [
       </div>
     ),
   },
-];
+]
 
 const ScreenNavCard = ({
   background,
@@ -713,6 +707,20 @@ const Home = () => {
         })}
       </HorizontalScroll>
 
+      {
+        otherScreenList.map((i) => {
+          return (
+            <ScreenNavCard
+              background={i.background}
+              subTitle={i.subTitle}
+              title={i.title}
+              slogen={i.slogen}
+              action={i.action}
+            />
+          );
+        })}
+
+
       <div className="w-full">
         <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
@@ -729,19 +737,55 @@ const Home = () => {
 
       <ScreenNavCard
         title="As seen on"
+        className="py-10"
         action={
-          <div className="mt-10 main-container w-full flex items-center gap-[3.25rem]">
-            {asSeenOnList.map((i) => {
-              return (
-                <div className="h-12 flex-1" key={i.name}>
-                  <img
-                    src={i.img}
-                    className="object-contain h-full"
-                    alt={i.name}
-                  />
-                </div>
-              );
-            })}
+          <div className="flex flex-col gap-4 main-container py-10">
+            <div className="flex flex-wrap gap-y-12">
+              {otherArticleShowInHome.map(i => (
+                <a href={i.href} target="_blank" className="w-[33%] px-6 h-auto flex justify-center items-center " key={i.title} >
+                  <GradientBorderCard className="h-full flex flex-col max-w-[20.625rem] ">
+                    <>
+                      <div className="py-2 px-24 mx-auto">
+                        <img src={i.media.img} alt={i.media.name} className="h-12 object-contain" />
+                      </div>
+                      <Divider />
+                      <div className="flex flex-col justify-between py-4 flex-1 gap-10">
+                        <div className="px-6 text-lg teacher tracking-widest flex-1">
+                          {i.title}
+                        </div>
+
+                        <div className="self-end px-6">
+                          <ArrowRight className="w-4 h-4" />
+                        </div>
+                      </div>
+
+
+                    </>
+                  </GradientBorderCard>
+                </a>
+              ))}
+            </div>
+            
+            {/* <div className="mt-10 main-container w-full flex items-center gap-[3.25rem]">
+              {asSeenOnList.map((i) => {
+                return (
+                  <div className="h-12 flex-1" key={i.name}>
+                    <img
+                      src={i.img}
+                      className="object-contain h-full"
+                      alt={i.name}
+                    />
+                  </div>
+                );
+              })}
+            </div> */}
+
+            {/* {
+              otherArticleShowInHome.map(item => {
+                return <AcademyCard key={item.title} item={item} />;
+              })
+            } */}
+
           </div>
         }
       />

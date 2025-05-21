@@ -2,7 +2,6 @@ import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
 import { Link } from "react-router-dom";
-import { routesConfig } from "@/config";
 import { useState } from "react";
 import { handleHowInviteWorkModal } from "@/utils/tools";
 
@@ -14,7 +13,7 @@ const steps = [
         1. Invite Code and Levels<br/><br/>
         Your Cysic Network Invite Code and account work seamlessly across all Cysic services—including Cysic ZK, Cysic AI, and the upcoming Cysic Mining.<br/><br/>
         There are 5 Invite Levels. As you successfully invite more users, your level increases and unlocks exclusive rewards—such as higher Rebate Rates, enhanced Multipliers, and more.<br/><br/>
-        ⚠️ A user must complete all Basic Tasks in the <Link onClick={()=>handleHowInviteWorkModal(false)} to={routesConfig.socialTask} className="!text-[#19FFE0] !underline">Social Tasks</Link> to count as a Successful Invite.
+        ⚠️ A user must complete all Basic Tasks in the <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks</Link> to count as a Successful Invite.
       </>
     ),
   },

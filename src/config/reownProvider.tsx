@@ -3,10 +3,8 @@ import * as chains from "viem/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { router } from "@/router";
 
 const projectId2 = "31f035438ae413926262557046ca933a";
-// @ts-ignore
 const projectId1 = "0311c63d54926ae045833d490f9cf369";
 
 const projectId = projectId2;
@@ -30,18 +28,18 @@ const wagmiAdapter = new WagmiAdapter({
   // ssr: true
 });
 
-createAppKit({
-  adapters: [wagmiAdapter],
-  networks,
-  projectId,
-  metadata,
-  features: {
-    connectMethodsOrder: ["wallet"],
-    swaps: false,
-    email: false,
-    analytics: true, // Optional - defaults to your Cloud configuration
-  },
-});
+// createAppKit({
+//   adapters: [wagmiAdapter],
+//   networks,
+//   projectId,
+//   metadata,
+//   features: {
+//     connectMethodsOrder: ["wallet"],
+//     swaps: false,
+//     email: false,
+//     analytics: true, // Optional - defaults to your Cloud configuration
+//   },
+// });
 
 export default function ReownProvider({
   children,

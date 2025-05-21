@@ -13,8 +13,9 @@ const HorizontalScroll = ({ children }: { children: React.ReactNode }) => {
     const sections = gsap.utils.toArray<HTMLElement>(".horizontal-section");
     const sectionWidth = sections[0]?.offsetWidth || window.innerWidth;
 
-    const initialOffset = Math.floor(sections.length / 2) * sectionWidth;
-    const remainingSections = sections.length - Math.floor(sections.length / 2) - 1;
+    const initialOffset = ( Math.floor(sections.length / 2) - 0.5) * sectionWidth;
+    const remainingSections = sections.length - Math.floor(sections.length / 2) - 0.5;
+
 
     gsap.set('.horizontal-scroll', {
         x: initialOffset
@@ -25,7 +26,7 @@ const HorizontalScroll = ({ children }: { children: React.ReactNode }) => {
         scrollTrigger: {
             trigger: '.horizontal-scroll-wrapper',
             start: "top top",
-            end: `+=${sections.length * 100}%`,
+            end: `+=${sections.length * 150}%`,
             pin: '.horizontal-scroll',
             scrub: 2,
             anticipatePin: 1,

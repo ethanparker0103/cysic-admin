@@ -1,4 +1,4 @@
-import { CHAIN_ID_MAP } from "@/config";
+import { EVM_CHAIN_ID_MAP } from "@/config";
 import { PublicClient, TransactionNotFoundError, createPublicClient, http } from "viem";
 import { useAccount, useSwitchChain, useWriteContract as useWagmiWriteContract } from "wagmi";
 
@@ -112,7 +112,7 @@ import { useAccount, useSwitchChain, useWriteContract as useWagmiWriteContract }
   
       const txHash = await wagmiProps.writeContractAsync(params);
   
-      const chain = CHAIN_ID_MAP[params.chainId as keyof typeof CHAIN_ID_MAP]
+      const chain = EVM_CHAIN_ID_MAP[params.chainId as keyof typeof EVM_CHAIN_ID_MAP]
       const client = createPublicClient({
           chain: chain,
           transport: http(),

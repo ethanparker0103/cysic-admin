@@ -8,7 +8,6 @@ import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { Link, useLocation } from "react-router-dom";
 import useUser from "@/models/user";
 import { useWriteContract } from "@/hooks/useWriteContract";
-import { routesConfig } from "@/config";
 import { ArrowRight } from "lucide-react";
 import HoverDropdown from "@/components/HoverDropdown";
 import { useState } from "react";
@@ -139,7 +138,7 @@ const ConnectInfo = () => {
 
           <DropdownItem
             as={Link}
-            to={routesConfig.invite}
+            to={'/zk/invite'}
             key="check-invite"
             className="py-4 px-6 "
           >

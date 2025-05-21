@@ -1,14 +1,10 @@
-import { cysicTestnet_testnet } from "@/config/cosmos/cysicTestnet";
-import { cysicTestnet_dev } from "@/config/cosmos/cysicTestnet-dev";
+import { cosmos_cysic_devnet, cosmos_cysic_testnet } from "@/config/cosmos/cysicTestnet";
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
-import { arbitrumSepolia } from "viem/chains";
 
 export const BIND_CHECK_PATHS = ["/zk", "/ai"];
 export const NO_BIND_CHECK_PATHS = ["/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
 export const NO_CONTAINER_PATHS = ['/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub']
-
-export const defaultChainId = "9527";
 
 export const baseStatus: any = {
   "0": "Pending",
@@ -61,14 +57,10 @@ export const TaskStatusColor: any = {
   "401": "#FF5953",
 };
 
-export const ProofBackend: any = {
-  "1": "Halo2",
-};
-
 export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
-export const cysicTestnet = isProd ? cysicTestnet_testnet : cysicTestnet_dev;
+export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_devnet;
 
 export const mainUrl = import.meta.env.VITE_APP_BASE_URL;
 // isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
@@ -78,8 +70,6 @@ export const baseHref = "/m";
 export const defaultRewardAmount = 100;
 
 export const commonPageSize = 10;
-
-export const explorerUrl = "https://explorer-testnet.prover.xyz";
 
 export const cosmosReservedValue = "0.1";
 
@@ -139,7 +129,8 @@ export const mediasLink = {
   github: "https://github.com/cysic-labs",
   doc: "https://hackmd.io/@Cysic",
   cosmosExplorer: "https://explorer-testnet.prover.xyz",
-  evmExplorer: "https://cys-dev.prover.xyz"
+  evmExplorer: "https://cys-dev.prover.xyz",
+  contactUs: "https://cysic.xyz/contact-us"
 };
 
 export const downloadLink = {
@@ -147,65 +138,17 @@ export const downloadLink = {
   googlePlay: "https://play.google.com/store/apps/details?id=com.cysic.plus",
 };
 
-export const enableCosmosUrl = [
-  "my",
-  "stake",
-  "/my",
-  "/my/phase1",
-  "/stake/cgt",
-  "/stake/veCompute",
-  "/my/",
-  "/stake/cgt/",
-  "/stake/veCompute/",
-  "/my/phase1/",
-  "/my/phase1Convert",
-  "/my/phase1Convert/",
-];
 
 export const loginSignContent = "Welcome to Cysic！";
 export const responseSuccessCode = 0;
-
-export const CHAIN_ID_MAP = {
-  [arbitrumSepolia.id]: arbitrumSepolia,
-};
-
-export const purchaseChainId = arbitrumSepolia.id;
-export const USDC = {
-  [arbitrumSepolia.id]: "0x1e6e1C6BcCD8b8B9ec82ee8863cD53D640D36b76",
-};
-export const USDCDecimal = 18;
-export const purchaseNftContract = {
-  [arbitrumSepolia.id]: "0x2E8D9A9bF85A06C57f46bA7Ac8e0c25259c544cC",
-};
-
 
 export const classes = {
   subTitle: 'sub-title !tracking-widest !text-2xl !font-[400]',
 }
 
-export const routesConfig = {
-  "ecosystem": "/ecosystem",
-  "academy": "/academy",
-  "hardware": "/hardware",
-  "zk": "/zk",
-  "invite": "/zk/invite",
-  "prover": "/zk/prover",
-  "verifier": "/zk/verifier",
-  "project": "/zk/project",
-  "project/my": "/zk/project/my",
-  "project/my/:id": "/zk/project/my/:id",
-  "serviceHub": "/zk/serviceHub",
-  "ai": "/ai",
-  "nft": "/nft",
-  "userPortal": "/userPortal",
-  "socialTask": "/socialTask",
-  "stake": "/stake",
-  "dashboard": "/zk/dashboard",
-  "dashboard/project": "/zk/dashboard/project",
-  "dashboard/prover": "/zk/dashboard/prover",
-  "dashboard/verifier": "/zk/dashboard/verifier",
-  
-}
 
+
+export * from './evm'
 export * from './abi/faucet'
 export * from './abi/purchase'
+export * from './abi/bridge'

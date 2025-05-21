@@ -11,7 +11,6 @@ import { cn, Tab, Tabs, Tooltip } from "@nextui-org/react";
 import { ArrowRight, Check, CircleHelp } from "lucide-react";
 import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
-import { routesConfig } from "@/config";
 import { MultiplierPercentBar } from "@/routes/components/Multiplier";
 import useStatic from "@/models/_global";
 
@@ -267,7 +266,7 @@ const MoreFire = () => {
             <NButton
                 onPress={() => {
                     dispatchEvent(new CustomEvent('modal_multiplier_visible', { detail: { visible: false } }))
-                }} as={Link} to={routesConfig.socialTask} className="rounded-full text-base !bg-[#19FFE0] !text-[#000] !rounded-lg flex items-center justify-center !py-6 !min-h-fit" >
+                }} as={Link} to={'/socialTask'} className="rounded-full text-base !bg-[#19FFE0] !text-[#000] !rounded-lg flex items-center justify-center !py-6 !min-h-fit" >
                 <>
                     <span className="teacher text-base font-normal text-[#000] tracking-widest">social tasks</span>
                     <ArrowRight className="w-4 h-4" />
@@ -278,7 +277,7 @@ const MoreFire = () => {
                 onPress={() => {
                     dispatchEvent(new CustomEvent('modal_multiplier_visible', { detail: { visible: false } }))
                 }}
-                as={Link} to={routesConfig.invite} className="rounded-full text-base !bg-white !text-[#000] flex items-center justify-center !py-6 !rounded-lg !min-h-fit" >
+                as={Link} to={'/zk/invite'} className="rounded-full text-base !bg-white !text-[#000] flex items-center justify-center !py-6 !rounded-lg !min-h-fit" >
                 <>
                     <span className="teacher text-base font-normal tracking-widest">invites</span>
                     <ArrowRight className="w-4 h-4" />

@@ -1,8 +1,6 @@
-// @ts-nocheck
-
 import Button, { BtnType } from "@/components/Button";
-import { formatReward, getImageUrl, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
-import { Search, History } from "lucide-react";
+import { formatReward, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
+import { History } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
@@ -13,13 +11,11 @@ import useStake from "@/models/stake"; // 引入stake store
 import { blockTime, cosmosFee } from "@/config";
 
 import {
-  GasPrice,
   QueryClient,
   setupDistributionExtension,
 } from "@cosmjs/stargate";
 import * as tx_1 from "cosmjs-types/cosmos/distribution/v1beta1/tx"
 import {
-  checkKeplrWallet,
   checkkTx,
   connectWallet,
   signAndBroadcastDirect,
@@ -27,7 +23,7 @@ import {
 import BigNumber from "bignumber.js";
 import { showStatusModal } from "@/utils/tools";
 import { StatusType } from "@/routes/components/modal/statusModal";
-import { cysicTestnet } from "@/config";
+import { cosmosCysicTestnet } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
@@ -88,7 +84,7 @@ const StakePage = () => {
     const networkValidators = activeList.data.validatorList;
 
     // 创建网络验证者映射，便于查找
-    const networkValidatorMap = {};
+    const networkValidatorMap: any = {};
     networkValidators.forEach(validator => {
       networkValidatorMap[validator.validatorName] = validator;
     });
@@ -284,7 +280,7 @@ const StakePage = () => {
     {
       key: "commissionRate",
       label: "Commission Rate",
-      renderCell: (validator) => <span className="text-sub">{(validator.commissionRate * 100) || 0}%</span>
+      renderCell: (validator) => <span className="text-sub">{(validator?.commissionRate * 100) || 0}%</span>
     },
     {
       key: "action",
@@ -345,7 +341,7 @@ const StakePage = () => {
       showStatusModal({
         type: StatusType.SUCCESS,
         title: "Rewards Claimed Successfully",
-        chainName: cysicTestnet.chainName,
+        chainName: cosmosCysicTestnet.chainName,
         txHash: tx
       });
 

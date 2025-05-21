@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Root from "./routes/root";
 import Home from "./routes/pages/Home/page";
 import Zk from "@/routes/pages/Zk/page";
@@ -18,10 +18,8 @@ import MyProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
 import EcosystemPage from "@/routes/pages/Ecosystem/page";
 import AcademyPage from "@/routes/pages/Academy/page";
 import HardwarePage from "@/routes/pages/Hardware/page";
-
 import ProjectPage from "@/routes/pages/Zk/project/page";
 import VerifierPage from "@/routes/pages/Zk/verifier/page";
-import ProverPage from "@/routes/pages/Zk/prover/page";
 
 import DashboardPage from "@/routes/pages/Zk/dashboard/page";
 import TaskListPage from "@/routes/pages/Zk/dashboard/task/page";
@@ -33,6 +31,7 @@ import VerifierDetailPage from "@/routes/pages/Zk/dashboard/verifier/[id]/page";
 import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
 import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page";
 import UnbindPage from "@/routes/pages/unbind/page";
+import Bridge from "@/routes/pages/Bridge/page";
 
 const portalModules = {
   path: "userPortal",
@@ -59,6 +58,10 @@ export const router = createBrowserRouter(
           element: <Home />,
         },
         portalModules,
+        {
+          path: '/bridge',
+          element: <Bridge />
+        },
         {
           path: "/unbind",
           element: <UnbindPage />,
@@ -200,12 +203,10 @@ export const backgroundImageList = {
     img: getImageUrl("@/assets/images/_global/zk_hardware_bg.png"),
     className: "h-screen",
     style: { backgroundPosition: "center -10vh" },
-    // needShadow: true
   },
   "/zk": {
     img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
     className: isMobile ? "h-[90%]" : "h-[180vh]",
-    // needShadow: true
   },
   "/zk/invite": {
     img: getImageUrl("@/assets/images/_global/invite_landing_bg.png"),
@@ -221,9 +222,6 @@ export const backgroundImageList = {
     needShadow: true,
   },
   "/zk/verifier": {
-    // img: getImageUrl('@/assets/images/_global/stake_landing_bg.png'),
-    // className: "h-screen",
-    // needShadow: true
   },
   "/zk/project": {
     img: getImageUrl("@/assets/images/_global/project_landing_bg.png"),
@@ -260,11 +258,6 @@ export const backgroundImageList = {
   },
   "/zk/dashboard/project": {
     img: "#000",
-    // img: getImageUrl('@/assets/images/_global/dashboard_landing_bg.png'),
-    // className: "h-screen purple-landing",
-    // style: {
-    //   backgroundPosition: "center -20vh"
-    // },
     needBack: true,
     backContent: "Dashboard",
   },

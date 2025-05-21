@@ -1,11 +1,10 @@
 import StatusIcon from "@/components/StatusIcon";
 import CysicTable from "@/components/Table";
-import { TaskStatus, explorerUrl, rewardStatus } from "@/config";
+import { TaskStatus, mediasLink, rewardStatus } from "@/config";
 import { getImageUrl } from "@/utils/tools";
 
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
-import Image from "@/components/Image";
 import { Tooltip } from "@nextui-org/react";
 import { ArrowUpRightIcon } from "lucide-react";
 const formatRankImg = (v: any) => {
@@ -112,7 +111,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
             return (
                 <div className="flex items-center gap-1">
                     <span>{item?.[columnKey]}</span>
-                    <a target="_blank" href={explorerUrl + `/blocks/${item?.[columnKey]}`}>
+                    <a target="_blank" href={mediasLink.cosmosExplorer + `/blocks/${item?.[columnKey]}`}>
                         <ArrowUpRightIcon className="size-3" />
                     </a>
                 </div>
@@ -124,7 +123,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                 <div className="flex items-center gap-1">
                     <span>{blocks > 0 ? blocks : '-'}</span>
                     {
-                        +blocks > 0 ? <a target="_blank" href={explorerUrl + `/blocks/${blocks}`}>
+                        +blocks > 0 ? <a target="_blank" href={mediasLink.cosmosExplorer + `/blocks/${blocks}`}>
                             <ArrowUpRightIcon className="size-3" />
                         </a> : null
                     }

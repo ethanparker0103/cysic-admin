@@ -1,6 +1,3 @@
-import { cosmosHubTestnet } from "@/config/cosmos/cosmosHubTestnet";
-
-import { OsmosisTestnetChainInfo } from "@/config/cosmos/osmoTestnet";
 import useCosmos from "@/models/_global/cosmos";
 import { Registry, GeneratedType } from "@cosmjs/proto-signing";
 import { SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate";
@@ -9,7 +6,7 @@ import {
     MsgExchangeToGovToken,
     MsgDelegate,
 } from "./cysic-msg";
-import { cysicTestnet, keplrDownloadLink } from "@/config";
+import { cosmosCysicTestnet } from "@/config";
 import * as bech32 from "bech32";
 import { toast } from "react-toastify";
 import { SignMode } from "cosmjs-types/cosmos/tx/signing/v1beta1/signing";
@@ -43,11 +40,9 @@ export const updateProvider = () => {
 const set = useCosmos.getState().setState;
 // const rpc = 'http://dev-node-1.prover.xyz'
 
-const chain = cysicTestnet.chainId;
+const chain = cosmosCysicTestnet.chainId;
 const cosmosConfig = {
-    [OsmosisTestnetChainInfo.chainId]: OsmosisTestnetChainInfo,
-    [cosmosHubTestnet.chainId]: cosmosHubTestnet,
-    [cysicTestnet.chainId]: cysicTestnet,
+    [cosmosCysicTestnet.chainId]: cosmosCysicTestnet,
 };
 
 // soft - 尝试链接，不处理任何报错
@@ -171,7 +166,7 @@ export async function signAndBroadcastDirect(
         throw new Error("Keplr is not installed");
     }
 
-    const chainId = cysicTestnet.chainId; // 替换为实际的 chainId
+    const chainId = cosmosCysicTestnet.chainId; // 替换为实际的 chainId
 
     // 启用 Keplr 与链的交互
     await window?.keplr.enable(chainId);
@@ -276,7 +271,7 @@ export const checkKeplrWallet = (onlyClient?: boolean) => {
 export const convertAddrByProvider = async ({ client }: { client: any }) => {
     checkKeplrWallet(true);
 
-    const chainId = cysicTestnet.chainId; // 替换为实际的 chainId
+    const chainId = cosmosCysicTestnet.chainId; // 替换为实际的 chainId
     const accounts = await client?.signer?.keplr?.getKey(chainId)
 
     return {

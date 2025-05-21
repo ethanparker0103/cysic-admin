@@ -38,34 +38,6 @@ const ProjectDetail = () => {
             key: "name",
             label: "Project Name",
         },
-        // {
-        //     key: "domain",
-        //     label: "Domain",
-        //     renderCell: (item: any) => {
-        //         if (item?.domain) {
-        //             return <a className="!underline" href={item?.domain} target="_blank">{item?.domain}</a>
-        //         }
-        //         return '-'
-        //     }
-        // },
-        // {
-        //     key: "address",
-        //     label: "Address",
-        //     renderCell: (item: any) => {
-        //         return <div className="flex flex-col gap-2">
-        //             <a target="_blank" href={explorerUrl + `/address/${item?.address}`}
-        //                 className="flex items-center gap-2">
-        //                 <span>{item?.address}</span>
-        //                 <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
-        //             </a>
-        //             <a target="_blank" href={explorerUrl + `/address/${item?.cysicAddress}`}
-        //                 className="flex items-center gap-2 text-[#737373]">
-        //                 <span>{item?.cysicAddress}</span>
-        //                 <img className="size-3" src={getImageUrl('@/assets/images/icon/share.svg')} />
-        //             </a>
-        //         </div>
-        //     }
-        // },
         {
             key: "reward",
             label: "Reward",

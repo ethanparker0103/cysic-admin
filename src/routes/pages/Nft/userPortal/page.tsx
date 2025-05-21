@@ -16,7 +16,6 @@ import AdCard from "@/routes/components/AdCard";
 import useStatic from "@/models/_global";
 import { getTierIcon } from "@/routes/pages/Zk/invite/page";
 import { ArrowRight } from "lucide-react";
-import { routesConfig } from "@/config";
 
 // 主要组件
 const UserPortal = () => {
@@ -80,7 +79,7 @@ const UserPortal = () => {
 
         <div className="mb-12 relative">
           <Link
-            to={routesConfig.invite}
+            to={'/zk/invite'}
             className="absolute top-2 right-0 teacher text-sm flex items-center text-sub text-sm hover:text-white"
           >
             check invite details <ArrowRight size={12} className="ml-1" />

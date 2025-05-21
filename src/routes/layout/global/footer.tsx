@@ -1,5 +1,5 @@
 import Media from "@/components/Media"
-import { explorerUrl, mediasLink, routesConfig } from "@/config"
+import { mediasLink } from "@/config"
 import { getImageUrl } from "@/utils/tools"
 import { Button, cn, Link as NextLink } from "@nextui-org/react"
 import { isMobile } from "react-device-detect"
@@ -16,15 +16,15 @@ const navs = [
     },
     {
         content: 'Hardware',
-        href: routesConfig.hardware
+        href: '/hardware'
     },
     {
         content: 'Explorer',
-        href: explorerUrl
+        href: mediasLink.cosmosExplorer
     },
     {
         content: 'Academy',
-        href: routesConfig.academy
+        href: '/academy'
     },
     {
         content: 'Docs',
@@ -36,7 +36,7 @@ const navs = [
     },
     {
         content: 'Contact Us',
-        href: 'https://cysic.xyz/contact-us'
+        href: mediasLink.contactUs
     }
 ]
 

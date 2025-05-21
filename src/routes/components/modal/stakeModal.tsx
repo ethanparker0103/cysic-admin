@@ -9,7 +9,7 @@ import { StatusType } from "./statusModal"; // 导入状态类型枚举
 import useCosmos from "@/models/_global/cosmos";
 import useStake from "@/models/stake"; // 引入stake store
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
-import { blockTime, cosmosFee, cysicTestnet } from "@/config";
+import { blockTime, cosmosFee, cosmosCysicTestnet } from "@/config";
 import { MsgDelegate, MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import BigNumber from "bignumber.js";
 import { useRequest } from "ahooks";
@@ -486,7 +486,7 @@ const StakeModal = () => {
             showStatusModal({
                 type: StatusType.SUCCESS,
                 title: "Transaction Submitted",
-                chainName: cysicTestnet.chainName,
+                chainName: cosmosCysicTestnet.chainName,
                 txHash: tx
             });
 

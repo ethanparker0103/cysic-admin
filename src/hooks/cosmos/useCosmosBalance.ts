@@ -1,29 +1,22 @@
-// @ts-nocheck
-import { blockTime, cysicTestnet } from "@/config"
+import { blockTime, cosmosCysicTestnet } from "@/config"
 import useCosmos from "@/models/_global/cosmos"
 import { useEventListener, useRequest } from "ahooks"
 import BigNumber from "bignumber.js"
 import { setupDepositExtension } from "@/utils/cysic-query"
-import { DepositType } from "@/utils/cysic-msg"
 import { QueryClient } from "@cosmjs/stargate"
-import { CometClient, connectComet, Tendermint34Client } from "@cosmjs/tendermint-rpc";
-import { useMemo, useRef } from "react"
-
-
+import { connectComet } from "@cosmjs/tendermint-rpc";
+import { useRef } from "react"
 
 const basicDecimaal = 18
-
-
-
 
 const useCosmosBalance = () => {
     const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
 
-    const depositExtension = useRef(null)
+    const depositExtension = useRef<any>(null)
 
     const initDepositExtension = async () => {
         if (depositExtension.current) return depositExtension.current;
-        const tmClient = await connectComet(cysicTestnet.rpc);
+        const tmClient = await connectComet(cosmosCysicTestnet.rpc);
         const client = new QueryClient(tmClient);
         const _depositExtension = setupDepositExtension(client);
         depositExtension.current = _depositExtension
@@ -49,7 +42,7 @@ const useCosmosBalance = () => {
         refreshDeps: [connector, address, unmatchedAddressWithEVM],
         pollingInterval: blockTime.long,
         onSuccess(e: any) {
-            const res = e?.reduce((prev: any, next: number) => {
+            const res = e?.reduce((prev: any, next: any) => {
                 if (!prev?.[next?.denom]) {
                     prev[next?.denom] = {}
                 }

@@ -9,8 +9,7 @@ import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableCo
 import { getImageUrl, shortStr } from "@/utils/tools";
 import {
   commonPageSize,
-  explorerUrl,
-  providerStatus,
+  mediasLink,
 } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
@@ -50,7 +49,7 @@ const VerifierDetail = () => {
           <div className="flex flex-col gap-2">
             <a
               target="_blank"
-              href={explorerUrl + `/address/${item?.address}`}
+              href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
               className="flex items-center gap-2"
             >
               <span>{item?.address}</span>
@@ -61,7 +60,7 @@ const VerifierDetail = () => {
             </a>
             <a
               target="_blank"
-              href={explorerUrl + `/address/${item?.cysicAddress}`}
+              href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
               className="flex items-center gap-2 text-[#737373]"
             >
               <span>{item?.cysicAddress}</span>

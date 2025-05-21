@@ -19,7 +19,7 @@ import {
   getWalletClient,
 } from "@wagmi/core";
 import axios from "axios";
-import { cosmosFee, cysicTestnet } from "@/config";
+import { cosmosFee, cosmosCysicTestnet } from "@/config";
 import useUser from "@/models/user";
 import { StatusModalProps } from "@/routes/components/modal/statusModal";
 
@@ -574,7 +574,7 @@ export function sleep(ms: number) {
 export function calculateTransactionFee() {
   // 计算 gas 费用
   const gasFee = BigNumber(
-    cysicTestnet.feeCurrencies?.[0].gasPriceStep.average
+    cosmosCysicTestnet.feeCurrencies?.[0].gasPriceStep.average
   ).multipliedBy(cosmosFee.gas);
   const feeInCYS = gasFee.div(1e18);
 

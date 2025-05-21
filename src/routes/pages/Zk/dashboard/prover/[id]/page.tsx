@@ -6,8 +6,8 @@ import { isMobile } from "react-device-detect";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
-import { getImageUrl, shortStr } from "@/utils/tools";
-import { commonPageSize, explorerUrl } from "@/config";
+import { shortStr } from "@/utils/tools";
+import { commonPageSize, mediasLink } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
 import { ArrowRight, ArrowUpRightIcon } from "lucide-react";
@@ -43,12 +43,12 @@ const ProverDetail = () => {
             label: "Address",
             renderCell: (item: any) => {
                 return <div className="flex flex-col gap-2">
-                    <a target="_blank" href={explorerUrl + `/address/${item?.address}`}
+                    <a target="_blank" href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
                         className="flex items-center gap-2">
                         <span>{item?.address}</span>
                         <ArrowUpRightIcon className="size-3" />
                     </a>
-                    <a target="_blank" href={explorerUrl + `/address/${item?.cysicAddress}`}
+                    <a target="_blank" href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
                         className="flex items-center gap-2 text-[#737373]">
                         <span>{item?.cysicAddress}</span>
                         <ArrowUpRightIcon className="size-3" />
