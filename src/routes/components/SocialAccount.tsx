@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import useAccount from "@/hooks/useAccount";
 import { getImageUrl } from "@/utils/tools";
-import { usePrivy } from "@privy-io/react-auth";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
 import { ReactNode, useEffect } from "react";
@@ -35,7 +34,6 @@ const showAllMedia = true;
 
 const SocialAccount = () => {
   const { socialAccount, walletAddress } = useAccount();
-  // const { linkDiscord, linkGoogle, linkTwitter } = usePrivy();
 
 
   const linkDiscord = async () => {

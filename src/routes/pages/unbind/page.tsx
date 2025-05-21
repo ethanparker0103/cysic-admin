@@ -1,5 +1,5 @@
 import Button from "@/components/Button";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@/hooks/usePrivy";
 
 const UnbindPage = () => {
     const { linkEmail, unlinkDiscord, unlinkGoogle, unlinkTwitter, user } = usePrivy()

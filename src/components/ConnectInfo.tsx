@@ -5,8 +5,6 @@ import Copy from "@/components/Copy";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
 import ConnectCosmosButton from "@/components/connectCosmosButton";
-import { usePrivy } from "@privy-io/react-auth";
-import { useDisconnect } from "wagmi";
 import { Link, useLocation } from "react-router-dom";
 import useUser from "@/models/user";
 import { useWriteContract } from "@/hooks/useWriteContract";
@@ -14,14 +12,13 @@ import { routesConfig } from "@/config";
 import { ArrowRight } from "lucide-react";
 import HoverDropdown from "@/components/HoverDropdown";
 import { useState } from "react";
+import { useLogout } from "@/hooks/useLogout";
 
 const ConnectInfo = () => {
   // 使用新的useAccount获取状态
-  const { cosmosAddress, address, connector, name, avatarUrl, inviteCode } =
-    useAccount();
+  const { address, connector, avatarUrl, inviteCode } = useAccount();
 
-  const { logout } = usePrivy();
-  const { disconnectAsync } = useDisconnect();
+  const { logout } = useLogout();
   const { reset } = useUser();
 
   const [loading, setLoading] = useState(false);
@@ -30,12 +27,6 @@ const ConnectInfo = () => {
     try {
       setLoading(true);
       await logout();
-      await disconnectAsync();
-
-      //      if (window.localStorage.getItem('wagmi.recentConnectorId') == "com.okex.wallet") {
-      window.localStorage.setItem("wagmi.com.okex.wallet.disconnected", "true");
-      //    }
-      //      window.localStorage.removeItem('wagmi.recentConnectorId');
       reset();
     } catch (e) {
       console.error(e);

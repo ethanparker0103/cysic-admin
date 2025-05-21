@@ -11,8 +11,7 @@ import useAccount from "@/hooks/useAccount";
 import axios from "@/service";
 import { useLocation } from "react-router-dom";
 
-// import { useAppKit } from "@reown/appkit/react";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@/hooks/usePrivy";
 import { BIND_CHECK_PATHS, mediasLink, NO_BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
 
@@ -26,13 +25,11 @@ enum SignInStep {
 const SignInModal = () => {
   const { walletAddress, activeAddress, isSigned, isBinded, inviteCode: userInviteCode } =
     useAccount();
-  const { login: _login, connectWallet, linkGoogle, linkTwitter, linkDiscord, user} = usePrivy();
+  const { login: _login, linkGoogle, linkTwitter, linkDiscord, user } = usePrivy();
 
   const login = async (type: 'google' | 'twitter' | 'discord' | 'wallet')=>{
     if(user && user?.wallet?.address){
-      if(type === 'wallet'){
-        await connectWallet()
-      }else if(type === 'google'){
+      if(type === 'google'){
         await linkGoogle()
       }else if(type === 'twitter'){
         await linkTwitter()

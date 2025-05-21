@@ -8,7 +8,7 @@ import { useSignMessage } from '@/hooks/useSignMessage';
 import { BIND_CHECK_PATHS, loginSignContent } from '@/config';
 import useAccount from '@/hooks/useAccount';
 import { useLocation } from 'react-router-dom';
-import { usePrivy } from '@privy-io/react-auth';
+import { usePrivy } from "@/hooks/usePrivy";
 import { handleSignIn, sleep } from '@/utils/tools';
 import axios from 'axios';
 import useCheckMatchedCosmosAddressWithEVM from './useCheckMatchedCosmosAddressWithEVM';

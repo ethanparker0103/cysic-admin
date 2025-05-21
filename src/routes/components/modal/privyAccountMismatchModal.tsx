@@ -4,9 +4,9 @@ import useAccount from "@/hooks/useAccount";
 import useModalState from "@/hooks/useModalState";
 import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
 import { handleSignIn, shortStr } from "@/utils/tools";
-import { usePrivy } from "@privy-io/react-auth";
+import { usePrivy } from "@/hooks/usePrivy";
 import { useEffect } from "react";
-import { useDisconnect } from "wagmi";
+import { useLogout } from "@/hooks/useLogout";
 
 const disable = true
 const PrivyAccountMismatchModal = () => {
@@ -15,11 +15,11 @@ const PrivyAccountMismatchModal = () => {
   });
 
   const { walletAddress } = useAccount();
-  const { disconnectAsync } = useDisconnect();
 
   const {hasTryToConnectedOnce} = useTriedConnectedOnce()
 
-  const { user, logout, connectWallet } = usePrivy();
+  const { user, connectWallet } = usePrivy();
+  const { logout, disconnectAsync } = useLogout();
 
   const accountMismatch =
     hasTryToConnectedOnce && !!user?.wallet?.address && user?.wallet?.address != walletAddress;
@@ -56,7 +56,6 @@ const PrivyAccountMismatchModal = () => {
       walletAddress?.toLowerCase() !== user?.wallet?.address?.toLowerCase()
     ) {
       await disconnectAsync();
-      window.localStorage.setItem('wagmi.com.okex.wallet.disconnected', 'true');
     }
     await connectWallet();
   };
