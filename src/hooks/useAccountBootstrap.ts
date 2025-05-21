@@ -80,6 +80,8 @@ const useAccountBootstrap = () => {
   useEffect(() => {
     if (!address) return;
 
+    document.documentElement.style.overflow = 'auto'
+
     setAddress(address);
     userStore.setActiveAddress(address);
 
@@ -154,6 +156,8 @@ const useAccountBootstrap = () => {
 
     }
   }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.email, user?.twitter?.username])
+
+
 
 
   return null;

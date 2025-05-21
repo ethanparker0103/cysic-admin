@@ -2,16 +2,22 @@ import { TaskStatus as TaskStatusText, TaskStatusColor } from "@/config";
 import { getImageUrl } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 
+export const Avatar = ({ className, avatar, name }: { className?: string; avatar: string; name: string }) => {
+  return (
+    avatar ? (
+      <img src={avatar} className={cn(className, "size-8 rounded-full")} />
+    ) : (
+      <div className={cn(className, "size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center")}>
+        {name?.slice(0, 2)}
+      </div>
+    )
+  )
+}
+
 export const TableAvatar = ({ avatar, name }: { avatar: string; name: string }) => {
   return (
     <div className="flex items-center gap-2">
-      {avatar ? (
-        <img src={avatar} className="size-8 rounded-full" />
-      ) : (
-        <div className="size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center">
-          {name?.slice(0, 2)}
-        </div>
-      )}
+      <Avatar avatar={avatar} name={name} />
       <span>{name}</span>
     </div>
   );

@@ -83,7 +83,7 @@ const Modal = ({
 
                     {/* 内容区域 - 只有这里可滚动 */}
                     <div 
-                        className="p-6 w-full overflow-y-auto" 
+                        className="modal-content p-6 w-full overflow-y-auto" 
                         style={contentMaxHeight} // 使用计算好的内容区最大高度
                     >
                         {children}

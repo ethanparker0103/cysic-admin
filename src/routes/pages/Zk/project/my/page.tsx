@@ -7,7 +7,6 @@ import CysicTable, { CysicTableColumn } from "@/components/Table";
 import { Link } from "react-router-dom";
 import Modal from "@/components/Modal";
 import useModalState from "@/hooks/useModalState";
-import { getImageUrl } from "@/utils/tools";
 import { useState } from "react";
 import useCosmos from "@/models/_global/cosmos";
 import { commonPageSize } from "@/config";

@@ -1,95 +1,132 @@
 /* eslint-disable no-case-declarations */
-import axios from "@/service"
-import { useAccount } from "wagmi"
-import { useState } from "react"
-import Copy from "@/components/Copy"
-import { Tabs, Tab, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, getKeyValue } from "@nextui-org/react";
-import usePagnation from "@/hooks/usePagnation"
-import { bridgeChains, commonPageSize } from "@/config"
-import Pagination from "@/components/Pagination"
-import clsx from "clsx"
-import { shortStr } from "@/utils/tools"
+import axios from "@/service";
+
+import { useState } from "react";
+import Copy from "@/components/Copy";
+import {
+    Tabs,
+    Tab,
+    Table,
+    TableHeader,
+    TableColumn,
+    TableBody,
+    TableRow,
+    TableCell,
+    getKeyValue,
+} from "@nextui-org/react";
+import usePagnation from "@/hooks/usePagnation";
+import { bridgeChains, commonPageSize } from "@/config";
+import clsx from "clsx";
+import { shortStr } from "@/utils/tools";
 import ConnectButton from "@/components/connectButton";
 import dayjs from "dayjs";
 import Spinner from "@/components/spinner";
+import GradientBorderCard from "@/components/GradientBorderCard";
+import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import useAccount from "@/hooks/useAccount";
+import CysicTable from "@/components/Table";
+import { Pagination } from "@nextui-org/react";
 
 const TxStatus: any = {
-    init: 'Pending',
-    waitFinish: 'Pending',
-    finish: 'Finish',
-    failed: 'Failed'
-}
+    init: "Pending",
+    waitFinish: "Pending",
+    finish: "Finish",
+    failed: "Failed",
+};
 
 const TxStatusColor: any = {
-    init: '#737373',
-    waitFinish: '#737373',
-    finish: '#11D473',
-    failed: '#FF401A'
-}
+    init: "#737373",
+    waitFinish: "#737373",
+    finish: "#11D473",
+    failed: "#FF401A",
+};
 
 const HistoryTable = ({ isLoading, type, columns, rows, classNames }: any) => {
     const renderCell = (item: any, columnKey: any) => {
         switch (columnKey) {
             case "status": {
-                return <div className="flex items-center gap-1" >
-                    <div className="size-3 rounded-full" style={{ background: TxStatusColor[item?.[columnKey]] }} />
-                    <span>{TxStatus[item?.[columnKey]]}</span>
-                </div>
+                return (
+                    <div className="flex items-center gap-1">
+                        <div
+                            className="size-3 rounded-full"
+                            style={{ background: TxStatusColor[item?.[columnKey]] }}
+                        />
+                        <span>{TxStatus[item?.[columnKey]]}</span>
+                    </div>
+                );
             }
             case "createdAt":
-                return <div>{dayjs(item?.[columnKey]).format('YYYY/MM/DD HH:mm:ss')}</div>
-            case "targetTxHash":
-                const targetExplorer = bridgeChains?.find(i => i?.id == item?.targetChainId)?.blockExplorers?.default?.url
                 return (
-                    <a target="_blank" href={targetExplorer + '/tx/' + item?.[columnKey]}>
-                        <div className="cursor-pointer underline text-[#00F0FF]">{shortStr(item?.[columnKey], 10) || '-'}</div>
+                    <div>{dayjs(item?.[columnKey]).format("YYYY/MM/DD HH:mm:ss")}</div>
+                );
+            case "targetTxHash":
+                const targetExplorer = bridgeChains?.find(
+                    (i) => i?.id == item?.targetChainId
+                )?.blockExplorers?.default?.url;
+                return (
+                    <a target="_blank" href={targetExplorer + "/tx/" + item?.[columnKey]}>
+                        <div className="cursor-pointer underline text-[#00F0FF]">
+                            {shortStr(item?.[columnKey], 14) || "-"}
+                        </div>
                     </a>
                 );
             case "sourceTxHash":
-                const sourceExplorer = bridgeChains?.find(i => i?.id == item?.sourceChainId)?.blockExplorers?.default?.url
+                const sourceExplorer = bridgeChains?.find(
+                    (i) => i?.id == item?.sourceChainId
+                )?.blockExplorers?.default?.url;
                 return (
-                    <a target="_blank" href={sourceExplorer + '/tx/' + item?.[columnKey]}>
-                        <div className="cursor-pointer underline text-[#00F0FF]">{shortStr(item?.[columnKey], 10) || '-'}</div>
+                    <a target="_blank" href={sourceExplorer + "/tx/" + item?.[columnKey]}>
+                        <div className="cursor-pointer underline text-[#00F0FF]">
+                            {shortStr(item?.[columnKey], 14) || "-"}
+                        </div>
                     </a>
                 );
             case "transaction":
                 return (
-                    <div className="cursor-pointer underline text-[#00F0FF]">{shortStr(item?.['TxHash'], 10)}</div>
+                    <div className="cursor-pointer underline text-[#00F0FF]">
+                        {shortStr(item?.["TxHash"], 14)}
+                    </div>
                 );
 
             default:
                 return getKeyValue(item, columnKey);
         }
     };
-    return <Table
-        aria-label="Project"
-        classNames={{
-            wrapper: clsx("p-0 shadow-none bg-[transparent]", classNames?.wrapper),
-            th: "border-b border-solid border-[#FFFFFF33]",
-        }}
-    >
-        <TableHeader columns={columns}>
-            {(column: any) => (
-                <TableColumn className="bg-[transparent] " key={column?.key}>
-                    {column?.label}
-                </TableColumn>
-            )}
-        </TableHeader>
-        <TableBody loadingContent={<Spinner className="absolute inset-0" />} isLoading={isLoading} items={rows || []} className="relative">
-            {(item: any) => (
-                <TableRow key={type + '_' + item?.ID}>
-                    {(columnKey) => (
-                        <TableCell>{renderCell(item, columnKey)}</TableCell>
-                    )}
-                </TableRow>
-            )}
-        </TableBody>
-    </Table>
-
-}
+    return (
+        <Table
+            aria-label="Project"
+            classNames={{
+                wrapper: clsx("p-0 shadow-none bg-[transparent]", classNames?.wrapper),
+                th: "border-b border-solid border-[#FFFFFF33]",
+            }}
+        >
+            <TableHeader columns={columns}>
+                {(column: any) => (
+                    <TableColumn className="bg-[transparent] " key={column?.key}>
+                        {column?.label}
+                    </TableColumn>
+                )}
+            </TableHeader>
+            <TableBody
+                loadingContent={<Spinner className="absolute inset-0" />}
+                isLoading={isLoading}
+                items={rows || []}
+                className="relative"
+            >
+                {(item: any) => (
+                    <TableRow key={type + "_" + item?.ID}>
+                        {(columnKey) => (
+                            <TableCell>{renderCell(item, columnKey)}</TableCell>
+                        )}
+                    </TableRow>
+                )}
+            </TableBody>
+        </Table>
+    );
+};
 
 const HistoryC = () => {
-    const { address } = useAccount()
+    const { address, avatarUrl } = useAccount();
     const [selected, setSelected] = useState<any>("deposit");
 
     // const [dataList, setDataList] = useState<any>()
@@ -104,10 +141,9 @@ const HistoryC = () => {
     //     },
     // })
 
-
     const {
         data: dataList,
-        totalPage,
+        total,
         currentPage,
         setCurrentPage,
         loading: isLoading,
@@ -141,14 +177,29 @@ const HistoryC = () => {
         {
             key: "sourceTxHash",
             label: "TX1",
+            renderCell: (item: any) => {
+                return <div>{shortStr(item?.sourceTxHash, 14) || "-"}</div>;
+            },
         },
         {
             key: "targetTxHash",
             label: "TX2",
+            renderCell: (item: any) => {
+                return <div>{shortStr(item?.targetTxHash, 14) || "-"}</div>;
+            },
         },
         {
             key: "status",
             label: "Status",
+            renderCell: (item: any) => {
+                return <div className="flex items-center gap-1 justify-end">
+                    <div
+                        className="size-3 rounded-full"
+                        style={{ background: TxStatusColor[item?.status] }}
+                    />
+                    <span>{TxStatus[item?.status]}</span>
+                </div>
+            },
         },
     ];
 
@@ -164,69 +215,115 @@ const HistoryC = () => {
         {
             key: "sourceTxHash",
             label: "TX1",
+            renderCell: (item: any) => {
+                return <div>{shortStr(item?.sourceTxHash, 14) || "-"}</div>;
+            },
         },
         {
             key: "targetTxHash",
             label: "TX2",
+            renderCell: (item: any) => {
+                return <div>{shortStr(item?.targetTxHash, 14) || "-"}</div>;
+            },
         },
         {
             key: "status",
             label: "Status",
+            renderCell: (item: any) => {
+                return <div className="flex items-center gap-1 justify-end">
+                    <div
+                        className="size-3 rounded-full"
+                        style={{ background: TxStatusColor[item?.status] }}
+                    />
+                    <span>{TxStatus[item?.status]}</span>
+                </div>
+            }
         },
-    ]
-
+    ];
 
     const tabs = [
         {
             id: "deposit",
             label: "Deposit",
-            content: <HistoryTable type="deposit" columns={depositColumns} rows={dataList?.data?.events} isLoading={isLoading} />
+            content: (
+                <CysicTable
+                    //   type="deposit"
+                    columns={depositColumns}
+                    data={dataList?.data?.events || []}
+                    loading={isLoading}
+                />
+            ),
         },
         {
             id: "withdraw",
             label: "Withdraw",
-            content: <HistoryTable type="withdraw" columns={withdrawColumns} rows={dataList?.data?.events} isLoading={isLoading} />
+            content: (
+                <CysicTable
+                    //   type="withdraw"
+                    columns={withdrawColumns}
+                    data={dataList?.data?.events || []}
+                    loading={isLoading}
+                />
+            ),
         },
     ];
 
+    return (
+        <div className="main-container">
+            <div className="flex flex-col gap-4">
+                <GradientBorderCard className="flex items-center gap-6 px-6 py-4">
+                    <Avatar
+                        className="!size-12"
+                        avatar={avatarUrl || ""}
+                        name={address || ""}
+                    />
+                    <div className="flex gap-12">
+                        <span className="text-sm teacher !normal-case">Account</span>
+                        <Copy value={address}>
+                            <span className="text-sm teacher !normal-case">{address}</span>
+                        </Copy>
+                    </div>
+                </GradientBorderCard>
+                <GradientBorderCard className="px-6 py-4">
+                    <Tabs
+                        selectedKey={selected}
+                        onSelectionChange={(v) => {
+                            setSelected(v);
+                            setCurrentPage(0);
+                        }}
+                        classNames={{
+                            base: "pb-4",
+                            tabList: "w-full border-b border-white/30 !p-0 !gap-0",
+                            cursor: "h-px w-full",
+                            tab: "!p-0 w-[8.75rem]",
+                            panel: "!p-0",
+                            tabContent: "teacher text-base font-medium !normal-case",
+                        }}
+                        className="w-full"
+                        variant={"underlined"}
+                        aria-label="Dynamic tabs"
+                        items={tabs}
+                    >
+                        {(item) => (
+                            <Tab key={item.id} title={item.label}>
+                                {item.content}
+                            </Tab>
+                        )}
+                    </Tabs>
+                    <Pagination
+                        total={Math.ceil(total / commonPageSize)}
+                        initialPage={1}
+                        page={currentPage}
+                        onChange={setCurrentPage}
+                        color="primary"
+                        size="sm"
+                    />
 
-    return (<div className="min-w-[68.5rem] border border-[#FFFFFF33] rounded-[24px] p-8">
-        <div className="flex flex-col gap-12">
-            <div className="flex items-center gap-8">
-                <div className="rounded-full size-[3rem] bg-[#00F0FF]"></div>
-                <div className="flex flex-col gap-2">
-                    <span className="text-[20px] font-semibold">Account</span>
-                    <Copy value={address}>
-                        <span className="text-[#A1A1AA]">{address}</span>
-                    </Copy>
-                </div>
-            </div>
-            <div>
-                <Tabs selectedKey={selected} onSelectionChange={(v) => {
-                    setSelected(v);
-                    setCurrentPage(0);
-                }} variant={'underlined'} aria-label="Dynamic tabs" items={tabs}>
-                    {(item) => (
-                        <Tab key={item.id} title={item.label}>
-                            {item.content}
-                        </Tab>
-                    )}
-                </Tabs>
-
-                <Pagination
-                    offset={1}
-                    className="mt-4 flex justify-center"
-                    total={totalPage}
-                    currentPage={currentPage}
-                    onChange={setCurrentPage}
-                />
-
-                {
-                    !address ? <ConnectButton className="mx-auto" /> : null
-                }
+                    {!address ? <ConnectButton className="mx-auto" /> : null}
+                </GradientBorderCard>
             </div>
         </div>
-    </div>)
-}
+    );
+};
 
-export default HistoryC
+export default HistoryC;

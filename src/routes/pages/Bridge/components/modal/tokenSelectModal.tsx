@@ -2,14 +2,12 @@ import useModalState from "@/hooks/useModalState";
 import clsx from "clsx";
 import Modal from "@/components/Modal";
 import { isMobile } from "react-device-detect";
-import { bridgeConfig, bridgeToken } from "@/config";
-import { getImageUrl } from "@/utils/tools";
+import { bridgeToken } from "@/config";
 import useBridge from "@/models/bridge";
 
 const TokenSelectModal = () => {
-  const { bridgeDir, toTokenAddress, fromTokenAddress, fromChainId, toChainId, setState } = useBridge();
+  const { fromTokenAddress, fromChainId, setState } = useBridge();
 
-  const chainId = !bridgeDir ? fromChainId : toChainId
   const { visible, setVisible } = useModalState({
     eventName: "modal_token_select_visible",
   });
@@ -18,24 +16,26 @@ const TokenSelectModal = () => {
     setState({
       fromTokenAddress: addr,
     });
+
+    setVisible(false)
   };
 
   return (
     <Modal
       isOpen={visible}
       onClose={() => setVisible(false)}
-      className="max-w-[440px] border border-[#FFFFFF33]"
+      className="max-w-[440px] border border-[#FFFFFF33] [&_.modal-content]:!p-0 "
+      title="Select a token"
     >
       {/* <ModalBody> */}
       <div className={clsx("flex justify-between")}>
         <div
           className={clsx(
-            "flex flex-col gap-10 bg-[#0B0C0F] relative z-1",
-            isMobile ? "w-full p-3 " : "w-[440px] py-6"
+            "flex flex-col gap-10 relative z-1",
+            isMobile ? "w-full p-2 " : "w-[440px] py-2"
           )}
         >
-          <div className="Gemsbuck px-6 text-[#fff]">Chain</div>
-          <div className="flex flex-col -mt-3">
+          <div className="flex flex-col">
             {Object.values(bridgeToken?.[fromChainId] || {})?.map((i: any, index: number) => {
               return (
                 <div
@@ -43,16 +43,16 @@ const TokenSelectModal = () => {
                     handleSubmit(i?.address);
                   }}
                   key={i?.address || index}
-                  className={clsx("py-3 hover:bg-[#34353875]", fromTokenAddress == i?.address ? 'bg-[#343538]' : '')}
+                  className={clsx("group cursor-pointer hover:bg-[#FFFFFF1A] px-6 py-4", fromTokenAddress == i?.address ? 'bg-[#FFFFFF1A]' : '')}
                 >
-                  <div className="flex items-center px-6 gap-2">
+                  <div className="flex items-center gap-2">
                     <img
                       className="size-6 rounded-full"
-                      src={getImageUrl("@/assets/images/tokens/CYS.svg")}
+                      src={i?.icon}
                     />
                     <div className="flex flex-col">
-                      <span className="text-sm text-[#fff]">{i?.name}</span>
-                      <span className="text-xs text-[#737373]">{i?.symbol}</span>
+                      <span className="text-base teacher !normal-case group-hover:underline">{i?.name}</span>
+                      <span className="text-xs teacher !normal-case text-[#737373]">{i?.symbol}</span>
                     </div>
 
                     {fromTokenAddress == i?.address ? (

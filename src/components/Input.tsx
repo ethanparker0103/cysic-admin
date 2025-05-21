@@ -1,3 +1,4 @@
+import { cn } from "@nextui-org/react";
 import BigNumber from "bignumber.js";
 import clsx from "clsx";
 import { useEffect, useMemo } from "react";
@@ -15,7 +16,8 @@ const Input = ({
   onFocus,
   onBlur,
   max,
-  precision
+  precision,
+  classNames
 }: any) => {
   // useEffect(() => {
   //   let newValue = value;
@@ -89,7 +91,7 @@ const Input = ({
           value={value || ""}
           onChange={handleChange}
           type="text"
-          className="grow w-full"
+          className={cn(classNames.input, "grow w-full inner-input")}
         />
         {suffix || null}
       </div>

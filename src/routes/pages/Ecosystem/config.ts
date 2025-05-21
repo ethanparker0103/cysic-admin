@@ -263,7 +263,7 @@ export const ecosystemProjects: IEcosystemProject[] = [
     category: "Bridge",
     subLabel: [],
     blurb: "The bridge solution developed by Cysic Network.",
-    websiteLink: "https://testnet-bridge.prover.xyz/bridge",
+    websiteLink: "https://testnet.prover.xyz/m/bridge",
     twitterLink: "",
     img: "https://cysic.xyz/assets/logo.svg",
     className: "bg-[transparent]"

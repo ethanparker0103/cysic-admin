@@ -40,7 +40,7 @@ const basicNav = [
             {
                 content: 'Bridge',
                 key: 'bridge',
-                href: 'https://testnet-bridge.prover.xyz/bridge'
+                href: '/bridge'
             },
             {
                 content: 'Dashboard',

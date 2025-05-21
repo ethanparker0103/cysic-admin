@@ -4,7 +4,6 @@ import { cn, Input, Pagination } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
 import { ArrowRight, Search, ShareIcon } from "lucide-react";
-import { getImageUrl, shortStr } from "@/utils/tools";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";

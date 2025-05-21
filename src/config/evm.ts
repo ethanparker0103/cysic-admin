@@ -17,7 +17,7 @@ export const EVM_CHAIN_EXPLORER_MAP = {
     [evm_cysic_testnet.id]: evm_cysic_testnet.blockExplorers.default.url
 }
 
-export const EVM_CHAIN_LOGO = {
+export const EVM_CHAIN_LOGO: any = {
     [arbitrumSepolia.id]: "https://arbitrum.io/logo_monochrome.svg",
     [evm_cysic_devnet.id]: getImageUrl('@/assets/images/tokens/CYS.svg'),
     [evm_cysic_testnet.id]: getImageUrl('@/assets/images/tokens/CYS.svg'),
@@ -59,7 +59,7 @@ export const bridgeConfig: any = {
         bridgeContract: "0x12617962F26288BA677993468571277201191277", // chain -> cysic
         tokens: bridgeToken[arbitrumSepolia.id],
         chain: {
-            icon: getImageUrl('@/assets/images/tokens/USDC.svg'),
+            icon: EVM_CHAIN_LOGO[arbitrumSepolia.id],
             id: arbitrumSepolia.id,
             name: arbitrumSepolia.name,
             explorer: EVM_CHAIN_EXPLORER_MAP[arbitrumSepolia.id]

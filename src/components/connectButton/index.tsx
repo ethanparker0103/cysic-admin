@@ -123,7 +123,7 @@ export default function ConnectButton({ className, content }: any) {
   return (
     <Button
       onClick={handleOpen}
-      type="gradient"
+      type="light"
       className={clsx("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] ", isMobile ? "!min-h-8 !h-8 !px-2" : "px-4 !min-h-10 !h-10 py-[0.625rem]", className)}
     >
       {isConnecting ? <Spinner className="stroke-[#000] " /> : null}

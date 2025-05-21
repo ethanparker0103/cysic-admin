@@ -167,9 +167,9 @@ const UserDetailsPage = () => {
                         <StatCard
                             title="CYSIC BALANCE"
                             rightActions={[
-                                <a href="https://testnet-bridge.prover.xyz/bridge" target="_blank" className="flex items-center text-sub text-xs hover:text-white">
+                                <Link to="/bridge" target="_blank" className="flex items-center text-sub text-xs hover:text-white">
                                     BRIDGE <ArrowRight size={12} className="ml-1" />
-                                </a>,
+                                </Link>,
                                 <a href="#" className="flex items-center text-sub text-xs hover:text-white">
                                     HISTORY <ArrowRight size={12} className="ml-1" />
                                 </a>
