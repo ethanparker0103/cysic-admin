@@ -4,6 +4,9 @@ import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export const CompletionTasksCard = () => {
+    const { zkPart } = useAccount()
+    const totalCompleted = (zkPart?.proverTaskCompletedCnt || 0) + (zkPart?.verifierTaskCompletedCnt || 0);
+
     return (
         <GradientBorderCard borderRadius={8} className="px-6 py-4 flex-1 w-full h-full flex flex-col gap-4">
 
@@ -13,16 +16,16 @@ export const CompletionTasksCard = () => {
                 Completion
             </div>
 
-            <div className="text-2xl unbounded ml-auto">2500</div>
+            <div className="text-2xl unbounded ml-auto">{totalCompleted}</div>
 
             <div className="flex flex-col gap-1 text-sm teacher !normal-case">
                 <div className="flex items-center justify-between">
                     <div>Prover</div>
-                    <div>2500</div>
+                    <div>{zkPart?.proverTaskCompletedCnt}</div>
                 </div>
                 <div className="flex items-center justify-between">
                     <div>Verifier</div>
-                    <div>2</div>
+                    <div>{zkPart?.verifierTaskCompletedCnt}</div>
                 </div>
             </div>
         </GradientBorderCard>
