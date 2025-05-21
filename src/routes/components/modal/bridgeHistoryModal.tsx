@@ -46,7 +46,7 @@ const BridgeHistoryModal = () => {
       }
     );
 
-  const dataList = data?.data?.list as IBridgeHistoryItem[];
+  const dataList = data?.data?.events as IBridgeHistoryItem[];
 
   const handleClose = () => {
     setVisible(false);
@@ -88,7 +88,7 @@ const BridgeHistoryModal = () => {
               </div>
               <div className=" text-sub text-sm">{record.amount}</div>
               <div className="text-sub text-sm">
-                {dayjs(record.createdAt).format("YYYY/MM/DD HH:mm")}
+                {record.createdAt ? dayjs(record.createdAt).format("YYYY/MM/DD HH:mm") : "-"}
               </div>
 
               <a
