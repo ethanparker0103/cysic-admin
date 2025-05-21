@@ -138,10 +138,10 @@ const useAccountBootstrap = () => {
         })
       }
 
-      if (socialAccount?.google?.name == '' && user?.google?.name) {
+      if (socialAccount?.google?.name == '' && user?.google?.email) {
         handleUploadSocialAccount({
           accountType: 'google',
-          account: user?.google?.name
+          account: user?.google?.email
         })
       }
 
@@ -153,7 +153,7 @@ const useAccountBootstrap = () => {
       }
 
     }
-  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.name, user?.twitter?.username])
+  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.email, user?.twitter?.username])
 
 
   return null;
