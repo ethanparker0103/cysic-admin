@@ -6,21 +6,12 @@ import Copy from "@/components/Copy";
 import {
     Tabs,
     Tab,
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    getKeyValue,
 } from "@nextui-org/react";
 import usePagnation from "@/hooks/usePagnation";
-import { bridgeChains, commonPageSize } from "@/config";
-import clsx from "clsx";
+import { commonPageSize } from "@/config";
 import { shortStr } from "@/utils/tools";
 import ConnectButton from "@/components/connectButton";
 import dayjs from "dayjs";
-import Spinner from "@/components/spinner";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import useAccount from "@/hooks/useAccount";
@@ -41,89 +32,6 @@ const TxStatusColor: any = {
     failed: "#FF401A",
 };
 
-const HistoryTable = ({ isLoading, type, columns, rows, classNames }: any) => {
-    const renderCell = (item: any, columnKey: any) => {
-        switch (columnKey) {
-            case "status": {
-                return (
-                    <div className="flex items-center gap-1">
-                        <div
-                            className="size-3 rounded-full"
-                            style={{ background: TxStatusColor[item?.[columnKey]] }}
-                        />
-                        <span>{TxStatus[item?.[columnKey]]}</span>
-                    </div>
-                );
-            }
-            case "createdAt":
-                return (
-                    <div>{dayjs(item?.[columnKey]).format("YYYY/MM/DD HH:mm:ss")}</div>
-                );
-            case "targetTxHash":
-                const targetExplorer = bridgeChains?.find(
-                    (i) => i?.id == item?.targetChainId
-                )?.blockExplorers?.default?.url;
-                return (
-                    <a target="_blank" href={targetExplorer + "/tx/" + item?.[columnKey]}>
-                        <div className="cursor-pointer underline text-[#00F0FF]">
-                            {shortStr(item?.[columnKey], 14) || "-"}
-                        </div>
-                    </a>
-                );
-            case "sourceTxHash":
-                const sourceExplorer = bridgeChains?.find(
-                    (i) => i?.id == item?.sourceChainId
-                )?.blockExplorers?.default?.url;
-                return (
-                    <a target="_blank" href={sourceExplorer + "/tx/" + item?.[columnKey]}>
-                        <div className="cursor-pointer underline text-[#00F0FF]">
-                            {shortStr(item?.[columnKey], 14) || "-"}
-                        </div>
-                    </a>
-                );
-            case "transaction":
-                return (
-                    <div className="cursor-pointer underline text-[#00F0FF]">
-                        {shortStr(item?.["TxHash"], 14)}
-                    </div>
-                );
-
-            default:
-                return getKeyValue(item, columnKey);
-        }
-    };
-    return (
-        <Table
-            aria-label="Project"
-            classNames={{
-                wrapper: clsx("p-0 shadow-none bg-[transparent]", classNames?.wrapper),
-                th: "border-b border-solid border-[#FFFFFF33]",
-            }}
-        >
-            <TableHeader columns={columns}>
-                {(column: any) => (
-                    <TableColumn className="bg-[transparent] " key={column?.key}>
-                        {column?.label}
-                    </TableColumn>
-                )}
-            </TableHeader>
-            <TableBody
-                loadingContent={<Spinner className="absolute inset-0" />}
-                isLoading={isLoading}
-                items={rows || []}
-                className="relative"
-            >
-                {(item: any) => (
-                    <TableRow key={type + "_" + item?.ID}>
-                        {(columnKey) => (
-                            <TableCell>{renderCell(item, columnKey)}</TableCell>
-                        )}
-                    </TableRow>
-                )}
-            </TableBody>
-        </Table>
-    );
-};
 
 const HistoryC = () => {
     const { address, avatarUrl } = useAccount();
@@ -169,6 +77,9 @@ const HistoryC = () => {
         {
             key: "createdAt",
             label: "Time",
+            renderCell: (item: any) => {
+                return <div>{dayjs.unix(Number(item?.createdAt)).format("YYYY/MM/DD HH:mm") || "-"}</div>;
+            },
         },
         {
             key: "amount",
@@ -207,6 +118,9 @@ const HistoryC = () => {
         {
             key: "createdAt",
             label: "Time",
+            renderCell: (item: any) => {
+                return <div>{dayjs.unix(Number(item?.createdAt)).format("YYYY/MM/DD HH:mm") || "-"}</div>;
+            },
         },
         {
             key: "amount",

@@ -9,6 +9,7 @@ import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";
 import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import dayjs from "dayjs";
 
 interface ITask {
     "id": number,
@@ -56,7 +57,7 @@ const TaskPage = () => {
         {
             key: "createAt",
             label: "Created at",
-            renderCell: (task) => (task.createAt)
+            renderCell: (task) => (dayjs.unix(Number(task.createAt)).format("YYYY/MM/DD HH:mm"))
         },
         {
             key: "status",

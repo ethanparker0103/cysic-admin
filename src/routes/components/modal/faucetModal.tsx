@@ -5,10 +5,8 @@ import axios from "axios";
 import { useLocalStorageState, useRequest, useCountDown } from "ahooks";
 import useAccount from "@/hooks/useAccount";
 import { toast } from "react-toastify";
-import { Clock } from "lucide-react";
 import { useMemo, useRef } from "react";
 import useStatic from "@/models/_global";
-import { json } from "react-router-dom";
 
 // GIN-debug] GET    /api/v1/user/faucet       --> github.com/cysic-tech/cysic-api/router.claimFaucet (6 handlers)
 // [GIN-debug] GET    /api/v1/user/faucet/last  --> github.com/cysic-tech/cysic-api/router.getLastClaimFaucetRecord (6 handlers)
@@ -57,7 +55,7 @@ const FaucetModal = () => {
             once.current = true
             setLastClaimTime((prev: any) => {
                 if (!address) return prev
-                const t = new Date(res.data.lastClaimAt).getTime()
+                const t = new Date(res.data.lastClaimAt * 1000).getTime()
                 if (t < 0) return prev
                 prev[address] = t
                 return prev

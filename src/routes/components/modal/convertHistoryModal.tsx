@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import { getImageUrl, handleConvertModal } from "@/utils/tools";
 import axios from "axios";
 import { Pagination } from "@nextui-org/react";
+import dayjs from "dayjs";
 
 // 转换记录类型
 interface ConvertRecord {
@@ -60,8 +61,8 @@ const ConvertHistoryModal = () => {
 
       // 根据当前排序方向排序
       const sortedRecords = [...historyList].sort((a, b) => {
-        const dateA = new Date(a.convertTime).getTime();
-        const dateB = new Date(b.convertTime).getTime();
+        const dateA = new Date(a.convertTime * 1000).getTime();
+        const dateB = new Date(b.convertTime * 1000).getTime();
         
         if (sortDirection === SortDirection.ASC) {
           return dateA - dateB;
@@ -149,7 +150,7 @@ const ConvertHistoryModal = () => {
                 />
                 <span className="ml-1 text-white title text-sm !font-[500]">{record.toCoin}</span>
               </div>
-              <div className="text-center text-sub text-sm">{record.convertTime}</div>
+              <div className="text-center text-sub text-sm">{dayjs.unix(Number(record.convertTime)).format("YYYY/MM/DD HH:mm")}</div>
               <div className="text-right text-sub text-sm">{record.amount}</div>
             </div>
           ))}

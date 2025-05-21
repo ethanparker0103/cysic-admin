@@ -88,7 +88,7 @@ const BridgeHistoryModal = () => {
               </div>
               <div className=" text-sub text-sm">{record.amount}</div>
               <div className="text-sub text-sm">
-                {record.createdAt ? dayjs(record.createdAt).format("YYYY/MM/DD HH:mm") : "-"}
+                {record.createdAt ? dayjs.unix(Number(record.createdAt)).format("YYYY/MM/DD HH:mm") : "-"}
               </div>
 
               <a
