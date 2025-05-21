@@ -4,13 +4,14 @@ import { isMobile } from "react-device-detect";
 import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
-import { ArrowRight, ShareIcon, SquareKanban } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import Chart from "@/routes/pages/Zk/components/chart";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize, TaskStatus } from "@/config";
 import { useState } from "react";
+import dayjs from "dayjs";
 
 interface IOverview {
     "projectNum": number,
@@ -97,7 +98,7 @@ const DashboardPage = () => {
         {
             key: "createAt",
             label: "Created at",
-            renderCell: (task) => (task.createAt)
+            renderCell: (task) => task.createAt ? dayjs.unix(Number(task.createAt)).format("YYYY-MM-DD HH:mm:ss") : '-'
         },
         {
             key: "status",

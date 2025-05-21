@@ -23,6 +23,7 @@ import {
     TaskReward,
 } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 // 团队成员类型
 interface TeamMember {
@@ -137,7 +138,7 @@ const InvitePage = () => {
             key: "time",
             label: "Time",
             width: "40%",
-            renderCell: (leader) => <div className="">{leader.joinAt}</div>,
+            renderCell: (leader) => <div className="">{dayjs.unix(Number(leader.joinAt)).format("YYYY-MM-DD HH:mm:ss")}</div>,
         },
         {
             key: "inviteBy",
@@ -195,7 +196,7 @@ const InvitePage = () => {
             key: "time",
             label: "Time",
             width: "25%",
-            renderCell: (member) => <div className="text-right">{member.joinAt}</div>,
+            renderCell: (member) => <div className="text-right">{dayjs.unix(Number(member.joinAt)).format("YYYY-MM-DD HH:mm:ss")}</div>,
         },
     ];
 
