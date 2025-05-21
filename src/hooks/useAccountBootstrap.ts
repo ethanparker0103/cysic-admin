@@ -92,13 +92,9 @@ const useAccountBootstrap = () => {
         const newAddress = account?.address;
         if (newAddress !== lastWalletAddress.current) {
           if (newAddress) {
-            // 连接了新钱包地址
             setAddress(newAddress);
             userStore.setActiveAddress(newAddress);
-
-            // connectWallet()
           } else {
-            // 断开了钱包连接
             userStore.setActiveAddress(undefined);
           }
 

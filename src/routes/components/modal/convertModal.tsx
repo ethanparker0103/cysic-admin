@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
-import { getImageUrl, handleConvertHistoryModal } from "@/utils/tools";
-import { Settings } from "lucide-react";
+import { formatReward, getImageUrl, handleConvertHistoryModal } from "@/utils/tools";
+import { Settings, Wallet } from "lucide-react";
 import Input from "@/components/Input";
 import {
   cosmosFee,
@@ -19,6 +19,7 @@ import BigNumber from "bignumber.js";
 import { toast } from "react-toastify";
 import { calculateTransactionFee, format, sleep } from "@/utils/tools";
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
+import GradientBorderCard from "@/components/GradientBorderCard";
 
 // 代币类型枚举
 enum TokenType {
@@ -41,9 +42,6 @@ const ConvertModal = () => {
   const [fromAmount, setFromAmount] = useState<string>("");
   const [toAmount, setToAmount] = useState<string>("");
   const [rate, setRate] = useState<number>(1);
-  const [maxSlippage, setMaxSlippage] = useState<number>(0.5);
-  const [fee, setFee] = useState<number>(0.25);
-  const [networkCost, setNetworkCost] = useState<number>(1.23);
 
   useEventListener("modal_convert_visible", (e: any) => {
     const eventFromToken = e?.detail?.fromToken;
@@ -80,40 +78,45 @@ const ConvertModal = () => {
     }
   }, [visible, data]);
 
-  // 计算兑换金额
-  const calculateToAmount = (amount: number) => {
-    const convertedAmount = amount * rate;
+  const calculateToAmount = (amount: number | string) => {
+    const convertedAmount = BigNumber(amount).multipliedBy(rate);
     setToAmount(convertedAmount.toString());
   };
 
-  // 处理金额变更
+  const precision = 4
   const handleFromAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 移除逗号，仅允许数字和小数点
     const rawValue = e.target.value.replace(/,/g, "");
     if (!/^(\d*\.?\d*)$/.test(rawValue)) {
-      return; // 不是有效的数字格式，不更新状态
+      return;
     }
+
+    const currentValue = fromAmount;
+    const parts = rawValue.split('.');
     
-    // 设置未格式化的输入值
+    if (rawValue.length < currentValue.length) {
+      setFromAmount(rawValue);
+      if (rawValue === '') {
+        setToAmount('');
+      } else if (!rawValue.endsWith('.') && !isNaN(+rawValue)) {
+        calculateToAmount(rawValue);
+      }
+      return;
+    }
+
+    if (parts.length > 1 && parts[1].length > precision) {
+      return;
+    }
+
     setFromAmount(rawValue);
-    
-    // 对于计算和显示格式化版本，特殊处理小数点结尾的情况
+
     if (rawValue.endsWith('.')) {
-      // 如果以小数点结尾，只更新fromAmount，不更新toAmount
       return;
     } else if (rawValue === '') {
-      // 空输入，清除两个输入框
       setToAmount('');
     } else {
-      // 有效数字，进行格式化和计算
-      const numValue = parseFloat(rawValue);
-      if (!isNaN(numValue)) {
-        // 计算兑换金额
-        calculateToAmount(numValue);
-        
-        // 格式化显示（可选，根据需要调整）
-        // const formattedValue = numValue.toLocaleString();
-        setFromAmount(numValue.toString());
+      if (!isNaN(+rawValue)) {
+        calculateToAmount(rawValue);
+        setFromAmount(rawValue.toString());
       }
     }
   };
@@ -211,6 +214,9 @@ const ConvertModal = () => {
     return format(balanceMap?.[tokenKey]?.hm_amount || 0, 3);
   };
 
+  const cysBalance = balanceMap?.[cysicBaseCoin]?.hm_amount || 0;
+  const cgtBalance = balanceMap?.[cysicStCoin]?.hm_amount || 0;
+
   // 查看转换历史
   const handleViewHistory = () => {
     handleConvertHistoryModal();
@@ -245,35 +251,38 @@ const ConvertModal = () => {
       </div>
 
       {/* 转换区域 - From */}
-      <div className="border border-[#333] rounded-lg p-4">
+      <GradientBorderCard borderRadius={8} className="p-4 mb-1">
         <div className="text-sub mb-2">Convert</div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center gap-6">
           <input
             type="text"
             value={fromAmount}
             onChange={handleFromAmountChange}
-            className="bg-transparent border-none outline-none w-full max-w-[300px] !text-3xl title !font-light text-white"
+            className="bg-transparent border-none outline-none w-full flex-1 !text-3xl title !font-light text-white"
             placeholder="0.00"
           />
-          <div className="flex items-center bg-[#222] rounded-full px-4 py-2">
+          <div className="flex items-center bg-[#222] rounded-full p-2">
             <img
               src={getTokenIcon(fromToken)}
               alt={fromToken}
               className="w-6 h-6 mr-2"
             />
-            <span className="!text-base title !font-[500]">{fromToken}</span>
+            <span className="unbounded !normal-case text-base font-medium">{fromToken}</span>
           </div>
         </div>
-        <div className="flex justify-end mt-1 text-base text-[#A3A3A3] hover:text-[#00F0FF] cursor-pointer">
+        <div className="flex items-center justify-end mt-1 text-base text-sub hover:text-white cursor-pointer">
+          <Wallet className="w-4 h-4 mr-1" />
           <span onClick={() => {
-            const balance = getTokenBalance(fromToken);
+            const balance = fromToken === TokenType.CYS ? cysBalance : cgtBalance
             setFromAmount(balance);
-            calculateToAmount(parseFloat(balance.replace(/,/g, "")));
-          }}>
-            {getTokenBalance(fromToken)}
+            calculateToAmount(balance);
+          }}
+            className="text-sm teacher"
+          >
+            {formatReward(fromToken === TokenType.CYS ? cysBalance : cgtBalance, 4)}
           </span>
         </div>
-      </div>
+      </GradientBorderCard>
 
       {/* 切换按钮 */}
       <div className="relative flex justify-center">
@@ -281,43 +290,32 @@ const ConvertModal = () => {
           className="absolute -translate-y-1/2 w-12 h-12 bg-black border border-[#2B2B2B] rounded-full flex justify-center items-center cursor-pointer z-10"
           onClick={handleSwapTokens}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.6011 13.399C16.4417 13.2396 16.2255 13.1501 16 13.1501C15.7746 13.1501 15.5584 13.2396 15.399 13.399L11.399 17.399C11.067 17.731 11.067 18.2692 11.399 18.6011C11.7309 18.9331 12.2691 18.9331 12.6011 18.6011L15.15 16.0522V26.0002C15.15 26.4696 15.5305 26.8502 16 26.8502C16.4694 26.8502 16.85 26.4696 16.85 26.0002V16.0521L19.399 18.6011C19.7309 18.9331 20.2691 18.9331 20.6011 18.6011C20.933 18.2692 20.933 17.731 20.6011 17.399L16.6011 13.399Z"
-              fill="white"
-            />
-            <path
-              d="M23.15 23.948L20.601 21.399C20.2691 21.067 19.7309 21.067 19.3989 21.399C19.067 21.7309 19.067 22.2691 19.3989 22.6011L23.3989 26.6011C23.7309 26.933 24.2691 26.933 24.601 26.6011L28.601 22.6011C28.933 22.2691 28.933 21.7309 28.601 21.399C28.2691 21.0671 27.7309 21.0671 27.3989 21.399L24.85 23.9479L24.85 14.0002C24.85 13.5307 24.4695 13.1502 24 13.1502C23.5306 13.1502 23.15 13.5307 23.15 14.0002L23.15 23.948Z"
-              fill="white"
-            />
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="23" fill="white" stroke="white" strokeWidth="2" />
+            <path fillRule="evenodd" clipRule="evenodd" d="M28.1164 29.5562V15.1112C28.1164 14.8165 28.2404 14.5338 28.461 14.3254C28.6816 14.1171 28.9808 14 29.2929 14C29.6049 14 29.9041 14.1171 30.1247 14.3254C30.3454 14.5338 30.4693 14.8165 30.4693 15.1112V29.645L31.8928 27.9005C32.0847 27.6677 32.3666 27.5164 32.6766 27.48C32.9866 27.4435 33.2992 27.5248 33.5457 27.7061C33.7922 27.8873 33.9524 28.1536 33.991 28.4464C34.0296 28.7392 33.9435 29.0344 33.7516 29.2673L30.2222 33.5563C30.1125 33.6922 29.9709 33.8024 29.8087 33.8782C29.6465 33.954 29.468 33.9934 29.287 33.9934C29.106 33.9934 28.9274 33.954 28.7652 33.8782C28.603 33.8024 28.4615 33.6922 28.3517 33.5563L24.8224 29.1117C24.6696 28.9194 24.5871 28.6854 24.5871 28.445C24.5871 28.2725 24.6296 28.1024 24.7113 27.9481C24.793 27.7938 24.9116 27.6596 25.0577 27.5561C25.1813 27.4685 25.3219 27.4048 25.4716 27.3686C25.6212 27.3324 25.777 27.3244 25.9299 27.345C26.0828 27.3656 26.23 27.4145 26.3629 27.4889C26.4959 27.5632 26.612 27.6616 26.7047 27.7783L28.1164 29.5562ZM19.8822 18.4443V32.8893C19.8822 33.184 19.7583 33.4666 19.5376 33.675C19.317 33.8834 19.0178 34.0005 18.7058 34.0005C18.3938 34.0005 18.0945 33.8834 17.8739 33.675C17.6533 33.4666 17.5293 33.184 17.5293 32.8893V18.3554L16.1058 20.0999C15.9134 20.3306 15.6322 20.4799 15.3236 20.5153C15.015 20.5507 14.7041 20.4693 14.4588 20.2888C14.3164 20.1853 14.2011 20.0524 14.1215 19.9002C14.042 19.7481 14.0004 19.5807 14 19.411C14.0008 19.1655 14.0877 18.9272 14.2471 18.7332L17.7764 14.4442C17.8862 14.3083 18.0277 14.1981 18.1899 14.1223C18.3521 14.0465 18.5307 14.0071 18.7117 14.0071C18.8926 14.0071 19.0712 14.0465 19.2334 14.1223C19.3956 14.1981 19.5371 14.3083 19.6469 14.4442L23.1763 18.8888C23.3635 19.1245 23.4438 19.4209 23.3997 19.7126C23.3556 20.0044 23.1906 20.2676 22.941 20.4444C22.6914 20.6212 22.3776 20.6971 22.0687 20.6555C21.7599 20.6138 21.4812 20.4579 21.2939 20.2222L19.8822 18.4443Z" fill="#090A09" />
           </svg>
         </div>
       </div>
 
       {/* 转换区域 - To */}
-      <div className="border border-[#333] rounded-lg p-4 mb-6">
+      <GradientBorderCard borderRadius={8} className="p-4 mb-6">
         <div className="text-sub mb-2">To</div>
-        <div className="flex justify-between items-center">
-          <span className="!text-3xl title !font-light text-white">{toAmount || "0.00"}</span>
-          <div className="flex items-center bg-[#222] rounded-full px-4 py-2">
+        <div className="flex justify-between items-center gap-6">
+          <span className="!text-3xl title !font-light text-white flex-1 overflow-auto">{toAmount || "0.00"}</span>
+          <div className="flex items-center bg-[#222] rounded-full p-2">
             <img
               src={getTokenIcon(toToken)}
               alt={toToken}
               className="w-6 h-6 mr-2"
             />
-            <span className="!text-base title !font-[500]">{toToken}</span>
+            <span className="unbounded !normal-case text-base font-medium">{toToken}</span>
           </div>
         </div>
-        <div className="flex justify-end mt-1 text-base text-[#A3A3A3]">
-          <span>{getTokenBalance(toToken)}</span>
+        <div className="flex items-center justify-end mt-1 text-base text-sub hover:text-white cursor-pointer">
+          <Wallet className="w-4 h-4 mr-1" />
+          <span className="text-sm teacher">{formatReward(toToken === TokenType.CYS ? cysBalance : cgtBalance, 4)}</span>
         </div>
-      </div>
+      </GradientBorderCard>
 
       {/* 转换信息 */}
       <div className="space-y-2 mb-6">
@@ -345,7 +343,7 @@ const ConvertModal = () => {
         needLoading
         className="w-full py-4 rounded-lg text-base font-medium mb-4"
         onClick={handleConvert}
-        // disabled={!fromAmount}
+      // disabled={!fromAmount}
       >
         CONVERT
       </Button>
