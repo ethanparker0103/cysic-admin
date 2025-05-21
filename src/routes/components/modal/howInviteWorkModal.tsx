@@ -24,7 +24,7 @@ const steps = [
       2. Rebate Rewards<br/><br/>
       Rebate Rewards = (NFT purchase by direct invitee × your Rebate Rate) + (NFT purchase by indirect invitee × fixed 2%)<br/><br/>
       Your invite performance earns you token rewards based on the NFT purchases made by your invitees.<br/><br/>
-      You can boost your Rebate Rate by completing tasks—visit the Social Tasks page to learn how.
+      You can boost your Rebate Rate by completing tasks—visit the <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks page</Link> to learn how.
       </>
     )
   }
