@@ -65,7 +65,7 @@ const drawerCardList = [
       {
         icon: (
           <img
-            src={getImageUrl("@/assets/images/icon/ai_interence.svg")}
+            src={getImageUrl("@/assets/images/icon/interence.svg")}
             className="size-12"
           />
         ),
@@ -187,7 +187,7 @@ const drawerCardList = [
     title: "CONSENSUS LAYER",
     subTitle: (
       <>
-        CONSENSUS LAYER The foundation of trust.
+        The foundation of trust.
       </>
     ),
     desc: [
