@@ -335,7 +335,7 @@ const InvitePage = () => {
                                 <div className="flex justify-between items-start">
                                     <h2 className="unbounded text-xl font-light">rebate rate</h2>
                                     <span className="title !text-2xl !font-[400]">
-                                        {currentRebateRate}%
+                                        {currentRebateRate || '0'}%
                                     </span>
                                 </div>
 
