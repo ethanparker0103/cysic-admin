@@ -1,6 +1,5 @@
 import { enableSocialTask, mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
-import useUser from "@/models/user";
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 const comingSoonConfig = [

@@ -2,14 +2,11 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import { ecosystemCategories, ecosystemCategoriesTagColor, ecosystemProjects, ecosystemSubLabelsTagColor, IEcosystemProject } from "@/routes/pages/Ecosystem/config";
 import { cn, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
-import { isMobile } from "react-device-detect";
-
-
 
 
 export const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
     return (
-        <GradientBorderCard className="flex flex-col gap-4 p-4 w-[calc(calc(100%-3rem)/4)] !rounded-lg">
+        <GradientBorderCard className="flex flex-col gap-4 p-4 w-full lg:w-[calc(calc(100%-3rem)/4)] !rounded-lg">
             <div className="flex flex-col gap-4">
                 <div className="flex flex-row justify-between gap-2">
                     <div className="flex gap-4">
@@ -63,24 +60,24 @@ const EcosystemPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className={cn("title !text-[#fff] text-center", isMobile ? "!text-[32px]" : "!text-[4rem]")}>ECOSYSTEM</span>
+                    <span className={cn("unbounded text-white text-[32px] lg:text-[4rem] text-center font-[200]")}>ECOSYSTEM</span>
                 </div>
             </div>
 
             {/* 主要内容部分 */}
-            <div className="container mx-auto mt-8 relative z-[2]">
+            <div className="container mx-auto mt-8 relative z-[2] mb-auto">
                 <Tabs
                     selectedKey={selectedCategory}
                     onSelectionChange={(key) => setSelectedCategory(key as string)}
                     variant="underlined"
                     classNames={{
                         tabList: "flex-wrap gap-0 justify-start",
-                        tab: "w-fit border-b border-[#FFFFFF80] text-base py-4 box-content px-6 min-w-[9.375rem]",
+                        tab: "w-fit border-b border-[#FFFFFF80] text-base py-4 box-content px-6 lg:min-w-[9.375rem]",
                         cursor: "box-content px-3"
                     }}>
                     {ecosystemCategories.map((category) => (
                         <Tab key={category} title={category}>
-                            <div className="flex gap-4 flex-wrap mt-4 justify-start">
+                            <div className="flex gap-4 flex-col lg:flex-row flex-wrap mt-4 justify-start">
                                 {
                                     filteredProjects.map((project) => (
                                         <EcosystemCard key={project.projectName} project={project} />

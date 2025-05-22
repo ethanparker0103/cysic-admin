@@ -13,7 +13,7 @@ const Profile = () => {
     return (
 
         <GradientBorderCard borderRadius={8} className={`h-full relative`}>
-            <div className="h-full flex justify-between px-6 py-4 w-full gap-4">
+            <div className="h-full flex justify-between px-4 lg:px-6 py-4 w-full gap-4">
                 <div className="flex-1  flex flex-col justify-between">
                     <div className="text-base !font-light uppercase font-medium ">PROFILE</div>
                     <div className="flex-1 flex flex-col justify-between w-full gap-4">
@@ -40,7 +40,7 @@ const Profile = () => {
                 </div>
                 <div
                     onClick={handleEditName}
-                    className="cursor-pointer flex self-center h-[calc(100%-2rem)] aspect-square max-h-[10rem]">
+                    className="cursor-pointer flex self-center lg:h-[calc(100%-2rem)] aspect-square max-h-[10rem] h-[6.75rem]">
                     <img
                         src={avatarUrl || 'https://statics.prover.xyz/tutorial/avatar1.svg'}
                         alt="Profile"

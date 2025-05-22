@@ -37,22 +37,22 @@ const ZkLanding = () => {
         subTitle="Instant proofs. Infinite Possibilities"
       />
 
-      <div className="bg-[#000]">
+      <div className="w-full bg-[#000]">
         <div
           className={cn(
             "w-full py-16 flex flex-col gap-2 items-center",
             "main-container"
           )}
         >
-          <div className="!font-[200] !text-2xl title">
+          <div className="font-[200] text-base lg:text-2xl unbounded text-center">
             Cysic Network offers an&nbsp;
-            <span className="!font-[500] !text-2xl title">
+            <span className="font-[500] text-base lg:text-2xl unbounded">
               all-in-one solution
             </span>
             &nbsp;for
           </div>
           <div
-            className="title !text-[32px] !font-[500]"
+            className="unbounded text-base lg:text-[32px] font-[500] text-center"
             style={{
               background:
                 "linear-gradient(253.59deg, #E8D7E0 37.6%, #9D47FF 97.1%)",
@@ -71,7 +71,7 @@ const ZkLanding = () => {
 
         <div className={cn("relative h-screen")}>
           <div
-            className="absolute inset-0 size-full z-0"
+            className="absolute  lg:inset-0 size-full z-0 "
             style={{
               backgroundImage: `url(${getImageUrl(
                 "@/assets/images/_global/zk_landing_bg_2.png"
@@ -82,37 +82,37 @@ const ZkLanding = () => {
               filter: "hue-rotate(15deg) brightness(0.5)",
             }}
           />
-          <div className="relative z-1 size-full flex items-center justify-center gap-12">
-            <div className="flex flex-col gap-12 w-[24.8rem]">
-              <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500] flex items-center">
-                  <InViewFlip number="55" className="unbounded text-[64px] font-medium" />,000+
+          <div className="relative z-1 size-full flex flex-col-reverse lg:flex-row items-center justify-center gap-12">
+            <div className="flex flex-col gap-12 lg:w-[24.8rem] items-center lg:items-start">
+              <div className="flex flex-col items-center lg:items-start">
+                <span className="unbounded text-[36px] lg:text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="55" className="unbounded text-[36px] lg:text-[64px] font-medium" />,000+
                 </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Unique Wallet Addresses
                 </span>
               </div>
-              <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500] flex items-center">
-                  <InViewFlip number="8" className="unbounded text-[64px] font-medium" />M+
+              <div className="flex flex-col items-center lg:items-start">
+                <span className="unbounded text-[36px] lg:text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="8" className="unbounded text-[36px] lg:text-[64px] font-medium" />M+
                 </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Network transactions
                 </span>
               </div>
-              <div className="flex flex-col">
-                <span className="title !text-[64px] !font-[500] flex items-center">
-                  <InViewFlip number="100" className="unbounded text-[64px] font-medium" />,000+
+              <div className="flex flex-col items-center lg:items-start">
+                <span className="unbounded text-[36px] lg:text-[64px] !font-[500] flex items-center">
+                  <InViewFlip number="100" className="unbounded text-[36px] lg:text-[64px] font-medium" />,000+
                 </span>
                 <span className={cn(classes.subTitle, "!text-base")}>
                   Reserved High-End Graphic Crads
                 </span>
               </div>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center lg:items-start">
               <span className={classes.subTitle}>Powerful ZK Prover</span>
               <span className={classes.subTitle}>and Verifier Network for</span>
-              <span className="title !text-[64px] !font-light pt-1">
+              <span className="unbounded text-[36px] lg:text-[64px] !font-light pt-1">
                 everyone
               </span>
             </div>
@@ -123,12 +123,12 @@ const ZkLanding = () => {
           duration={20}
           direction="left"
           className="py-2 w-screen bg-white"
-          textClassName="title !text-[64px] !font-[500] text-[#000]"
+          textClassName="unbounded text-[24px] lg:text-[64px] !font-[500] text-[#000]"
         >
           THE MOST DECENTRALIZED ZKP COMPUTING NETWORK.
         </ScrollingText>
 
-        <div className={cn("flex gap-6 py-16 main-container")}>
+        <div className={cn("flex flex-col lg:flex-row gap-4 lg:gap-6 py-16 main-container")}>
           <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
             <div className="!tracking-widest sub-title !text-2xl !font-[400]">
               Unmatched
@@ -184,7 +184,7 @@ const ZkLanding = () => {
             "main-container"
           )}
         >
-          <div className="title !text-[64px] !font-light">
+          <div className="unbounded text-[36px] lg:text-[64px] font-light text-center">
             how cysic network works
           </div>
           <img
@@ -209,7 +209,7 @@ const ZkLanding = () => {
         </div>
 
         <div className="py-16 flex flex-col items-center gap-12 relative z-[2]">
-          <span className="title !font-light uppercase text-center !text-[4rem]">
+          <span className="unbounded text-[36px] lg:text-[64px] font-light uppercase text-center">
             investors
           </span>
           <div className="flex flex-wrap gap-10 justify-center">

@@ -1,9 +1,8 @@
 
 import Button from "@/components/Button";
-import { getImageUrl, handleReserveModal } from "@/utils/tools";
+import { getImageUrl } from "@/utils/tools";
 import { ArrowRight, Check } from "lucide-react";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { isMobile } from "react-device-detect";
 import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
 import { downloadLink } from "@/config";
 import { Light as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -24,7 +23,7 @@ const guide = {
                     <div className="flex flex-col gap-6">
                         <span>Download the official Cysic Verifier App</span>
 
-                        <div className={cn("flex gap-4 items-center", isMobile ? "flex-col" : "flex-row")}>
+                        <div className={cn("flex gap-4 items-center", "flex-col lg:flex-row")}>
                             <GradientBorderCard className=" p-6 bg-[#FFFFFF0D]">
                                 <div className="flex items-center gap-1">
                                     <img
@@ -96,7 +95,7 @@ const guide = {
             },
             {
                 title: "Import Your Wallet",
-                desc: <p className="text-right teacher text-sm !normal-case">
+                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
                     Import your wallet seed phrase.
                     <br />
                     Cysic does not store any seed phrases or private keys.
@@ -106,7 +105,7 @@ const guide = {
             },
             {
                 title: "Start VerifIcation",
-                desc: <p className="text-right teacher text-sm !normal-case">
+                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
                     Click the Start Verification button on the main interface to begin the Verifier process.
                     <br />
                     After starting verifier, Cysic App can switch to backstage operating.
@@ -121,7 +120,7 @@ const guide = {
         steps: [
             {
                 title: "Setup",
-                desc: <p className="text-right teacher text-sm !normal-case">
+                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
                     Start your terminal program on Linux. Copy the code below.<br />
                     Replace the address placeholder with your reward address, then run it in your terminal.
                 </p>,
@@ -132,7 +131,7 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -145,7 +144,7 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Success",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2 again.
                         <br />
                         *The verifier program will create mnemonic files for you.
@@ -173,7 +172,7 @@ Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase2_libs/releases/downl
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -190,7 +189,7 @@ cd $env:USERPROFILE\\cysic-verifier
             {
                 title: "Success",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2
                         again.
                         <br />
@@ -216,7 +215,7 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: network error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -230,7 +229,7 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
             {
                 title: "Success",
                 desc: (
-                    <p className="text-right teacher text-sm !normal-case">
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2
                         again.
                         <br />
@@ -273,12 +272,9 @@ const GuideStepCard = ({
 
     return (
         <div className="flex flex-col gap-4">
-
-
-
             <div className="flex gap-4 items-center">
-                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">Step {step}/{totalStep}</div>
-                <h3 className={cn("unbounded text-2xl ")}>
+                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/{totalStep}</div>
+                <h3 className={cn("unbounded text-xl lg:text-2xl flex-1")}>
                     {title}
                 </h3>
             </div>
@@ -291,7 +287,7 @@ const GuideStepCard = ({
             {/* {children} */}
             {code ? (
                 <div className={
-                    cn("relative bg-[#FFFFFF0D] rounded-[16px] p-4 flex items-center justify-between ", isMobile ? "flex-col gap-6" : "gap-10")
+                    cn("relative bg-[#FFFFFF0D] rounded-[16px] p-4 flex items-center justify-between ", "flex-col lg:flex-row gap-6 lg:gap-10")
                 }>
                     <SyntaxHighlighter
                         language="bash"
@@ -336,12 +332,12 @@ const SelfProverStepCard = ({
                 <div
                     className={cn(
                         "w-full flex ",
-                        isMobile ? "flex-col" : "justify-between items-start"
+                        "flex-col lg:flex-row lg:justify-between lg:items-start"
                     )}
                 >
-                    <div className="flex gap-4 items-center">
-                        <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">Step {step}/2</div>
-                        <h3 className={cn("unbounded text-2xl ")}>
+                    <div className="flex gap-4 items-start lg:items-center ">
+                        <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/2</div>
+                        <h3 className={cn("unbounded text-xl lg:text-2xl flex-1")}>
                             {title}
                         </h3>
                     </div>
@@ -395,20 +391,20 @@ const VerifierPage = () => {
                 <GradientBorderCard borderRadius={8} className="mb-4  relative ">
                     <>
                         <div className="absolute purple-landing bg-[url('@/assets/images/_global/dashboard_verifier_landing_bg.png')] bg-cover bg-center w-[calc(100%-2px)] h-[calc(100%-2px)] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-lg" />
-                        <div className={cn("w-full px-6 py-4 relative z-1")}>
+                        <div className={cn("w-full px-4 lg:px-6 py-4 relative z-1")}>
                             <div className="flex flex-col gap-2 mb-6 ">
                                 <h1
                                     className={cn(
-                                        "title !font-light uppercase",
-                                        isMobile ? "!text-2xl" : "!text-4xl"
+                                        "unbounded font-light",
+                                        "text-2xl lg:text-4xl"
                                     )}
                                 >
                                     Scale Up,<br /> Verify More,<br /> Earn More
                                 </h1>
                                 <h2
                                     className={cn(
-                                        "title !font-light uppercase mt-2",
-                                        isMobile ? "!text-base" : "!text-xl"
+                                        "unbounded font-light mt-2",
+                                        "text-base lg:!text-xl"
                                     )}
                                 >
                                     Run a lightweight node to support proof verification,<br />
@@ -438,14 +434,14 @@ const VerifierPage = () => {
                 <div
                     className={cn(
                         "unbounded text-center text-[36px] font-light",
-                        isMobile ? "my-6" : "my-12"
+                        "my-6 mt-12 lg:my-12"
                     )}
                 >
                     Becoming a Cysic ZK verifier
                 </div>
 
                 <div className="flex flex-col">
-                    <GradientBorderCard borderRadius={8} className="mb-4 relative px-6 py-4">
+                    <GradientBorderCard borderRadius={8} className="mb-4 relative px-4 lg:px-6 py-4">
                         <SelfProverStepCard
                             step={1}
                             linkContent="Click here to know how to earn CYS"
@@ -465,7 +461,7 @@ const VerifierPage = () => {
 
                     <GradientBorderCard
                         borderRadius={8}
-                        className="flex flex-col gap-4 py-4 px-6"
+                        className="flex flex-col gap-4 py-4 px-4 lg:px-6"
                     >
                         <SelfProverStepCard
                             step={2}
@@ -474,16 +470,16 @@ const VerifierPage = () => {
                             // onClick={handleReserveModal}
                             title={
                                 <>
-                                    <span className="text-2xl unbounded">Follow the corresponding tutorials</span> <br />
-                                    <span className="text-base unbounded font-light">based on your terminal machine</span>
+                                    <span className="text-2xl unbounded break-words" style={{ wordBreak: 'break-word' }}>Follow the corresponding tutorials</span> <br />
+                                    <span className="text-base unbounded font-light ">based on your terminal machine</span>
                                 </>
                             }
                         >
 
                             <Divider className="bg-[#FFFFFF4D] " />
 
-                            <div className="flex gap-4 items-center">
-                                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-4 py-2 border">TUTORIAL</div>
+                            <div className="flex gap-4 items-start lg:items-center">
+                                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">TUTORIAL</div>
                                 <h3 className={cn("unbounded text-2xl ")}>
                                     <>
                                         <span className="text-2xl unbounded">Run Cysic Verifier Node</span> <br />
@@ -513,7 +509,7 @@ const VerifierPage = () => {
                                     className="w-full"
                                 >
                                     <Tab key="Android" title="Android">
-                                        <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", isMobile ? "flex-col" : "")}>
+                                        <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", "flex-col lg:flex-row")}>
                                             <div className="flex-1">
 
                                                 <GuideStepCard

@@ -252,13 +252,13 @@ const InvitePage = () => {
                         borderRadius={8}
                     >
                         <div className="w-full py-4">
-                            <h2 className="title !text-xl !font-light uppercase mb-4 px-6">
+                            <h2 className="title !text-xl !font-light uppercase mb-4 px-4 lg:px-6">
                                 TOTAL INVITE REWARDS
                             </h2>
                             <div className="border-b border-white my-4 "></div>
 
                             {/* 推荐收益 */}
-                            <div className="flex justify-between items-start px-6">
+                            <div className="flex justify-between items-start px-4 lg:px-6">
                                 <span className="!font-light uppercase !text-base title">
                                     REFERRAL EARNINGS
                                 </span>
@@ -273,10 +273,10 @@ const InvitePage = () => {
                                 </div>
                             </div>
 
-                            <div className="border-b border-white my-4 px-6"></div>
+                            <div className="border-b border-white my-4 px-4 lg:px-6"></div>
 
                             {/* 升级收益 */}
-                            <div className="flex justify-between items-center px-6">
+                            <div className="flex justify-between items-center px-4 lg:px-6">
                                 <span className="!font-light uppercase !text-base title">
                                     UPGRADE EARNINGS
                                 </span>
@@ -288,8 +288,8 @@ const InvitePage = () => {
                     </GradientBorderCard>
 
                     {/* 右侧 - 您的推荐码 */}
-                    <div className="flex gap-4">
-                        <GradientBorderCard borderRadius={8} className="flex-[2] flex gap-4 px-6 py-4 ">
+                    <div className="flex flex-col lg:flex-row gap-4">
+                        <GradientBorderCard borderRadius={8} className="flex-[2] flex flex-col lg:flex-row gap-4 px-4 lg:px-6 py-4 ">
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex justify-between items-start">
                                     <h2 className="title !text-xl uppercase !font-light">
@@ -318,7 +318,7 @@ const InvitePage = () => {
                             </div>
 
 
-                            <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
+                            <Divider  className="bg-[#FFFFFFCC] w-full lg:w-divider h-divider lg:h-full" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex justify-between items-start">
@@ -370,14 +370,14 @@ const InvitePage = () => {
                         <div
                             className={cn(
                                 "flex justify-between items-center",
-                                isMobile ? "flex-col gap-4" : ""
+                                "flex-col lg:flex-row gap-4 lg:gap-0",
                             )}
                         >
                             <div>
                                 <h2 className="title !font-light !text-xl uppercase mb-2">
                                     INVITE LEVEL
                                 </h2>
-                                <div className="text-base !font-[400] flex items-center">
+                                <div className="text-base !font-[400] flex items-center flex-wrap break-words">
                                     Successful Invites{" "}
                                     <Tooltip
                                         content={
@@ -419,7 +419,7 @@ const InvitePage = () => {
                             {tiers
                                 .sort((a, b) => a.level - b.level)
                                 .map((tier, index) => (
-                                    <div key={tier.id} className="relative h-full min-w-[10rem]">
+                                    <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
                                         <GradientBorderCard
                                             borderRadius={8}
                                             borderWidth={1}
@@ -427,7 +427,7 @@ const InvitePage = () => {
                                         >
                                             <div className="w-full p-4 flex flex-col items-center">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="!text-base !font-light title uppercase font-light tracking-wider">
+                                                    <h3 className="text-sm lg:text-base !font-light unbounded tracking-wider">
                                                         {tier.name}
                                                     </h3>
                                                     <Tooltip

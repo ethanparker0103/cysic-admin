@@ -104,7 +104,7 @@ const ProjectPage = () => {
                         PROJECT
                     </span>
                     <div className="flex items-center gap-2">
-                        <span className="font-light unbounded">
+                        <span className="font-light unbounded text-center">
                             learn about Cysic ZK Project and how to fully utilize it
                         </span>
                         <ArrowRight size={16} />

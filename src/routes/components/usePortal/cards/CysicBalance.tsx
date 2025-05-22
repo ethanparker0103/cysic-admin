@@ -4,19 +4,17 @@ import useAccount from "@/hooks/useAccount";
 import { handleBridgeHistoryModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
-import { isMobile } from "react-device-detect";
 
 const CysicBalance = () => {
   const { balance } = useAccount()
 
   return (
     <GradientBorderCard borderRadius={8} className="h-full">
-      <div className="py-4 px-6 w-full h-full">
-        <div className="flex justify-between items-center mb-4">
+      <div className="py-4 px-4 lg:px-6 w-full h-full">
+        <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4 lg:gap-0">
           <div
             className={cn(
               "text-base font-light unbounded",
-              isMobile ? "text-base" : ""
             )}
           >
             BALANCE
@@ -41,8 +39,7 @@ const CysicBalance = () => {
 
         <div
           className={cn(
-            "flex justify-between",
-            isMobile ? "flex-col" : "flex-col"
+            "flex justify-between flex-col",
           )}
         >
           <div
@@ -51,7 +48,7 @@ const CysicBalance = () => {
             )}
           >
 
-            <div className={cn("text-2xl font-light unbounded", isMobile ? "text-left" : "text-right")}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
+            <div className={cn("text-2xl font-light unbounded", "text-left lg:text-right" )}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
 
           </div>
         </div>

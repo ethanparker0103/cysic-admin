@@ -2,7 +2,6 @@ import { backgroundImageList } from "@/router";
 import { Link, useLocation } from "react-router-dom";
 import React, { useMemo } from "react";
 import { cn } from "@nextui-org/react";
-import { isMobile } from "react-device-detect";
 import { ArrowLeft } from "lucide-react";
 import { NO_CONTAINER_PATHS } from "@/config";
 
@@ -67,7 +66,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
         return (
             <main className={cn("relative min-h-screen w-full z-10 mx-auto",
                 noContainer ? "" : "main-container",
-                isMobile ? "pb-6 px-3" : noContainer ? "pb-0" : "pb-12")}>
+                "pb-6 px-3",
+                noContainer ? "!pb-0" : "lg:pb-12")}>
                 {children}
             </main>
         );
@@ -118,7 +118,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
             <div className="relative w-full" style={{ minHeight: height }}>
                 {
                     needBack ? (
-                        <Link to={backPath} className="absolute top-1 left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-base font-light unbounded">
+                        <Link to={backPath} className="absolute top-1 left-3 lg:left-[3rem] z-[11] overflow-hidden flex items-center gap-2 !text-base font-light unbounded">
                             <ArrowLeft className="size-5" />
                             <span>{backgroundConfig?.backContent ?? 'Back'}</span>
                         </Link>
@@ -127,7 +127,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> = React
                 <main className={
                     cn("relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-center",
                         noContainer ? "" : "main-container ",
-                        isMobile ? "pb-6 px-3" : noContainer? "pb-0" : "pb-12"
+                        "pb-6 px-3",
+                        noContainer? "!pb-0" : "lg:pb-12"
                     )
                 }>
                     {children}

@@ -1,11 +1,9 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { enableSocialTask } from "@/config";
 import useAccount from "@/hooks/useAccount";
-import useUser from "@/models/user";
 import { handleVoucherModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
-import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 
 const VoucherInfo = () => {
@@ -15,13 +13,10 @@ const VoucherInfo = () => {
 
     return (
         <GradientBorderCard borderRadius={8} className="h-full">
-            <div className="py-4 px-6 w-full h-full">
-                <div className="flex justify-between items-center mb-4">
+            <div className="py-4 px-4 lg:px-6 w-full h-full">
+                <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4 lg:gap-0">
                     <div
-                        className={cn(
-                            "text-base font-light unbounded",
-                            isMobile ? "text-base" : ""
-                        )}
+                        className={cn("text-base font-light unbounded")}
                     >
                         VOCHER
                     </div>
@@ -43,8 +38,7 @@ const VoucherInfo = () => {
 
                 <div
                     className={cn(
-                        "flex justify-between",
-                        isMobile ? "flex-col" : "flex-col"
+                        "flex justify-between flex-col"
                     )}
                 >
                     <div

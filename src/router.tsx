@@ -11,7 +11,6 @@ import NftUserPortal from "@/routes/pages/Nft/userPortal/page";
 import NftSocialTask from "@/routes/pages/Nft/socialTask/page";
 import NftServiceHub from "@/routes/pages/Nft/serviceHub/page";
 import { getImageUrl } from "@/utils/tools";
-import { isMobile } from "react-device-detect";
 
 import MyProjectPage from "@/routes/pages/Zk/project/my/page";
 import MyProjectDetailPage from "@/routes/pages/Zk/project/[id]/page";
@@ -214,7 +213,7 @@ export const backgroundImageList = {
   },
   "/zk": {
     img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
-    className: isMobile ? "h-[90%]" : "h-[180vh]",
+    className: "h-[180vh] lg:h-[180vh]",
   },
   "/zk/invite": {
     img: getImageUrl("@/assets/images/_global/invite_landing_bg.png"),

@@ -1,6 +1,6 @@
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { downloadLink, verifierStatus } from "@/config";
+import { downloadLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import useStatic, { IProofType } from "@/models/_global";
 import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
@@ -8,8 +8,6 @@ import { cn } from "@nextui-org/react";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
-import { useMemo } from "react";
-import { isMobile } from "react-device-detect";
 
 
 // {
@@ -37,7 +35,7 @@ export const useVerifierStatus = () => {
     const ProverCardListComponent = () => (
 
         <GradientBorderCard borderRadius={8}>
-            <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
+            <div className={cn("w-full px-4 lg:px-6 py-4 flex justify-between items-center", "flex-col lg:flex-row gap-4 lg:gap-0")}>
                 <div className="flex flex-col gap-4 w-full">
                     <h3 className="!text-base !font-light title uppercase">ZK PROVER STATUS</h3>
 
@@ -57,7 +55,7 @@ export const useVerifierStatus = () => {
 
     const VerifierCardListComponent = () => (
         <GradientBorderCard borderRadius={8}>
-            <div className={cn("w-full px-6 py-4 flex justify-between items-center", isMobile ? "flex-col gap-4" : "")}>
+            <div className={cn("w-full px-4 lg:px-6 py-4 flex justify-between items-center", "flex-col lg:flex-row gap-4 lg:gap-0")}>
                 <div className="flex flex-col gap-4 w-full">
                     <h3 className="!text-base !font-light title uppercase">ZK VERIFIER STATUS</h3>
                     <div className="flex items-center gap-2">
@@ -73,7 +71,7 @@ export const useVerifierStatus = () => {
                     <a href={downloadLink.googlePlay} target="_blank">
                         <Button
                             type="solid"
-                            className={cn("min-h-fit h-fit px-6 py-6", isMobile ? "w-full" : "")}
+                            className={cn("min-h-fit h-fit px-6 py-6", "w-full lg:w-auto")}
                         >
                             <div className="flex items-center justify-center gap-2 text-base !font-[400]">
                                 <span>DOWNLOAD OUR ANDROID APP</span>
@@ -109,12 +107,12 @@ export const ProverCard = ({ icon, name, description, isActive, btnText }: Prove
         >
             <div className="w-full p-6 h-full flex flex-col">
                 <div className="flex items-start gap-4 flex-1">
-                    <div className={cn(" rounded-full bg-[#111] flex items-center justify-center text-white", isMobile ? "h-8 w-8" : "w-12 h-12")}>
+                    <div className={cn(" rounded-full bg-[#111] flex items-center justify-center text-white", "h-8 w-8 lg:w-12 lg:h-12")}>
                         {icon}
                     </div>
                     <div className="flex-1 h-full flex flex-col">
-                        <div className={cn("flex mb-4", isMobile ? "flex-col" : "justify-between items-start")}>
-                            <h3 className={cn("!font-light title", isMobile ? "!text-2xl mb-2" : "!text-3xl")}>{name}</h3>
+                        <div className={cn("flex mb-4", "flex-col lg:flex-row lg:justify-between lg:items-start")}>
+                            <h3 className={cn("font-light unbounded", "text-2xl mb-2 lg:text-3xl lg:mb-0")}>{name}</h3>
                             <div className="flex items-center gap-2">
                                 <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
                                 <span className="uppercase !text-sm !font-light title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>

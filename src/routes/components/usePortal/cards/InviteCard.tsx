@@ -8,7 +8,7 @@ export const InviteCard = () => {
     const { inviteCode, zkPart } = useAccount();
 
     return <GradientBorderCard borderRadius={8} className="flex-1 w-full h-full">
-        <div className="w-full px-6 py-4 h-full flex justify-between">
+        <div className="w-full px-4 lg:px-6 py-4 h-full flex justify-between">
             <div className="flex flex-col justify-between gap-4 w-full">
                 <div className="flex items-center gap-2 justify-between">
                     <div className="text-sm unbounded font-light">INVITE CODE</div>
