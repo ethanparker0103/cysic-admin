@@ -2,7 +2,7 @@ import Button from "@/components/Button";
 import { mediasLink } from "@/config";
 import { handleSignIn } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const AboutTestnetButton = () => {
     return (
@@ -17,11 +17,20 @@ const AboutTestnetButton = () => {
 
 
 const JoinTestnetPhaseIIIButton = () => {
+    const navigate = useNavigate()
+    const pathname = useLocation().pathname
     return (
         // <Link to="/zk">
             <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center uppercase"
             onClick={()=>{
-                handleSignIn()
+                if(!pathname.includes('zk')){
+                    navigate('/zk')
+                }else{
+                    handleSignIn()
+                }
+                // setTimeout(()=>{
+                    
+                // }, 1000)
             }}
             >
                 <span>Join Testnet Phase III</span>

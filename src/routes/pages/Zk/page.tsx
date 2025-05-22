@@ -14,7 +14,7 @@ import { isMobile } from "react-device-detect";
 const ZkLanding = () => {
   return (
     <>
-      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] h-screen ">
+      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] h-screen max-h-screen">
         <div
           className={cn("flex flex-col items-center", isMobile ? "gap-4" : "")}
         >

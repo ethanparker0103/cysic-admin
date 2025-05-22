@@ -641,7 +641,7 @@ const Home = () => {
         </span>
       </div>
 
-      <div className="min-h-screen w-full main-container flex flex-col items-center gap-12 py-16">
+      <div className="min-h-[640px] w-full main-container flex flex-col items-center gap-12 py-16">
         <div className="text-center">
           <div className="teacher text-2xl ">What we are</div>
           <div className="unbounded text-[6rem] font-extralight">Building</div>
