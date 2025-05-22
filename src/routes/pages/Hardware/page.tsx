@@ -1,8 +1,7 @@
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { classes } from "@/config";
 import InViewFlip from "@/routes/components/InViewFlip";
-import { academyConfig } from "@/routes/pages/Academy/config";
+import { hardwareAcademyConfig } from "@/routes/pages/Academy/config";
 import { getImageUrl, scrollIntoView } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
@@ -55,7 +54,7 @@ const HardwarePage = () => {
           Technical Breakthroughs
         </div>
         <div className="flex flex-col gap-4">
-          {academyConfig.map((item) => (
+          {hardwareAcademyConfig.map((item) => (
             <a key={item.title} href={item.href} target="_blank">
               <GradientBorderCard className="px-6 py-4 flex justify-between cursor-pointer">
                 <div className="flex flex-col gap-1 flex-1">
@@ -75,16 +74,24 @@ const HardwarePage = () => {
 
       <div className="py-12 title text-[6rem] !font-light">Our Approach</div>
       <div className="w-full uppercase text-center bg-[#fff] text-[#000] py-4 title text-[40px] !font-[500]">
-        001.Asic Solutions
+        001. Asic Solutions
       </div>
       <div className={cn("py-16 flex gap-6 flex-wrap", container)}>
         <div className="flex flex-col gap-4">
           <div className="title text-2xl !font-light">
             Deep custom silicon for ultimate zk performance
           </div>
+          <GradientBorderCard
+            onClick={() => {
+              scrollIntoView("#Hypercube_IR_Layer");
+            }}
+            className="p-6 flex flex-col gap-6 items-start cursor-pointer"
+          >
+            <div className="title text-2xl !font-[500]">Hypercube IR Layer</div>
+          </GradientBorderCard>
           <GradientBorderCard className="p-6 flex flex-col gap-6 items-start">
             <div className="title text-2xl !font-[500]">
-              Custom Proof Generation Chips
+              Custom Proof Generation Products
             </div>
             <div className="gap-6 flex flex-wrap">
               <div
@@ -113,14 +120,6 @@ const HardwarePage = () => {
               </div>
             </div>
           </GradientBorderCard>
-          <GradientBorderCard
-            onClick={() => {
-              scrollIntoView("#Hypercube_IR_Layer");
-            }}
-            className="p-6 flex flex-col gap-6 items-start cursor-pointer"
-          >
-            <div className="title text-2xl !font-[500]">Hypercube IR Layer</div>
-          </GradientBorderCard>
         </div>
         <div className="flex-1">
           <GradientBorderCard className="p-6 flex flex-col gap-4 items-start">
@@ -144,7 +143,7 @@ const HardwarePage = () => {
 
       <div id="zk-chip" className="pt-12 w-full pb-16">
         <div className="pb-12 text-[64px] !font-light title text-center">
-          Get to know ASIC Chips
+          Get to know ASIC Products
         </div>
         <div className={cn("flex gap-6 flex-wrap items-stretch", container)}>
           <GradientBorderCard className="p-6 flex-1 bg-[#000]">
@@ -301,7 +300,7 @@ const HardwarePage = () => {
 
           <span className="text-sm font-[400]">
             a fundamental shift in how zk proofs get mapped to hardware, making
-            scalable zk computing truly possible.It restructures traditional zk
+            scalable zk computing truly possible. It restructures traditional zk
             circuit logic into a high-dimensional, hypercube-style data flow,
             enabling parallel execution, better memory access patterns,
             and reduced latency at the ASIC level.
@@ -404,7 +403,7 @@ const HardwarePage = () => {
       </div>
 
       <div className="w-full uppercase text-center bg-[#fff] text-[#000] py-4 title text-[40px] !font-[500]">
-        002.gpu Acceleration
+        002. gpu Acceleration
       </div>
 
       <div className={cn("flex items-center", container)}>
@@ -435,9 +434,9 @@ const HardwarePage = () => {
       <div className={cn("w-full flex gap-6 py-16", container)}>
         <GradientBorderCard className="p-6 flex flex-col gap-4 flex-1 justify-between">
           <div className="!tracking-widest sub-title !text-2xl !font-[400]">
-            Support various
+            Support
             <br />
-            differentGPU
+            different GPU
             <br />
             cards
           </div>
@@ -453,7 +452,7 @@ const HardwarePage = () => {
           <div className="!tracking-widest sub-title !text-2xl !font-[400]">
             Accelerate
             <br />
-            mainstream software
+            mainstream proof
             <br />
             backend
           </div>
@@ -473,12 +472,10 @@ const HardwarePage = () => {
           <div className=" sub-title !text-xl !font-[400]">
             GPU-Enhanced ZK Proving Acceleration
           </div>
-          <div className="title !text-[6rem] !font-light">zkPog</div>
+          <div className="unbounded text-[6rem] font-light !normal-case">ZKPoG</div>
         </div>
         <div className=" sub-title !text-xl !font-[400] text-center">
-          the first GPU platform to accelerate witness generation
-          <br />
-          and full ZKP pipeline end-to-end.
+          The first GPU platform to accelerate both witness generation and end-to-end ZKP computation.
         </div>
 
         <a
@@ -486,10 +483,10 @@ const HardwarePage = () => {
           target="_blank"
         >
           <Button
-            className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+            className="sub-title !normal-case !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
             type="solid"
           >
-            <span>Read About ZKPOG</span>
+            <span>READ ABOUT ZKPoG</span>
             <ArrowRight className="w-3 h-3" />
           </Button>
         </a>
@@ -616,7 +613,7 @@ const HardwarePage = () => {
             <div className="!tracking-widest sub-title !text-2xl !font-[400]">
               Seamless
               <br />
-              Customization
+              INTEGRATION
             </div>
             <div className="text-base !font-[400]">
               Run Plonkish circuits and leverage custom logic easily. ZKPoG
