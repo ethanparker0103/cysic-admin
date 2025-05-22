@@ -458,8 +458,8 @@ const VerifierPage = () => {
                                     occurs to protect Cysic ZK's operation.
                                 </>
                             }
-                            buttonText="RESERVE"
-                            onClick={handleReserveModal}
+                            buttonText="TIME LIMITED FREE"
+                            // onClick={handleReserveModal}
                         />
                     </GradientBorderCard>
 
@@ -470,8 +470,8 @@ const VerifierPage = () => {
                         <SelfProverStepCard
                             step={2}
                             linkContent="For more details, see the full Verifier Tutorial Doc"
-                            buttonText="RESERVE"
-                            onClick={handleReserveModal}
+                            buttonText="TIME LIMITED FREE"
+                            // onClick={handleReserveModal}
                             title={
                                 <>
                                     <span className="text-2xl unbounded">Follow the corresponding tutorials</span> <br />

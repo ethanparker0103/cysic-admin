@@ -168,8 +168,8 @@ const ProverPage = () => {
                                     To become a self Prover on Cysic ZK, you need to reserve at least 100 CYS as collateral. <br/>
                                     Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
                                     </>}
-                                    buttonText="RESERVE"
-                                    onClick={handleReserveModal}
+                                    buttonText="TIME LIMITED FREE"
+                                    // onClick={handleReserveModal}
                                 />
 
                                 <SelfProverStepCard
