@@ -23,7 +23,8 @@ const useCheckMatchedCosmosAddressWithEVM = () => {
   const uploadState = async () => {
     if (hasMatchedWithCosmos || !address) return;
     await axios.post("/api/v1/user/updateProfile", {
-      hasMatchedWithCosmos: true,
+      cysicAddress: cosmosAddress,
+      evmAddress: address
     });
     updateHasMatchedWithCosmos(address, true);
   };

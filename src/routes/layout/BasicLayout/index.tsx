@@ -25,7 +25,7 @@ import useBootstrap from "@/hooks/useBootstrap";
 import PrivyAccountMismatchModal from "@/routes/components/modal/privyAccountMismatchModal";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import BridgeHistoryModal from "@/routes/components/modal/bridgeHistoryModal";
-import useRefCode from "@/hooks/useRefCode";
+import usePathQuery from "@/hooks/usePathQuery";
 
 
 export default function App({ children }: { children: React.ReactNode }) {
@@ -33,7 +33,7 @@ export default function App({ children }: { children: React.ReactNode }) {
     useCosmosUpdate()
     useBootstrap()
     useScrollToTop();
-    useRefCode();
+    usePathQuery();
 
     return (
         <>
