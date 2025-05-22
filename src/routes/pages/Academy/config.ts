@@ -11,14 +11,14 @@ export const academyConfig = [
         subTitle: "Proving Million Keccak Function Per Second",
         href: "https://hackmd.io/@Cysic/r1LoS0MmJg",
     },
-    // {
-    //     title: "Cysic Network Whitepaper",
-    //     href: "https://hackmd.io/@Cysic/By8qPIiy1g"
-    // },
-    // {
-    //     title: "Cysic Network Litepaper",
-    //     href: "https://hackmd.io/@Cysic/r1BTsjB4R"
-    // },
+    {
+        title: "Cysic Network Whitepaper",
+        href: "https://hackmd.io/@Cysic/By8qPIiy1g"
+    },
+    {
+        title: "Cysic Network Litepaper",
+        href: "https://hackmd.io/@Cysic/r1BTsjB4R"
+    },
     {
         title: "ZK Hardware Acceleration",
         subTitle: "The Past, the Present and the Future",
