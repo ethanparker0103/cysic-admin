@@ -233,7 +233,7 @@ const StakePage = () => {
       key: "action",
       label: "Action",
       renderCell: (validator) => (
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-end">
           <Button
             onClick={() => handleStakeModal({ validator: validator.name })}
             type={BtnType.light}

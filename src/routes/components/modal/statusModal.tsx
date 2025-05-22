@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
+import { mediasLink } from "@/config";
 import { Check, Loader2, AlertCircle } from "lucide-react";
 
 // 状态类型枚举
@@ -23,7 +24,7 @@ export interface StatusModalProps {
 
 const StatusModal = () => {
   // 获取模态框状态
-  const { visible, setVisible, data } = useModalState({
+  const { visible, setVisible, data }: any = useModalState({
     eventName: "modal_status_visible",
   });
 
@@ -37,11 +38,11 @@ const StatusModal = () => {
   // 在弹窗打开时初始化状态
   useEffect(() => {
     if (visible && data) {
-      setStatus(data.type || StatusType.LOADING);
-      setTitle(data.title || getDefaultTitle(data.type));
-      setMessage(data.message || "");
-      setChainName(data.chainName || "XXX CHAIN");
-      setTxHash(data.txHash || "");
+      setStatus(data?.type || StatusType.LOADING);
+      setTitle(data?.title || getDefaultTitle(data.type));
+      setMessage(data?.message || "");
+      setChainName(data?.chainName || "XXX CHAIN");
+      setTxHash(data?.txHash?.hash || "");
     }
   }, [visible, data]);
 
@@ -79,22 +80,7 @@ const StatusModal = () => {
   const handleViewOnChain = () => {
     if (!txHash) return;
 
-    // 根据链名称确定区块浏览器URL
-    let explorerUrl = "";
-    switch (chainName?.toLowerCase()) {
-      case "ethereum":
-      case "eth":
-        explorerUrl = `https://etherscan.io/tx/${txHash}`;
-        break;
-      case "bsc":
-      case "binance":
-        explorerUrl = `https://bscscan.com/tx/${txHash}`;
-        break;
-      // 可以添加更多链的区块浏览器
-      default:
-        explorerUrl = `https://explorer.example.com/tx/${txHash}`;
-    }
-
+    const explorerUrl = mediasLink.cosmosExplorer + '/tx/' + txHash;
     window.open(explorerUrl, "_blank");
   };
 
