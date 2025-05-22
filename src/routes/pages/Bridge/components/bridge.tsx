@@ -132,7 +132,6 @@ const BridgeC = () => {
         });
 
         toast.success("Approve Successfully");
-        await txAwait(hash, chain);
         return;
       }
 
@@ -160,7 +159,6 @@ const BridgeC = () => {
         args: args,
         chainId: +topChainId,
       });
-      await txAwait(hash, chain);
       toast.success("Bridge Successfully");
     } catch (e: any) {
       console.log("error", e);
