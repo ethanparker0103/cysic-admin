@@ -497,7 +497,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-6">
               <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
-                <h2 className="title !text-xl uppercase">MY VALIDATORS</h2>
+                <h2 className="title !text-xl uppercase">MY STAKE</h2>
                 <div className="flex items-center gap-2">
                   <History size={16} />
                   <span className="!text-sm text-sub">Daily update at 2PM UTC</span>
@@ -505,7 +505,7 @@ const StakePage = () => {
               </div>
 
               {stakeLoading ? (
-                <div className="text-center py-6">加载验证者数据中...</div>
+                <div className="text-center py-6">loading validators...</div>
               ) : (
                 <CysicTable
                   data={myValidators}
@@ -552,7 +552,7 @@ const StakePage = () => {
             </div>
 
             {activeLoading ? (
-              <div className="text-center py-6">加载活跃验证者数据中...</div>
+              <div className="text-center py-6">loading active validators...</div>
             ) : (
               <CysicTable
                 data={activeValidators}

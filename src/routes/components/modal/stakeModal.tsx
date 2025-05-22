@@ -177,7 +177,7 @@ const ValidatorDropdown = ({
                                     handleValidatorTabChange(ValidatorTab.MY_VALIDATORS);
                                 }}
                             >
-                                MY VALIDATORS
+                                MY STAKE
                             </button>
                             <button
                                 className={`py-3 uppercase text-center text-base ${
@@ -247,7 +247,7 @@ const ValidatorDropdown = ({
                             // 空状态显示
                             <div className="text-center text-white py-10">
                                 {validatorTab === ValidatorTab.MY_VALIDATORS
-                                    ? "My Validators not found"
+                                    ? "My Staked Validators not found"
                                     : "No active validators found"}
                             </div>
                         )}

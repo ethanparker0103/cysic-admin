@@ -145,7 +145,7 @@ const InvitePage = () => {
             label: "Invited by",
             width: "40%",
             renderCell: (leader) => (
-                <div className="">{shortStr(leader.inviteBy, 14) || "-"}</div>
+                <div className="capitalize">{shortStr(leader.inviteBy, 14) || "-"}</div>
             ),
         },
     ];
