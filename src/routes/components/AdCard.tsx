@@ -24,13 +24,14 @@ const AdCard = ({
         className={cn(
           "absolute inset-0 w-full h-full object-cover transition-transform duration-500 rounded-lg",
           "group-hover:scale-105",
+          onClick ? "" : "blur-[10px]",
           className
         )}
       />
 
       {!onClick ? <div className="absolute inset-0 bg-black/30 z-10" /> : null}
       <GradientBorderCard borderRadius={8} className="relative z-20 p-4 flex flex-col justify-between backdrop-filter-none h-full bg-[transparent]">
-        <div>
+        <div className={onClick ? "" : "blur-[2px]"}>
           <h3 className="unbounded text-2xl font-light text-white">{title}</h3>
           {desc? <p className="teacher normal-case text-base text-white mt-2">{desc}</p> : null}
         </div>
