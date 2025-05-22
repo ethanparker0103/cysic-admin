@@ -2,7 +2,7 @@ import { cosmos_cysic_devnet, cosmos_cysic_testnet } from "@/config/cosmos/cysic
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 
-export const enableSocialTask = false
+export const enableSocialTask = true
 
 export const BIND_CHECK_PATHS = ["/zk", "/ai"];
 export const NO_BIND_CHECK_PATHS = ["/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
