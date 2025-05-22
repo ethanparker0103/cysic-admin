@@ -51,8 +51,6 @@ export const isProd = import.meta.env.VITE_APP_ENV == 'prod'
 
 
 export const mainUrl = import.meta.env.VITE_APP_BASE_URL
-// isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
-
 
 
 export const defaultRewardAmount = 100;

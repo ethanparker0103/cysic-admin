@@ -65,7 +65,6 @@ export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_devnet;
 
 export const mainUrl = import.meta.env.VITE_APP_BASE_URL;
-// isQa ? 'https://api-dev.prover.xyz' : 'https://api-testnet.prover.xyz'
 
 export const baseHref = "/m";
 
