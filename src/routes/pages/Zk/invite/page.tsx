@@ -24,6 +24,7 @@ import {
 } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import { enableSocialTask } from "@/config";
 
 // 团队成员类型
 interface TeamMember {
@@ -339,12 +340,12 @@ const InvitePage = () => {
                                     </span>
                                 </div>
 
-                                <Link
+                                {enableSocialTask ? <Link
                                     to="/socialTask"
                                     className="unbounded text-xs font-light !normal-case !text-[#19FFE0]"
                                 >
                                     Complete the basic tasks to earn extra 3% →
-                                </Link>
+                                </Link> : null}
 
                                 <p className="teacher !normal-case text-base">
                                     Your Rebate Rate determines how much token rebate you earn

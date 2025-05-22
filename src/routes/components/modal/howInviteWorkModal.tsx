@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { handleHowInviteWorkModal } from "@/utils/tools";
+import { enableSocialTask } from "@/config";
 
 const steps = [
   {
@@ -13,7 +14,7 @@ const steps = [
         1. Invite Code and Levels<br/><br/>
         Your Cysic Network Invite Code and account work seamlessly across all Cysic services—including Cysic ZK, Cysic AI, and the upcoming Cysic Mining.<br/><br/>
         There are 5 Invite Levels. As you successfully invite more users, your level increases and unlocks exclusive rewards—such as higher Rebate Rates, enhanced Multipliers, and more.<br/><br/>
-        ⚠️ A user must complete all Basic Tasks in the <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks</Link> to count as a Successful Invite.
+        ⚠️ A user must complete all Basic Tasks in the {enableSocialTask ? <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks</Link> : <span className="!text-[#19FFE0] !underline">Social Tasks(Coming Soon)</span>} to count as a Successful Invite.
       </>
     ),
   },
@@ -24,7 +25,7 @@ const steps = [
       2. Rebate Rewards<br/><br/>
       Rebate Rewards = (NFT purchase by direct invitee × your Rebate Rate) + (NFT purchase by indirect invitee × fixed 2%)<br/><br/>
       Your invite performance earns you token rewards based on the NFT purchases made by your invitees.<br/><br/>
-      You can boost your Rebate Rate by completing tasks—visit the <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks page</Link> to learn how.
+      You can boost your Rebate Rate by completing tasks—visit the {enableSocialTask ? <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-[#19FFE0] !underline">Social Tasks page</Link> : <span className="!text-[#19FFE0] !underline">Social Tasks page(Coming Soon)</span>} to learn how.
       </>
     )
   }

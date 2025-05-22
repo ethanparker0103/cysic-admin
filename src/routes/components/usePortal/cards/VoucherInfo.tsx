@@ -1,4 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
+import { enableSocialTask } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import useUser from "@/models/user";
 import { handleVoucherModal } from "@/utils/tools";
@@ -8,8 +9,8 @@ import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 
 const VoucherInfo = () => {
-    const { 
-        voucherCnt = 0 
+    const {
+        voucherCnt = 0
     } = useAccount();
 
     return (
@@ -31,12 +32,12 @@ const VoucherInfo = () => {
                         >
                             VIEW ALL <ArrowRight size={12} className="ml-1" />
                         </div>
-                        <Link
+                        {enableSocialTask ? <Link
                             to="/socialTask"
                             className="flex items-center text-sub text-sm hover:text-white"
                         >
                             SOCIAL TASKS <ArrowRight size={12} className="ml-1" />
-                        </Link>
+                        </Link> : null}
                     </div>
                 </div>
 

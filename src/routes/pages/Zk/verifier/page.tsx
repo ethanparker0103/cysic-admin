@@ -429,7 +429,7 @@ const VerifierPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <ProverCardListComponent />
+                    <VerifierCardListComponent />
 
                     {/* MULTIPLIER */}
                     <Multiplier actionPlacement="top" />
@@ -470,7 +470,7 @@ const VerifierPage = () => {
                         <SelfProverStepCard
                             step={2}
                             linkContent="For more details, see the full Verifier Tutorial Doc"
-                            buttonText="TIME LIMITED FREE"
+                            // buttonText="TIME LIMITED FREE"
                             // onClick={handleReserveModal}
                             title={
                                 <>

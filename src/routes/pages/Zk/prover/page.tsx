@@ -83,8 +83,8 @@ const ProverPage = () => {
 
     const navigate = useNavigate()
 
-    const { ProverCardListComponent } = useProverStatus()
-    const { VerifierCardListComponent } = useVerifierStatus()
+    // const { ProverCardListComponent } = useProverStatus()
+    const { VerifierCardListComponent, ProverCardListComponent } = useVerifierStatus()
 
     return (
         <div className="min-h-screen w-full overflow-hidden">
@@ -120,7 +120,7 @@ const ProverPage = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     {/* ZK VERIFIER STATUS */}
-                    <VerifierCardListComponent />
+                    <ProverCardListComponent />
 
                     {/* MULTIPLIER */}
                     <Multiplier actionPlacement="top" />

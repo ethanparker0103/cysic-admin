@@ -32,6 +32,7 @@ import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
 import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page";
 import UnbindPage from "@/routes/pages/unbind/page";
 import Bridge from "@/routes/pages/Bridge/page";
+import { enableSocialTask } from "@/config";
 
 const portalModules = {
   path: "userPortal",
@@ -46,6 +47,11 @@ const portalModules = {
     },
   ],
 };
+
+const socialTaskModules = enableSocialTask ? {
+  path: "socialTask",
+  element: <NftSocialTask />,
+} : {}
 
 export const router = createBrowserRouter(
   [
@@ -78,10 +84,11 @@ export const router = createBrowserRouter(
           path: "/hardware",
           element: <HardwarePage />,
         },
-        {
-          path: "socialTask",
-          element: <NftSocialTask />,
-        },
+        // {
+        //   path: "socialTask",
+        //   element: <NftSocialTask />,
+        // },
+        socialTaskModules,
         {
           path: "/zk",
           children: [
