@@ -121,7 +121,7 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
       }),
     {
       ready: !!taskGroup.id,
-      refreshDeps: [taskGroup.id],
+      refreshDeps: [taskGroup.id, isSigned, address],
       onSuccess: (res) => {
         setTaskList(res.data.taskList);
       },

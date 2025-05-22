@@ -59,7 +59,7 @@ export const getTierIcon = (tierName: string) => {
 const InvitePage = () => {
     const { referralLevelList: tiers } = useStatic();
     const {
-        isRegistered,
+        isSigned,
         walletAddress,
         inviteCode: registeredInviteCode,
         currentRebateRate,
@@ -77,8 +77,8 @@ const InvitePage = () => {
     const { data: overviewData } = useRequest(
         () => axios.get("/api/v1/referral/overview"),
         {
-            ready: !!isRegistered && !!walletAddress,
-            refreshDeps: [isRegistered, walletAddress],
+            ready: !!isSigned && !!walletAddress,
+            refreshDeps: [isSigned, walletAddress],
             onSuccess: (res) => {
                 if (res?.data) {
                     // 设置邀请奖励数据
@@ -99,8 +99,8 @@ const InvitePage = () => {
     const { loading: teamLoading } = useRequest(
         () => axios.get("/api/v1/referral/teamList"),
         {
-            ready: !!isRegistered && !!walletAddress,
-            refreshDeps: [isRegistered, walletAddress],
+            ready: !!isSigned && !!walletAddress,
+            refreshDeps: [isSigned, walletAddress],
             onSuccess: (res) => {
                 if (res?.data) {
                     setLeaderData(res.data.leaderInfo);
