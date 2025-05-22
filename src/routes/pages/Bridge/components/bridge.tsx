@@ -46,8 +46,10 @@ const BridgeC = () => {
   const bridgeAbi = !bridgeDir ? toCysAbi : fromCysAbi;
   const topDir = !bridgeDir ? fromChain : toChain;
   const bottomDir = !bridgeDir ? toChain : fromChain;
-
   const topChainId = !bridgeDir ? fromChainId : toChainId;
+  const bottomChainId = !bridgeDir ? toChainId : fromChainId;
+
+
   const topToken = bridgeToken?.[topChainId]?.[fromTokenAddress];
   const fromToken = bridgeToken?.[fromChainId]?.[fromTokenAddress];
   const spender = !bridgeDir
@@ -235,7 +237,7 @@ const BridgeC = () => {
               >
                 <img
                   className="size-6 rounded-full"
-                  src={EVM_CHAIN_LOGO?.[toChainId]}
+                  src={EVM_CHAIN_LOGO?.[bottomChainId]}
                 />
                 <span className="text-base font-medium unbounded !normal-case">
                   {bottomDir?.name}

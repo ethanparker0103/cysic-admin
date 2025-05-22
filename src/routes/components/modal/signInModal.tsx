@@ -45,7 +45,11 @@ const SignInModal = () => {
   }
 
   const loginWithGoogle = () => {
-    login('google')
+    if(user?.google?.subject){
+      linkGoogle()
+    }else{
+      login('google')
+    }
   } 
 
   const loginWithDiscord = () => {
@@ -53,7 +57,11 @@ const SignInModal = () => {
   }
 
   const loginWithX = () => {
-    login('twitter')
+    if(user?.twitter?.subject){
+      linkTwitter()
+    }else{
+      login('twitter')
+    }
   }
 
   const loginWithWallet = () => {
