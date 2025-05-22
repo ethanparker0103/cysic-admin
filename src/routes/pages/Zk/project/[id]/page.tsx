@@ -123,7 +123,7 @@ const ProjectDetailPage = () => {
             key: "detail",
             label: "Detail",
             width: "33%",
-            renderCell: (project) => <Link className="flex items-center gap-2" to={`/zk/dashboard/task/${project.taskId}`}>
+            renderCell: (project) => <Link className="flex items-center gap-2 justify-end" to={`/zk/dashboard/task/${project.taskId}`}>
                 Detail
                 <ArrowRight size={16} />
             </Link>,
@@ -181,7 +181,7 @@ const ProjectDetailPage = () => {
                                             {projectDetail?.name}
                                         </h2>
                                     </div>
-                                    <div className="flex items-center gap-2">
+                                    {/* <div className="flex items-center gap-2">
                                         <Button
                                             type="light"
                                             className="uppercase !px-6 text-base min-w-fit min-h-fit"
@@ -195,7 +195,7 @@ const ProjectDetailPage = () => {
                                         >
                                             Pause
                                         </Button>
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 <div className="flex items-start gap-4">

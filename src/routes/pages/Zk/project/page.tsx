@@ -27,7 +27,7 @@ const ProjectPage = () => {
 
     const { data } =
         usePagnation(() => {
-            return axios.get(`/api/v1/zkTask/project/list`);
+            return axios.get(`/api/v1/zkTask/dashboard/project/list`);
         });
 
     const memberData = data?.data?.list || [];
@@ -152,7 +152,7 @@ const ProjectPage = () => {
                                 isMobile ? "!text-base" : "!text-xl"
                             )}
                         >
-                            My projects
+                            All projects
                         </h2>
                         <CysicTable
                             data={memberData}
