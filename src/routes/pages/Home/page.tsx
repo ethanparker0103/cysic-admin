@@ -721,7 +721,7 @@ const Home = () => {
         })}
 
 
-      <div className="w-full">
+      <a href="https://medium.com/@cysic/zero-knowledge-zk-hardware-acceleration-startup-cysic-raises-12m-in-pre-a-round-to-advance-the-4d8eb7fc611c" target="_blank" className="w-full">
         <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
@@ -733,7 +733,7 @@ const Home = () => {
         <div className="h-12 bg-gradient-to-r from-[#3500E5] to-[#BCA7FF]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
-      </div>
+      </a>
 
       <ScreenNavCard
         title="As seen on"

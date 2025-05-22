@@ -113,12 +113,13 @@ const useAccountBootstrap = () => {
 
 
   // social account
-  const handleUploadSocialAccount = async ({ accountType, account }: { accountType: string, account: string }) => {
+  const handleUploadSocialAccount = async ({ accountType, account, subject }: { accountType: string, account: string, subject: string }) => {
 
     if (!address) return;
     await axios.post('/api/v1/social/account/update', {
       accountType,
-      account
+      account,
+      subject
     })
 
     await sleep(1000)
@@ -129,29 +130,32 @@ const useAccountBootstrap = () => {
   useEffect(() => {
     if (isSigned && address) {
       // CHECK SOCIAL ACCOUNT
-      if (socialAccount?.discord?.name == '' && user?.discord?.username) {
+      if (socialAccount?.discord?.name == '' && user?.discord?.subject) {
         handleUploadSocialAccount({
           accountType: 'discord',
-          account: user?.discord?.username
+          account: user?.discord?.username || '',
+          subject: user?.discord?.subject || ''
         })
       }
 
-      if (socialAccount?.google?.name == '' && user?.google?.email) {
+      if (socialAccount?.google?.name == '' && user?.google?.subject) {
         handleUploadSocialAccount({
           accountType: 'google',
-          account: user?.google?.email
+          account: user?.google?.email || '',
+          subject: user?.google?.subject || ''
         })
       }
 
-      if (socialAccount?.x?.name == '' && user?.twitter?.username) {
+      if (socialAccount?.x?.name == '' && user?.twitter?.subject) {
         handleUploadSocialAccount({
           accountType: 'x',
-          account: user?.twitter?.username
+          account: user?.twitter?.username || '',
+          subject: user?.twitter?.subject || ''
         })
       }
 
     }
-  }, [isSigned, address, socialAccount, user?.discord?.username, user?.google?.email, user?.twitter?.username])
+  }, [isSigned, address, socialAccount, user?.discord?.subject, user?.google?.subject, user?.twitter?.subject])
 
 
 
