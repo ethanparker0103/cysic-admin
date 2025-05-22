@@ -42,7 +42,7 @@ const Profile = () => {
                     onClick={handleEditName}
                     className="cursor-pointer flex self-center h-[calc(100%-2rem)] aspect-square max-h-[10rem]">
                     <img
-                        src={avatarUrl}
+                        src={avatarUrl || 'https://statics.prover.xyz/tutorial/avatar1.svg'}
                         alt="Profile"
                         className="w-full h-full rounded-md object-cover"
                     />
