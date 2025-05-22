@@ -50,7 +50,8 @@ const basicNav = [
             {
                 content: 'Explorer',
                 key: 'explorer',
-                href: 'https://cys-dev.prover.xyz/'
+                href: mediasLink.cosmosExplorer
+                // href: 'https://cys-dev.prover.xyz/'
             },
         ]
     },
