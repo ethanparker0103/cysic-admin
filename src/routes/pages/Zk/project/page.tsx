@@ -30,6 +30,12 @@ const ProjectPage = () => {
             return axios.get(`/api/v1/zkTask/dashboard/project/list`);
         });
 
+    const { data: myData } =
+        usePagnation(() => {
+            return axios.get(`/api/v1/zkTask/project/list`);
+        });
+
+    const myDataData = myData?.data?.list || [];
     const memberData = data?.data?.list || [];
 
     const projectColumns: CysicTableColumn<IProject>[] = [
@@ -139,7 +145,7 @@ const ProjectPage = () => {
                                 </Link>
                             </div>
 
-                            <p className="!font-light text-[32px] text-right title">{data?.data?.total || 0}</p>
+                            <p className="!font-light text-[32px] text-right title">{myDataData?.data?.total || 0}</p>
                         </div>
                     </GradientBorderCard>
                 ) : null}
