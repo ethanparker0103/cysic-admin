@@ -26,7 +26,7 @@ const HorizontalScroll = ({ children }: { children: React.ReactNode }) => {
         scrollTrigger: {
             trigger: '.horizontal-scroll-wrapper',
             start: "top top",
-            end: `+=${sections.length * 150}%`,
+            end: `+=${sections.length * 100}%`,
             pin: '.horizontal-scroll',
             scrub: 2,
             anticipatePin: 1,

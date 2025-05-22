@@ -568,7 +568,7 @@ const Home = () => {
       <div
         className={cn(
           " h-screen flex flex-col justify-between items-center main-container",
-          isMobile ? "max-h-[70rem]" : "max-h-[70rem] min-h-[960px]"
+          isMobile ? "max-h-[70rem]" : "min-h-[1050px] "
         )}
       >
         <div className="pt-10 flex flex-col items-center gap-6 relative z-[2]">
@@ -598,7 +598,7 @@ const Home = () => {
         <div
           className={cn(
             "flex flex-col items-center gap-12 relative z-[2]",
-            isMobile ? "pb-0" : "pb-[10rem] -mb-[6rem]"
+            isMobile ? "pb-0" : "pb-[10rem] -translate-y-[40px]"
           )}
         >
           <span

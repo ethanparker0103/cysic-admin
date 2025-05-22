@@ -77,11 +77,11 @@ const basicNav = [
                 key: 'blog',
                 href: mediasLink.medium
             },
-            {
-                content: 'media',
-                key: 'media',
-                href: '/'
-            },
+            // {
+            //     content: 'media',
+            //     key: 'media',
+            //     href: '/'
+            // },
         ]
     }
 ]
