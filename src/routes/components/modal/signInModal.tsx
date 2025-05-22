@@ -14,6 +14,7 @@ import { useLocation } from "react-router-dom";
 import { usePrivy } from "@/hooks/usePrivy";
 import { BIND_CHECK_PATHS, mediasLink, NO_BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
+import useRef from "@/models/_global/ref";
 
 // 流程状态枚举
 enum SignInStep {
@@ -132,21 +133,37 @@ const SignInModal = () => {
   }, [visible, walletAddress, isSigned, isBinded, needsBindCheck, savedName]);
 
 
-  // 当已连接钱包且输入了完整邀请码时，自动尝试绑定
+  const { refCode } = useRef()
+  const [needAutoBind, setNeedAutoBind] = useState(false)
+
   useEffect(() => {
     if (
       visible &&
       walletAddress &&
       inviteCode.length === 5 &&
       step === SignInStep.INVITE_CODE &&
-      isSigned
+      isSigned &&
+      needAutoBind
     ) {
       bindWalletWithCode();
     }
-  }, [visible, walletAddress, inviteCode, isSigned, step]);
+  }, [visible, walletAddress, inviteCode, isSigned, step, needAutoBind]);
+
+  useEffect(()=>{
+    if(visible){
+      if(refCode){
+        setNeedAutoBind(false)
+        setInviteCode(refCode);
+        setError(null);
+      }else{
+        setNeedAutoBind(true)
+      }
+    }
+  }, [visible, refCode])
 
   // 处理邀请码改变
   const handleCodeChange = (code: string) => {
+    setNeedAutoBind(true)
     setInviteCode(code);
     setError(null);
   };

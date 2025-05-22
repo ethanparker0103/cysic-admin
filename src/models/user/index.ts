@@ -164,7 +164,6 @@ const useUser = create<UserState>()(
         // 设置当前活跃地址
         setActiveAddress: (address?: string) =>
           set((draft) => {
-            console.log('setActiveAddress', address)
             draft.activeAddress = address;
           }),
 
@@ -283,8 +282,6 @@ const useUser = create<UserState>()(
           try {
             // 调用绑定状态API
             const data: any = await axios.get("/api/v1/referral/isBound");
-
-            console.log('checkBindStatus data', data)
 
             if (data.code == responseSuccessCode) {
               const isBinded = !!data.data.isBound;

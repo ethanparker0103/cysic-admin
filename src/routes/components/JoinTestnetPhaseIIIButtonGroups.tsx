@@ -1,5 +1,6 @@
 import Button from "@/components/Button";
 import { mediasLink } from "@/config";
+import { handleSignIn } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -17,12 +18,16 @@ const AboutTestnetButton = () => {
 
 const JoinTestnetPhaseIIIButton = () => {
     return (
-        <Link to="/zk">
-            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center uppercase">
+        // <Link to="/zk">
+            <Button type="solid" className="backdrop-blur-sm !p-6 flex gap-4 flex items-center uppercase"
+            onClick={()=>{
+                handleSignIn()
+            }}
+            >
                 <span>Join Testnet Phase III</span>
                 <ArrowRight className="w-4 h-4" />
             </Button>
-        </Link>
+        // </Link>
     )
 }
 

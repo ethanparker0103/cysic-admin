@@ -5,8 +5,6 @@ const useLogout = () => {
     const { logout: _logout, user } = usePrivy();
     const { disconnectAsync: _disconnectAsync } = useDisconnect();
 
-    console.log('user', user)
-
     const disconnectAsync = async () => {
         await _disconnectAsync();
         window.localStorage.setItem('wagmi.com.okex.wallet.disconnected', 'true');

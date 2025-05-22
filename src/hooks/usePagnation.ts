@@ -16,7 +16,6 @@ const usePagnation = (fn: any, options: any = {})=>{
         refreshDeps: [...(options?.refreshDeps ?? []), currentPage],
         onSuccess(e: any){
             options?.onSuccess?.(e);
-            console.log('result', e)
             setTotal(e?.data?.total)
             setTotalPage(BigNumber(e?.data?.total).div(commonPageSize).toFixed(0, BigNumber.ROUND_CEIL))
         }

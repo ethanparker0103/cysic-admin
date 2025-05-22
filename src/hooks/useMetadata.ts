@@ -62,8 +62,6 @@ const useMetadata = () => {
             }
         }
 
-
-        console.log('needRegister', needRegister)
         return {
             needRegister
         }

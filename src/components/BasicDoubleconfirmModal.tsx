@@ -21,7 +21,6 @@ const BasicDoubleconfirmModal = () => {
 
     useEventListener("basicDoubleconfirmModalVisible" as any, (e: any) => {
         setVisible(true);
-        console.log(e.detail);
         callback.current = e?.detail?.callback;
         // renderCallback.current = e?.detail?.renderCallback
         setRenderElement(e?.detail?.renderElement);
