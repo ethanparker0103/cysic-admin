@@ -2,8 +2,6 @@ import { cosmos_cysic_devnet, cosmos_cysic_testnet } from "@/config/cosmos/cysic
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 
-export const enableSocialTask = true
-
 export const BIND_CHECK_PATHS = ["/zk", "/ai"];
 export const NO_BIND_CHECK_PATHS = ["/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
 export const NO_CONTAINER_PATHS = ['/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub']
@@ -61,6 +59,8 @@ export const TaskStatusColor: any = {
 
 export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
+
+export const enableSocialTask = isQa
 
 export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_devnet;
 
