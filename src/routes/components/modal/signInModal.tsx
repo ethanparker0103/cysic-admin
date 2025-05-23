@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useRef as useRefReact, useState, useEffect, useMemo } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import { ArrowRight, Upload } from "lucide-react";
@@ -10,12 +10,14 @@ import useUser from "@/models/user";
 import useAccount from "@/hooks/useAccount";
 import axios from "@/service";
 import { useLocation } from "react-router-dom";
+import useRef from "@/models/_global/ref";
 
 import { usePrivy } from "@/hooks/usePrivy";
 import { BIND_CHECK_PATHS, mediasLink, NO_BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
-import useRef from "@/models/_global/ref";
 import Spinner from "@/components/spinner";
+import useWalletConnectRecord from "@/models/_global/loginRecord";
+import { useEventListener } from "ahooks";
 
 // 流程状态枚举
 enum SignInStep {
@@ -24,13 +26,15 @@ enum SignInStep {
   COMPLETED = 3, // 完成状态
 }
 
+
 const SignInModal = () => {  
+
+  const { record, setRecord } = useWalletConnectRecord()
   const { overviewLoading, walletAddress, activeAddress, isSigned, isBinded, inviteCode: userInviteCode, userProfile } =
     useAccount();
   const { login: _login, linkGoogle, linkTwitter, linkDiscord, user } = usePrivy();
 
-
-  const needForceToSetProfile = !userProfile?.name || !userProfile?.avatarUrl
+  const needForceToSetProfile = walletAddress && (!record?.[walletAddress as string] || record?.[walletAddress as string] == '0')
   const login = async (type: 'google' | 'twitter' | 'discord' | 'wallet')=>{
     if(user && user?.wallet?.address){
       if(type === 'google'){
@@ -115,9 +119,25 @@ const SignInModal = () => {
     agreeTerms: false,
   });
 
-  // 在useEffect中检查当前状态，决定显示哪个步骤
+
+  const onlyProfileRef = useRefReact<boolean>(false)
+  useEventListener('modal_user_profile_visible', ()=>{
+    onlyProfileRef.current = true
+    setStep(SignInStep.USER_INFO);
+    setVisible(true)
+  })
+
+  // TODO rebuild
+  // init
+  useEffect(()=>{
+    if(!visible){
+      onlyProfileRef.current = false
+      setStep(SignInStep.INVITE_CODE)
+    }
+  }, [visible])
+
   useEffect(() => {
-    if (visible) {
+    if (visible && !onlyProfileRef.current) {
       // 重置错误状态
       setError(null);
 
@@ -125,7 +145,11 @@ const SignInModal = () => {
         if (needsBindCheck && !isBinded) {
           setStep(SignInStep.INVITE_CODE);
         } else {
-          setStep(SignInStep.USER_INFO);
+          if(needForceToSetProfile){
+            setStep(SignInStep.USER_INFO);
+          }else{
+            setVisible(false)
+          }
         }
       } else {
         setStep(SignInStep.INVITE_CODE);
@@ -348,6 +372,10 @@ const SignInModal = () => {
   const handleClose = () => {
     setVisible(false);
     resetState();
+
+    if(walletAddress && step === SignInStep.USER_INFO && needForceToSetProfile){
+      setRecord(walletAddress, '1')
+    }
   };
 
   // 重置所有状态

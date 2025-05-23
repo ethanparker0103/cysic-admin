@@ -86,7 +86,7 @@ const StatusButton = ({
 };
 
 const BoostingList = () => {
-  const { inviteCode } = useAccount();
+  const { inviteCode, inviteLevelId } = useAccount();
   const { referralLevelList: tiers } = useStatic();
 
   return (
@@ -182,12 +182,18 @@ const BoostingList = () => {
                     {inviteCode}
                   </Copy>
                 </div>
-                <div className="flex items-center gap-2 justify-end">
+                <Link to="/zk/invite" onClick={() => {
+                  dispatchEvent(
+                    new CustomEvent("modal_multiplier_visible", {
+                      detail: { visible: false },
+                    })
+                  );
+                }} className="flex items-center gap-2 justify-end">
                   <span className="text-sm uppercase !font-[400]">
                     Check my Invites
                   </span>
                   <ArrowRight className="w-3 h-3" />
-                </div>
+                </Link>
               </div>
             </GradientBorderCard>
 
@@ -205,6 +211,8 @@ const BoostingList = () => {
                       borderRadius={8}
                       borderWidth={1}
                       className="h-full"
+                      gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
+                      gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
                     >
                       <div className="w-full p-4 flex flex-col items-center">
                         <div className="flex items-center gap-2 mb-2">
@@ -219,6 +227,9 @@ const BoostingList = () => {
                               <>
                                 <GradientBorderCard className="p-4 flex flex-col gap-1">
                                   <>
+                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                      Levelup Rewards
+                                    </div>
                                     <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                       <div className="!text-sub w-20">
                                         Rebate Rate
@@ -250,9 +261,15 @@ const BoostingList = () => {
                             className="h-full object-contain"
                           />
                         </div>
-
-                        {/* 用户数量指示器 */}
-                        <div className="mt-4 flex items-center flex-col gap-1">
+                        {
+                          tier.level == inviteLevelId && (
+                            <div className="flex flex-col items-center justify-center gap-2">
+                              <div className="unbounded-12-300 text-center">{tier.level}</div>
+                              <div className="unbounded-12-300 text-center">Current Level</div>
+                            </div>
+                          )
+                        }
+                        {/* <div className="mt-4 flex items-center flex-col gap-1">
                           <svg
                             width="24"
                             height="24"
@@ -278,7 +295,7 @@ const BoostingList = () => {
                           <span className="unbounded-16-300">
                             {tiers[index - 1]?.needInviteCnt || 0}
                           </span>
-                        </div>
+                        </div> */}
                       </div>
                     </GradientBorderCard>
 

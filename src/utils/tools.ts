@@ -22,6 +22,7 @@ import axios from "axios";
 import { cosmosFee, cosmosCysicTestnet } from "@/config";
 import useUser from "@/models/user";
 import { StatusModalProps } from "@/routes/components/modal/statusModal";
+import useWalletConnectRecord from "@/models/_global/loginRecord";
 
 
 dayjs.extend(UTC);
@@ -614,15 +615,23 @@ export const formatReward = (num: string, x: number) => {
   return `0.0${exponentStr}${significantPart.slice(0, x)}`;
 };
 
+export const handleUserProfileModal = (props: any={}) => {
+  const event = new CustomEvent('modal_user_profile_visible', { 
+    detail: { visible: true, ...props } 
+  });
+  window.dispatchEvent(event);
+}
+
 export const handleSignIn = (targetStep?: string) => {
     // 从当前store获取状态
     const userStore = useUser.getState();
+    const walletConnectRecordStore = useWalletConnectRecord.getState();
     const { getActiveUser, activeAddress } = userStore;
     
     // 获取当前活跃用户信息
     const activeUser = getActiveUser();
     const address = activeAddress;
-    
+    const record = walletConnectRecordStore?.record?.[address as string];
     // 如果未指定步骤，则根据用户状态自动决定
     if (!targetStep) {
         // 获取多地址架构下的状态
@@ -642,7 +651,10 @@ export const handleSignIn = (targetStep?: string) => {
         // 其他情况使用默认步骤
     }
 
-    // 触发自定义事件，带上步骤信息
+    if(targetStep == 'profile' && record && record != '0'){
+      handleUserProfileModal()
+      return;
+    }
     const event = new CustomEvent('modal_signin_visible', { 
         detail: { visible: true, step: targetStep, force: true } 
     });
