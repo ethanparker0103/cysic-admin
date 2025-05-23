@@ -349,15 +349,7 @@ const InvitePage = () => {
 
                                 <p className="teacher !normal-case text-base">
                                     Your Rebate Rate determines how much token rebate you earn
-                                    from your invitees’ NFT purchases. It starts at{" "}
-                                    <span className="text-lightBrand teacher !normal-case text-base">
-                                        &nbsp;2%&nbsp;
-                                    </span>{" "}
-                                    and can go up to{" "}
-                                    <span className="text-lightBrand teacher !normal-case text-base">
-                                        &nbsp;50%&nbsp;
-                                    </span>{" "}
-                                    through upgrades or campaigns.
+                                    from your invitees’ NFT purchases.
                                 </p>
                             </div>
                         </GradientBorderCard>
