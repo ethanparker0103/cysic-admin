@@ -307,7 +307,7 @@ const InvitePage = () => {
                                 <p className="teacher !normal-case text-base">
                                     Invite your friends and earn more from their NFT purchases—get
                                     <span className="text-lightBrand teacher !normal-case text-base">
-                                        &nbsp;a maximum of 20%&nbsp;
+                                        &nbsp;a maximum of 50%&nbsp;
                                     </span>{" "}
                                     of what your direct invites purchase and{" "}
                                     <span className="text-lightBrand teacher !normal-case text-base">
