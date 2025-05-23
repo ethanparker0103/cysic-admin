@@ -214,7 +214,7 @@ const BoostingList = () => {
                       gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
                       gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
                     >
-                      <div className="w-full p-4 flex flex-col items-center">
+                      <div className="w-full p-4 flex flex-col items-center h-full">
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="unbounded-16-300 tracking-wider">
                             {tier.name}
@@ -263,39 +263,45 @@ const BoostingList = () => {
                         </div>
                         {
                           tier.level == inviteLevelId && (
-                            <div className="flex flex-col items-center justify-center gap-2">
-                              <div className="unbounded-12-300 text-center">{tier.level}</div>
+                            <div className="flex-1 flex flex-col items-center justify-end gap-2">
+                              <div className="unbounded-16-300 text-center">{tier.level}</div>
                               <div className="unbounded-12-300 text-center">Current Level</div>
                             </div>
                           )
                         }
-                        {/* <div className="mt-4 flex items-center flex-col gap-1">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                          <span className="unbounded-16-300">
-                            {tiers[index - 1]?.needInviteCnt || 0}
-                          </span>
-                        </div> */}
+                        {
+                          Number(inviteLevelId) >= tier.level ? (<></>) : (<>
+                            <div className="mt-4 flex items-center flex-col gap-1">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                                <path
+                                  d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
+                                  stroke="white"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              <span className="unbounded-16-300">
+                                {tiers[index - 1]?.needInviteCnt || 0}
+                              </span>
+
+                              <div className="unbounded-12-300 text-center">Invites Required</div>
+                            </div>
+                          </>)
+                        }
                       </div>
                     </GradientBorderCard>
 
