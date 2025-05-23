@@ -10,7 +10,7 @@ import useNav from "@/hooks/useNav";
 import { Link, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 import { isMobile } from "react-device-detect";
-import { Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
+import { cn, Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
 import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
@@ -72,13 +72,13 @@ export default function Header() {
                             </div>
 
                             <div className="flex flex-col items-center gap-10 overflow-y-auto py-12">
-                                {currentNavs?.map(i => {
+                                {currentNavs?.map((i: any) => {
                                     if (i?.children?.length) {
-                                        return i?.children?.map(j => {
-                                            return (<Link onClick={onClose} to={j?.href} className="text-xl !text-sub">{j.content}</Link>)
+                                        return i?.children?.map((j: any) => {
+                                            return (<Link onClick={onClose} to={j?.href} className={cn("text-xl !text-sub", j?.disabled && "blur-[5px]")}>{j.content}</Link>)
                                         })
                                     } else {
-                                        return (<Link onClick={onClose} to={i?.href || '/'} className="text-xl !text-sub">{i.content}</Link>)
+                                        return (<Link onClick={onClose} to={i?.href || '/'} className={cn("text-xl !text-sub", i?.disabled && "blur-[5px]")}>{i.content}</Link>)
                                     }
                                 })}
                             </div>
@@ -92,8 +92,8 @@ export default function Header() {
     </> : <>
         {
             createPortal(
-                <div className="fixed top-0 z-[11] h-[8rem] w-full">
-                    <div className="relative px-[3rem] py-6">
+                <div className="main-container fixed top-0 z-[11] h-[8rem] w-full left-1/2 -translate-x-1/2">
+                    <div className="relative py-6">
                         <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
                             <div className="w-full h-full flex justify-between items-center">
                                 <div className="flex items-center h-full flex-1">
@@ -132,6 +132,6 @@ export default function Header() {
                 document.body
             )
         }
-        <div className="h-[8rem]"></div>
+        {/* <div className="h-[8rem]"></div> */}
     </>;
 }

@@ -44,7 +44,7 @@ const asSeenOnList = [
 const drawerCardList = [
   {
     className:
-      "w-[62rem] top-0 z-1 bg-gradient-to-b from-[#0DA591] to-[#0DA59100] ",
+      "w-full lg:w-[62rem] top-0 z-1 bg-gradient-to-b from-[#0DA591] to-[#0DA59100] ",
     borderGradientFrom: "#44FF3E",
     title: "product layer",
     subTitle: (
@@ -93,7 +93,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[59rem] top-[5.625rem] z-[2] bg-gradient-to-b from-[#196DFF] to-[#196DFF00] ",
+      "w-[97%] lg:w-[59rem] top-[5.625rem] z-[2] bg-gradient-to-b from-[#196DFF] to-[#196DFF00] ",
     borderGradientFrom: "#6AD8FF",
     title: "COMPUTE INFRASTRUCTURE LAYER",
     subTitle: (
@@ -133,7 +133,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[56rem] top-[11.25rem] z-[3] bg-gradient-to-b from-[#3C19FF] to-[#3C19FF00] ",
+      "w-[94%] lg:w-[56rem] top-[11.25rem] z-[3] bg-gradient-to-b from-[#3C19FF] to-[#3C19FF00] ",
     borderGradientFrom: "#85BCFF",
     title: "EXECUTION LAYER",
     subTitle: (
@@ -182,7 +182,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[52rem] top-[16.875rem] z-[4] bg-gradient-to-b from-[#5B0995] to-[#5B099500] ",
+      "w-[91%] lg:w-[52rem] top-[16.875rem] z-[4] bg-gradient-to-b from-[#5B0995] to-[#5B099500] ",
     borderGradientFrom: "#D1A9FF",
     title: "CONSENSUS LAYER",
     subTitle: (
@@ -344,13 +344,13 @@ const navScreenList = [
     title: "Cysic Network",
     slogen: (
       <div className="text-center">
-        <div className="font-light text-xl text-center unbounded">
-          <span className="unbounded font-medium text-xl">
+        <div className="font-light text-base lg:text-xl text-center unbounded">
+          <span className="unbounded font-medium text-base lg:text-xl">
             all-in-one solution
           </span>
           &nbsp;for
         </div>
-        <p className="font-medium text-2xl text-gradient unbounded">
+        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
           zero-knowledge proof generation and verification.
         </p>
       </div>
@@ -374,10 +374,10 @@ const navScreenList = [
     title: "Cysic Hardware",
     slogen: (
       <div className="text-center">
-        <div className="font-light text-xl text-center unbounded">
+        <div className="font-light text-base lg:text-xl text-center unbounded">
           Purpose-built hardware and GPUs optimized
         </div>
-        <p className="font-medium text-2xl text-gradient unbounded">
+        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
           for ZK acceleration and beyond.
         </p>
       </div>
@@ -400,13 +400,13 @@ const navScreenList = [
     title: "Cysic AI",
     slogen: (
       <div className="text-center">
-        <p className="font-normal text-xl text-center unbounded">
+        <p className="font-normal text-base lg:text-xl text-center unbounded">
           low-cost, high-performance
         </p>
-        <p className="font-medium text-2xl text-gradient unbounded">
+        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
           for ZK acceleration and beyond.
         </p>
-        <p className="font-light text-xl text-center unbounded">
+        <p className="font-light text-base lg:text-xl text-center unbounded">
           with seamless API access.
         </p>
       </div>
@@ -428,10 +428,10 @@ const navScreenList = [
     title: "Digital Compute",
     slogen: (
       <div className="text-center">
-        <p className="font-light text-xl text-center unbounded">
+        <p className="font-light text-base lg:text-xl text-center unbounded">
           Unlocking the value of compute
         </p>
-        <p className="font-medium text-2xl text-gradient unbounded text-center w-full">
+        <p className="font-medium text-base lg:text-2xl text-gradient unbounded text-center w-full">
           as capital.
         </p>
       </div>
@@ -546,7 +546,7 @@ const ScreenNavCard = ({
   return (
     <div
       className={cn(
-        "min-h-screen relative w-full flex flex-col items-center justify-center",
+        "min-h-screen relative w-full flex flex-col items-center justify-center ",
         className
       )}
     >
@@ -554,7 +554,7 @@ const ScreenNavCard = ({
       {subTitle ? (
         <span className="teacher tracking-[0.3em] text-2xl text-center">{subTitle}</span>
       ) : null}
-      <span className="mt-2 unbounded text-[6rem] font-light text-center">{title}</span>
+      <span className="mt-2 unbounded text-[36px] lg:text-[64px] font-light text-center">{title}</span>
       {slogen ? <div className="mt-6">{slogen}</div> : null}
       {action ? <div className="mt-6">{action}</div> : null}
     </div>
@@ -575,7 +575,7 @@ const Home = () => {
           <div className="flex flex-col items-center">
             <span
               className={cn(
-                "title !text-[#fff] text-center title-md-2",
+                "unbounded text-[36px] lg:text-[80px] font-[200] !text-white text-center",
                 isMobile && "py-4"
               )}
             >
@@ -588,10 +588,10 @@ const Home = () => {
             </span>
           </div>
 
-          <div className="flex items-center gap-4 flex-wrap mx-auto text-base">
-            <JoinTestnetPhaseIIIButton />
-            <CysicHardwareStackButton />
-            <SeeWhatsComingButton />
+          <div className="flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base">
+            <JoinTestnetPhaseIIIButton className="w-full lg:w-auto" />
+            <CysicHardwareStackButton className="w-full lg:w-auto" />
+            <SeeWhatsComingButton className="w-full lg:w-auto" />
           </div>
         </div>
 
@@ -644,13 +644,13 @@ const Home = () => {
       <div className="min-h-[640px] w-full main-container flex flex-col items-center gap-12 py-16">
         <div className="text-center">
           <div className="teacher text-2xl ">What we are</div>
-          <div className="unbounded text-[6rem] font-extralight">Building</div>
+          <div className="unbounded text-[36px] lg:text-[64px] font-light">Building</div>
         </div>
 
         <DrawCardList />
       </div>
 
-      <div className="main-container py-16 flex gap-12 w-full">
+      <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full">
         <div className="flex flex-col gap-6 flex-1">
           <div className="unbounded font-medium text-[2.5rem] text-center">
             LIVE NOW
@@ -702,6 +702,7 @@ const Home = () => {
               title={i.title}
               slogen={i.slogen}
               action={i.action}
+              className="px-3 lg:px-0"
             />
           );
         })}
@@ -716,13 +717,14 @@ const Home = () => {
               title={i.title}
               slogen={i.slogen}
               action={i.action}
+              className="my-12 lg:my-0"
             />
           );
         })}
 
 
       <a href="https://medium.com/@cysic/zero-knowledge-zk-hardware-acceleration-startup-cysic-raises-12m-in-pre-a-round-to-advance-the-4d8eb7fc611c" target="_blank" className="w-full">
-        <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
+        <div className="relative h-12 bg-gradient-to-r from-lightBrand to-[#009C87]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
         <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-light">
@@ -740,9 +742,9 @@ const Home = () => {
         className="py-10"
         action={
           <div className="flex flex-col gap-4 main-container py-10">
-            <div className="flex flex-wrap gap-y-12">
+            <div className="flex flex-wrap gap-y-12 flex-col lg:flex-row">
               {otherArticleShowInHome.map(i => (
-                <a href={i.href} target="_blank" className="w-[33%] px-6 h-auto flex justify-center items-center " key={i.title} >
+                <a href={i.href} target="_blank" className="w-full lg:w-[33%] px-0 lg:px-6 h-auto flex justify-center items-center " key={i.title} >
                   <GradientBorderCard className="h-full flex flex-col max-w-[20.625rem] ">
                     <>
                       <div className="py-2 px-24 mx-auto">

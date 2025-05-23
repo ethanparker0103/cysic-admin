@@ -26,7 +26,6 @@ import { StatusType } from "@/routes/components/modal/statusModal";
 import { cosmosCysicTestnet } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { cn } from "@nextui-org/react";
-import { isMobile } from "react-device-detect";
 
 interface Validator {
   id: string;
@@ -428,21 +427,21 @@ const StakePage = () => {
       {/* 主标题 */}
       <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
         <div className="flex flex-col items-center">
-          <span className={cn("unbounded font-light text-white text-center", isMobile ? "!text-[32px]" : "!text-[2.25rem]")}>STAKE CGTS</span>
+          <span className={cn("unbounded font-light text-white text-center", "text-[32px] lg:text-[2.25rem]")}>STAKE CGTS</span>
         </div>
       </div>
 
       {/* 主要内容部分 */}
-      <div className="container mx-auto mt-8 relative z-[2]">
+      <div className="w-full mx-auto mt-8 relative z-[2]">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 左侧 - 质押信息 */}
           <GradientBorderCard
             className="lg:col-span-3"
             borderRadius={8}
           >
-            <div className="w-full py-4 px-6 h-full flex flex-col justify-between">
-              <div className={cn("flex gap-4", isMobile ? "flex-col" : "justify-between items-start")}>
-                <h2 className="title !text-xl uppercase !font-light">STAKE CGTS</h2>
+            <div className="w-full py-4 px-4 lg:px-6 h-full flex flex-col justify-between">
+              <div className={cn("flex gap-4", "flex-col lg:flex-row lg:justify-between")}>
+                <h2 className="unbounded-20-300">STAKE CGTS</h2>
                 <Button
                   onClick={handleStakeModal}
                   type={BtnType.light}
@@ -452,18 +451,18 @@ const StakePage = () => {
                 </Button>
               </div>
 
-              <div className={cn("grid ", isMobile ? "grid-cols-1 mt-4" : " grid-cols-3")}>
-                <div className={cn("col-span-1 border-white ", isMobile ? "border-b pb-6" : "border-r pr-6")}>
-                  <div className=" uppercase title !text-base mb-2 !font-light">STAKING AMOUNT</div>
-                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{stakeAmount} CGT</div>
+              <div className={cn("grid ", "grid-cols-1 mt-4 lg:grid-cols-3" )}>
+                <div className={cn("col-span-1 border-white ", "border-b lg:border-b-0 lg:border-r pb-4 lg:pb-0 lg:pr-6")}>
+                  <div className="unbounded text-base mb-2 font-light">STAKING AMOUNT</div>
+                  <div className={cn("text-2xl unbounded ", "text-left lg:text-right")}>{stakeAmount} CGT</div>
                 </div>
-                <div className={cn("col-span-1 border-white ", isMobile ? "border-b py-6" : "border-r px-6")}>
-                  <div className=" uppercase title !text-base mb-2 !font-light">UNSTAKING AMOUNT</div>
-                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{unstakeAmount} CGT</div>
+                <div className={cn("col-span-1 border-white ",  "border-b py-4 lg:py-0 lg:px-6 lg:border-r lg:border-b-0")}>
+                  <div className="unbounded text-base mb-2 font-light">UNSTAKING AMOUNT</div>
+                  <div className={cn("text-2xl unbounded ", "text-left lg:text-right")}>{unstakeAmount} CGT</div>
                 </div>
-                <div className={cn("col-span-1 ", isMobile ? "pt-4" : "pl-4")}>
-                  <div className=" uppercase title !text-base mb-2 !font-light">APR</div>
-                  <div className={cn("!text-2xl title !font-[400]", isMobile ? "text-left" : "text-right")}>{apr}%</div>
+                <div className={cn("col-span-1 ", "pt-4 lg:pt-0 lg:pl-4")}>
+                  <div className="unbounded text-base mb-2 font-light">APR</div>
+                  <div className={cn("text-2xl unbounded ", "text-left lg:text-right")}>{apr}%</div>
                 </div>
               </div>
             </div>
@@ -473,9 +472,9 @@ const StakePage = () => {
           <GradientBorderCard
             borderRadius={8}
           >
-            <div className="w-full py-4 px-6">
-              <h2 className="title !text-xl uppercase !font-light mb-4">CLAIM REWARDS</h2>
-              <div className={cn("!text-2xl !font-[400] title mb-4", isMobile ? "text-left" : "text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
+            <div className="w-full py-4 px-4 lg:px-6">
+              <h2 className="unbounded-20-300 mb-4">CLAIM REWARDS</h2>
+              <div className={cn("unbounded-24-400 mb-4", "text-left lg:text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
                 // disabled={!Number(rewardsAmount) || !address}
@@ -495,9 +494,9 @@ const StakePage = () => {
             className="mt-6"
             borderRadius={8}
           >
-            <div className="w-full py-4 px-6">
-              <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
-                <h2 className="title !text-xl uppercase">MY STAKE</h2>
+            <div className="w-full py-4 px-4 lg:px-6">
+              <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center" )}>
+                <h2 className="unbounded-20-400">MY STAKE</h2>
                 <div className="flex items-center gap-2">
                   <History size={16} />
                   <span className="!text-sm text-sub">Daily update at 2PM UTC</span>
@@ -520,8 +519,8 @@ const StakePage = () => {
             className="mt-6"
             borderRadius={8}
           >
-            <div className="w-full py-4 px-6">
-              <h2 className="title !text-xl !font-light uppercase mb-2">YOUR VALIDATORS</h2>
+            <div className="w-full py-4 px-4 lg:px-6">
+              <h2 className="unbounded-20-300 mb-2">YOUR VALIDATORS</h2>
               <div className="flex gap-2 items-start mb-3 ">
                 <div className="w-full">
                   <p className="text-sub text-base mb-4">
@@ -538,17 +537,9 @@ const StakePage = () => {
           className="mt-6"
           borderRadius={8}
         >
-          <div className="w-full py-4 px-6">
-            <div className={cn("flex mb-4", isMobile ? "flex-col gap-4" : "justify-between items-center")}>
-              <h2 className="title !text-xl uppercase !font-light">ACTIVE VALIDATORS</h2>
-              {/* <div className="relative w-[20rem] flex items-center">
-                <input
-                  type="text"
-                  className="w-full pl-12 pr-4 py-2 bg-[#FFFFFF0D] text-white border border-[#FFFFFF33] rounded-lg focus:outline-none focus:border-white"
-                  placeholder="Search"
-                />
-                <Search className="absolute left-4 text-[#FFFFFF99]" size={16} />
-              </div> */}
+          <div className="w-full py-4 px-4 lg:px-6">
+            <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center")}>
+              <h2 className="unbounded-20-300">ACTIVE VALIDATORS</h2>
             </div>
 
             {activeLoading ? (

@@ -186,7 +186,7 @@ const MyProjectPage = () => {
                 {/* 主标题 */}
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">
-                        <span className="title !text-4xl !font-light !text-[#fff] text-center">
+                        <span className="unbounded-36-300 text-white text-center">
                             My projects
                         </span>
                     </div>
@@ -198,8 +198,7 @@ const MyProjectPage = () => {
                         <div className={cn("w-full")}>
                             <h2
                                 className={cn(
-                                    "title !font-light uppercase mt-2",
-                                    isMobile ? "!text-base" : "!text-xl"
+                                    "unbounded-16-20-300 mt-2 mb-4",
                                 )}
                             >
                                 My projects

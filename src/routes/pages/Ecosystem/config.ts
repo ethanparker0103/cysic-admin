@@ -1,6 +1,4 @@
 import { baseHref } from "@/config";
-import { getImageUrl } from "@/utils/tools";
-
 // 生态系统项目数据
 export interface IEcosystemProject {
   projectName: string;

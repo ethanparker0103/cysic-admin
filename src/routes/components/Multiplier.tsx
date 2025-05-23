@@ -4,7 +4,6 @@ import useStatic from "@/models/_global";
 import { handleMultiplierModal } from "@/utils/tools";
 import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
-import { isMobile } from "react-device-detect";
 
 export const MultiplierPercentBar = () => {
   const { zkPart } = useAccount();
@@ -48,10 +47,10 @@ export const Multiplier = ({
   return (
     <GradientBorderCard borderRadius={8} className="flex-[3] w-full h-full">
       <div className="flex flex-col justify-between">
-        <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-6">
+        <div className="w-full px-4 lg:px-6 py-4 h-full flex flex-col justify-between gap-4 lg:gap-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <div className="uppercase !text-base !font-light title">
+              <div className="unbounded-16-300">
                 MULTIPLIER
               </div>
               <Tooltip
@@ -85,10 +84,7 @@ export const Multiplier = ({
               🔥 {zkPart?.multiplierFire || 0} FIRE
             </div>
             <div
-              className={cn(
-                "flex items-center gap-2",
-                isMobile ? "self-start" : "self-end"
-              )}
+              className={cn("flex items-center gap-2","self-start lg:self-end")}
             >
               <div className="w-3 h-3 rounded-full bg-blue-400"></div>
               <span className="text-sm unbounded font-light">

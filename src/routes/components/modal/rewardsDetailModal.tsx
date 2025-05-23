@@ -103,8 +103,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total Points</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{totalPoints.toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Total Points</span>
+                        <span className={cn("unbounded-18-36-300", isMobile ? "!text-[18px]" : "!text-3xl")}>{totalPoints.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-4 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -140,8 +140,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Claimable</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.claimable).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Claimable</span>
+                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.claimable).toLocaleString()}</span>
                         <Button
                             needLoading
                             disabled={!parseInt(phase2.claimable)}
@@ -156,8 +156,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cys.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Total CYS</span>
+                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.cys.total).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -183,8 +183,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase2.cgt.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Total CGT</span>
+                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.cgt.total).toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
@@ -231,8 +231,8 @@ const RewardsDetailModal = () => {
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CYS</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cysIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Total CYS</span>
+                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase3?.cysIncomeDetail?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
@@ -280,8 +280,8 @@ const RewardsDetailModal = () => {
 
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
-                        <span className={cn(" title !font-light uppercase", isMobile ? "!text-[18px]" : "text-3xl")}>Total CGT</span>
-                        <span className={cn(" title !font-light", isMobile ? "!text-[18px]" : "!text-3xl")}>{parseInt(phase3?.cgtIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>Total CGT</span>
+                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase3?.cgtIncomeDetail?.total).toLocaleString()}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>

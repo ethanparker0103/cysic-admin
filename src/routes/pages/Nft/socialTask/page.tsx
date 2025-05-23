@@ -57,7 +57,7 @@ const TaskCard = ({
     borderRadius={8}
     className="mb-4 hover:bg-gradient-to-r from-[#19ffe07f] to-[#4d00ff7f]"
   >
-    <div className="py-4 px-6 w-full flex justify-between items-center">
+    <div className="py-4 px-4 lg:px-6 w-full flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-0">
       <div className="flex flex-col">
         <div className="text-sm teacher !normal-case text-sub">{title}</div>
         <div className="text-xl teacher !normal-case text-white">
@@ -69,7 +69,7 @@ const TaskCard = ({
           needLoading
           type="light"
           onClick={onClick}
-          className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4"
+          className="min-w-[90px] py-2 px-3 text-sm rounded-md [&_.loading]:size-4 w-full lg:w-auto"
           disabled={status == 2}
         >
           {status == 1 ? buttonText : "CLAIMED"}
@@ -237,15 +237,13 @@ const SocialTaskPage = () => {
       {/* content */}
       <div
         className={cn(
-          "mx-auto mb-auto relative z-10 pt-20 pb-16 w-full",
-          isMobile ? "break-words" : ""
+          "mx-auto mb-auto relative z-10 pt-20 pb-16 w-full break-words",
         )}
       >
         {/* title */}
         <h1
           className={cn(
-            "unbounded font-[200] mb-24 text-center",
-            isMobile ? "text-7xl" : "text-[8rem]"
+            "unbounded font-[200] mb-24 text-center text-[48px] lg:text-[8rem]",
           )}
         >
           SOCIAL TASKS

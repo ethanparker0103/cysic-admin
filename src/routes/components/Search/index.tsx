@@ -195,7 +195,7 @@ const Search = () => {
                             }
 
 
-                            <div className="text-xs text-[#fff]">Prover</div>
+                            <div className="text-xs text-white">Prover</div>
                             <div>{searchInfo?.provider?.length ? (<div>
                                 {searchInfo?.provider?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {
@@ -221,7 +221,7 @@ const Search = () => {
                             </div>) : (<span className="text-sm text-[#A3A3A3]">No Data</span>)}</div>
                         </div>
                         <div className="flex flex-col gap-3">
-                            <div className="text-xs text-[#fff]">Verifier</div>
+                            <div className="text-xs text-white">Verifier</div>
                             <div>{searchInfo?.verifier?.length ? (<div>
                                 {searchInfo?.verifier?.map((i: any, index: number) => {
                                     return <div className="flex items-center justify-between cursor-pointer" key={index} onClick={() => {

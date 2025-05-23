@@ -1,6 +1,7 @@
 import { TaskStatus as TaskStatusText, TaskStatusColor } from "@/config";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, shortStr } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
+import { isMobile } from "react-device-detect";
 
 export const Avatar = ({ className, avatar, name }: { className?: string; avatar: string; name: string }) => {
   return (
@@ -18,7 +19,7 @@ export const TableAvatar = ({ avatar, name }: { avatar: string; name: string }) 
   return (
     <div className="flex items-center gap-2">
       <Avatar avatar={avatar} name={name} />
-      <span>{name}</span>
+      <span>{shortStr(name, isMobile ? 10 : 140)}</span>
     </div>
   );
 };

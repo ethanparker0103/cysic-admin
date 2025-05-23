@@ -25,13 +25,13 @@ const Button = ({
     const classNameWithType = useMemo(() => {
         switch (type) {
             case BtnType.normal:
-                return '[--fallback-n:#EEA90E] [--fallback-bc:#000] bg-[#EEA90E] text-[#000] border-none hover:bg-[#8247E5] hover:text-[#fff]'
+                return '[--fallback-n:#EEA90E] [--fallback-bc:#000] bg-[#EEA90E] text-black border-none hover:bg-[#8247E5] hover:text-white'
             case BtnType.solid:
-                return '[--fallback-n:transparent] [--fallback-bc:#fff] bg-[transparent] text-[#fff] border-[#fff] border-[2px] border-solid hover:bg-[transparent] hover:border-[#8247E5] hover:text-[#8247E5]'
+                return '[--fallback-n:transparent] [--fallback-bc:#fff] bg-[transparent] text-white border-white border-[2px] border-solid hover:bg-[transparent] hover:border-[#8247E5] hover:text-[#8247E5]'
             case BtnType.dark:
-                return '[--fallback-n:#000] [--fallback-bc:#fff] bg-[#000] text-[#fff] border-none hover:bg-[#fff] hover:text-[#000]'
+                return '[--fallback-n:#000] [--fallback-bc:#fff] bg-black text-white border-none hover:bg-white hover:text-black'
             default:
-                return '[--fallback-n:#EEA90E] [--fallback-bc:#000] bg-[#EEA90E] text-[#000] border-none hover:bg-[#8247E5] hover:text-[#fff]';
+                return '[--fallback-n:#EEA90E] [--fallback-bc:#000] bg-[#EEA90E] text-black border-none hover:bg-[#8247E5] hover:text-white';
         }
     }, [type])
 

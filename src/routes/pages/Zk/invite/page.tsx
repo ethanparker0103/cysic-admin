@@ -128,7 +128,7 @@ const InvitePage = () => {
             renderCell: (leader) => (
                 <div className="flex items-center">
                     <div
-                        className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-green-500" : "bg-red-500"
+                        className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-success" : "bg-error"
                             } mr-2 flex-shrink-0`}
                     ></div>
                     <span>{leader.status === 1 ? "Activated" : "Not Activated"}</span>
@@ -168,7 +168,7 @@ const InvitePage = () => {
             renderCell: (member) => (
                 <div className="flex items-center">
                     <div
-                        className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-green-500" : "bg-red-500"
+                        className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-success" : "bg-error"
                             } mr-2 flex-shrink-0`}
                     ></div>
                     <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
@@ -230,14 +230,14 @@ const InvitePage = () => {
             {/* 顶部标题部分 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title !text-[2.25rem] !text-[#fff] text-center">
+                    <span className="unbounded-36-400 text-white text-center">
                         INVITE
                     </span>
                     <div
                         className="flex items-center gap-4 mt-4 cursor-pointer"
                         onClick={handleHowInviteWorkModal}
                     >
-                        <div className="title !text-base font-light">HOW INVITE WORK</div>
+                        <div className="unbounded-16-300">HOW INVITE WORK</div>
                         <ArrowRight width={16} height={16} />
                     </div>
                 </div>
@@ -252,35 +252,35 @@ const InvitePage = () => {
                         borderRadius={8}
                     >
                         <div className="w-full py-4">
-                            <h2 className="title !text-xl !font-light uppercase mb-4 px-6">
+                            <h2 className="unbounded-20-300 mb-4 px-4 lg:px-6">
                                 TOTAL INVITE REWARDS
                             </h2>
                             <div className="border-b border-white my-4 "></div>
 
                             {/* 推荐收益 */}
-                            <div className="flex justify-between items-start px-6">
-                                <span className="!font-light uppercase !text-base title">
+                            <div className="flex justify-between items-start px-4 lg:px-6">
+                                <span className="unbounded-16-300">
                                     REFERRAL EARNINGS
                                 </span>
                                 <div className="flex flex-col items-center gap-4">
-                                    <span className="!text-2xl text-right title !font-[400]">
+                                    <span className="unbounded-24-400 text-right">
                                         {rewards.cys} CYS
                                     </span>
                                     <div className="bg-white h-px w-8 self-end" />
-                                    <span className="!text-2xl text-right title !font-[400]">
+                                    <span className="unbounded-24-400 text-right">
                                         {rewards.cys} CGT
                                     </span>
                                 </div>
                             </div>
 
-                            <div className="border-b border-white my-4 px-6"></div>
+                            <div className="border-b border-white my-4 px-4 lg:px-6"></div>
 
                             {/* 升级收益 */}
-                            <div className="flex justify-between items-center px-6">
-                                <span className="!font-light uppercase !text-base title">
+                            <div className="flex justify-between items-center px-4 lg:px-6">
+                                <span className="unbounded-16-300">
                                     UPGRADE EARNINGS
                                 </span>
-                                <span className="!text-2xl text-right title !font-[400]">
+                                <span className="unbounded-24-400 text-right">
                                     {rewards.CGT || "0"} CGT
                                 </span>
                             </div>
@@ -288,16 +288,16 @@ const InvitePage = () => {
                     </GradientBorderCard>
 
                     {/* 右侧 - 您的推荐码 */}
-                    <div className="flex gap-4">
-                        <GradientBorderCard borderRadius={8} className="flex-[2] flex gap-4 px-6 py-4 ">
+                    <div className="flex flex-col lg:flex-row gap-4">
+                        <GradientBorderCard borderRadius={8} className="flex-[2] flex flex-col lg:flex-row gap-4 px-4 lg:px-6 py-4 ">
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex justify-between items-start">
-                                    <h2 className="title !text-xl uppercase !font-light">
+                                    <h2 className="unbounded-20-300">
                                         Invite code
                                     </h2>
                                     <div className="flex items-center self-start">
                                         <Copy value={inviteCode}>
-                                            <span className="title !text-2xl !font-[400]">
+                                            <span className="unbounded-24-400">
                                                 {inviteCode}
                                             </span>
                                         </Copy>
@@ -306,11 +306,11 @@ const InvitePage = () => {
 
                                 <p className="teacher !normal-case text-base">
                                     Invite your friends and earn more from their NFT purchases—get
-                                    <span className="text-[#19FFE0] teacher !normal-case text-base">
+                                    <span className="text-lightBrand teacher !normal-case text-base">
                                         &nbsp;a maximum of 20%&nbsp;
                                     </span>{" "}
                                     of what your direct invites purchase and{" "}
-                                    <span className="text-[#19FFE0] teacher !normal-case text-base">
+                                    <span className="text-lightBrand teacher !normal-case text-base">
                                         &nbsp;2%&nbsp;
                                     </span>{" "}
                                     from your indirect invitees.
@@ -318,11 +318,11 @@ const InvitePage = () => {
                             </div>
 
 
-                            <Divider orientation="vertical" className="bg-[#FFFFFFCC]" />
+                            <Divider  className="bg-[#FFFFFFCC] w-full lg:w-divider h-divider lg:h-full" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex justify-between items-start">
-                                    <h2 className="title !text-xl uppercase !font-light">Successful <br />Invites</h2>
+                                    <h2 className="unbounded-20-300">Successful <br />Invites</h2>
                                 </div>
 
                                 <p className="unbounded text-2xl font-light ml-auto">
@@ -335,14 +335,14 @@ const InvitePage = () => {
                             <div className="w-full px-6 py-4 flex flex-col gap-4 justify-between">
                                 <div className="flex justify-between items-start">
                                     <h2 className="unbounded text-xl font-light">rebate rate</h2>
-                                    <span className="title !text-2xl !font-[400]">
+                                    <span className="unbounded-24-400">
                                         {currentRebateRate || '0'}%
                                     </span>
                                 </div>
 
                                 {enableSocialTask ? <Link
                                     to="/socialTask"
-                                    className="unbounded text-xs font-light !normal-case !text-[#19FFE0]"
+                                    className="unbounded text-xs font-light !normal-case !text-lightBrand"
                                 >
                                     Complete the basic tasks to earn extra 3% →
                                 </Link> : null}
@@ -350,11 +350,11 @@ const InvitePage = () => {
                                 <p className="teacher !normal-case text-base">
                                     Your Rebate Rate determines how much token rebate you earn
                                     from your invitees’ NFT purchases. It starts at{" "}
-                                    <span className="text-[#19FFE0] teacher !normal-case text-base">
+                                    <span className="text-lightBrand teacher !normal-case text-base">
                                         &nbsp;2%&nbsp;
                                     </span>{" "}
                                     and can go up to{" "}
-                                    <span className="text-[#19FFE0] teacher !normal-case text-base">
+                                    <span className="text-lightBrand teacher !normal-case text-base">
                                         &nbsp;50%&nbsp;
                                     </span>{" "}
                                     through upgrades or campaigns.
@@ -370,14 +370,14 @@ const InvitePage = () => {
                         <div
                             className={cn(
                                 "flex justify-between items-center",
-                                isMobile ? "flex-col gap-4" : ""
+                                "flex-col lg:flex-row gap-4 lg:gap-0",
                             )}
                         >
                             <div>
-                                <h2 className="title !font-light !text-xl uppercase mb-2">
+                                <h2 className="unbounded-20-300 mb-2">
                                     INVITE LEVEL
                                 </h2>
-                                <div className="text-base !font-[400] flex items-center">
+                                <div className="text-base !font-[400] flex items-center flex-wrap break-words">
                                     Successful Invites{" "}
                                     <Tooltip
                                         content={
@@ -419,7 +419,7 @@ const InvitePage = () => {
                             {tiers
                                 .sort((a, b) => a.level - b.level)
                                 .map((tier, index) => (
-                                    <div key={tier.id} className="relative h-full min-w-[10rem]">
+                                    <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
                                         <GradientBorderCard
                                             borderRadius={8}
                                             borderWidth={1}
@@ -427,7 +427,7 @@ const InvitePage = () => {
                                         >
                                             <div className="w-full p-4 flex flex-col items-center">
                                                 <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="!text-base !font-light title uppercase font-light tracking-wider">
+                                                    <h3 className="text-sm lg:text-base !font-light unbounded tracking-wider">
                                                         {tier.name}
                                                     </h3>
                                                     <Tooltip
@@ -498,8 +498,7 @@ const InvitePage = () => {
                                                             strokeLinejoin="round"
                                                         />
                                                     </svg>
-                                                    {/* <span className="text-base title !font-light">{tier.needInviteCnt}</span> */}
-                                                    <span className="!text-base title !font-light">
+                                                    <span className="unbounded-16-300">
                                                         {tiers[index - 1]?.needInviteCnt || 0}
                                                     </span>
                                                 </div>
@@ -530,7 +529,7 @@ const InvitePage = () => {
                         {/* 团队领导表格 */}
                         {leaderData && (
                             <div className="mt-4">
-                                <h2 className="title !font-light !text-base uppercase mb-4">
+                                <h2 className="unbounded-16-300 mb-4">
                                     TEAM LEADER
                                 </h2>
                                 <CysicTable
@@ -544,7 +543,7 @@ const InvitePage = () => {
                         {/* 团队列表表格 */}
                         {memberData.length > 0 && (
                             <div className="mt-4">
-                                <h2 className="title !font-light !text-base uppercase mb-4">
+                                <h2 className="unbounded-16-300 mb-4">
                                     TEAM MEMBERS
                                 </h2>
                                 <CysicTable

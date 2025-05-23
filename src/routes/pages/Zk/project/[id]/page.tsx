@@ -12,6 +12,7 @@ import { useState } from "react";
 import { shortStr } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
 import { TaskStatus } from "@/config";
+import { TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 interface ITask {
     taskId: number;
@@ -96,10 +97,7 @@ const ProjectDetailPage = () => {
             key: "bonus",
             label: "Bonus",
             width: "33%",
-            renderCell: (project) => <div className="flex flex-col gap-1">
-                <span>{project.rewardCYS} CYS</span>
-                <span>{project.rewardCGT} CGT</span>
-            </div>,
+            renderCell: (project) => <TaskReward rewardCYS={project.rewardCYS} rewardCGT={project.rewardCGT} />,
         },
         {
             key: "latency",
@@ -152,7 +150,7 @@ const ProjectDetailPage = () => {
                 {/* 主标题 */}
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">
-                        <span className="title !text-4xl !font-light !text-[#fff] text-center">
+                        <span className="unbounded-36-300 text-white text-center">
                             My projects
                         </span>
                     </div>
@@ -174,8 +172,7 @@ const ProjectDetailPage = () => {
                                         )}
                                         <h2
                                             className={cn(
-                                                "title !font-light uppercase mt-2",
-                                                isMobile ? "!text-base" : "!text-xl"
+                                                "unbounded-16-20-300 mt-2",
                                             )}
                                         >
                                             {projectDetail?.name}
@@ -198,7 +195,7 @@ const ProjectDetailPage = () => {
                                     </div> */}
                                 </div>
 
-                                <div className="flex items-start gap-4">
+                                <div className="flex flex-col lg:flex-row items-start gap-4">
                                     <div className="flex flex-col gap-1 flex-1">
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Proof Category</div>
@@ -222,10 +219,10 @@ const ProjectDetailPage = () => {
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub">Hardware Requirements</div>
-                                            <div>{projectDetail.hardwareRequirement}</div>
+                                            <div className="text-right lg:text-left">{projectDetail.hardwareRequirement}</div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-col gap-1 text-sm flex-1">
+                                    <div className="flex flex-row lg:flex-col justify-between lg:justify-start w-full lg:w-auto gap-1 text-sm flex-1">
                                         <div className="text-sub">Description</div>
                                         <div>{projectDetail.description}</div>
                                     </div>
@@ -238,8 +235,7 @@ const ProjectDetailPage = () => {
                         <div className={cn("w-full", isMobile ? "px-6 py-4" : "px-6 py-4")}>
                             <h2
                                 className={cn(
-                                    "title !font-light uppercase mt-2",
-                                    isMobile ? "!text-base" : "!text-xl"
+                                    "unbounded-16-20-300 mt-2 mb-4",
                                 )}
                             >
                                 My projects

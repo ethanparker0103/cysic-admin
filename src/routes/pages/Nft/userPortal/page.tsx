@@ -36,17 +36,14 @@ const UserPortal = () => {
       {/* content */}
       <div className="main-container mx-auto relative z-10 pt-20 pb-12 w-full">
         {/* title */}
-        <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">
+        <h1 className="unbounded-72-120-200 mb-24 text-center">
           USER PORTAL
         </h1>
 
         {/* GENERAL 部分 */}
-        <div className="mb-12">
+        <div className="mb-4 lg:mb-12">
           <h2
-            className={cn(
-              "title !font-light uppercase mb-12 text-center",
-              isMobile ? "!text-2xl" : "text-4xl"
-            )}
+            className={cn("unbounded-24-36-300 text-center mb-6 lg:mb-12")}
           >
             GENERAL
           </h2>
@@ -65,7 +62,7 @@ const UserPortal = () => {
           </div>
         </div>
 
-        <div className="mb-12 flex flex-wrap gap-4">
+        <div className="mb-12 flex flex-col lg:flex-row flex-wrap gap-4">
           <div className="flex-[2]">
             <Profile />
           </div>
@@ -78,30 +75,30 @@ const UserPortal = () => {
         </div>
 
         <div className="mb-12 relative">
-          <Link
-            to={'/zk/invite'}
-            className="absolute top-2 right-0 teacher text-sm flex items-center text-sub text-sm hover:text-white"
-          >
-            check invite details <ArrowRight size={12} className="ml-1" />
-          </Link>
 
           <h2
             className={cn(
-              "title !font-light uppercase mb-12 text-center",
-              isMobile ? "!text-2xl" : "text-4xl"
+              "unbounded font-light text-center text-2xl lg:text-4xl mb-4 lg:mb-12",
             )}
           >
             INVITE
           </h2>
 
-          <div className="flex flex-wrap gap-4">
+          <Link
+            to={'/zk/invite'}
+            className="mb-6 lg:mb-0 static lg:absolute justify-center top-2 right-0 teacher text-sm flex items-center text-sub text-sm hover:text-white"
+          >
+            check invite details <ArrowRight size={12} className="ml-1" />
+          </Link>
+
+          <div className="flex flex-col lg:flex-row flex-wrap gap-4">
             <InviteCardWithStatus />
             <GradientBorderCard
               borderRadius={8}
               className="flex-1 w-full h-full"
             >
-              <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
-                <div className="uppercase !text-base title !font-light">
+              <div className={cn("w-full px-4 lg:px-6 py-4 h-full flex flex-col gap-4")}>
+                <div className="unbounded-16-300">
                   rebate rate
                 </div>
                 <div className="flex items-center gap-2 self-end text-2xl unbounded">
@@ -113,8 +110,8 @@ const UserPortal = () => {
               borderRadius={8}
               className="flex-1 w-full h-full"
             >
-              <div className="w-full px-6 py-4 h-full flex flex-col gap-4">
-                <div className="uppercase !text-base title !font-light">
+              <div className={cn("w-full px-4 lg:px-6 py-4 h-full flex flex-col gap-4")}>
+                <div className="unbounded-16-300">
                   Invite level{" "}
                 </div>
                 <div className="flex items-center gap-2 self-end text-2xl unbounded">
@@ -132,7 +129,7 @@ const UserPortal = () => {
 
         {/* SERVICE HUB 部分 */}
         <div>
-          <h2 className="title !text-4xl !font-light uppercase mb-12 text-center">
+          <h2 className="unbounded-36-300 text-center mb-6 lg:mb-12">
             SERVICE HUB
           </h2>
 

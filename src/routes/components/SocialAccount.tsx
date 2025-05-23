@@ -86,8 +86,8 @@ const SocialAccount = () => {
 
   return (
     <GradientBorderCard borderRadius={8} className="h-full">
-      <div className="py-4 px-6 w-full h-full flex flex-col gap-2">
-        <div className="text-base !font-light uppercase mb-2">
+      <div className="py-4 px-4 lg:px-6 w-full h-full flex flex-col gap-2">
+        <div className="text-base font-light uppercase mb-2">
           SOCIAL ACCOUNT
         </div>
 

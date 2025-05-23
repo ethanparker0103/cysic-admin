@@ -28,7 +28,7 @@ const UserPortal = () => {
     return (
         <>
             {/* content */}
-            <div className="main-container mx-auto relative z-10 pt-20 pb-12 w-full">
+            <div className="main-container mx-auto relative z-10 pt-6 pb-12 w-full">
 
 
                 {/* GENERAL 部分 */}
@@ -51,7 +51,7 @@ const UserPortal = () => {
                     <div className="flex-[5]">
                         <Profile />
                     </div>
-                    <div className="flex-[4] flex gap-4">
+                    <div className="flex-[4] flex flex-col lg:flex-row gap-4">
                         <div className="flex-1">
                             <SocialAccount />
                         </div>
@@ -65,8 +65,7 @@ const UserPortal = () => {
                 <div className="mb-12 relative">
                     <h2
                         className={cn(
-                            "title !font-light uppercase mb-12 text-center",
-                            isMobile ? "!text-2xl" : "text-4xl"
+                            "unbounded font-light mb-12 text-center text-2xl lg:text-4xl",
                         )}
                     >
                         DETAILS

@@ -3,7 +3,6 @@ import { cn } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
-// 详情指标卡片
 interface DetailCardProps {
     title: string;
     subtitle?: string;
@@ -22,7 +21,7 @@ const DetailCard = ({ title, subtitle, value, moreLink, status, className }: Det
         <div className="px-6 py-4 h-full w-full">
             <div className="flex justify-between items-center">
                 <div className="flex gap-2 items-center">
-                    <div className="!text-base !font-light title uppercase">{title}</div>
+                    <div className="unbounded-16-300">{title}</div>
                     {subtitle && <div className="text-sm !font-[400] text-sub">{subtitle}</div>}
                 </div>
                 {moreLink && (
@@ -41,7 +40,7 @@ const DetailCard = ({ title, subtitle, value, moreLink, status, className }: Det
                     {status.map((item, index) => (
                         <div key={index} className="flex items-center gap-2">
                             <span className={`w-2 h-2 rounded-full mr-2 ${item.color}`}></span>
-                            <span className="title !text-sm !font-light">{item.label}</span>
+                            <span className="unbounded-14-300">{item.label}</span>
                             <span className="ml-auto text-sm text-sub">{item.value}</span>
                         </div>
                     ))}
@@ -54,36 +53,33 @@ const DetailCard = ({ title, subtitle, value, moreLink, status, className }: Det
 const ZkTasks = () => {
     return (
         <div className={cn("flex gap-4 w-full", isMobile ? "flex-col" : "")}>
-            {/* ZK 验证器 */}
             <DetailCard
                 title="ZK VERIFIER"
                 moreLink="MORE ABOUT ZK VERIFIER"
                 value={<div></div>}
                 status={[
-                    { label: "STANDARD ACTIVE", value: "", color: "bg-[#19FFE0]" },
-                    { label: "MOBILE INACTIVE", value: "", color: "bg-red-500" }
+                    { label: "STANDARD ACTIVE", value: "", color: "bg-lightBrand" },
+                    { label: "MOBILE INACTIVE", value: "", color: "bg-error" }
                 ]}
             />
 
-            {/* ZK 证明者 */}
             <DetailCard
                 title="ZK PROVER"
                 moreLink="MORE ABOUT ZK PROVER"
                 value={<div></div>}
                 status={[
-                    { label: "NFT ACTIVE", value: "", color: "bg-[#19FFE0]" },
-                    { label: "SELF INACTIVE", value: "", color: "bg-red-500" }
+                    { label: "NFT ACTIVE", value: "", color: "bg-lightBrand" },
+                    { label: "SELF INACTIVE", value: "", color: "bg-error" }
                 ]}
             />
 
-            {/* ZK 项目 */}
             <DetailCard
                 title="ZK PROJECT"
                 moreLink="MORE ABOUT ZK PROJECT"
                 value={<div></div>}
                 status={[
-                    { label: "100 ONGOING PROJECTS", value: "", color: "bg-[#19FFE0]" },
-                    { label: "10 PROJECTS UNDER REVIEW", value: "", color: "bg-yellow-500" }
+                    { label: "100 ONGOING PROJECTS", value: "", color: "bg-lightBrand" },
+                    { label: "10 PROJECTS UNDER REVIEW", value: "", color: "bg-warning" }
                 ]}
             />
         </div>

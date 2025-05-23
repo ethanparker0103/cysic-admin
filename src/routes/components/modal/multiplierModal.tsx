@@ -128,7 +128,7 @@ const BoostingList = () => {
                   <StatusButton status={stakeBoost.status}>
                     {stakeBoost.status === 2 ? (
                       <>
-                        <Check className="w-3 h-3 text-[#19FFE0]" />
+                        <Check className="w-3 h-3 text-lightBrand" />
                         <span>Claimed</span>
                       </>
                     ) : stakeBoost.status === 1 ? (
@@ -153,7 +153,7 @@ const BoostingList = () => {
                 <StatusButton status={task.status}>
                   {task.status === 2 ? (
                     <>
-                      <Check className="w-3 h-3 text-[#19FFE0]" />
+                      <Check className="w-3 h-3 text-lightBrand" />
                       <span>Claimed</span>
                     </>
                   ) : task.status === 1 ? (
@@ -170,15 +170,14 @@ const BoostingList = () => {
           <div className="flex flex-col gap-4">
             <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
               <div className="flex flex-col gap-4">
-                <h2 className="title !text-base uppercase !font-light">
+                <h2 className="unbounded-16-300">
                   Invite Code
                 </h2>
                 {/* 推荐码显示 */}
                 <div className="flex items-center justify-end">
-                  {/* <span className="title !text-2xl !font-[400]">{inviteCode}</span> */}
                   <Copy
                     value={inviteCode}
-                    className="title !text-2xl !font-light"
+                    className="unbounded-24-300"
                   >
                     {inviteCode}
                   </Copy>
@@ -209,7 +208,7 @@ const BoostingList = () => {
                     >
                       <div className="w-full p-4 flex flex-col items-center">
                         <div className="flex items-center gap-2 mb-2">
-                          <h3 className="!text-base !font-light title uppercase font-light tracking-wider">
+                          <h3 className="unbounded-16-300 tracking-wider">
                             {tier.name}
                           </h3>
                           <Tooltip
@@ -279,8 +278,7 @@ const BoostingList = () => {
                               strokeLinejoin="round"
                             />
                           </svg>
-                          {/* <span className="text-base title !font-light">{tier.needInviteCnt}</span> */}
-                          <span className="!text-base title !font-light">
+                          <span className="unbounded-16-300">
                             {tiers[index - 1]?.needInviteCnt || 0}
                           </span>
                         </div>
@@ -329,10 +327,10 @@ const MoreFire = () => {
             }}
             as={Link}
             to={"/socialTask"}
-            className="rounded-full text-base !bg-[#19FFE0] !text-[#000] !rounded-lg flex items-center justify-center !py-6 !min-h-fit"
+            className="rounded-full text-base !bg-lightBrand !text-black !rounded-lg flex items-center justify-center !py-6 !min-h-fit"
           >
             <>
-              <span className="teacher text-base font-normal text-[#000] tracking-widest">
+              <span className="teacher text-base font-normal text-black tracking-widest">
                 social tasks
               </span>
               <ArrowRight className="w-4 h-4" />
@@ -349,7 +347,7 @@ const MoreFire = () => {
           }}
           as={Link}
           to={"/zk/invite"}
-          className="rounded-full text-base !bg-white !text-[#000] flex items-center justify-center !py-6 !rounded-lg !min-h-fit"
+          className="rounded-full text-base !bg-white !text-black flex items-center justify-center !py-6 !rounded-lg !min-h-fit"
         >
           <>
             <span className="teacher text-base font-normal tracking-widest">
@@ -414,7 +412,7 @@ const MultiplierModal = () => {
         </span>
         <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
           <>
-            <div className="!text-xl title !font-light">
+            <div className="unbounded-16-300">
               Advanced Boosting
               <br /> in Progress
             </div>

@@ -85,7 +85,7 @@ const Tab = ({ type, className, verticle, tabs, value, onChange, ...props }: { t
         <div role="tablist" className={clsx("relative tabs !flex !w-fit gap-6", verticle ? '!flex-col items-start' : '')} ref={containerRef}>
             {
                 tabs.map(i => {
-                    return (<a role="tab" className={clsx("tab leading-none !px-0 h-fit text-left w-fit text-4 leading-relaxed font-semibold gap-2.5 text-[#000] opacity-20", {
+                    return (<a role="tab" className={clsx("tab leading-none !px-0 h-fit text-left w-fit text-4 leading-relaxed font-semibold gap-2.5 text-black opacity-20", {
                         'tab-active !opacity-100 font-[700]': i.value === (value || state)
                     })} onClick={() => handleClick(i)}>
                         {i?.icon || i?.prefix || null} <div className="flex flex-row items-center gap-[4px]"><span className="text-3.5 font-[700]">{i.text}</span>{i.suffix || null}</div>

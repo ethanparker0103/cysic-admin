@@ -33,17 +33,17 @@ const AppDownloadNotify = () => {
                         dispatchEvent(new CustomEvent('modal_download_app_visible', { detail: { visible: true } }))
                     }}>
                         <div className="flex items-center gap-1">
-                            <div className="rounded bg-[#FFFFFF26] border border-[#fff] p-2 rounded-full">
+                            <div className="rounded bg-[#FFFFFF26] border border-white p-2 rounded-full">
                                 <img
                                     className="size-3"
                                     src={getImageUrl("@/assets/images/_global/download.svg")}
                                 />
                             </div>
-                            <div className="flex-1 text-[#fff] text-xs font-semibold text-left">Download APK</div>
+                            <div className="flex-1 text-white text-xs font-semibold text-left">Download APK</div>
                         </div>
                     </Button>
 
-                    <Button className="flex-1 !border-[#fff] !min-h-fit h-10 rounded-full !bg-[transparent] !px-2 !py-1" type="solid" onClick={() => window.open(downloadLink.googlePlay, "_blank")}>
+                    <Button className="flex-1 !border-white !min-h-fit h-10 rounded-full !bg-[transparent] !px-2 !py-1" type="solid" onClick={() => window.open(downloadLink.googlePlay, "_blank")}>
                         <div className="flex items-center gap-1">
                             <img
                                 className="w-5"
@@ -51,7 +51,7 @@ const AppDownloadNotify = () => {
                             />
                             <div className="flex flex-col gap-1 items-start text-xs font-[500]">
                                 <div className="text-[#C0C0C5]">GET IT ON</div>
-                                <div className="text-[#fff]">Google Play</div>
+                                <div className="text-white">Google Play</div>
                             </div>
                         </div>
                     </Button>

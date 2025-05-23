@@ -121,8 +121,6 @@ const StatusModal = () => {
         );
       case StatusType.ERROR:
         return (
-          // <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(239,68,68,0.5)]">
-
             <svg width="121" height="120" viewBox="0 0 121 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-30 h-30">
               <g filter="url(#filter0_d_2778_1038)">
                 <circle cx="60.5" cy="60" r="40" fill="url(#paint0_linear_2778_1038)" />

@@ -4,11 +4,11 @@ import Spinner from "../spinner";
 import { useEffect, useMemo, useState } from "react";
 
 import Button from "@/components/Button";
-import clsx from "clsx";
 import { useTranslation } from "react-i18next";
 import { isMobile } from "react-device-detect";
 
 import { usePrivy } from "@/hooks/usePrivy";
+import { cn } from "@nextui-org/react";
 
 export default function ConnectButton({ className, content }: any) {
   const { address, isConnected, isConnecting, chain, chainId, connector } = useAccount();
@@ -104,14 +104,14 @@ export default function ConnectButton({ className, content }: any) {
           style={{
             wordBreak: 'break-word'
           }}
-          className={clsx("break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex", isMobile ? "justify-center size-8" : "w-fit px-3 py-1 h-10")}
+          className={cn("break-words rounded-full gradient-border cursor-pointer flex flex-row items-center gap-3 flex", "justify-center size-8 lg:w-fit lg:px-3 lg:py-1 lg:h-10")}
         >
           <img
             className="size-5"
             src={connector?.icon || getImageUrl(`@/assets/images/wallet/${connector?.id}.svg`)}
           />
           {
-            isMobile ? null : (<span className={clsx("text-sm font-[500]")}>
+            isMobile ? null : (<span className={cn("text-sm font-[500]")}>
               {shortStr(address as string, isMobile ? 6 : 10)}
             </span>)
           }
@@ -124,9 +124,9 @@ export default function ConnectButton({ className, content }: any) {
     <Button
       onClick={handleOpen}
       type="light"
-      className={clsx("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] ", isMobile ? "!min-h-8 !h-8 !px-2" : "px-4 !min-h-10 !h-10 py-[0.625rem]", className)}
+      className={cn("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-black ", "!min-h-8 !h-8 !px-2 lg:px-4 lg:!min-h-10 lg:!h-10 lg:py-[0.625rem]", className)}
     >
-      {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
+      {isConnecting ? <Spinner className="stroke-black " /> : null}
       {
         content || <span className="text-sm font-[500]">{t('Connect Wallet')}</span>
       }

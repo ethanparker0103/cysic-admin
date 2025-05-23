@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React, { useRef, useCallback } from 'react';
 
-const base ='bg-[transparent] border border-[#FFFFFF73] text-[#fff] rounded-[16px] text-center'
+const base ='bg-[transparent] border border-[#FFFFFF73] text-white rounded-[16px] text-center'
 
 function ensureArrayLength(value: any, n: any) {
     const splitArray = value.split('');

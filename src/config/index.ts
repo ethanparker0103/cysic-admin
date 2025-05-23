@@ -61,6 +61,7 @@ export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
 export const enableSocialTask = isQa
+export const enableBridge = isQa
 
 export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_devnet;
 

@@ -206,7 +206,7 @@ const ReserveModal = () => {
             {/* 金额输入区域 */}
             <div className="bg-[#0E0E0E] border border-[#333] rounded-lg p-4 mb-6">
                 <div className="flex justify-between items-center">
-                    <div className="!text-3xl title font-light !font-light">
+                    <div className="unbounded-36-300">
                         <input
                             type="text"
                             value={amount}
@@ -221,7 +221,7 @@ const ReserveModal = () => {
                             alt={activeTab === ReserveAction.RESERVE ? "CYS" : "CYS"}
                             className="w-6 h-6 mr-2"
                         />
-                        <span className="title !font-[500] !text-base ">{activeTab === ReserveAction.RESERVE ? "CYS" : "CYS"}</span>
+                        <span className="unbounded-16-500">{activeTab === ReserveAction.RESERVE ? "CYS" : "CYS"}</span>
                     </div>
                 </div>
 

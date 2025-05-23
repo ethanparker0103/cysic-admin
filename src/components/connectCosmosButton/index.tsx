@@ -48,7 +48,7 @@ export default function ConnectCosmosButton({ className, content }: any) {
           needLoading
           className="!bg-[transparent] flex items-center justify-end gap-2 !px-0"
         >
-          {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
+          {isConnecting ? <Spinner className="stroke-black " /> : null}
           {content || <span className="text-sm uppercase">Connect Keplr</span>}
         </Button>
       )}

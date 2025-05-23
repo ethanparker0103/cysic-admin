@@ -49,7 +49,7 @@ const BasicDoubleconfirmModal = () => {
                 <ModalHeader className="!py-4 border-b border-[#2B2B2B] flex flex-col gap-1">{title}</ModalHeader>
                 <ModalBody className="!pt-4">
                     <div className="flex flex-col gap-6">
-                        <div className="text-base text-[#fff]">{desc}</div>
+                        <div className="text-base text-white">{desc}</div>
                         {renderElement}
                     </div>
                 </ModalBody>

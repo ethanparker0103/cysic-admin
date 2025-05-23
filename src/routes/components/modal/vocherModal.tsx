@@ -127,7 +127,7 @@ const VoucherItem = ({ voucher, refresh }: { voucher: IVoucher, refresh: () => v
                         "Expired"
                     ) : (
                         <>
-                            <Check className="w-3 h-3 text-[#19FFE0]" />
+                            <Check className="w-3 h-3 text-lightBrand" />
                             <p>Claimed</p>
                         </>
                     )}

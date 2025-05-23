@@ -8,7 +8,7 @@ const Toggle = ({ className, checked, onChange }: any) => {
     <input
       type="checkbox"
       className={clsx(
-        "toggle !text-[#fff] [--tglbg:--by-100] bg-white hover:bg-white ",
+        "toggle !text-white [--tglbg:--by-100] bg-white hover:bg-white ",
         className,
         {
             'border-[--by-100] [--tglbg:--by-100]': checked,

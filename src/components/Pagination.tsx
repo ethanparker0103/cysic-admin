@@ -19,7 +19,7 @@ export default ({
         <Pagination
             classNames={{
                 wrapper: 'gap-2',
-                cursor: 'bg-[#00F0FF] text-[#000] min-w-6 aspect-square',
+                cursor: 'bg-[#00F0FF] text-black min-w-6 aspect-square',
                 item: 'bg-[#FFFFFF1F] min-w-6 aspect-square box-content',
             }}
             // size="sm"
