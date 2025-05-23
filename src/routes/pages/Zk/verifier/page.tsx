@@ -595,7 +595,7 @@ const VerifierPage = () => {
                                             />
                                         </div>
                                     </Tab>
-                                    <Tab key="Windows" title="Windows">
+                                    {/* <Tab key="Windows" title="Windows">
                                         <div className="bg-[#FFFFFF0D] w-full p-4">
                                             <GuideStepCard
                                                 step={1}
@@ -621,7 +621,7 @@ const VerifierPage = () => {
                                                 code={guide["Windows"].steps[2].code}
                                             />
                                         </div>
-                                    </Tab>
+                                    </Tab> */}
                                     <Tab key="MacOS" title="MacOS">
                                         <div className="bg-[#FFFFFF0D] w-full p-4">
                                             <GuideStepCard

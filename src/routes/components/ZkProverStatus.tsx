@@ -19,7 +19,6 @@ export const useProverStatus = () => {
     const { zkPart } = useAccount();
     const { proofTypeList } = useStatic();
 
-    console.log('proofTypeList', proofTypeList)
     const { data } = useRequest(() => {
         return axios.get('/api/v1/zkTask/prover/status')
     });
@@ -41,6 +40,7 @@ export const useProverStatus = () => {
                     description={i?.description}
                     isActive={!!proverStatusData.zkSync}
                     btnText={`Become a ${i?.name} Prover`}
+                    link={i?.jumpURL}
                 />
             })}
         </div>
@@ -78,9 +78,10 @@ interface ProverCardProps {
     isActive: boolean;
     btnText: string;
     className?: string;
+    link?: string;
 }
 
-export const ProverCard = ({ icon, name, description, isActive, btnText, className }: ProverCardProps) => {
+export const ProverCard = ({ icon, name, description, isActive, btnText, className, link }: ProverCardProps) => {
     return (
         <GradientBorderCard
             borderRadius={8}
@@ -106,10 +107,10 @@ export const ProverCard = ({ icon, name, description, isActive, btnText, classNa
                     <div className="flex-1 h-full flex flex-col">
 
                         <p className="flex-1 text-sm  mb-6 text-sub teacher !normal-case">{description}</p>
-                        <div className="flex items-center gap-2 teacher tracking-widest text-sm text-sub cursor-pointer hover:text-white transition-colors">
+                        <a href={link} target="_blank" className="flex items-center gap-2 teacher tracking-widest text-sm text-sub cursor-pointer hover:text-white transition-colors">
                             <span>{btnText}</span>
                             <ArrowRight width={16} height={16} />
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
