@@ -117,7 +117,7 @@ const InvitePage = () => {
         {
             key: "address",
             label: "My Address",
-            width: "25%",
+            width: "15%",
             renderCell: (leader) => (
                 <TableAvatar avatar={leader.avatar} name={leader.address} />
             ),
@@ -157,7 +157,7 @@ const InvitePage = () => {
         {
             key: "address",
             label: "Address",
-            width: "20%",
+            width: "15%",
             renderCell: (member) => (
                 <TableAvatar avatar={member.avatar} name={member.address} />
             ),

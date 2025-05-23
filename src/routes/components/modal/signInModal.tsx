@@ -15,6 +15,7 @@ import { usePrivy } from "@/hooks/usePrivy";
 import { BIND_CHECK_PATHS, mediasLink, NO_BIND_CHECK_PATHS, responseSuccessCode } from "@/config";
 import { toast } from "react-toastify";
 import useRef from "@/models/_global/ref";
+import Spinner from "@/components/spinner";
 
 // 流程状态枚举
 enum SignInStep {
@@ -23,11 +24,13 @@ enum SignInStep {
   COMPLETED = 3, // 完成状态
 }
 
-const SignInModal = () => {
-  const { walletAddress, activeAddress, isSigned, isBinded, inviteCode: userInviteCode } =
+const SignInModal = () => {  
+  const { overviewLoading, walletAddress, activeAddress, isSigned, isBinded, inviteCode: userInviteCode, userProfile } =
     useAccount();
   const { login: _login, linkGoogle, linkTwitter, linkDiscord, user } = usePrivy();
 
+
+  const needForceToSetProfile = !userProfile?.name || !userProfile?.avatarUrl
   const login = async (type: 'google' | 'twitter' | 'discord' | 'wallet')=>{
     if(user && user?.wallet?.address){
       if(type === 'google'){
@@ -118,27 +121,21 @@ const SignInModal = () => {
       // 重置错误状态
       setError(null);
 
-      // 根据用户状态自动决定步骤
       if (walletAddress && isSigned) {
-        // 如果需要绑定邀请码
         if (needsBindCheck && !isBinded) {
-          // 需要绑定邀请码
           setStep(SignInStep.INVITE_CODE);
         } else {
-          // 不需要绑定或已绑定，进入资料页
           setStep(SignInStep.USER_INFO);
         }
       } else {
-        // 未连接钱包或未签名，显示邀请码页面
         setStep(SignInStep.INVITE_CODE);
       }
 
-      // 预填表单数据
       if (savedName) {
         setFormData((prev) => ({ ...prev, name: savedName }));
       }
     }
-  }, [visible, walletAddress, isSigned, isBinded, needsBindCheck, savedName]);
+  }, [visible, needForceToSetProfile, walletAddress, isSigned, isBinded, needsBindCheck, savedName]);
 
 
   const { refCode } = useRef()
@@ -375,8 +372,6 @@ const SignInModal = () => {
     }
   };
 
-  // 判断是否已连接但未签名 - 复用原有变量
-
   // < 15
   const validInputLength = useMemo(()=>{
     return formData.name.length < 15
@@ -391,14 +386,17 @@ const SignInModal = () => {
       className="max-w-[600px]"
       hideCloseButton={!isSigned && !!walletAddress}
     >
-      {/* 错误提示 */}
       {error && (
         <div className="bg-red-900/20 border border-error px-4 py-2 rounded mb-4 text-error">
           {error}
         </div>
       )}
 
-      {step === SignInStep.INVITE_CODE && (
+
+      {
+        overviewLoading ? <Spinner /> : null
+      }
+      {!overviewLoading && step === SignInStep.INVITE_CODE && (
         // 第一步: 输入邀请码
         <div className="flex flex-col items-center space-y-6">
           <h2 className="text-2xl font-light tracking-wider text-center">
@@ -512,7 +510,7 @@ const SignInModal = () => {
         </div>
       )}
 
-      {step === SignInStep.USER_INFO && (
+      {!overviewLoading && step === SignInStep.USER_INFO && (
         // 第二步: 设置个人信息
         <div className="flex flex-col space-y-6">
           {/* Logo上传 - 显示为必填但验证时不必填 */}

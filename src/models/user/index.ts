@@ -92,6 +92,7 @@ export interface IUserInfo extends IRawUserInfo {
 // 用户状态管理接口
 interface UserState {
   // 多地址支持
+  overviewLoading: boolean;
   addressMap: Record<string, IUserInfo>;
   activeAddress?: string;
 
@@ -122,6 +123,7 @@ interface UserState {
 const defaultInitState = {
   addressMap: {} as Record<string, IUserInfo>,
   activeAddress: undefined as string | undefined,
+  overviewLoading: false,
 };
 
 const useUser = create<UserState>()(
@@ -308,6 +310,9 @@ const useUser = create<UserState>()(
         fetchUserInfo: async (address: string) => {
           try {
             // 获取用户概览信息
+            set((draft) => {
+              draft.addressMap[address].overviewLoading = true;
+            })
             const data: any = await axios.get("/api/v1/user/overview");
 
             if (data.code == responseSuccessCode) {
@@ -358,6 +363,10 @@ const useUser = create<UserState>()(
               address,
               isRegistered: false,
             };
+          } finally {
+            set((draft) => {
+              draft.addressMap[address].overviewLoading = false;
+            })
           }
         },
 

@@ -13,7 +13,7 @@ const useAccount = () => {
 
   // 直接获取用户状态，而不是通过方法
   const userStore = useUser();
-  const { activeAddress, addressMap, setState, setActiveAddress, getUserByAddress, updateUserProfile } = userStore;
+  const { overviewLoading, activeAddress, addressMap, setState, setActiveAddress, getUserByAddress, updateUserProfile } = userStore;
   
   // 获取当前活跃用户信息
   const activeUser = activeAddress ? addressMap[activeAddress] : undefined;
@@ -42,7 +42,8 @@ const useAccount = () => {
     isBinded: !!activeUser?.isBinded,           // 是否已绑定
     hasCompleteProfile,                         // 是否已完善资料
     signature: activeUser?.signature,           // 签名内容
-    needBindInviteCode,                         // 是否需要绑定邀请码
+    needBindInviteCode,     
+    overviewLoading,                    // 是否需要绑定邀请码
     
     // 个人信息
     ...activeUser,

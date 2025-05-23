@@ -74,6 +74,7 @@ export default function GradientNavDropdown({ item, className }: GradientNavDrop
     // 有子菜单时创建下拉菜单
     return (
         <HoverDropdown 
+        placement="bottom-center"
         className={cn(className, 'h-full ')}
         classNames={{
             content: 'p-0 !pt-2 -mt-1 bg-[transparent]',
