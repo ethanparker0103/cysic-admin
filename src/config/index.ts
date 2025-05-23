@@ -3,8 +3,8 @@ import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 
 export const BIND_CHECK_PATHS = ["/zk", "/ai"];
-export const NO_BIND_CHECK_PATHS = ["/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
-export const NO_CONTAINER_PATHS = ['/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub']
+export const NO_BIND_CHECK_PATHS = ["/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
+export const NO_CONTAINER_PATHS = ['/contactus', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub']
 
 export const baseStatus: any = {
   "0": "Pending",

@@ -36,7 +36,7 @@ const navs = [
     },
     {
         content: 'Contact Us',
-        href: mediasLink.contactUs
+        href: '/contactus'
     }
 ]
 

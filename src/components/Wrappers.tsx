@@ -1,7 +1,10 @@
+
 // /dashboard/prover/*
 // /dashboard/verifier/*
 // /dashboard/provider/*
 // /dashboard/task/*
+
+import { cn } from "@nextui-org/react"
 
 // /zk/prover/*
 // /zk/verifier/*
@@ -11,9 +14,9 @@
 // /zk/invite
 // /socialTask
 // /stake
-export const PT12Wrapper = ({ children }: { children: React.ReactNode }) => {
+export const PT12Wrapper = ({ children, className }: { children: React.ReactNode, className?: string }) => {
     return (
-        <div className=" pt-12 ">
+        <div className={cn(" pt-12 ", className)}>
             {children}
         </div>
     )

@@ -32,6 +32,8 @@ import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page";
 import UnbindPage from "@/routes/pages/unbind/page";
 import Bridge from "@/routes/pages/Bridge/page";
 import { enableBridge, enableSocialTask } from "@/config";
+import MediakitPage from "@/routes/pages/Mediakit/page";
+import ContactUs from "@/routes/pages/ContactUs/page";
 
 const portalModules = {
   path: "userPortal",
@@ -85,10 +87,14 @@ export const router = createBrowserRouter(
           path: "/hardware",
           element: <HardwarePage />,
         },
-        // {
-        //   path: "socialTask",
-        //   element: <NftSocialTask />,
-        // },
+        {
+          path: "/mediakit",
+          element: <MediakitPage />,
+        },
+        {
+          path: "/contactus",
+          element: <ContactUs />,
+        },
         socialTaskModules,
         {
           path: "/zk",
@@ -399,6 +405,14 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -20vh",
     },
+    needShadow: true,
+  },
+  "/mediakit": {
+    // img: "#000",
+  },
+  "/contactus": {
+    img: getImageUrl("@/assets/images/_global/contactus_landing_bg.png"),
+    className: "purple-landing",
     needShadow: true,
   },
 };

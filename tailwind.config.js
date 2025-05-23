@@ -16,7 +16,7 @@ export default {
 
       // 黑色系列
       black: {
-        DEFAULT: "#000000",
+        DEFAULT: "#090A09",
         50: "#f6f6f6",
         100: "#e7e7e7",
         200: "#d1d1d1",
@@ -364,7 +364,7 @@ export default {
   darkMode: "class",
   plugins: [
     plugin(function ({ addComponents }) {
-      const fonts = ["unbounded", "teacher"];
+      const fonts = ["unbounded", "teachers"];
       const sizes = [12, 14, 16, 18, 20, 22, 24, 30, 32, 36, 48, 64, 72, 96, 128, 196, 180];
       const weights = {
         thin: 100,

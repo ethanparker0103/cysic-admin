@@ -632,11 +632,11 @@ const Home = () => {
         <br />
         the full-stack infrastructure for
         <br />
-        <span className="unbounded text-gradient font-medium">
+        <span className="unbounded text-gradient-v1 font-medium">
           trustless, scalable
         </span>
         , and{" "}
-        <span className="unbounded text-gradient font-medium">
+        <span className="unbounded text-gradient-v1 font-medium">
           monetizable computation.
         </span>
       </div>

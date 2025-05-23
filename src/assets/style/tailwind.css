@@ -24,16 +24,23 @@
 
 @layer components {
     .bg-gradient {
-      /* @apply bg-gradient-to-r from-[#D99DFD] via-[#8A2AF7] via-[#8A2AF7] via-[#1783E7] to-[#00F0FF]; */
-      /* linear-gradient(253.59deg, #E8D7E0 37.6%, #9D47FF 97.1%); */
       @apply bg-[linear-gradient(to_left,#E8D7E0_37.6%,#9D47FF_97.1%)]
     }
+    .bg-gradient-old{
+      @apply bg-[linear-gradient(to_left,#19FFE0_37.6%,#9D47FF_97.1%)]
+    }
+
     .bg-light-gradient {
       @apply bg-gradient-to-r from-[#FFFFFFED] to-[#5EE8FF];
     }
     .text-gradient{
       @apply bg-gradient bg-clip-text	text-[transparent] w-fit;
     }
+
+    .text-gradient-v1{
+      @apply bg-gradient-old bg-clip-text	text-[transparent] w-fit;
+    }
+
     .text-light-gradient{
       @apply bg-light-gradient bg-clip-text	text-[transparent] w-fit;
     }

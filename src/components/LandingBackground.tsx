@@ -65,6 +65,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
 
         const noContainer = path == "/" || NO_CONTAINER_PATHS.includes(path);
 
+
         if (!backgroundConfig?.img) {
             return (
                 <main
