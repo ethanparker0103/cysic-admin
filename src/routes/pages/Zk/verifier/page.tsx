@@ -13,7 +13,8 @@ import { useVerifierStatus } from "@/routes/components/ZkVerifierStatus";
 import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 import { useState } from "react";
 
-const guide = {
+
+const androidGuide = {
     ["Android"]: {
         totalStep: 3,
         steps: [
@@ -115,6 +116,10 @@ const guide = {
             },
         ],
     },
+}
+
+const guide = {
+    
     ["Linux"]: {
         totalStep: 3,
         steps: [
@@ -353,6 +358,7 @@ const SelfProverStepCard = ({
                     </div>
                     {buttonText ? (
                         <Button
+                            disabled={!onClick}
                             onClick={onClick}
                             type="light"
                             className="rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
@@ -518,7 +524,7 @@ const VerifierPage = () => {
                                     }}
                                     className="w-full"
                                 >
-                                    <Tab key="Android" title="Android">
+                                    {/* <Tab key="Android" title="Android">
                                         <div className={cn("bg-[#FFFFFF0D] w-full p-4 flex gap-6", "flex-col lg:flex-row")}>
                                             <div className="flex-1">
 
@@ -561,7 +567,7 @@ const VerifierPage = () => {
 
 
                                         </div>
-                                    </Tab>
+                                    </Tab> */}
                                     <Tab key="Linux" title="Linux">
                                         <div className="bg-[#FFFFFF0D] w-full p-4">
                                             <GuideStepCard

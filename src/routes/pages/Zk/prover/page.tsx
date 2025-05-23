@@ -33,6 +33,7 @@ const SelfProverStepCard = ({ showLink, step, title, description, buttonText, ch
                         <h3 className={cn("unbounded uppercase font-light mb-2", "text-2xl lg:text-[36px]")}>{title}</h3>
                     </div>
                     {buttonText ? <Button
+                        disabled={!onClick}
                         onClick={onClick}
                         type="light"
                         className="rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
