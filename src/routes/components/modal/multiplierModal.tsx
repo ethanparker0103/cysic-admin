@@ -380,10 +380,10 @@ const MoreFire = () => {
 
       <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
         <>
-          <div className="text-base font-light unbounded">Invite code</div>
+          <div className="unbounded-16-300">Invite code</div>
           <div className="mt-8 ml-auto ">
             <Copy value={inviteCode}>
-              <span className="text-2xl font-light unbounded">
+              <span className="unbounded-24-300">
                 {inviteCode || "-"}
               </span>
             </Copy>

@@ -16,7 +16,7 @@ const VoucherInfo = () => {
             <div className="py-4 px-4 lg:px-6 w-full h-full">
                 <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4 lg:gap-0">
                     <div
-                        className={cn("text-base font-light unbounded")}
+                        className={cn("unbounded-16-300")}
                     >
                         VOCHER
                     </div>
@@ -46,7 +46,7 @@ const VoucherInfo = () => {
                             "flex items-end justify-end gap-6 border-white"
                         )}
                     >
-                        <div className="unbounded text-2xl font-light">
+                        <div className="unbounded-24-300">
                             {voucherCnt}
                         </div>
                     </div>

@@ -136,7 +136,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                                 <div className={cn("relative w-full", noContainer ? "main-container" : "")}>
                                     <Link
                                         to={backPath}
-                                        className="z-[11] flex items-center gap-2 !text-base font-light unbounded"
+                                        className="z-[11] flex items-center gap-2 unbounded-16-300"
                                     >
                                         <ArrowLeft className="size-5" />
                                         <span>{backgroundConfig?.backContent ?? "Back"}</span>

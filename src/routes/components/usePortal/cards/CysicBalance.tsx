@@ -14,7 +14,7 @@ const CysicBalance = () => {
         <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4 lg:gap-0">
           <div
             className={cn(
-              "text-base font-light unbounded",
+              "unbounded-16-300",
             )}
           >
             BALANCE
@@ -47,7 +47,7 @@ const CysicBalance = () => {
             )}
           >
 
-            <div className={cn("text-2xl font-light unbounded", "text-left lg:text-right" )}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
+            <div className={cn("unbounded-24-300", "text-left lg:text-right" )}>{balance ? `${balance.amount} ${balance.symbol}` : "0 USDC"}</div>
 
           </div>
         </div>

@@ -267,7 +267,7 @@ const ConvertModal = () => {
               alt={fromToken}
               className="w-6 h-6 mr-2"
             />
-            <span className="unbounded !normal-case text-base font-medium">{fromToken}</span>
+            <span className="unbounded-16-500 !normal-case">{fromToken}</span>
           </div>
         </div>
         <div className="flex items-center justify-end mt-1 text-base text-sub hover:text-white cursor-pointer">
@@ -308,7 +308,7 @@ const ConvertModal = () => {
               alt={toToken}
               className="w-6 h-6 mr-2"
             />
-            <span className="unbounded !normal-case text-base font-medium">{toToken}</span>
+            <span className="unbounded-16-500 !normal-case">{toToken}</span>
           </div>
         </div>
         <div className="flex items-center justify-end mt-1 text-base text-sub hover:text-white cursor-pointer">

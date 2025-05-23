@@ -192,7 +192,7 @@ const BridgeC = () => {
                   className="size-6 rounded-full"
                   src={EVM_CHAIN_LOGO?.[topChainId]}
                 />
-                <span className="text-base font-medium unbounded !normal-case">
+                <span className="unbounded-16-500 !normal-case">
                   {topDir?.name}
                 </span>
                 {!bridgeDir ? <IconTriangleDown className="size-4" /> : null}
@@ -239,7 +239,7 @@ const BridgeC = () => {
                   className="size-6 rounded-full"
                   src={EVM_CHAIN_LOGO?.[bottomChainId]}
                 />
-                <span className="text-base font-medium unbounded !normal-case">
+                <span className="unbounded-16-500 !normal-case">
                   {bottomDir?.name}
                 </span>
                 {bridgeDir ? <IconTriangleDown className="size-4" /> : null}
@@ -286,7 +286,7 @@ const BridgeC = () => {
                       className="size-6 rounded-full"
                       src={fromToken?.icon}
                     />
-                    <span className="text-base unbounded !normal-case font-medium">
+                    <span className="unbounded-16-500 !normal-case">
                       {fromToken?.symbol}
                     </span>
                     <IconTriangleDown className="size-4" />

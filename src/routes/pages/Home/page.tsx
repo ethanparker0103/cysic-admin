@@ -248,7 +248,7 @@ const DrawerCard = ({
       )}
     >
       <div className="flex flex-col gap-2">
-        <h1 className="unbounded text-white text-xl font-medium">{title}</h1>
+        <h1 className="unbounded-20-500 text-white">{title}</h1>
         <h2 className="teacher normal-case text-white text-base font-normal">
           {subTitle}
         </h2>
@@ -344,13 +344,13 @@ const navScreenList = [
     title: "Cysic Network",
     slogen: (
       <div className="text-center">
-        <div className="font-light text-base lg:text-xl text-center unbounded">
-          <span className="unbounded font-medium text-base lg:text-xl">
+        <div className="text-center unbounded-16-20-300">
+          <span className="unbounded-16-20-500">
             all-in-one solution
           </span>
           &nbsp;for
         </div>
-        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
+        <p className="unbounded-16-24-500 text-gradient">
           zero-knowledge proof generation and verification.
         </p>
       </div>
@@ -374,10 +374,10 @@ const navScreenList = [
     title: "Cysic Hardware",
     slogen: (
       <div className="text-center">
-        <div className="font-light text-base lg:text-xl text-center unbounded">
+        <div className="text-center unbounded-16-20-300">
           Purpose-built hardware and GPUs optimized
         </div>
-        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
+        <p className="unbounded-16-24-500 text-gradient">
           for ZK acceleration and beyond.
         </p>
       </div>
@@ -400,13 +400,13 @@ const navScreenList = [
     title: "Cysic AI",
     slogen: (
       <div className="text-center">
-        <p className="font-normal text-base lg:text-xl text-center unbounded">
+        <p className="text-center unbounded-16-20-300">
           low-cost, high-performance
         </p>
-        <p className="font-medium text-base lg:text-2xl text-gradient unbounded">
+        <p className="unbounded-16-24-500 text-gradient">
           for ZK acceleration and beyond.
         </p>
-        <p className="font-light text-base lg:text-xl text-center unbounded">
+        <p className="text-center unbounded-16-20-300">
           with seamless API access.
         </p>
       </div>

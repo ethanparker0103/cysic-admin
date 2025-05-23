@@ -10,13 +10,13 @@ export const CompletionTasksCard = () => {
     return (
         <GradientBorderCard borderRadius={8} className="px-4 lg:px-6 py-4 flex-1 w-full h-full flex flex-col gap-4">
 
-            <div className="text-base unbounded font-light flex-1">
+            <div className="unbounded-16-300 flex-1">
                 My<br />
                 Task<br />
                 Completion
             </div>
 
-            <div className="text-2xl unbounded ml-auto">{totalCompleted}</div>
+            <div className="unbounded-24-400 ml-auto">{totalCompleted}</div>
 
             <div className="flex flex-col gap-1 text-sm teacher !normal-case">
                 <div className="flex items-center justify-between">
@@ -36,7 +36,7 @@ const BaseCard = ({ title, linkContent, to, children }: { title: string, linkCon
     return (
         <GradientBorderCard borderRadius={8} className="px-4 lg:px-6 py-4 flex-1 w-full h-full flex flex-col gap-4">
             <div className="flex items-center justify-between">
-                <div className="unbounded font-light">{title}</div>
+                <div className="unbounded-16-300">{title}</div>
                 <Link to={to} className="text-sub text-sm teacher hover:text-white flex items-center gap-2">
                     {linkContent}
                     <ArrowRight size={12} />
@@ -62,7 +62,7 @@ export const VerifierCard = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
                 {status.map((item) => (
                     <>
-                        <div className="flex items-center gap-2 text-sm font-light unbounded">
+                        <div className="flex items-center gap-2 unbounded-14-300">
                             <div className={`h-2 w-2 rounded-full ${zkPart?.verifierStatus?.[item.key] == 1 ? 'bg-lightBrand' : 'bg-error'}`}></div>
                             {item.label}&nbsp;
                             {zkPart?.verifierStatus?.[item.key] == 1 ? 'ACTIVE' : 'INACTIVE'}
@@ -84,7 +84,7 @@ export const ProverCard = () => {
         <BaseCard title="ZK Prover" linkContent="More about ZK Prover" to="/zk/prover">
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
                 {status.map((item) => (
-                    <div className="flex items-center gap-2 text-sm font-light unbounded">
+                    <div className="flex items-center gap-2 unbounded-14-300">
                         <div className={`h-2 w-2 rounded-full ${zkPart?.proverStatus?.[item.key] == 1 ? 'bg-lightBrand' : 'bg-error'}`}></div>
                         {item.label}&nbsp;
                         {zkPart?.proverStatus?.[item.key] == 1 ? 'ACTIVE' : 'INACTIVE'}
@@ -105,7 +105,7 @@ export const ProjectCard = () => {
         <BaseCard title="ZK Project" linkContent="More about ZK Project" to="/zk/project">
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
                 {status.map((item) => (
-                    <div className="flex items-center gap-2 text-sm font-light unbounded">
+                    <div className="flex items-center gap-2 unbounded-14-300">
                         <div className={`h-2 w-2 rounded-full ${item.key == 'underReviewCnt' ? 'bg-lightBrand' : 'bg-warning'}`}></div>
                         {zkPart?.projectStatus?.[item.key]}&nbsp;
                         {item.label}

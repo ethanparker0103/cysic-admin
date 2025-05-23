@@ -23,7 +23,7 @@ const AcademyPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center gap-4">
-                    <span className={cn("unbounded font-[200] text-white text-center", "text-[48px] lg:text-[11.25rem]")}>
+                    <span className={cn("unbounded-48-180-200 text-white text-center")}>
                         Cysic<br />Academy
                     </span>
                     <span className="sub-title text-center !text-base lg:!text-2xl !font-[400] !tracking-wider ">

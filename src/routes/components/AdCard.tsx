@@ -32,7 +32,7 @@ const AdCard = ({
       {!onClick ? <div className="absolute inset-0 bg-black/30 z-10" /> : null}
       <GradientBorderCard borderRadius={8} className="relative z-20 p-4 flex flex-col justify-between backdrop-filter-none h-full bg-[transparent]">
         <div className={onClick ? "" : "blur-[2px]"}>
-          <h3 className="unbounded text-2xl font-light text-white">{title}</h3>
+          <h3 className="unbounded-24-300 text-white">{title}</h3>
           {desc? <p className="teacher normal-case text-base text-white mt-2">{desc}</p> : null}
         </div>
         {onClick ? <ArrowRight size={20} className="text-white self-end" /> : null}

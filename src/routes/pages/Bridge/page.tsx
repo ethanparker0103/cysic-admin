@@ -19,7 +19,7 @@ const Bridge = () => {
     return (
         <div className="flex flex-col">
 
-            <div className="unbounded text-[36px] font-light text-center my-12">BRIDGE</div>
+            <div className="unbounded-36-300 text-center my-12">BRIDGE</div>
             <div className="flex flex-col items-center justify-center gap-8 main-container w-full">
                 <Tab 
                     items={tabs}

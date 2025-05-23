@@ -21,8 +21,7 @@ const ZkBalanceCard = () => {
           <div className="flex justify-between items-center px-4 lg:px-6">
             <div
               className={cn(
-                "font-light unbounded",
-                "text-base lg:text-xl"
+                "unbounded-16-20-300",
               )}
             >
               TOTAL REWARDS
@@ -46,7 +45,7 @@ const ZkBalanceCard = () => {
               "flex items-start lg:items-center justify-between gap-4 lg:gap-6 border-white lg:flex-row flex-col"
             )}
           >
-            <div className="unbounded text-2xl flex items-center gap-2">
+            <div className="unbounded-24-400 flex items-center gap-2">
               <>{cysReward}</> <img src={getImageUrl('@/assets/images/tokens/CYS.svg')} className="w-6 h-6" /> <>CYS</>
             </div>
             <Button
@@ -64,7 +63,7 @@ const ZkBalanceCard = () => {
           <Divider className="bg-white my-6" />
 
           <div className="flex items-start lg:items-center justify-between gap-4 lg:gap-6 flex-col lg:flex-row">
-            <div className="unbounded text-2xl flex items-center gap-2">
+            <div className="unbounded-24-400 flex items-center gap-2">
               <>{cgtReward}</> <img src={getImageUrl('@/assets/images/tokens/CGT.svg')} className="w-6 h-6" /> <>CGT</>
             </div>
             <Button

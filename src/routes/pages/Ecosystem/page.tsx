@@ -60,7 +60,7 @@ const EcosystemPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className={cn("unbounded text-white text-[32px] lg:text-[4rem] text-center font-[200]")}>ECOSYSTEM</span>
+                    <span className={cn("unbounded-32-64-200 text-white text-center")}>ECOSYSTEM</span>
                 </div>
             </div>
 

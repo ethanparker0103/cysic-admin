@@ -95,11 +95,11 @@ export const ProverCard = ({ icon, name, description, isActive, btnText, classNa
                             <div className={cn("rounded-full bg-[#111] flex items-center justify-center text-white", "h-8 w-8 lg:w-12 lg:h-12" )}>
                                 {icon}
                             </div>
-                            <h3 className={cn("font-light unbounded", "text-2xl lg:mb-2 lg:text-3xl" )}>{name}</h3>
+                            <h3 className={cn("unbounded-24-300", "lg:mb-2" )}>{name}</h3>
                         </div>
                         <div className="flex items-center gap-2 ">
                             <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-lightBrand' : 'bg-error'}`}></div>
-                            <span className="uppercase text-sm !font-light unbounded">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                            <span className="unbounded-14-300">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                         </div>
 
                     </div>

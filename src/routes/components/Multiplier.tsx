@@ -11,7 +11,7 @@ export const MultiplierPercentBar = () => {
   return (
     <div className="relative group py-2">
 
-      <div className="opacity-0 group-hover:opacity-100 absolute top-0 text-sm unbounded font-light px-2 py-1 bg-[#292929] rounded-md whitespace-nowrap"
+      <div className="opacity-0 group-hover:opacity-100 absolute top-0 unbounded-14-300 px-2 py-1 bg-[#292929] rounded-md whitespace-nowrap"
         style={{
           left: `${multiplierPercent < 7 ? '6' : multiplierPercent > 92 ? '92' : multiplierPercent}%`,
           transform: `translate(-50%, -100%)`,
@@ -70,7 +70,7 @@ export const Multiplier = ({
                 className="flex items-center justify-end gap-1 cursor-pointer"
                 onClick={handleMultiplierModal}
               >
-                <span className="text-sm text-sub text-sub">SPEED UP</span>
+                <span className="text-sm text-sub">SPEED UP</span>
                 <ArrowRight size={12} />
               </div>
             )}
@@ -80,14 +80,14 @@ export const Multiplier = ({
           <MultiplierPercentBar />
 
           <div className="flex items-center justify-between">
-            <div className="text-sm unbounded font-light">
+            <div className="unbounded-14-300">
               🔥 {zkPart?.multiplierFire || 0} FIRE
             </div>
             <div
               className={cn("flex items-center gap-2","self-start lg:self-end")}
             >
               <div className="w-3 h-3 rounded-full bg-blue-400"></div>
-              <span className="text-sm unbounded font-light">
+              <span className="unbounded-14-300">
                 {currentMultiplier?.name || "-"}
               </span>
             </div>
@@ -97,7 +97,7 @@ export const Multiplier = ({
               className="flex items-center justify-end gap-1 cursor-pointer"
               onClick={handleMultiplierModal}
             >
-              <span className="text-sm text-sub text-sub">SPEED UP</span>
+              <span className="text-sm text-sub">SPEED UP</span>
               <ArrowRight size={12} />
             </div>
           )}
