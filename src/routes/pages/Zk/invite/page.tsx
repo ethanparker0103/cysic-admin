@@ -32,6 +32,7 @@ interface TeamMember {
     address: string;
     status: number;
     joinAt: string;
+    layer: number;
     referralRewardList: Array<{
         amount: string;
         symbol: string;
@@ -115,7 +116,7 @@ const InvitePage = () => {
     const leaderColumns: CysicTableColumn<TeamLeader>[] = [
         {
             key: "address",
-            label: "Address",
+            label: "My Address",
             width: "25%",
             renderCell: (leader) => (
                 <TableAvatar avatar={leader.avatar} name={leader.address} />
@@ -156,7 +157,7 @@ const InvitePage = () => {
         {
             key: "address",
             label: "Address",
-            width: "25%",
+            width: "20%",
             renderCell: (member) => (
                 <TableAvatar avatar={member.avatar} name={member.address} />
             ),
@@ -164,7 +165,7 @@ const InvitePage = () => {
         {
             key: "status",
             label: "Status",
-            width: "15%",
+            width: "10%",
             renderCell: (member) => (
                 <div className="flex items-center">
                     <div
@@ -172,6 +173,16 @@ const InvitePage = () => {
                             } mr-2 flex-shrink-0`}
                     ></div>
                     <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
+                </div>
+            ),
+        },
+        {
+            key: "layer",
+            label: "Layer",
+            width: "10%",
+            renderCell: (member) => (
+                <div className="text-left flex gap-2">
+                    <span>{member.layer || '-'}</span>
                 </div>
             ),
         },
