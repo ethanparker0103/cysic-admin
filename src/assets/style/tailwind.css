@@ -46,7 +46,7 @@
     }
 
     .main-container {
-      @apply max-w-[1440px] px-0 lg:px-[3rem] mx-auto;
+      @apply max-w-[1440px] px-0 lg:!px-[3rem] mx-auto;
     }
 
     .green-landing{

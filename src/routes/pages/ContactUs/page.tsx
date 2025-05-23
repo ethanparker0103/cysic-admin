@@ -1,6 +1,7 @@
 import { PT12Wrapper } from "@/components/Wrappers";
 import { Form, Input, Button, Radio, RadioGroup } from "@nextui-org/react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 // form
 // {
@@ -49,6 +50,7 @@ const FormInputWithLabel = ({
 
 
 const ContactUs = () => {
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -59,9 +61,42 @@ const ContactUs = () => {
         topic: "",
     });
 
-    const onSubmit = (e: any) => {
+    const onSubmit = (e: React.FormEvent) => {
+        setIsLoading(true);
         e.preventDefault();
-        console.log(formData);
+
+        // 按照URL编码格式构造表单数据
+        const formParams = new URLSearchParams();
+        formParams.append('First-Name', formData.firstName);
+        formParams.append('Last-Name', formData.lastName);
+        formParams.append('Email', formData.email);
+        formParams.append('Company-Name', formData.companyName);
+        formParams.append('Telegram-Handle', formData.telegramHandle);
+        formParams.append('field', formData.whatcanwehelpyouwith);
+        formParams.append('Topic', formData.topic);
+
+        // 提交到相同的endpoint，使用与线上相同的格式
+        fetch('https://submit-form.com/tChnyWtrR', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formParams.toString(),
+        })
+            .then(response => {
+                if (response.ok) {
+                    toast.success("Submit Form Success");
+                } else {
+                    toast.error("Submit Form Failed");
+                }
+            })
+            .catch(error => {
+                console.error("Submit Form Error", error);
+                toast.error("Submit Form Failed");
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
     return (
         <PT12Wrapper className="w-full flex-1 flex flex-col">
@@ -112,6 +147,7 @@ const ContactUs = () => {
                                     }}
                                     placeholder="ENTER EMAIL HERE"
                                     label="Email"
+                                    type="email"
                                     value={formData.email}
                                     onChange={(e) => {
                                         setFormData({ ...formData, email: e.target.value });
@@ -152,28 +188,29 @@ const ContactUs = () => {
                                 />
 
 
-                                    <div className="w-full">
-                                <RadioGroup
-                                    classNames={{
-                                        label: "h-[30px]",
-                                        wrapper: "ml-2"
-                                    }}
-                                    value={formData.topic}
-                                    onValueChange={(value) => {
-                                        setFormData({ ...formData, topic: value });
-                                    }}
-                                    isRequired
-                                    label={
-                                        <span className="teachers-16-400 text-sub !normal-case">Topic</span>
-                                    } orientation="horizontal" size="sm" >
-                                    <Radio className={radioClassName} value="other">Other</Radio>
-                                    <Radio className={radioClassName} value="cysic-network">Cysic Network</Radio>
-                                    <Radio className={radioClassName} value="asic-solutions">Asic Solutions</Radio>
-                                    <Radio className={radioClassName} value="gpu-acceleration">Gpu Acceleration</Radio>
-                                </RadioGroup>
+                                <div className="w-full">
+                                    <RadioGroup
+                                        classNames={{
+                                            label: "h-[30px]",
+                                            wrapper: "ml-2"
+                                        }}
+                                        value={formData.topic}
+                                        onValueChange={(value) => {
+                                            setFormData({ ...formData, topic: value });
+                                        }}
+                                        isRequired
+                                        label={
+                                            <span className="teachers-16-400 text-sub !normal-case">Topic</span>
+                                        } orientation="horizontal" size="sm" >
+                                        <Radio className={radioClassName} value="other">Other</Radio>
+                                        <Radio className={radioClassName} value="cysic-network">Cysic Network</Radio>
+                                        <Radio className={radioClassName} value="asic-solutions">Asic Solutions</Radio>
+                                        <Radio className={radioClassName} value="gpu-acceleration">Gpu Acceleration</Radio>
+                                    </RadioGroup>
                                 </div>
 
                                 <Button
+                                    isLoading={isLoading}
                                     isDisabled={
                                         !formData.firstName ||
                                         !formData.lastName ||

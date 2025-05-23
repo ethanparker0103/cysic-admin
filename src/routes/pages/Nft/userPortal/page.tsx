@@ -175,7 +175,7 @@ const UserPortal = () => {
         </div>
       </div>
 
-      <div className="relative h-screen w-full">
+      <div className="relative h-[36.25rem] lg:h-screen w-full">
         <div
           className="absolute brightness-50 inset-0 size-full z-0"
           style={{

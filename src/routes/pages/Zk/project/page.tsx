@@ -23,7 +23,7 @@ export interface IProject {
 
 
 const ProjectPage = () => {
-    const { address } = useAccount();
+    const { address, isSigned } = useAccount();
 
     const { data } =
         usePagnation(() => {
@@ -33,6 +33,9 @@ const ProjectPage = () => {
     const { data: myData } =
         usePagnation(() => {
             return axios.get(`/api/v1/zkTask/project/list`);
+        }, {
+            refreshDeps: [isSigned],
+            ready: isSigned
         });
 
     const myDataData = myData?.data?.list || [];

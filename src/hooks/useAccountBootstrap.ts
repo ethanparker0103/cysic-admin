@@ -63,7 +63,10 @@ const useAccountBootstrap = () => {
       const event = new CustomEvent('modal_signin_visible', {
         detail: { visible: false, step: 'code' }
       });
-      window.dispatchEvent(event);
+
+      if (user?.wallet?.connectorType == "embedded") {
+        window.dispatchEvent(event);
+      }
 
       const signature = await signMessageAsync(loginSignContent);
 

@@ -93,7 +93,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[97%] lg:w-[59rem] top-[5.625rem] z-[2] bg-gradient-to-b from-[#196DFF] to-[#196DFF00] ",
+      "w-[96%] lg:w-[59rem] top-[5.625rem] z-[2] bg-gradient-to-b from-[#196DFF] to-[#196DFF00] ",
     borderGradientFrom: "#6AD8FF",
     title: "COMPUTE INFRASTRUCTURE LAYER",
     subTitle: (
@@ -133,7 +133,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[94%] lg:w-[56rem] top-[11.25rem] z-[3] bg-gradient-to-b from-[#3C19FF] to-[#3C19FF00] ",
+      "w-[93%] lg:w-[56rem] top-[11.25rem] z-[3] bg-gradient-to-b from-[#3C19FF] to-[#3C19FF00] ",
     borderGradientFrom: "#85BCFF",
     title: "EXECUTION LAYER",
     subTitle: (
@@ -182,7 +182,7 @@ const drawerCardList = [
   },
   {
     className:
-      "w-[91%] lg:w-[52rem] top-[16.875rem] z-[4] bg-gradient-to-b from-[#5B0995] to-[#5B099500] ",
+      "w-[90%] lg:w-[52rem] top-[16.875rem] z-[4] bg-gradient-to-b from-[#5B0995] to-[#5B099500] ",
     borderGradientFrom: "#D1A9FF",
     title: "CONSENSUS LAYER",
     subTitle: (
@@ -253,7 +253,7 @@ const DrawerCard = ({
           {subTitle}
         </h2>
       </div>
-      <div className="flex flex-wrap gap-4 w-full">{children}</div>
+      <div className="flex flex-col lg:flex-row flex-wrap gap-4 w-full">{children}</div>
     </GradientBorderCard>
   );
 };
@@ -316,11 +316,11 @@ const DrawCardList = () => {
                   {i.desc.map((j) => {
                     return (
                       <div
-                        className="flex-1 flex flex-col items-center gap-4"
+                        className="flex-1 flex flex-row lg:flex-col items-center gap-4"
                         key={j.title}
                       >
                         {j.icon}
-                        <span className="teachers normal-case text-xl font-normal text-white">
+                        <span className="teachers-20-400 !normal-case text-white">
                           {j.title}
                         </span>
                       </div>
@@ -356,14 +356,14 @@ const navScreenList = [
       </div>
     ),
     action: (
-      <div className="flex items-center gap-6">
-        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-          <div className="flex items-center gap-2 ">
+      <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
+        <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8">
+          <div className="flex items-center gap-2 justify-between lg:justify-start">
             <span>About Cysic Netowork</span>
             <ArrowRight width={16} height={16} />
           </div>
         </Button>
-        <JoinTestnetPhaseIIIButton />
+        <JoinTestnetPhaseIIIButton className="w-full lg:w-auto" />
       </div>
     ),
   },
@@ -384,8 +384,8 @@ const navScreenList = [
     ),
     action: (
       <Link to="/hardware" className="flex items-center gap-6">
-        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-          <div className="flex items-center gap-2 ">
+        <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8">
+          <div className="flex items-center gap-2 justify-between lg:justify-start">
             <span>About Cysic Hardware</span>
             <ArrowRight width={16} height={16} />
           </div>
@@ -453,9 +453,9 @@ const otherScreenList = [
     subTitle: "Growing with the Builders in the industry",
     title: "ecosystem",
     slogen: (
-      <Link to="/ecosystem">
-        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-          <div className="flex items-center gap-2 ">
+      <Link to="/ecosystem" className="w-full lg:w-auto">
+        <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8 w-full lg:w-auto">
+          <div className="flex items-center gap-2 justify-between lg:justify-start">
             <span>Explore Cysic Partners</span>
             <ArrowRight width={16} height={16} />
           </div>
@@ -476,9 +476,9 @@ const otherScreenList = [
     subTitle: "learn with cysic",
     title: "cysic academy",
     slogen: (
-      <Link to="/academy">
-        <Button type="solid" className="backdrop-blur-sm teacher py-6 px-8">
-          <div className="flex items-center gap-2 ">
+      <Link to="/academy" className="w-full lg:w-auto">
+        <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8 w-full lg:w-auto">
+          <div className="flex items-center gap-2 justify-between lg:justify-start">
             <span>View All Articles</span>
             <ArrowRight width={16} height={16} />
           </div>
@@ -486,7 +486,7 @@ const otherScreenList = [
       </Link>
     ),
     action: (
-      <div className="flex flex-wrap gap-4 main-container w-full">
+      <div className="flex flex-wrap gap-4 main-container w-full px-4 lg:px-0">
         {academyConfigShowInHome.map((item) => {
           return <AcademyCard key={item.title} item={item} />;
         })}
@@ -535,6 +535,7 @@ const ScreenNavCard = ({
   slogen,
   action,
   className,
+  autoHeight,
 }: {
   background?: string;
   subTitle?: string;
@@ -542,21 +543,26 @@ const ScreenNavCard = ({
   slogen?: React.ReactNode;
   action?: React.ReactNode;
   className?: string;
+  autoHeight?: boolean;
 }) => {
   return (
     <div
       className={cn(
-        "min-h-screen relative w-full flex flex-col items-center justify-center ",
+        "relative w-full flex flex-col items-center justify-center ",
+        autoHeight ? "py-16 lg:min-h-screen" : "min-h-screen",
         className
       )}
     >
       <div className={cn("absolute inset-0 -z-[1]", background)} />
+      <div className="flex flex-col">
+
       {subTitle ? (
-        <span className="teacher tracking-[0.3em] text-2xl text-center">{subTitle}</span>
+        <span className="teachers-16-24-400 tracking-[0.3em] text-center">{subTitle}</span>
       ) : null}
-      <span className="mt-2 unbounded text-[36px] lg:text-[64px] font-light text-center">{title}</span>
-      {slogen ? <div className="mt-6">{slogen}</div> : null}
-      {action ? <div className="mt-6">{action}</div> : null}
+      <span className="mt-2 unbounded-36-64-300 text-center">{title}</span>
+      </div>
+      {slogen ? <div className="mt-6 ">{slogen}</div> : null}
+      {action ? <div className="mt-6 ">{action}</div> : null}
     </div>
   );
 };
@@ -583,12 +589,12 @@ const Home = () => {
               <br />
               Verifiable Future.
             </span>
-            <span className="sub-title font-normal mt-6 desc text-center">
+            <span className="teachers-16-24-400 tracking-widest lg:tracking-[8.88px] font-normal mt-6 desc text-center">
               World's first vertically integrated compute layer
             </span>
           </div>
 
-          <div className="flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base">
+          <div className="flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base w-full lg:w-auto">
             <JoinTestnetPhaseIIIButton className="w-full lg:w-auto" />
             <CysicHardwareStackButton className="w-full lg:w-auto" />
             <SeeWhatsComingButton className="w-full lg:w-auto" />
@@ -597,37 +603,36 @@ const Home = () => {
 
         <div
           className={cn(
-            "flex flex-col items-center gap-12 relative z-[2]",
-            isMobile ? "pb-0" : "pb-[10rem] -translate-y-[40px]"
+            "flex flex-col items-center gap-4 lg:gap-12 relative z-[2] -translate-y-[40px]",
+            "py-6 lg:py-0 pb-6 lg:pb-[10rem] "
           )}
         >
           <span
             className={cn(
-              isMobile ? "" : "!text-[4rem]",
-              "title font-[400] uppercase text-center text-md"
+              "unbounded-24-64-200 text-center text-md"
             )}
           >
             Backed by Industry Leaders
           </span>
 
-          <div className="flex flex-wrap items-center gap-12">
+          <div className="flex flex-wrap items-center gap-4 lg:gap-12">
             <img
               src={getImageUrl("@/assets/images/investors/polychain.svg")}
-              className="h-[5.5rem]"
+              className="h-[2.25rem] lg:h-[5.5rem]"
             />
             <img
               src={getImageUrl("@/assets/images/investors/okx.svg")}
-              className="h-[5.5rem]"
+              className="h-[2.25rem] lg:h-[5.5rem]"
             />
             <img
               src={getImageUrl("@/assets/images/investors/hashkey.svg")}
-              className="h-[5.5rem]"
+              className="h-[2.25rem] lg:h-[5.5rem]"
             />
           </div>
         </div>
       </div>
 
-      <div className="w-full px-12 py-16 bg-white text-center text-2xl unbounded font-light text-[#090A09]">
+      <div className="w-full px-4 py-6 lg:px-12 lg:py-16 bg-white text-center unbounded-16-24-300 text-black">
         From silicon to protocol, Cysic is building
         <br />
         the full-stack infrastructure for
@@ -641,10 +646,10 @@ const Home = () => {
         </span>
       </div>
 
-      <div className="min-h-[640px] w-full main-container flex flex-col items-center gap-12 py-16">
+      <div className="min-h-[640px] w-full main-container flex flex-col items-center gap-12 py-12 lg:py-16">
         <div className="text-center">
-          <div className="teacher text-2xl ">What we are</div>
-          <div className="unbounded text-[36px] lg:text-[64px] font-light">Building</div>
+          <div className="teachers-16-24-400 mb-2 lg:mb-0">What we are</div>
+          <div className="unbounded-36-64-300">Building</div>
         </div>
 
         <DrawCardList />
@@ -652,13 +657,14 @@ const Home = () => {
 
       <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full">
         <div className="flex flex-col gap-6 flex-1">
-          <div className="unbounded font-medium text-[2.5rem] text-center">
+          <div className="unbounded-32-40-500 text-center">
             LIVE NOW
           </div>
           <div className="flex flex-col gap-4">
             <AdCard
               title="Cysic Network"
               desc="Verifiable compute network"
+              className="translate-x-[30%] -translate-y-[20%]"
               imageSrc={getImageUrl("@/assets/images/nft/preset3.png")}
               onClick={() => {
                 navigate("/zk");
@@ -675,7 +681,7 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col gap-6 flex-1">
-          <div className="unbounded font-medium text-[2.5rem] text-center">
+          <div className="unbounded-32-40-500 text-center">
             coming soon
           </div>
           <div className="flex flex-col gap-4">
@@ -702,7 +708,7 @@ const Home = () => {
               title={i.title}
               slogen={i.slogen}
               action={i.action}
-              className="px-3 lg:px-0"
+              className="px-4 py-12 justify-between lg:justify-center lg:py-0 lg:px-0"
             />
           );
         })}
@@ -712,6 +718,7 @@ const Home = () => {
         otherScreenList.map((i) => {
           return (
             <ScreenNavCard
+              autoHeight
               background={i.background}
               subTitle={i.subTitle}
               title={i.title}
@@ -724,16 +731,16 @@ const Home = () => {
 
 
       <a href="https://medium.com/@cysic/zero-knowledge-zk-hardware-acceleration-startup-cysic-raises-12m-in-pre-a-round-to-advance-the-4d8eb7fc611c" target="_blank" className="w-full">
-        <div className="relative h-12 bg-gradient-to-r from-lightBrand to-[#009C87]">
-          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
+        <div className="relative h-4 lg:h-12 bg-gradient-to-r from-lightBrand to-[#009C87]">
+          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right_sm.svg')] lg:bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
-        <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-light">
-          Cysic Raises <span className="unbounded text-[2rem] font-medium">$12M</span> in<span className="unbounded text-[2rem] font-medium"> Pre-A Round</span> <br />
+        <div className="bg-white text-black py-6 text-center unbounded-16-32-300">
+          Cysic Raises <span className="unbounded-16-32-500">$12M</span> in<span className="unbounded-16-32-500"> Pre-A Round</span> <br />
           To Advance the ZK Revolution
 
         </div>
-        <div className="h-12 bg-gradient-to-r from-[#3500E5] to-[#BCA7FF]">
-          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
+        <div className="h-4 lg:h-12 bg-gradient-to-r from-[#3500E5] to-[#BCA7FF]">
+          <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right_sm.svg')] lg:bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
       </a>
 

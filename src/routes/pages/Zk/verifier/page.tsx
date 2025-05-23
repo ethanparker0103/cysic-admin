@@ -288,8 +288,8 @@ const GuideStepCard = ({
     return (
         <div className="flex flex-col gap-4">
             <div className="flex gap-4 items-center">
-                <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/{totalStep}</div>
-                <h3 className={cn("unbounded text-xl lg:text-2xl flex-1")}>
+                <div className="teachers-12-14-500 bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/{totalStep}</div>
+                <h3 className={cn("unbounded-16-24-400 flex-1")}>
                     {title}
                 </h3>
             </div>
@@ -351,8 +351,8 @@ const SelfProverStepCard = ({
                     )}
                 >
                     <div className="flex gap-4 items-start lg:items-center ">
-                        <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/2</div>
-                        <h3 className={cn("unbounded text-xl lg:text-2xl flex-1")}>
+                        <div className="teachers-12-14-500 bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">Step {step}/2</div>
+                        <h3 className={cn("unbounded-16-24-400 flex-1")}>
                             {title}
                         </h3>
                     </div>
@@ -486,8 +486,8 @@ const VerifierPage = () => {
                             // onClick={handleReserveModal}
                             title={
                                 <>
-                                    <span className="text-2xl unbounded break-words" style={{ wordBreak: 'break-word' }}>Follow the corresponding tutorials</span> <br />
-                                    <span className="text-base unbounded font-light ">based on your terminal machine</span>
+                                    <span className="unbounded-14-24-400 break-words" style={{ wordBreak: 'break-word' }}>Follow the corresponding tutorials</span> <br />
+                                    <span className="unbounded-14-16-300 ">based on your terminal machine</span>
                                 </>
                             }
                         >
@@ -498,8 +498,8 @@ const VerifierPage = () => {
                                 <div className="text-sm font-medium teacher bg-[#FFFFFF1A] rounded-full px-2 lg:px-4 py-2 border">TUTORIAL</div>
                                 <h3 className={cn("unbounded text-2xl ")}>
                                     <>
-                                        <span className="text-2xl unbounded">Run Cysic Verifier Node</span> <br />
-                                        <span className="text-base unbounded font-light">in 2 simple steps</span>
+                                        <span className="unbounded-16-24-400">Run Cysic Verifier Node</span> <br />
+                                        <span className="unbounded-14-16-300">in 2 simple steps</span>
                                     </>
                                 </h3>
                             </div>
@@ -595,7 +595,7 @@ const VerifierPage = () => {
                                             />
                                         </div>
                                     </Tab>
-                                    {/* <Tab key="Windows" title="Windows">
+                                    <Tab key="Windows" title="Windows">
                                         <div className="bg-[#FFFFFF0D] w-full p-4">
                                             <GuideStepCard
                                                 step={1}
@@ -621,7 +621,7 @@ const VerifierPage = () => {
                                                 code={guide["Windows"].steps[2].code}
                                             />
                                         </div>
-                                    </Tab> */}
+                                    </Tab>
                                     <Tab key="MacOS" title="MacOS">
                                         <div className="bg-[#FFFFFF0D] w-full p-4">
                                             <GuideStepCard

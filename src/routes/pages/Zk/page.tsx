@@ -14,14 +14,14 @@ import { isMobile } from "react-device-detect";
 const ZkLanding = () => {
   return (
     <>
-      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] h-screen ">
+      <div className="pt-0 lg:pt-12 flex flex-col items-center gap-6 relative z-[2] h-[70vh] lg:h-screen ">
         <div
           className={cn("flex flex-col items-center", isMobile ? "gap-4" : "")}
         >
-          <span className="sub-title text-center">
+          <span className="tracking-widest teachers-16-24-400 text-center">
             Decentralized Prover and Verifier NetworK for ZK.
           </span>
-          <span className="unbounded-180-200 text-white text-center">
+          <span className="unbounded-36-180-200 text-white text-center">
             Cysic ZK
           </span>
         </div>
@@ -34,13 +34,13 @@ const ZkLanding = () => {
         className="pb-16"
         slogen="Cysic Network "
         title="Phase III Is Now Open"
-        subTitle="Instant proofs. Infinite Possibilities"
+        subTitle={<div className="flex flex-col lg:flex-row gap-1"><span>Instant proofs.</span> <span>Infinite Possibilities</span></div>}
       />
 
       <div className="w-full bg-black">
         <div
           className={cn(
-            "w-full py-16 flex flex-col gap-2 items-center",
+            "w-full py-6 lg:py-16 flex flex-col gap-2 items-center",
             "main-container"
           )}
         >
@@ -69,7 +69,7 @@ const ZkLanding = () => {
           </div>
         </div>
 
-        <div className={cn("relative h-screen")}>
+        <div className={cn("relative lg:h-screen")}>
           <div
             className="absolute  lg:inset-0 size-full z-0 "
             style={{
@@ -82,7 +82,7 @@ const ZkLanding = () => {
               filter: "hue-rotate(15deg) brightness(0.5)",
             }}
           />
-          <div className="relative z-1 size-full flex flex-col-reverse lg:flex-row items-center justify-center gap-12">
+          <div className="relative py-16 lg:py-0  z-1 size-full flex flex-col-reverse lg:flex-row items-center justify-center gap-12">
             <div className="flex flex-col gap-12 lg:w-[24.8rem] items-center lg:items-start">
               <div className="flex flex-col items-center lg:items-start">
                 <span className="unbounded text-[36px] lg:text-[64px] !font-[500] flex items-center">
@@ -128,14 +128,14 @@ const ZkLanding = () => {
           THE MOST DECENTRALIZED ZKP COMPUTING NETWORK.
         </ScrollingText>
 
-        <div className={cn("flex flex-col lg:flex-row gap-4 lg:gap-6 py-16 main-container")}>
-          <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-            <div className="!tracking-widest sub-title !text-2xl !font-[400]">
+        <div className={cn("flex flex-col lg:flex-row gap-4 lg:gap-6 py-6 lg:py-16 main-container")}>
+          <GradientBorderCard className="p-4 lg:p-6 flex flex-col gap-2 lg:gap-16 flex-1 justify-between">
+            <div className="!tracking-widest teachers-20-24-400 ">
               Unmatched
               <br />
               Performance
             </div>
-            <div className="text-base !font-[400]">
+            <div className="teachers-14-16-400 normal-case">
               Cysic is revolutionizing the speed and scale of Zero-Knowledge
               proofs, powered by cutting-edge hardware acceleration and an
               expansive, global network of resources. ZK proofs are generated
@@ -143,15 +143,15 @@ const ZkLanding = () => {
               for scalability and efficiency.
             </div>
           </GradientBorderCard>
-          <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-            <div className="!tracking-widest sub-title !text-2xl !font-[400]">
+          <GradientBorderCard className="p-4 lg:p-6 flex flex-col gap-2 lg:gap-16 flex-1 justify-between">
+            <div className="!tracking-widest teachers-20-24-400 ">
               Fully
               <br />
               Permissionless &
               <br />
               Inclusive
             </div>
-            <div className="text-base !font-[400]">
+            <div className="teachers-14-16-400 normal-case">
               Cysic breaks down barriers to participation. Whether you're a
               project building on ZK technology, a prover, or a verifier, you
               can seamlessly join the network. By contributing hardware,
@@ -159,15 +159,15 @@ const ZkLanding = () => {
               global movement that redefines the future of decentralized trust.
             </div>
           </GradientBorderCard>
-          <GradientBorderCard className="p-6 flex flex-col gap-16 flex-1 justify-between">
-            <div className="!tracking-widest sub-title !text-2xl !font-[400]">
+          <GradientBorderCard className="p-4 lg:p-6 flex flex-col gap-2 lg:gap-16 flex-1 justify-between">
+            <div className="!tracking-widest teachers-20-24-400">
               Affordable, Scalable,
               <br />
               and Powerful for
               <br />
               Every User
             </div>
-            <div className="text-base !font-[400]">
+            <div className="teachers-14-16-400 normal-case">
               Cysic dramatically reduces the cost of generating and verifying ZK
               proofs, making advanced cryptographic technology accessible to a
               broader audience. the power of distributed computing is harnessed
@@ -180,11 +180,11 @@ const ZkLanding = () => {
 
         <div
           className={cn(
-            "py-16 flex flex-col gap-6 items-center",
+            "py-6 lg:py-16 flex flex-col gap-6 items-center",
             "main-container"
           )}
         >
-          <div className="unbounded text-[36px] lg:text-[64px] font-light text-center">
+          <div className="unbounded-36-64-300 text-center">
             how cysic network works
           </div>
           <img
@@ -193,7 +193,7 @@ const ZkLanding = () => {
           />
         </div>
 
-        <div className="relative h-screen ">
+        <div className="relative h-[36.25rem] lg:h-screen ">
           <div
             className="absolute brightness-50 inset-0 size-full z-0"
             style={{

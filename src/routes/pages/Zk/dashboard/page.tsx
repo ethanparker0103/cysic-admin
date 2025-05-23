@@ -130,7 +130,7 @@ const DashboardPage = () => {
 
                 {/* s1 */}
                 <div className="flex flex-col gap-8">
-                    <div className="flex gap-3">
+                    <div className="flex flex-col lg:flex-row gap-3">
                         <GradientBorderCard borderRadius={8} className="py-4 px-6 flex gap-4 flex-1">
                             <div className="flex-1 flex flex-col gap-4 justify-between h-full">
                                 <div className="flex flex-col gap-4 justify-between h-full">
@@ -181,7 +181,7 @@ const DashboardPage = () => {
 
                     </div>
 
-                    <div className="flex gap-3">
+                    <div className="flex flex-col lg:flex-row gap-3">
                         <GradientBorderCard borderRadius={8} className="py-4 flex gap-4 flex-1">
                             <div className="flex flex-col gap-4 justify-between h-full w-full">
                                 <div className="flex items-center gap-2 justify-between px-6">

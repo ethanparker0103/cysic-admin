@@ -43,7 +43,7 @@ export const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
                         </a>
                     </div>
                 </div>
-                <div className="text-base">{project?.blurb}</div>
+                <div className="teachers-16-400 normal-case">{project?.blurb}</div>
 
             </div>
         </GradientBorderCard>

@@ -145,7 +145,7 @@ export const loginSignContent = "Welcome to Cysic！";
 export const responseSuccessCode = 0;
 
 export const classes = {
-  subTitle: 'sub-title !tracking-widest !text-2xl !font-[400]',
+  subTitle: 'teachers-16-24-400 tracking-widest',
 }
 
 

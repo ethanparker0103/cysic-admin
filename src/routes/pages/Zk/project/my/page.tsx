@@ -13,6 +13,7 @@ import { commonPageSize } from "@/config";
 import axios from "axios";
 import usePagnation from "@/hooks/usePagnation";
 import { IProject } from "@/routes/pages/Zk/project/page";
+import useAccount from "@/hooks/useAccount";
 
 
 
@@ -66,9 +67,14 @@ const switchStatusTextColor = (status: number) => {
 
 const MyProjectPage = () => {
 
+    const { isSigned  } = useAccount()
+
     const { data, total, setCurrentPage, currentPage } =
         usePagnation(() => {
             return axios.get(`/api/v1/zkTask/project/list`);
+        }, {
+            refreshDeps: [isSigned],
+            ready: isSigned
         });
 
     const memberData = data?.data?.list || [];
