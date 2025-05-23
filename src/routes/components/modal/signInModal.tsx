@@ -402,12 +402,11 @@ const SignInModal = () => {
         // 第一步: 输入邀请码
         <div className="flex flex-col items-center space-y-6">
           <h2 className="text-2xl font-light tracking-wider text-center">
-            {needsBinding ? "ENTER YOUR INVITE CODE" : walletAddress ? "SIGN MESSAGE" : "CONNECT WALLET"}
+            {(walletAddress && needsBinding) ? "ENTER YOUR INVITE CODE" : walletAddress ? "SIGN MESSAGE" : "CONNECT WALLET"}
           </h2>
 
-          {/* 使用DigitInputs组件 */}
           {
-            needsBinding ? (
+            (walletAddress && needsBinding) ? (
               <div className="">
                 <DigitInputs
                   className="text-lg w-12 h-[3.875rem] rounded-md border-[#FFFFFFCC] gap-2"
@@ -455,7 +454,7 @@ const SignInModal = () => {
           ) : (
             <>
               {
-                needsBinding ? (
+                (walletAddress && needsBinding) ? (
                   <div className="text-sub my-6">or Already Joined?</div>
                 ) : null
               }
