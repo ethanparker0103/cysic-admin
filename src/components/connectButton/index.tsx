@@ -1,5 +1,5 @@
 import { getImageUrl, shortStr } from "@/utils/tools";
-import { useAccount, useConfig, useSignMessage, useSwitchChain } from "wagmi";
+import { useAccount, useConfig, useSwitchChain } from "wagmi";
 import Spinner from "../spinner";
 import { useEffect, useMemo, useState } from "react";
 
@@ -49,7 +49,6 @@ export default function ConnectButton({ className, content }: any) {
   }, [chainId, tokenSelect]);
 
 
-  const { signMessageAsync } = useSignMessage()
   const handleOpen = () => {
     if (isConnected) {
       openAccountModal?.();
