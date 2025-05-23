@@ -14,16 +14,13 @@ const HardwarePage = () => {
       {/* section-1 */}
       <div className="flex flex-col items-center justify-center gap-4 relative z-[2] h-screen">
         <span
-          className={cn(
-            "title !font-[200] !text-[#fff] text-center",
-            isMobile ? "!text-[32px]" : "!text-[11.25rem]"
-          )}
+          className={cn("unbounded-32-180-200 text-white text-center")}
         >
           Cysic
           <br />
           Hardware
         </span>
-        <span className="sub-title text-center text-2xl !font-[400] mb-40">
+        <span className="sub-title text-center text-2xl !font-[400] mb40">
           we build hardcore, play long-term, shape the future
         </span>
       </div>
@@ -71,7 +68,7 @@ const HardwarePage = () => {
       </div>
 
       <div className="py-6 lg:py-12 unbounded text-[36px] lg:text-[6rem] font-light text-center">Our Approach</div>
-      <div className="w-full uppercase text-center bg-[#fff] text-[#000] py-4 unbounded text-xl lg:text-[40px] font-medium">
+      <div className="w-full uppercase text-center bg-white text-black py-4 unbounded text-xl lg:text-[40px] font-medium">
         001. Asic Solutions
       </div>
       <div className={cn("py-16 flex gap-6 flex-wrap", container)}>
@@ -144,7 +141,7 @@ const HardwarePage = () => {
           Get to know ASIC Products
         </div>
         <div className={cn("flex gap-6 flex-wrap items-stretch flex-col lg:flex-row", container)}>
-          <GradientBorderCard className="p-6 flex-1 bg-[#000]">
+          <GradientBorderCard className="p-6 flex-1 bg-black">
             <div
               className="flex flex-col gap-4 "
               style={{
@@ -154,7 +151,7 @@ const HardwarePage = () => {
               }}
             >
               <div className="flex flex-col gap-2 max-w-[200px] h-[240px]">
-                <p className="uppercase title !text-[40px] !font-light">
+                <p className="unbounded-40-300">
                   zk Chip
                 </p>
                 <span className="font-[400] text-base">
@@ -174,7 +171,7 @@ const HardwarePage = () => {
               </div>
             </div>
           </GradientBorderCard>
-          <GradientBorderCard className="p-6 flex-1 bg-[#000]">
+          <GradientBorderCard className="p-6 flex-1 bg-black">
             <div
               className="flex flex-col gap-4 "
               style={{
@@ -184,7 +181,7 @@ const HardwarePage = () => {
               }}
             >
               <div className="flex flex-col gap-2 max-w-[200px] h-[240px]">
-                <p className="uppercase title !text-[40px] !font-light">
+                <p className="unbounded-40-300">
                   zk Air
                 </p>
                 <span className="font-[400] text-base">
@@ -200,7 +197,7 @@ const HardwarePage = () => {
               </div>
             </div>
           </GradientBorderCard>
-          <GradientBorderCard className="p-6 flex-1 bg-[#000]">
+          <GradientBorderCard className="p-6 flex-1 bg-black">
             <div
               className="flex flex-col gap-4 "
               style={{
@@ -210,7 +207,7 @@ const HardwarePage = () => {
               }}
             >
               <div className="flex flex-col gap-2 max-w-[200px] h-[240px]">
-                <p className="uppercase title !text-[40px] !font-light">
+                <p className="unbounded-40-300">
                   zk Pro
                 </p>
                 <span className="font-[400] text-base">
@@ -238,7 +235,7 @@ const HardwarePage = () => {
       {/* secction-3 */}
       <div
         id="Hypercube_IR_Layer"
-        className="w-full h-screen bg-[#000] flex flex-col items-center justify-center gap-6"
+        className="w-full h-screen bg-black flex flex-col items-center justify-center gap-6"
         style={{
           background: `url(${getImageUrl(
             "@/assets/images/_global/zk_hardware_bg_2.png"
@@ -271,11 +268,11 @@ const HardwarePage = () => {
 
       <div className="py-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
         <div className="flex flex-col max-w-[46.5625rem] items-center text-center ">
-          <span className="!text-2xl !font-[200] title uppercase leading-[1.2]">
+          <span className="unbounded-24-200 leading-[1.2]">
             Cysic’s Hypercube Intermediate <br />
             Representation (IR) <br />
             is a&nbsp;
-            <span className="!font-bold title !text-2xl">
+            <span className="unbounded-24-500">
               custom-built optimization layer
             </span>
             &nbsp;
@@ -400,13 +397,13 @@ const HardwarePage = () => {
         </Button>
       </div>
 
-      <div className="w-full uppercase text-center bg-[#fff] text-[#000] py-4 unbounded text-xl lg:text-[40px] font-[500]">
+      <div className="w-full uppercase text-center bg-white text-black py-4 unbounded text-xl lg:text-[40px] font-[500]">
         002. gpu Acceleration
       </div>
 
       <div className={cn("flex flex-col lg:flex-row items-center pt-6 lg:pt-0", container)}>
         <div className="flex flex-col gap-4 max-w-[32.25rem] px-0 lg:px-12">
-          <div className="title !text-2xl !font-light">
+          <div className="unbounded-24-300">
             Ready to Use GPU-Enhanced ZK Proving Acceleration?
           </div>
           <p className="text-base !font-[400]">
@@ -459,7 +456,7 @@ const HardwarePage = () => {
 
       {/* section-4 */}
       <div
-        className=" w-full h-screen bg-[#000] flex flex-col items-center justify-center gap-6"
+        className=" w-full h-screen bg-black flex flex-col items-center justify-center gap-6"
         style={{
           background: `url(${getImageUrl(
             "@/assets/images/_global/zk_hardware_bg_4.png"
@@ -527,7 +524,7 @@ const HardwarePage = () => {
             <span className="!font-[400] !text-sm sub-title !tracking-widest ">
               from witness generation to quotient polynomial
             </span>
-            <span className="!font-[200] !text-2xl title ">
+            <span className="unbounded-24-200 ">
               all on a single consumer-grade GPU.
             </span>
             <span className="!font-[400] !text-sm sub-title !tracking-widest ">
@@ -541,7 +538,7 @@ const HardwarePage = () => {
 
         <div className="flex flex-col gap-6 lg:gap-12">
           <div>
-            <p className="!font-[500] !text-[36px] lg:!text-[64px] title flex justify-center lg:justify-start items-center">
+            <p className="unbounded-36-64-500 flex justify-center lg:justify-start items-center">
               x <InViewFlip number="52" className="unbounded text-[36px] lg:!text-[64px] font-medium" />
             </p>
             <p className="text-center lg:text-left uppercase !tracking-widest sub-title !text-base font-[400]">
@@ -549,7 +546,7 @@ const HardwarePage = () => {
             </p>
           </div>
           <div>
-            <p className="!font-[500] !text-[36px] lg:!text-[64px] title flex justify-center lg:justify-start items-center">
+            <p className="unbounded-36-64-500 flex justify-center lg:justify-start items-center">
               x <InViewFlip number="22" className="unbounded text-[36px] lg:!text-[64px] font-medium" />
               .
               <InViewFlip number="8" className="unbounded text-[36px] lg:!text-[64px] font-medium" />

@@ -43,22 +43,22 @@ const Button = ({
       case BtnType.colorGradient:
         return "gradient-color bg-[#1D2127] border-[#FFFFFF1F] border";
       case BtnType.solidGradient:
-        return "gradient-border text-[#fff] hover:!border-[transparent]";
+        return "gradient-border text-white hover:!border-[transparent]";
       case BtnType.gradient:
-        return "bg-gradient border-none !text-[#fff]";
+        return "bg-gradient border-none !text-white";
       case BtnType.dark:
-        return "bg-[#FFFFFF12] border-none text-[#fff] ";
+        return "bg-[#FFFFFF12] border-none text-white ";
       case BtnType.light:
         return cn(
           resetDisabled,
           `disabled:bg-[#FFFFFF80] disabled:text-[#00000080]`,
-          `bg-[#fff] border border-[transparent] text-[#000] hover:!opacity-80`
+          `bg-white border border-[transparent] text-black hover:!opacity-80`
         );
       case BtnType.solid:
-        return "!bg-[transparent] border rounded-md !border-[#fff] text-[#fff]";
+        return "!bg-[transparent] border rounded-md !border-white text-white";
       case BtnType.text:
       default:
-        return "!backdrop-blur-none !bg-[transparent] !border-none text-[#fff]";
+        return "!backdrop-blur-none !bg-[transparent] !border-none text-white";
     }
   }, [type]);
 

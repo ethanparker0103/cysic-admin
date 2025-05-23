@@ -28,7 +28,7 @@ const UserPortal = () => {
     return (
         <>
             {/* content */}
-            <div className="main-container mx-auto relative z-10 pt-20 pb-12 w-full">
+            <div className="main-container mx-auto relative z-10 pt-6 pb-12 w-full">
 
 
                 {/* GENERAL 部分 */}

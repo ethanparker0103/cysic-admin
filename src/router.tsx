@@ -31,7 +31,7 @@ import ProverDetailPage from "@/routes/pages/Zk/dashboard/prover/[id]/page";
 import TaskDetailPage from "@/routes/pages/Zk/dashboard/task/[id]/page";
 import UnbindPage from "@/routes/pages/unbind/page";
 import Bridge from "@/routes/pages/Bridge/page";
-import { enableSocialTask } from "@/config";
+import { enableBridge, enableSocialTask } from "@/config";
 
 const portalModules = {
   path: "userPortal",
@@ -52,6 +52,11 @@ const socialTaskModules = enableSocialTask ? {
   element: <NftSocialTask />,
 } : {}
 
+const bridgeModules = enableBridge ? {
+  path: "bridge",
+  element: <Bridge />,
+} : {}
+
 export const router = createBrowserRouter(
   [
     {
@@ -63,10 +68,7 @@ export const router = createBrowserRouter(
           element: <Home />,
         },
         portalModules,
-        {
-          path: '/bridge',
-          element: <Bridge />
-        },
+        bridgeModules,
         {
           path: "/unbind",
           element: <UnbindPage />,
@@ -202,14 +204,16 @@ export const backgroundImageList = {
   },
   "/academy": {
     img: getImageUrl("@/assets/images/_global/zk_academy_bg.png"),
-    className: "h-[100vh]",
-    style: { backgroundPosition: "center -50vh" },
+    // className: "h-[100vh]",
+    style: { backgroundPosition: "center -62vh" },
     needShadow: true,
+    
   },
   "/hardware": {
     img: getImageUrl("@/assets/images/_global/zk_hardware_bg.png"),
     className: "h-screen",
     style: { backgroundPosition: "center -10vh" },
+    mainClassName: "pt-0",
   },
   "/zk": {
     img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
@@ -230,9 +234,13 @@ export const backgroundImageList = {
   "/zk/prover": {
     img: getImageUrl("@/assets/images/_global/prover_landing_bg.png"),
     className: "h-screen",
+    style: {
+      backgroundPosition: "center -5vh",
+    },
     needShadow: true,
   },
   "/zk/verifier": {
+    img: '#000'
   },
   "/zk/project": {
     img: getImageUrl("@/assets/images/_global/project_landing_bg.png"),
@@ -363,7 +371,7 @@ export const backgroundImageList = {
     img: getImageUrl("@/assets/images/_global/userPortal_landing_bg.png"),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center 12vh",
+      backgroundPosition: "center 0",
     },
     needShadow: true,
   },
@@ -371,7 +379,7 @@ export const backgroundImageList = {
     img: getImageUrl("@/assets/images/_global/userPortal_landing_bg.png"),
     className: "h-screen green-landing",
     style: {
-      backgroundPosition: "center 12vh",
+      backgroundPosition: "center 0",
     },
     needShadow: true,
   },

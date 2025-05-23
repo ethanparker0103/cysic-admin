@@ -10,7 +10,7 @@ const ProgressLabel = ({status, className, children}: {status: ENUM_ProgressStat
         switch(status){
             case ENUM_ProgressStatus.pending:
             case ENUM_ProgressStatus.finish:
-                return 'text-[#fff]'
+                return 'text-white'
             case ENUM_ProgressStatus.ongoing:
                 return 'text-[##D3D3D3]'
         }

@@ -575,7 +575,7 @@ const Home = () => {
           <div className="flex flex-col items-center">
             <span
               className={cn(
-                "unbounded text-[36px] lg:text-[80px] font-[200] !text-[#fff] text-center",
+                "unbounded text-[36px] lg:text-[80px] font-[200] !text-white text-center",
                 isMobile && "py-4"
               )}
             >
@@ -724,7 +724,7 @@ const Home = () => {
 
 
       <a href="https://medium.com/@cysic/zero-knowledge-zk-hardware-acceleration-startup-cysic-raises-12m-in-pre-a-round-to-advance-the-4d8eb7fc611c" target="_blank" className="w-full">
-        <div className="relative h-12 bg-gradient-to-r from-[#19FFE0] to-[#009C87]">
+        <div className="relative h-12 bg-gradient-to-r from-lightBrand to-[#009C87]">
           <ScrollingText isBackground direction="right"><div className="h-full w-full bg-[url('@/assets/images/icon/arrow_right.svg')] bg-repeat-x bg-[3rem]" /></ScrollingText>
         </div>
         <div className="bg-white text-black py-6 text-center unbounded text-[2rem] font-light">

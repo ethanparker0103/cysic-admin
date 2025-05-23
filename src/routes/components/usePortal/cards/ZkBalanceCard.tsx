@@ -61,7 +61,7 @@ const ZkBalanceCard = () => {
             </Button>
           </div>
 
-          <Divider className="bg-[#FFF] my-6" />
+          <Divider className="bg-white my-6" />
 
           <div className="flex items-start lg:items-center justify-between gap-4 lg:gap-6 flex-col lg:flex-row">
             <div className="unbounded text-2xl flex items-center gap-2">

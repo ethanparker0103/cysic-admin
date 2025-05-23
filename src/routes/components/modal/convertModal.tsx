@@ -258,7 +258,7 @@ const ConvertModal = () => {
             type="text"
             value={fromAmount}
             onChange={handleFromAmountChange}
-            className="bg-transparent border-none outline-none w-full flex-1 !text-3xl title !font-light text-white"
+            className="bg-transparent border-none outline-none w-full flex-1 unbounded-30-300 text-white"
             placeholder="0.00"
           />
           <div className="flex items-center bg-[#222] rounded-full p-2">
@@ -301,7 +301,7 @@ const ConvertModal = () => {
       <GradientBorderCard borderRadius={8} className="p-4 mb-6">
         <div className="text-sub mb-2">To</div>
         <div className="flex justify-between items-center gap-6">
-          <span className="!text-3xl title !font-light text-white flex-1 overflow-auto">{toAmount || "0.00"}</span>
+          <span className="unbounded-30-300 text-white flex-1 overflow-auto">{toAmount || "0.00"}</span>
           <div className="flex items-center bg-[#222] rounded-full p-2">
             <img
               src={getTokenIcon(toToken)}

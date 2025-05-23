@@ -50,14 +50,14 @@ export const useProverStatus = () => {
         <GradientBorderCard borderRadius={8}>
             <div className={cn("w-full px-6 py-4 flex justify-between items-center", "flex-col gap-4 lg:flex-row lg:gap-0")}>
                 <div className="flex flex-col gap-4 w-full">
-                    <h3 className="!text-base !font-light title uppercase">ZK PROVER STATUS</h3>
+                    <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${proverStatusData.zkSync ? 'bg-[#19FFE0]' : 'bg-gray-500'}`}></div>
-                        <span className="!font-light !text-sm title uppercase">ZKSYNC PROVER {proverStatusData.zkSync ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${proverStatusData.zkSync ? 'bg-lightBrand' : 'bg-gray-500'}`}></div>
+                        <span className="unbounded-14-300">ZKSYNC PROVER {proverStatusData.zkSync ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${proverStatusData.ethProve ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
-                        <span className="!font-light !text-sm title uppercase">ETHProve {proverStatusData.ethProve ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${proverStatusData.ethProve ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                        <span className="unbounded-14-300">ETHProve {proverStatusData.ethProve ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ export const ProverCard = ({ icon, name, description, isActive, btnText, classNa
                             <h3 className={cn("font-light unbounded", "text-2xl lg:mb-2 lg:text-3xl" )}>{name}</h3>
                         </div>
                         <div className="flex items-center gap-2 ">
-                            <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
+                            <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-lightBrand' : 'bg-error'}`}></div>
                             <span className="uppercase text-sm !font-light unbounded">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                         </div>
 

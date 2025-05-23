@@ -71,7 +71,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
         }
         case '#':
             if (item?.['hasReward'] != 1) {
-                return <div className="flex items-center font-semibold text-[#fff] w-8">-</div>;
+                return <div className="flex items-center font-semibold text-white w-8">-</div>;
             }
             // return <div className="flex items-center font-semibold text-[#00F0FF] w-8">{formatRank(item?.[columnKey])}</div>;
             return <div className="flex items-center font-semibold text-[#00F0FF] w-8">

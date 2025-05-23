@@ -12,6 +12,7 @@ import { cn } from "@nextui-org/react";
 import { Multiplier } from "@/routes/components/Multiplier";
 import { useVerifierStatus } from "@/routes/components/ZkVerifierStatus";
 import { useProverStatus } from "@/routes/components/ZkProverStatus";
+import { handleReserveModal } from "@/utils/tools";
 
 // SELF Prover 的步骤组件
 const SelfProverStepCard = ({ showLink, step, title, description, buttonText, children, onClick }: {
@@ -28,7 +29,7 @@ const SelfProverStepCard = ({ showLink, step, title, description, buttonText, ch
             <div className="flex flex-col items-start">
                 <div className={cn("w-full flex ", "flex-col lg:flex-row lg:justify-between lg:items-start")}>
                     <div className="flex flex-col">
-                        <div className="!text-base !font-light title">Step {step}/2</div>
+                        <div className="unbounded-16-300">Step {step}/2</div>
                         <h3 className={cn("unbounded uppercase font-light mb-2", "text-2xl lg:text-[36px]")}>{title}</h3>
                     </div>
                     {buttonText ? <Button
@@ -90,12 +91,12 @@ const ProverPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title !text-4xl !font-light !text-[#fff] text-center">PROVER</span>
+                    <span className="unbounded-36-300 text-white text-center">PROVER</span>
                 </div>
             </div>
 
             {/* 主要内容部分 */}
-            <div className="container mx-auto mt-12 relative z-[2]">
+            <div className="mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
                 <GradientBorderCard
                     borderRadius={8}
@@ -137,7 +138,7 @@ const ProverPage = () => {
                                     <NFTProverCard status={{ nft: Boolean(proverStatus.nftActive) }} className={cn("w-full", "lg:w-1/2")} />
                                 ) : (
                                     <div className="flex flex-col items-center gap-4 py-6">
-                                        <h3 className="title !font-light !text-2xl uppercase">NFT INACTIVE</h3>
+                                        <h3 className="unbounded-20-300">NFT INACTIVE</h3>
                                         <p className="text-center max-w-xl text-sub text-base mb-4">
                                             Purchase a Digital Harvester to become a Prover on the Cysic Network. No technical setup required.
                                         </p>
@@ -167,7 +168,7 @@ const ProverPage = () => {
                                     Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
                                     </>}
                                     buttonText="TIME LIMITED FREE"
-                                    // onClick={handleReserveModal}
+                                    onClick={handleReserveModal}
                                 />
 
                                 <SelfProverStepCard

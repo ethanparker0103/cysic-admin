@@ -141,14 +141,14 @@ const ConvertHistoryModal = () => {
                   alt={record.fromCoin} 
                   className="w-6 h-6"
                 />
-                <span className="mx-1 text-white title text-sm !font-[500]">{record.fromCoin}</span>
+                <span className="mx-1 text-white unbounded-14-500">{record.fromCoin}</span>
                 <span className="mx-1">→</span>
                 <img 
                   src={getImageUrl(`@/assets/images/tokens/${record.toCoin}.svg`)} 
                   alt={record.toCoin} 
                   className="w-6 h-6"
                 />
-                <span className="ml-1 text-white title text-sm !font-[500]">{record.toCoin}</span>
+                <span className="ml-1 text-white unbounded-14-500">{record.toCoin}</span>
               </div>
               <div className="text-center text-sub text-sm">{dayjs.unix(Number(record.convertTime)).format("YYYY/MM/DD HH:mm")}</div>
               <div className="text-right text-sub text-sm">{record.amount}</div>

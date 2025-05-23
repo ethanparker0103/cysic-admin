@@ -1,5 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { ecosystemCategories, ecosystemCategoriesTagColor, ecosystemProjects, ecosystemSubLabelsTagColor, IEcosystemProject } from "@/routes/pages/Ecosystem/config";
+import { ecosystemCategories, ecosystemProjects, ecosystemSubLabelsTagColor, IEcosystemProject } from "@/routes/pages/Ecosystem/config";
 import { cn, Tab, Tabs } from "@nextui-org/react";
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ export const EcosystemCard = ({ project }: { project: IEcosystemProject }) => {
                             </div>
                         }
                         <div className="flex flex-col gap-1 flex-1">
-                            <div className="break-words !text-base title !font-light">{project?.projectName}</div>
+                            <div className="break-words unbounded-16-300">{project?.projectName}</div>
                             <div className="flex flex-wrap gap-1">
                             {
                                 project?.subLabel?.map((subLabel) => (
@@ -65,7 +65,7 @@ const EcosystemPage = () => {
             </div>
 
             {/* 主要内容部分 */}
-            <div className="container mx-auto mt-8 relative z-[2] mb-auto">
+            <div className="w-full mx-auto mt-8 relative z-[2] mb-auto">
                 <Tabs
                     selectedKey={selectedCategory}
                     onSelectionChange={(key) => setSelectedCategory(key as string)}

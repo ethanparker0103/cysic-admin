@@ -14,14 +14,14 @@ import { isMobile } from "react-device-detect";
 const ZkLanding = () => {
   return (
     <>
-      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] h-screen max-h-screen">
+      <div className="pt-12 flex flex-col items-center gap-6 relative z-[2] h-screen ">
         <div
           className={cn("flex flex-col items-center", isMobile ? "gap-4" : "")}
         >
           <span className="sub-title text-center">
             Decentralized Prover and Verifier NetworK for ZK.
           </span>
-          <span className="title title-lg !text-[#fff] text-center">
+          <span className="unbounded-180-200 text-white text-center">
             Cysic ZK
           </span>
         </div>
@@ -31,13 +31,13 @@ const ZkLanding = () => {
 
       {/* section-2 */}
       <JoinZkPhase3
-        className="[&_.title]:!text-[6rem] pb-16"
+        className="pb-16"
         slogen="Cysic Network "
         title="Phase III Is Now Open"
         subTitle="Instant proofs. Infinite Possibilities"
       />
 
-      <div className="w-full bg-[#000]">
+      <div className="w-full bg-black">
         <div
           className={cn(
             "w-full py-16 flex flex-col gap-2 items-center",
@@ -123,7 +123,7 @@ const ZkLanding = () => {
           duration={20}
           direction="left"
           className="py-2 w-screen bg-white"
-          textClassName="unbounded text-[24px] lg:text-[64px] !font-[500] text-[#000]"
+          textClassName="unbounded text-[24px] lg:text-[64px] !font-[500] text-black"
         >
           THE MOST DECENTRALIZED ZKP COMPUTING NETWORK.
         </ScrollingText>

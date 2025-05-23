@@ -64,7 +64,7 @@ const NFTCard = ({ id, name, rewards, image }: NFTCardProps) => {
 
                     {/* 右侧：详细信息 */}
                     <div className="flex-1">
-                        <div className={cn("title !font-light", isMobile ? '!text-[2rem]' : 'text-3xl')}>{name}</div>
+                        <div className={cn("unbounded-32-30-300")}>{name}</div>
 
                         {/* 参数详情链接 */}
                         <a href="#" className="text-xs text-sub flex items-center mt-1">
@@ -147,7 +147,7 @@ const FeatureCard = ({ title, imageSrc, href }: FeatureCardProps) => {
 
                 {/* 内容区域，上下分布 */}
                 <div className="absolute inset-0 flex flex-col justify-between p-6 z-10" onClick={() => { navigate(href || '/') }}>
-                    <h3 className="title text-3xl !font-light">{title}</h3>
+                    <h3 className="unbounded-30-300">{title}</h3>
 
                     <div className="self-end">
                         <ArrowRight size={20} className="text-white" />
@@ -260,7 +260,7 @@ const NftLanding = () => {
                 {/* 居中内容，向上偏移一些 */}
                 <div className="z-10 flex flex-col items-center px-4 text-center -mt-[7.5rem]">
                     <span className="text-2xl !font-[400] sub-title">INTRODUCING</span>
-                    <h1 className="title text-[6rem] !font-[200] text-center">CYSIC NFTS</h1>
+                    <h1 className="unbounded-96-200 text-center">CYSIC NFTS</h1>
                     <p className="mt-4 !font-[400] text-base max-w-[55rem] text-sub">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sollicitudin consequat neque a sodales. Nulla vitae elementum urna. Quisque et ullamcorper ipsum. Maecenas dignissim lacus urna, facilisis porta mauris blandit nec. Mauris quis tincidunt est, sit amet pharetra odio.
                     </p>
@@ -269,7 +269,7 @@ const NftLanding = () => {
 
             {/* 第二屏 - 购买区域 */}
             <Section>
-                <h2 className="title !font-[200] text-[6rem] uppercase text-center">PURCHASE</h2>
+                <h2 className="unbounded-96-200 text-center">PURCHASE</h2>
                 <p className="text-center text-sub text-base mb-6">Trade Compute Box on MagicEden</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -299,7 +299,7 @@ const NftLanding = () => {
             <Section>
                 <div className="text-center mb-6">
                     <p className="text-2xl text-sub mb-2">Explore Cysic Space and use your NFTs to</p>
-                    <h2 className="title !font-[200] text-[6rem] uppercase">EARN NOW</h2>
+                    <h2 className="unbounded-96-200 text-center">EARN NOW</h2>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

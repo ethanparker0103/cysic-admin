@@ -5,7 +5,7 @@ import { getImageUrl, shortStr } from "@/utils/tools";
 import axios from "axios";
 import { Pagination } from "@nextui-org/react";
 import useAccount from "@/hooks/useAccount";
-import { commonPageSize, mediasLink } from "@/config";
+import { commonPageSize, enableBridge, mediasLink } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import dayjs from "dayjs";
 
@@ -118,7 +118,7 @@ const BridgeHistoryModal = () => {
         </div>
       )}
 
-      <div className="mt-auto">
+     {enableBridge ? <div className="mt-auto">
         <a href={mediasLink.bridge} target="_blank">
           <Button
             type="light"
@@ -127,7 +127,7 @@ const BridgeHistoryModal = () => {
             BRIDGE
           </Button>
         </a>
-      </div>
+      </div> : null}
     </Modal>
   );
 };

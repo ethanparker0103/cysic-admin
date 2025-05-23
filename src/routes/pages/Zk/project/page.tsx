@@ -96,11 +96,11 @@ const ProjectPage = () => {
     ];
 
     return (
-        <div className="container min-h-screen w-full pb-12 overflow-hidden">
+        <div className="min-h-screen w-full pb-12 overflow-hidden">
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center gap-4">
-                    <span className="title !text-4xl !font-light !text-[#fff] text-center">
+                    <span className="unbounded-36-300 text-white text-center">
                         PROJECT
                     </span>
                     <div className="flex items-center gap-2">
@@ -129,8 +129,7 @@ const ProjectPage = () => {
                             <div className="flex items-center justify-between gap-2 mb-6 ">
                                 <h2
                                     className={cn(
-                                        "title !font-light uppercase",
-                                        isMobile ? "!text-base" : "!text-xl"
+                                        "unbounded-16-20-300",
                                     )}
                                 >
                                     My projects
@@ -145,7 +144,7 @@ const ProjectPage = () => {
                                 </Link>
                             </div>
 
-                            <p className="!font-light text-[32px] text-right title">{myDataData?.data?.total || 0}</p>
+                            <p className="unbounded-32-300 text-right">{myDataData?.data?.total || 0}</p>
                         </div>
                     </GradientBorderCard>
                 ) : null}
@@ -154,8 +153,7 @@ const ProjectPage = () => {
                     <div className={cn("w-full")}>
                         <h2
                             className={cn(
-                                "title !font-light uppercase mb-4",
-                                isMobile ? "!text-base" : "!text-xl"
+                                "unbounded-16-20-300 mb-4",
                             )}
                         >
                             All projects

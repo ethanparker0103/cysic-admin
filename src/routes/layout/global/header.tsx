@@ -92,8 +92,8 @@ export default function Header() {
     </> : <>
         {
             createPortal(
-                <div className="fixed top-0 z-[11] h-[8rem] w-full">
-                    <div className="relative px-[3rem] py-6">
+                <div className="main-container fixed top-0 z-[11] h-[8rem] w-full left-1/2 -translate-x-1/2">
+                    <div className="relative py-6">
                         <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
                             <div className="w-full h-full flex justify-between items-center">
                                 <div className="flex items-center h-full flex-1">
@@ -132,6 +132,6 @@ export default function Header() {
                 document.body
             )
         }
-        <div className="h-[8rem]"></div>
+        {/* <div className="h-[8rem]"></div> */}
     </>;
 }

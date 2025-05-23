@@ -9,7 +9,7 @@ const ReferralCodeCopy = ({ className }: any) => {
   return (
     <Snippet
       classNames={{
-        base: "bg-[#000]",
+        base: "bg-black",
       }}
       symbol=""
       codeString={getReferralUrl()}

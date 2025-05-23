@@ -292,7 +292,7 @@ const GuideStepCard = ({
                     <SyntaxHighlighter
                         language="bash"
                         style={github}
-                        className="flex-1 w-full break-words rounded-md !bg-[transparent] !text-[#fff] [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
+                        className="flex-1 w-full break-words rounded-md !bg-[transparent] !text-white [&>code]:!whitespace-break-spaces  [&>code]:leading-4"
                     >
                         {code}
                     </SyntaxHighlighter>
@@ -301,7 +301,7 @@ const GuideStepCard = ({
                         className="cursor-pointer px-6 py-2 text-base max-h-10 h-10 flex items-center justify-center"
                         onClick={() => handleCopy(code)}
                     >
-                        {copied ? <div className="px-[0.625rem] mx-auto"><Check className="w-4 h-4 text-[#19FFE0]" /></div> : "Copy"}
+                        {copied ? <div className="px-[0.625rem] mx-auto"><Check className="w-4 h-4 text-lightBrand" /></div> : "Copy"}
                     </Button>
                 </div>
             ) : null}
@@ -379,14 +379,14 @@ const VerifierPage = () => {
             {/* 主标题 */}
             <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                 <div className="flex flex-col items-center">
-                    <span className="title !text-4xl !font-light !text-[#fff] text-center">
+                    <span className="unbounded-36-300 text-white text-center">
                         VERIFIER
                     </span>
                 </div>
             </div>
 
             {/* 主要内容部分 */}
-            <div className="container mx-auto mt-12 relative z-[2]">
+            <div className="mx-auto mt-12 relative z-[2]">
                 {/* 第一部分：成为 Prover */}
                 <GradientBorderCard borderRadius={8} className="mb-4  relative ">
                     <>

@@ -42,7 +42,7 @@ const navs = [
 
 export default function Footer() {
     return (
-        <div className={cn("flex flex-col items-center gap-6 py-12 border-t border-[#fff] relative z-[1]", isMobile && "max-w-screen overflow-x-hidden")}>
+        <div className={cn("flex flex-col items-center gap-6 py-12 border-t border-white relative z-[1]", isMobile && "max-w-screen overflow-x-hidden")}>
             <img src={getImageUrl('@/assets/images/logo/cysic_light.svg')} className="w-[6rem]" />
             <div className={cn("flex items-center flex-wrap flex-col lg:flex-row gap-4 lg:gap-6")}>
                 {
@@ -54,7 +54,7 @@ export default function Footer() {
                             key={nav.content}
                             href={nav.href}
                             target="_blank"
-                            className="uppercase font-[400] text-sub hover:text-[#fff] h-fit"
+                            className="uppercase font-[400] text-sub hover:text-white h-fit"
                         >
                             {nav.content}
                         </Button>
@@ -65,7 +65,7 @@ export default function Footer() {
                             as={Link}
                             to={nav.href}
                             key={nav.content}
-                            className="uppercase font-[400] text-sub hover:text-[#fff] h-fit"
+                            className="uppercase font-[400] text-sub hover:text-white h-fit"
                         >
                             {nav.content}
                         </Button>

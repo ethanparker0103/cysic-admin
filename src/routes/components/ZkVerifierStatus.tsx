@@ -37,13 +37,13 @@ export const useVerifierStatus = () => {
         <GradientBorderCard borderRadius={8}>
             <div className={cn("w-full px-4 lg:px-6 py-4 flex justify-between items-center", "flex-col lg:flex-row gap-4 lg:gap-0")}>
                 <div className="flex flex-col gap-4 w-full">
-                    <h3 className="!text-base !font-light title uppercase">ZK PROVER STATUS</h3>
+                    <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
 
                     {
                         proofTypeList.map((item: IProofType, index: number) => (
                             <div className="flex items-center gap-2" key={index}>
-                                <div className={`w-3 h-3 rounded-full ${proverStatusData[item.name as keyof typeof proverStatusData] ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
-                                <span className="!font-light !text-sm title uppercase">{item.name} PROVER {proverStatusData[item.name as keyof typeof proverStatusData] ? 'ACTIVE' : 'INACTIVE'}</span>
+                                <div className={`w-3 h-3 rounded-full ${proverStatusData[item.name as keyof typeof proverStatusData] ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                                <span className="unbounded-14-300">{item.name} PROVER {proverStatusData[item.name as keyof typeof proverStatusData] ? 'ACTIVE' : 'INACTIVE'}</span>
                             </div>
                         ))
                     }
@@ -57,14 +57,14 @@ export const useVerifierStatus = () => {
         <GradientBorderCard borderRadius={8}>
             <div className={cn("w-full px-4 lg:px-6 py-4 flex justify-between items-center", "flex-col lg:flex-row gap-4 lg:gap-0")}>
                 <div className="flex flex-col gap-4 w-full">
-                    <h3 className="!text-base !font-light title uppercase">ZK VERIFIER STATUS</h3>
+                    <h3 className="unbounded-16-300">ZK VERIFIER STATUS</h3>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
-                        <span className="!font-light !text-sm title uppercase">Standard {zkPart?.verifierStatus?.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                        <span className="unbounded-14-300">Standard {zkPart?.verifierStatus?.standardActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
-                        <span className="!font-light !text-sm title uppercase">Mobile {zkPart?.verifierStatus?.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                        <span className="unbounded-14-300">Mobile {zkPart?.verifierStatus?.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
                 <DownloadQRCodeTooltip>
@@ -114,8 +114,8 @@ export const ProverCard = ({ icon, name, description, isActive, btnText }: Prove
                         <div className={cn("flex mb-4", "flex-col lg:flex-row lg:justify-between lg:items-start")}>
                             <h3 className={cn("font-light unbounded", "text-2xl mb-2 lg:text-3xl lg:mb-0")}>{name}</h3>
                             <div className="flex items-center gap-2">
-                                <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
-                                <span className="uppercase !text-sm !font-light title">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
+                                <div className={`h-3 w-3 rounded-full ${isActive ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                                <span className="unbounded-14-300">{isActive ? 'ACTIVE' : 'INACTIVE'}</span>
                             </div>
                         </div>
                         <p className="flex-1 text-sm !font-[400] mb-6 text-sub">{description}</p>

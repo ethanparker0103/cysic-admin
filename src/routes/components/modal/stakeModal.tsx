@@ -64,7 +64,7 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                     // }}
                     classNames={{
                         // base: "max-w-md",
-                        filler: "bg-gradient-to-r from-[#19FFE0] to-[#9D47FF] rounded-[20px]",
+                        filler: "bg-gradient-to-r from-lightBrand to-[#9D47FF] rounded-[20px]",
                         track: "border-none",
                         labelWrapper: "mb-2",
                         label: "font-medium text-default-700 text-medium",
@@ -72,7 +72,7 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         thumb: [
                           "[&:after]:!bg-white [&:after]:!h-3 [&:after]:!w-3",
                           "transition-size",
-                          "bg-gradient-to-r from-[#9D47FF] to-[#19FFE0]",
+                          "bg-gradient-to-r from-[#9D47FF] to-lightBrand",
                           "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
                           "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
                         ],

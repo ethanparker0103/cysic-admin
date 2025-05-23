@@ -356,9 +356,9 @@ const PurchaseNftModal = () => {
                 <>
                     {/* 错误消息展示 */}
                     {errorMessage && (
-                        <div className="bg-red-900/20 border border-red-500 rounded-md p-3 mb-4 flex items-start">
-                            <AlertCircle className="text-red-500 mr-2 flex-shrink-0 mt-0.5" size={16} />
-                            <div className="text-red-300">{errorMessage}</div>
+                        <div className="bg-red-900/20 border border-error rounded-md p-3 mb-4 flex items-start">
+                            <AlertCircle className="text-error mr-2 flex-shrink-0 mt-0.5" size={16} />
+                            <div className="text-error">{errorMessage}</div>
                         </div>
                     )}
 
@@ -387,7 +387,7 @@ const PurchaseNftModal = () => {
 
                             {/* 右侧详情和购买选项 */}
                             <div className="md:w-2/3">
-                                <h1 className="title text-4xl !font-light mb-4">{nft.name}</h1>
+                                <h1 className="unbounded-36-300 mb-4">{nft.name}</h1>
 
                                 <div className="flex justify-between items-center mb-6">
                                     <span className="text-sub">Supply</span>
@@ -470,7 +470,7 @@ const PurchaseNftModal = () => {
                                             <div className={`w-6 h-6 rounded-full border ${option.selected ? 'border-blue-500 bg-blue-500' : 'border-gray-400'} flex items-center justify-center mr-3`}>
                                                 {option.selected && <div className="w-2 h-2 bg-white rounded-full"></div>}
                                             </div>
-                                            <h3 className="!font-light text-base title">{option.title}</h3>
+                                            <h3 className="unbounded-16-300">{option.title}</h3>
                                         </div>
                                         <p className="text-sm !font-[400] ml-9">{option.description}</p>
                                     </div>
@@ -513,7 +513,7 @@ const PurchaseNftModal = () => {
 
                             {/* 右侧确认信息 */}
                             <div className="md:w-2/3 flex flex-col">
-                                <h1 className="title text-4xl !font-light mb-2">{nft.name} x{quantity}</h1>
+                                <h1 className="unbounded-36-300 mb-2">{nft.name} x{quantity}</h1>
                                 <h2 className="text-2xl text-white mb-8">Purchase Confirmed!</h2>
 
                                 <div className="bg-[#0E0E0E] border border-gray-700 rounded-lg p-6 mb-6">
@@ -564,7 +564,7 @@ const PurchaseNftModal = () => {
                             {userAddress && (
                                 <div className="mt-4 flex justify-end items-center gap-2">
                                     <span className="text-sub">Your USDC Balance:</span>
-                                    <span className={hasInsufficientBalance ? "text-red-500" : "text-white"}>
+                                    <span className={hasInsufficientBalance ? "text-error" : "text-white"}>
                                         {formattedBalance} USDC
                                     </span>
                                 </div>

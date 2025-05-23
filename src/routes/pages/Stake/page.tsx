@@ -432,7 +432,7 @@ const StakePage = () => {
       </div>
 
       {/* 主要内容部分 */}
-      <div className="container mx-auto mt-8 relative z-[2]">
+      <div className="w-full mx-auto mt-8 relative z-[2]">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* 左侧 - 质押信息 */}
           <GradientBorderCard
@@ -441,7 +441,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-4 lg:px-6 h-full flex flex-col justify-between">
               <div className={cn("flex gap-4", "flex-col lg:flex-row lg:justify-between")}>
-                <h2 className="title !text-xl uppercase !font-light">STAKE CGTS</h2>
+                <h2 className="unbounded-20-300">STAKE CGTS</h2>
                 <Button
                   onClick={handleStakeModal}
                   type={BtnType.light}
@@ -473,8 +473,8 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-4 lg:px-6">
-              <h2 className="title !text-xl uppercase !font-light mb-4">CLAIM REWARDS</h2>
-              <div className={cn("!text-2xl !font-[400] title mb-4", "text-left lg:text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
+              <h2 className="unbounded-20-300 mb-4">CLAIM REWARDS</h2>
+              <div className={cn("unbounded-24-400 mb-4", "text-left lg:text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
               <Button
                 needLoading
                 // disabled={!Number(rewardsAmount) || !address}
@@ -496,7 +496,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-4 lg:px-6">
               <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center" )}>
-                <h2 className="title !text-xl uppercase">MY STAKE</h2>
+                <h2 className="unbounded-20-400">MY STAKE</h2>
                 <div className="flex items-center gap-2">
                   <History size={16} />
                   <span className="!text-sm text-sub">Daily update at 2PM UTC</span>
@@ -520,7 +520,7 @@ const StakePage = () => {
             borderRadius={8}
           >
             <div className="w-full py-4 px-4 lg:px-6">
-              <h2 className="title !text-xl !font-light uppercase mb-2">YOUR VALIDATORS</h2>
+              <h2 className="unbounded-20-300 mb-2">YOUR VALIDATORS</h2>
               <div className="flex gap-2 items-start mb-3 ">
                 <div className="w-full">
                   <p className="text-sub text-base mb-4">
@@ -539,7 +539,7 @@ const StakePage = () => {
         >
           <div className="w-full py-4 px-4 lg:px-6">
             <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center")}>
-              <h2 className="title !text-xl uppercase !font-light">ACTIVE VALIDATORS</h2>
+              <h2 className="unbounded-20-300">ACTIVE VALIDATORS</h2>
             </div>
 
             {activeLoading ? (

@@ -11,8 +11,6 @@ import useCosmos from "@/models/_global/cosmos";
 import useUser from "@/models/user";
 import { Link } from "react-router-dom";
 import { isMobile } from "react-device-detect";
-import { Multiplier } from "@/routes/components/Multiplier";
-import InviteCard from "@/routes/components/usePortal/cards/InviteCard";
 import ZkTasks from "@/routes/components/usePortal/cards/ZkTasks";
 import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
 import ZkBalanceCard from "@/routes/components/usePortal/cards/ZkBalanceCard";
@@ -34,7 +32,7 @@ const StatCard = ({ title, children, rightActions = [], className = "" }: StatCa
     <GradientBorderCard borderRadius={8} className={`h-full ${className}`}>
         <div className="px-6 py-4 h-full w-full">
             <div className="flex justify-between items-center mb-4">
-                <div className="!text-base title !font-light uppercase">{title}</div>
+                <div className="unbounded-16-300">{title}</div>
                 <div className="flex items-center gap-4">
                     {rightActions.map((action, index) => (
                         <div key={index}>{action}</div>
@@ -88,7 +86,7 @@ const UserDetailsPage = () => {
                 </div>
 
                 {/* DETAILS 标题 */}
-                <h2 className="title !text-3xl !font-light title uppercase my-12 text-center">DETAILS</h2>
+                <h2 className="unbounded-30-300 my-12 text-center">DETAILS</h2>
 
                 <div className="flex flex-col gap-4 w-full">
                     {/* 第一行 details 部分 */}
@@ -96,8 +94,8 @@ const UserDetailsPage = () => {
                         {/* 任务完成度卡片 */}
                         <GradientBorderCard borderRadius={8} className="flex-1 w-full">
                             <div className="w-full px-6 py-4 h-full flex flex-col justify-between gap-4">
-                                <div className="uppercase !text-base !font-light title">MY TASK COMPLETION</div>
-                                <div className="!text-2xl !font-light title text-right">2500</div>
+                                <div className="unbounded-16-300">MY TASK COMPLETION</div>
+                                <div className="unbounded-24-300 text-right">2500</div>
 
                                 <div className="flex flex-col gap-2 w-full">
                                     <div className="flex justify-between items-center w-full">
@@ -119,7 +117,7 @@ const UserDetailsPage = () => {
                     <ZkTasks />
                 </div>
 
-                <JoinZkPhase3 className="pt-12 [&_.title]:!text-[6rem]" slogen="Join Cysic ZK " />
+                <JoinZkPhase3 className="pt-12" slogen="Join Cysic ZK " />
             </div>
         </>
     );

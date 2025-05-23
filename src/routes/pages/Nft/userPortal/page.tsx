@@ -36,17 +36,14 @@ const UserPortal = () => {
       {/* content */}
       <div className="main-container mx-auto relative z-10 pt-20 pb-12 w-full">
         {/* title */}
-        <h1 className="title text-7xl md:text-[120px] !font-[200] mb-24 text-center">
+        <h1 className="unbounded-72-120-200 mb-24 text-center">
           USER PORTAL
         </h1>
 
         {/* GENERAL 部分 */}
         <div className="mb-4 lg:mb-12">
           <h2
-            className={cn(
-              "unbounded font-light text-center",
-              isMobile ? "!text-2xl mb-6" : "text-4xl mb-12"
-            )}
+            className={cn("unbounded-24-36-300 text-center mb-6 lg:mb-12")}
           >
             GENERAL
           </h2>
@@ -101,7 +98,7 @@ const UserPortal = () => {
               className="flex-1 w-full h-full"
             >
               <div className={cn("w-full px-4 lg:px-6 py-4 h-full flex flex-col gap-4")}>
-                <div className="uppercase !text-base title !font-light">
+                <div className="unbounded-16-300">
                   rebate rate
                 </div>
                 <div className="flex items-center gap-2 self-end text-2xl unbounded">
@@ -114,7 +111,7 @@ const UserPortal = () => {
               className="flex-1 w-full h-full"
             >
               <div className={cn("w-full px-4 lg:px-6 py-4 h-full flex flex-col gap-4")}>
-                <div className="uppercase !text-base title !font-light">
+                <div className="unbounded-16-300">
                   Invite level{" "}
                 </div>
                 <div className="flex items-center gap-2 self-end text-2xl unbounded">
@@ -132,7 +129,7 @@ const UserPortal = () => {
 
         {/* SERVICE HUB 部分 */}
         <div>
-          <h2 className="title !text-4xl !font-light uppercase mb-6 lg:mb-12 text-center">
+          <h2 className="unbounded-36-300 text-center mb-6 lg:mb-12">
             SERVICE HUB
           </h2>
 

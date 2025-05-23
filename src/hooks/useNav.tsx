@@ -1,7 +1,8 @@
-import { enableSocialTask, mediasLink } from "@/config";
+import { enableBridge, enableSocialTask, mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
+
 const comingSoonConfig = [
   {
     content: "Cysic NFT",
@@ -22,6 +23,15 @@ const comingSoonConfig = [
     disabled: true,
   },
 ];
+
+const bridgeNav = enableBridge
+  ? {
+      content: "Bridge",
+      key: "bridge",
+      href: "/bridge",
+    }
+  : {};
+
 const basicNav = [
   {
     content: "Cysic Portal",
@@ -37,11 +47,7 @@ const basicNav = [
             key: "staking",
             href: "/stake",
           },
-          {
-            content: "Bridge",
-            key: "bridge",
-            href: "/bridge",
-          },
+          bridgeNav,
           {
             content: "Dashboard",
             key: "dashboard",
@@ -59,11 +65,7 @@ const basicNav = [
             key: "staking",
             href: "/stake",
           },
-          {
-            content: "Bridge",
-            key: "bridge",
-            href: "/bridge",
-          },
+          bridgeNav,
           {
             content: "Dashboard",
             key: "dashboard",

@@ -1,5 +1,5 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { mediasLink } from "@/config";
+import { enableBridge, mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { handleBridgeHistoryModal } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
@@ -20,14 +20,13 @@ const CysicBalance = () => {
             BALANCE
           </div>
           <div className="flex items-center gap-6">
-            <a
-              // to="/zk/serviceHub"
+            {enableBridge ? <a
               href={`${mediasLink.bridge}`}
               target="_blank"
               className="flex items-center text-sub text-sm hover:text-white"
             >
               BRIDGE <ArrowRight size={12} className="ml-1" />
-            </a>
+            </a> : null}
             <div
               onClick={handleBridgeHistoryModal}
               className="flex items-center text-sub text-sm hover:text-white cursor-pointer"

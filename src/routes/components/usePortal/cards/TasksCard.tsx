@@ -63,7 +63,7 @@ export const VerifierCard = () => {
                 {status.map((item) => (
                     <>
                         <div className="flex items-center gap-2 text-sm font-light unbounded">
-                            <div className={`h-2 w-2 rounded-full ${zkPart?.verifierStatus?.[item.key] == 1 ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
+                            <div className={`h-2 w-2 rounded-full ${zkPart?.verifierStatus?.[item.key] == 1 ? 'bg-lightBrand' : 'bg-error'}`}></div>
                             {item.label}&nbsp;
                             {zkPart?.verifierStatus?.[item.key] == 1 ? 'ACTIVE' : 'INACTIVE'}
                         </div>
@@ -85,7 +85,7 @@ export const ProverCard = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
                 {status.map((item) => (
                     <div className="flex items-center gap-2 text-sm font-light unbounded">
-                        <div className={`h-2 w-2 rounded-full ${zkPart?.proverStatus?.[item.key] == 1 ? 'bg-[#19FFE0]' : 'bg-red-500'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${zkPart?.proverStatus?.[item.key] == 1 ? 'bg-lightBrand' : 'bg-error'}`}></div>
                         {item.label}&nbsp;
                         {zkPart?.proverStatus?.[item.key] == 1 ? 'ACTIVE' : 'INACTIVE'}
                     </div>
@@ -106,7 +106,7 @@ export const ProjectCard = () => {
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
                 {status.map((item) => (
                     <div className="flex items-center gap-2 text-sm font-light unbounded">
-                        <div className={`h-2 w-2 rounded-full ${item.key == 'underReviewCnt' ? 'bg-[#19FFE0]' : 'bg-[#FFB60C]'}`}></div>
+                        <div className={`h-2 w-2 rounded-full ${item.key == 'underReviewCnt' ? 'bg-lightBrand' : 'bg-warning'}`}></div>
                         {zkPart?.projectStatus?.[item.key]}&nbsp;
                         {item.label}
                     </div>

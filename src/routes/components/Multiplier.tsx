@@ -50,7 +50,7 @@ export const Multiplier = ({
         <div className="w-full px-4 lg:px-6 py-4 h-full flex flex-col justify-between gap-4 lg:gap-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-1">
-              <div className="uppercase !text-base !font-light title">
+              <div className="unbounded-16-300">
                 MULTIPLIER
               </div>
               <Tooltip

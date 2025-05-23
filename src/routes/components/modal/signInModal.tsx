@@ -393,7 +393,7 @@ const SignInModal = () => {
     >
       {/* 错误提示 */}
       {error && (
-        <div className="bg-red-900/20 border border-red-500 px-4 py-2 rounded mb-4 text-red-300">
+        <div className="bg-red-900/20 border border-error px-4 py-2 rounded mb-4 text-error">
           {error}
         </div>
       )}
@@ -519,7 +519,7 @@ const SignInModal = () => {
           {/* Logo上传 - 显示为必填但验证时不必填 */}
           <div className="space-y-2">
             <label className="text-sub flex items-center">
-              <span className="text-red-500 mr-1">*</span> Logo
+              <span className="text-error mr-1">*</span> Logo
             </label>
             <div className="w-[7.5rem] h-[7.5rem] border border-gray-600 rounded flex items-center justify-center cursor-pointer relative bg-[#181818] group">
               {formData.logo ? (
@@ -560,7 +560,7 @@ const SignInModal = () => {
           {/* 名称输入 */}
           <div className="space-y-2">
             <label className="text-sub flex items-center">
-              <span className="text-red-500 mr-1">*</span> Name
+              <span className="text-error mr-1">*</span> Name
             </label>
             <input
               type="text"
@@ -573,7 +573,7 @@ const SignInModal = () => {
             />
             {
               !validInputLength && (
-                <div className="text-red-500 text-sm">
+                <div className="text-error text-sm">
                   Name must be less than 15 characters
                 </div>
               )

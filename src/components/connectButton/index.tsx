@@ -124,9 +124,9 @@ export default function ConnectButton({ className, content }: any) {
     <Button
       onClick={handleOpen}
       type="light"
-      className={cn("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-[#000] ", "!min-h-8 !h-8 !px-2 lg:px-4 lg:!min-h-10 lg:!h-10 lg:py-[0.625rem]", className)}
+      className={cn("w-fit cursor-pointer flex flex-row items-center justify-center gap-1 rounded-[6px] !text-black ", "!min-h-8 !h-8 !px-2 lg:px-4 lg:!min-h-10 lg:!h-10 lg:py-[0.625rem]", className)}
     >
-      {isConnecting ? <Spinner className="stroke-[#000] " /> : null}
+      {isConnecting ? <Spinner className="stroke-black " /> : null}
       {
         content || <span className="text-sm font-[500]">{t('Connect Wallet')}</span>
       }
