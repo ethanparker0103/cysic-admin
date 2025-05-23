@@ -323,11 +323,8 @@ const SignInModal = () => {
 
         if (success) {
           toast.success("Update profile success");
-          // 成功后关闭弹窗
-          setTimeout(() => {
-            setVisible(false);
-            resetState();
-          }, 2000);
+          setVisible(false);
+          resetState();
         } else {
           setError("Failed to update profile. Please try again.");
         }
