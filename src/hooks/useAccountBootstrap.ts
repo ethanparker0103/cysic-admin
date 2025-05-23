@@ -60,12 +60,16 @@ const useAccountBootstrap = () => {
     if (!address) return;
 
     try {
-      // 执行签名
+      const event = new CustomEvent('modal_signin_visible', {
+        detail: { visible: false, step: 'code' }
+      });
+      window.dispatchEvent(event);
+
       const signature = await signMessageAsync(loginSignContent);
 
-      // 保存签名结果
       userStore.setSignature(address, signature as string);
     } catch (error) {
+      handleSignIn()
       console.error("Fail to sign message", error);
     }
   });
