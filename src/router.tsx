@@ -213,7 +213,11 @@ export const backgroundImageList = {
   },
   "/zk": {
     img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
-    className: "h-[180vh] lg:h-[180vh]",
+    // className: "h-[180vh] lg:h-[180vh]",
+    style: {
+      backgroundPosition: "center -30vh",
+    },
+    className: "h-[160vh]",
   },
   "/zk/invite": {
     img: getImageUrl("@/assets/images/_global/invite_landing_bg.png"),
