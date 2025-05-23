@@ -95,7 +95,7 @@ const guide = {
             },
             {
                 title: "Import Your Wallet",
-                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
+                desc: <p className="text-left teacher text-sm !normal-case">
                     Import your wallet seed phrase.
                     <br />
                     Cysic does not store any seed phrases or private keys.
@@ -105,7 +105,7 @@ const guide = {
             },
             {
                 title: "Start VerifIcation",
-                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
+                desc: <p className="text-left teacher text-sm !normal-case">
                     Click the Start Verification button on the main interface to begin the Verifier process.
                     <br />
                     After starting verifier, Cysic App can switch to backstage operating.
@@ -120,7 +120,7 @@ const guide = {
         steps: [
             {
                 title: "Setup",
-                desc: <p className="text-left lg:text-right teacher text-sm !normal-case">
+                desc: <p className="text-left teacher text-sm !normal-case">
                     Start your terminal program on Linux. Copy the code below.<br />
                     Replace the address placeholder with your reward address, then run it in your terminal.
                 </p>,
@@ -131,7 +131,7 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -144,7 +144,7 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
             {
                 title: "Success",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2 again.
                         <br />
                         *The verifier program will create mnemonic files for you.
@@ -161,8 +161,9 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
             {
                 title: "Setup",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
-                        Start your terminal program on Windows. Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.
+                    <p className="text-left teacher text-sm !normal-case">
+                        Start your terminal program on Windows. <br />
+                        Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.
                     </p>
                 ),
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
@@ -176,7 +177,7 @@ Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase3_libs/releases/downl
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: rpc error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -193,7 +194,7 @@ cd $env:USERPROFILE\\cysic-verifier
             {
                 title: "Success",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2
                         again.
                         <br />
@@ -212,8 +213,9 @@ cd $env:USERPROFILE\\cysic-verifier
             {
                 title: "Setup",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
-                        Open your terminal first. Copy the code below, replacing the address placeholder with your reward address, then press to run.
+                    <p className="text-left teacher text-sm !normal-case">
+                        Open your terminal first. <br />
+                        Copy the code below, replacing the address placeholder with your reward address, then press to run.
                     </p>
                 ),
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
@@ -223,7 +225,7 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
             {
                 title: "Start the verifier program",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         Wait a while for the setup process script to run. Then copy and paste the below code, press enter to run.
                         <br />
                         · If you see “err: network error”, don’t worry—just wait a few minutes for the verifier to connect.
@@ -237,7 +239,7 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
             {
                 title: "Success",
                 desc: (
-                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                    <p className="text-left teacher text-sm !normal-case">
                         If you need to reconnect the verifier, please execute Step 2
                         again.
                         <br />
