@@ -67,7 +67,7 @@ export const useVerifierStatus = () => {
                         <span className="unbounded-14-300">Mobile {zkPart?.verifierStatus?.mobileActive ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
-                <DownloadQRCodeTooltip>
+                {/* <DownloadQRCodeTooltip>
                     <a href={downloadLink.googlePlay} target="_blank">
                         <Button
                             type="solid"
@@ -79,7 +79,7 @@ export const useVerifierStatus = () => {
                             </div>
                         </Button>
                     </a>
-                </DownloadQRCodeTooltip>
+                </DownloadQRCodeTooltip> */}
             </div>
         </GradientBorderCard>
     );
