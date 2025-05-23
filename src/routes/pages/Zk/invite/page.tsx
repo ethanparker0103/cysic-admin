@@ -65,7 +65,8 @@ const InvitePage = () => {
         walletAddress,
         inviteCode: registeredInviteCode,
         currentRebateRate,
-        zkPart
+        zkPart,
+        inviteLevelId
     } = useAccount();
 
     const [memberData, setMemberData] = useState<TeamMember[]>([]);
@@ -329,7 +330,7 @@ const InvitePage = () => {
                             </div>
 
 
-                            <Divider  className="bg-[#FFFFFFCC] w-full lg:w-divider h-divider lg:h-full" />
+                            <Divider className="bg-[#FFFFFFCC] w-full lg:w-divider h-divider lg:h-full" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex justify-between items-start">
@@ -424,6 +425,8 @@ const InvitePage = () => {
                                 .map((tier, index) => (
                                     <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
                                         <GradientBorderCard
+                                            gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
+                                            gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
                                             borderRadius={8}
                                             borderWidth={1}
                                             className="h-full"
@@ -441,10 +444,9 @@ const InvitePage = () => {
                                                             <>
                                                                 <GradientBorderCard className="p-4 flex flex-col gap-1 w-[12.5rem]">
                                                                     <>
-                                                                        {/* <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                                                    <div className="!text-sub w-20">Reward</div>
-                                                                    <div>+{tier.reward.amount} {tier.reward.symbol}</div>
-                                                                </div> */}
+                                                                        <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                            Levelup Rewards
+                                                                        </div>
                                                                         <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                                                             <div className="!text-sub w-20">
                                                                                 Rebate Rate
@@ -504,6 +506,8 @@ const InvitePage = () => {
                                                     <span className="unbounded-16-300">
                                                         {tiers[index - 1]?.needInviteCnt || 0}
                                                     </span>
+
+                                                    <div className="unbounded-12-300 text-center">Invites Required</div>
                                                 </div>
                                             </div>
                                         </GradientBorderCard>
