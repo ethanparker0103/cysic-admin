@@ -168,7 +168,7 @@ const ProverPage = () => {
                                     Cysic will oversee Prover actions, retaining this collateral if any irregular behavior occurs to protect Cysic ZK's operation. 
                                     </>}
                                     buttonText="TIME LIMITED FREE"
-                                    onClick={handleReserveModal}
+                                    // onClick={handleReserveModal}
                                 />
 
                                 <SelfProverStepCard
