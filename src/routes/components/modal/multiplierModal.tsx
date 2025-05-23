@@ -15,7 +15,7 @@ import { MultiplierPercentBar } from "@/routes/components/Multiplier";
 import useStatic from "@/models/_global";
 import { enableSocialTask } from "@/config";
 
-const stakeBoosts = [
+const stakeBoosts = true ? [] : [
   {
     name: "STAKE 100 CGT",
     reward: "10", // +10 Boosts
@@ -142,7 +142,7 @@ const BoostingList = () => {
             </div>
           </div>
         </Tab>
-        <Tab key="tasks" title="TASKS">
+        {/* <Tab key="tasks" title="TASKS">
           <div className="flex flex-col gap-4">
             {tasks.map((task) => (
               <div
@@ -165,10 +165,10 @@ const BoostingList = () => {
               </div>
             ))}
           </div>
-        </Tab>
+        </Tab> */}
         <Tab key="invites" title="INVITES">
           <div className="flex flex-col gap-4">
-            <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
+            <GradientBorderCard borderRadius={8} className="py-4 px-6 flex flex-col gap-4">
               <div className="flex flex-col gap-4">
                 <h2 className="unbounded-16-300">
                   Invite Code
@@ -219,20 +219,17 @@ const BoostingList = () => {
                               <>
                                 <GradientBorderCard className="p-4 flex flex-col gap-1">
                                   <>
-                                    <div className="w-full flex items-center justify-between text-sm">
+                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                       <div className="!text-sub w-20">
-                                        Reward
+                                        Rebate Rate
                                       </div>
-                                      <div>
-                                        +{tier.reward.amount}{" "}
-                                        {tier.reward.symbol}
-                                      </div>
+                                      <div>+{tier.rebateRate} %</div>
                                     </div>
-                                    <div className="w-full flex items-center justify-between text-sm">
+                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
                                       <div className="!text-sub w-20">
-                                        Pool Fee
+                                        Multiplier
                                       </div>
-                                      <div>{tier.poolFee}</div>
+                                      <div>+{tier.multiplier} 🔥FIRE</div>
                                     </div>
                                   </>
                                 </GradientBorderCard>
@@ -390,8 +387,16 @@ const MultiplierModal = () => {
       (item: { level: number | undefined }) =>
         item.level == zkPart?.multiplierLevel
     ) || multiplierLevelList?.[0];
+
+  const nextLevelMultiplier = multiplierLevelList?.find(
+    (item: { level: number | undefined }) =>
+      item.level == Number(zkPart?.multiplierLevel) + 1
+  ) || multiplierLevelList?.[multiplierLevelList.length - 1];
+
   const nextLevelMultiplierRequire =
     currentMultiplier?.nextLevelRequire - (zkPart?.multiplierFire || 0);
+
+
 
   const hasNextLevel = multiplierLevelList?.find(
     (item: { level: number | undefined }) =>
@@ -413,7 +418,7 @@ const MultiplierModal = () => {
         <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
           <>
             <div className="unbounded-16-300">
-              Advanced Boosting
+              {currentMultiplier?.name || '-'} Boosting
               <br /> in Progress
             </div>
             <MultiplierPercentBar />
@@ -421,7 +426,7 @@ const MultiplierModal = () => {
               <span className="text-sub text-sm ml-auto teacher">
                 Earn {nextLevelMultiplierRequire} more{" "}
                 <span className="text-[#22D3EE] font-bold">🔥FIRE</span> to
-                become {currentMultiplier?.name}
+                become {nextLevelMultiplier?.name}
               </span>
             ) : (
               <span className="text-sub text-sm ml-auto teacher">
@@ -432,7 +437,8 @@ const MultiplierModal = () => {
           </>
         </GradientBorderCard>
 
-        <MoreFire />
+        {/* <MoreFire /> */}
+        <BoostingList />
       </div>
     </Modal>
   );

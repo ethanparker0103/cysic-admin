@@ -644,7 +644,7 @@ export const handleSignIn = (targetStep?: string) => {
 
     // 触发自定义事件，带上步骤信息
     const event = new CustomEvent('modal_signin_visible', { 
-        detail: { visible: true, step: targetStep } 
+        detail: { visible: true, step: targetStep, force: true } 
     });
     window.dispatchEvent(event);
 };

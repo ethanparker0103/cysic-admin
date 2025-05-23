@@ -1,7 +1,7 @@
 import { cn, Dropdown, DropdownTrigger } from "@nextui-org/react";
 import { useRef, useState, useEffect } from "react";
 
-const HoverDropdown = ({ trigger, children, className, classNames }: any) => {
+const HoverDropdown = ({ trigger, children, className, classNames, placement }: any) => {
     const [isOpen, setIsOpen] = useState(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   
@@ -55,7 +55,7 @@ const HoverDropdown = ({ trigger, children, className, classNames }: any) => {
       <div className={cn(className, 'h-full flex items-center relative')}>
         <Dropdown
           isOpen={isOpen}
-          placement="bottom-end"
+          placement={placement || "bottom-center"}
           classNames={{
             content: cn('p-0 mt-6 bg-[transparent]', classNames?.content),
             ...classNames,
