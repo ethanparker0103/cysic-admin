@@ -406,7 +406,7 @@ const SignInModal = () => {
           </h2>
 
           {
-            (walletAddress && needsBinding) ? (
+            (walletAddress && needsBinding && isSigned) ? (
               <div className="">
                 <DigitInputs
                   className="text-lg w-12 h-[3.875rem] rounded-md border-[#FFFFFFCC] gap-2"
