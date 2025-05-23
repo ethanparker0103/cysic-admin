@@ -30,53 +30,38 @@ const bridgeNav = enableBridge
       key: "bridge",
       href: "/bridge",
     }
-  : {};
+  : null;
+
+const socialTaskNav = enableSocialTask
+  ? {
+      content: "Social Tasks",
+      key: "social-tasks",
+      href: "/socialTask",
+    }
+  : null;
 
 const basicNav = [
   {
     content: "Cysic Portal",
-    children: enableSocialTask
-      ? [
-          {
-            content: "Social Tasks",
-            key: "social-tasks",
-            href: "/socialTask",
-          },
-          {
-            content: "Staking",
-            key: "staking",
-            href: "/stake",
-          },
-          bridgeNav,
-          {
-            content: "Dashboard",
-            key: "dashboard",
-            href: "/zk/dashboard",
-          },
-          {
-            content: "Explorer",
-            key: "explorer",
-            href: mediasLink.cosmosExplorer,
-          },
-        ]
-      : [
-          {
-            content: "Staking",
-            key: "staking",
-            href: "/stake",
-          },
-          bridgeNav,
-          {
-            content: "Dashboard",
-            key: "dashboard",
-            href: "/zk/dashboard",
-          },
-          {
-            content: "Explorer",
-            key: "explorer",
-            href: mediasLink.cosmosExplorer,
-          },
-        ],
+    children: [
+      socialTaskNav,
+      {
+        content: "Staking",
+        key: "staking",
+        href: "/stake",
+      },
+      bridgeNav,
+      {
+        content: "Dashboard",
+        key: "dashboard",
+        href: "/zk/dashboard",
+      },
+      {
+        content: "Explorer",
+        key: "explorer",
+        href: mediasLink.cosmosExplorer,
+      },
+    ].filter(Boolean)
   },
   {
     content: "Resource",
