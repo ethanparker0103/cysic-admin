@@ -126,7 +126,7 @@ const guide = {
                 </p>,
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
             
-curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
+curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
             },
             {
                 title: "Start the verifier program",
@@ -160,12 +160,16 @@ curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup
         steps: [
             {
                 title: "Setup",
-                desc: "Start your terminal program on Linux. Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.",
+                desc: (
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                        Start your terminal program on Windows. Copy the code below, replacing the address placeholder with your reward address, paste the code in your terminal, then press enter to run.
+                    </p>
+                ),
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
 
 cd $env:USERPROFILE
 
-Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_win.ps1" -OutFile "setup_win.ps1"
+Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_win.ps1" -OutFile "setup_win.ps1"
 
 .\\setup_win.ps1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here" `,
             },
@@ -207,10 +211,14 @@ cd $env:USERPROFILE\\cysic-verifier
         steps: [
             {
                 title: "Setup",
-                desc: `Open your terminal first. Copy the code below, replacing the address placeholder with your reward address, then press to run.`,
+                desc: (
+                    <p className="text-left lg:text-right teacher text-sm !normal-case">
+                        Open your terminal first. Copy the code below, replacing the address placeholder with your reward address, then press to run.
+                    </p>
+                ),
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
 
-curl -L https://github.com/cysic-labs/phase2_libs/releases/download/v1.0.0/setup_mac.sh > ~/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
+curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_mac.sh > ~/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
             },
             {
                 title: "Start the verifier program",

@@ -143,14 +143,14 @@ const InvitePage = () => {
             width: "40%",
             renderCell: (leader) => <div className="">{dayjs.unix(Number(leader.joinAt)).format("YYYY-MM-DD HH:mm:ss")}</div>,
         },
-        {
-            key: "inviteBy",
-            label: "Invited by",
-            width: "40%",
-            renderCell: (leader) => (
-                <div className="capitalize">{shortStr(leader.inviteBy, 14) || "-"}</div>
-            ),
-        },
+        // {
+        //     key: "inviteBy",
+        //     label: "Invited by",
+        //     width: "40%",
+        //     renderCell: (leader) => (
+        //         <div className="capitalize">{shortStr(leader.inviteBy, 14) || "-"}</div>
+        //     ),
+        // },
     ];
 
     // 团队成员表格列定义
@@ -272,7 +272,7 @@ const InvitePage = () => {
                             {/* 推荐收益 */}
                             <div className="flex justify-between items-start px-4 lg:px-6">
                                 <span className="unbounded-16-300">
-                                    REFERRAL EARNINGS
+                                    REBATE EARNINGS
                                 </span>
                                 <div className="flex flex-col items-center gap-4">
                                     <span className="unbounded-24-400 text-right">
@@ -285,17 +285,17 @@ const InvitePage = () => {
                                 </div>
                             </div>
 
-                            <div className="border-b border-white my-4 px-4 lg:px-6"></div>
+                            {/* <div className="border-b border-white my-4 px-4 lg:px-6"></div> */}
 
                             {/* 升级收益 */}
-                            <div className="flex justify-between items-center px-4 lg:px-6">
+                            {/* <div className="flex justify-between items-center px-4 lg:px-6">
                                 <span className="unbounded-16-300">
                                     UPGRADE EARNINGS
                                 </span>
                                 <span className="unbounded-24-400 text-right">
                                     {rewards.CGT || "0"} CGT
                                 </span>
-                            </div>
+                            </div> */}
                         </div>
                     </GradientBorderCard>
 
@@ -431,7 +431,7 @@ const InvitePage = () => {
                                             borderWidth={1}
                                             className="h-full"
                                         >
-                                            <div className="w-full p-4 flex flex-col items-center">
+                                            <div className="w-full p-4 flex flex-col items-center h-full">
                                                 <div className="flex items-center gap-2 mb-2">
                                                     <h3 className="text-sm lg:text-base !font-light unbounded tracking-wider">
                                                         {tier.name}
@@ -479,36 +479,49 @@ const InvitePage = () => {
                                                     />
                                                 </div>
 
-                                                {/* 用户数量指示器 */}
-                                                <div className="mt-4 flex items-center flex-col gap-1">
-                                                    <svg
-                                                        width="24"
-                                                        height="24"
-                                                        viewBox="0 0 24 24"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                                                            stroke="white"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                        />
-                                                        <path
-                                                            d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
-                                                            stroke="white"
-                                                            strokeWidth="2"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                        />
-                                                    </svg>
-                                                    <span className="unbounded-16-300">
-                                                        {tiers[index - 1]?.needInviteCnt || 0}
-                                                    </span>
+                                                {
+                                                    inviteLevelId == tier.level ? (<>
 
-                                                    <div className="unbounded-12-300 text-center">Invites Required</div>
-                                                </div>
+                                                        <div className="mt-4 flex-1 flex flex-col items-center justify-end gap-2">
+                                                            <div className="unbounded-16-300 text-center">{tier.level}</div>
+                                                            <div className="unbounded-12-300 text-center">Current Level</div>
+                                                        </div>
+                                                    </>) : null
+                                                }
+                                                {
+                                                    Number(inviteLevelId) >= tier.level ? (<></>) : (<>
+                                                        <div className="mt-4 flex items-center flex-col gap-1">
+                                                            <svg
+                                                                width="24"
+                                                                height="24"
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+                                                                    stroke="white"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                />
+                                                                <path
+                                                                    d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
+                                                                    stroke="white"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                />
+                                                            </svg>
+                                                            <span className="unbounded-16-300">
+                                                                {tiers[index - 1]?.needInviteCnt || 0}
+                                                            </span>
+
+                                                            <div className="unbounded-12-300 text-center">Invites Required</div>
+                                                        </div>
+                                                    </>)
+                                                }
+
                                             </div>
                                         </GradientBorderCard>
 

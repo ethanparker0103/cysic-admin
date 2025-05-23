@@ -29,9 +29,6 @@ const JoinTestnetPhaseIIIButton = ({className}:{className?: string}) => {
                 }else{
                     handleSignIn()
                 }
-                // setTimeout(()=>{
-                    
-                // }, 1000)
             }}
             >
                 <span>Join Testnet Phase III</span>

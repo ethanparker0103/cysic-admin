@@ -238,29 +238,16 @@ const SignInModal = () => {
         return;
       }
 
-      // 绑定成功，更新状态
       userStore.setState(walletAddress, {
         inviteCode: inviteCode,
         isRegistered: true,
         isBinded: true
       });
 
-      // 2. 获取最新用户信息
-      const userInfo = await userStore.fetchUserInfo(walletAddress);
 
-      // 判断是否需要填写资料
-      if (userInfo?.name && userInfo?.avatarUrl) {
-        // 资料已完成，关闭弹窗
-        toast.success("Invite code verified");
-        setTimeout(() => {
-          setVisible(false);
-          resetState();
-        }, 1000);
-      } else {
-        // 进入资料填写步骤
-        toast.success("Please complete your profile");
-        setStep(SignInStep.USER_INFO);
-      }
+      toast.success("Please complete your profile");
+      setStep(SignInStep.USER_INFO);
+
     } catch (error) {
       console.error("Bind error:", error);
       setError("Failed to verify invite code");
