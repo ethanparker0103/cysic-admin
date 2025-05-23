@@ -388,13 +388,15 @@ const HardwarePage = () => {
             ZKP in real-time?
           </div>
         </div>
-        <Button
-          className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-          type="solid"
-        >
-          <span>inquire about our asic solutions</span>
-          <ArrowRight className="w-3 h-3" />
-        </Button>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdC7cCKdV1MWuzMktSp5eDrTxVWPgu9Dj4zANXlxAMN85Nm9w/viewform" target="_blank">
+          <Button
+            className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+            type="solid"
+          >
+            <span>inquire about our asic solutions</span>
+            <ArrowRight className="w-3 h-3" />
+          </Button>
+        </a>
       </div>
 
       <div className="w-full uppercase text-center bg-white text-black py-4 unbounded text-xl lg:text-[40px] font-[500]">
