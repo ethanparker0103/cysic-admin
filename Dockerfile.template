@@ -1,6 +1,6 @@
 # Stage 1: Build the application
 FROM node:18 as builder
-
+ARG BUILD_ENV=pre
 # 设置工作目录
 WORKDIR /app
 
@@ -15,7 +15,7 @@ RUN npm install --force
 COPY . .
 
 # 构建项目
-RUN yarn build:pre
+RUN yarn build:{{BUILD_ENV}}
 
 # Stage 2: Serve the application with nginx
 FROM nginx:alpine
