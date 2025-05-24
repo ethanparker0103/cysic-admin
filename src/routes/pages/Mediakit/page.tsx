@@ -37,17 +37,17 @@ const symbolLogos = [
     {
         title: 'Symbol White',
         img: '/mediaKit/symbol_white.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Symbol Black',
         img: '/mediaKit/symbol_black.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Symbol Gradient',
         img: '/mediaKit/symbol_gradient.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
 ]
 
@@ -55,17 +55,17 @@ const horizontalLogos = [
     {
         title: 'Horizontal White',
         img: '/mediaKit/horizontal_white.svg',
-        className: "w-[18.5rem]"
+        className: "w-[13.875rem] lg:w-[18.5rem]"
     },
     {
         title: 'Horizontal Black',
         img: '/mediaKit/horizontal_black.svg',
-        className: "w-[18.5rem]"
+        className: "w-[13.875rem] lg:w-[18.5rem]"
     },
     {
         title: 'Horizontal Gradient',
         img: '/mediaKit/horizontal_gradient.svg',
-        className: "w-[18.5rem]"
+        className: "w-[13.875rem] lg:w-[18.5rem]"
     },
 ]
 
@@ -73,17 +73,17 @@ const verticalLogos = [
     {
         title: 'Vertical White',
         img: '/mediaKit/vertical_white.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Vertical Black',
         img: '/mediaKit/vertical_black.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Vertical Gradient',
         img: '/mediaKit/vertical_gradient.svg',
-        className: "w-[9.25rem]"
+        className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
 ]
 
@@ -105,18 +105,18 @@ const IconDiplayAndDownload = ({ item }: { item: any }) => {
         <div className="flex-1 flex flex-col gap-6 items-center justify-center w-[26rem]">
             <div className="flex flex-col gap-4 items-center justify-center">
                 <img src={item.img} alt={item.title} className={item.className} />
-                <span className="text-center tracking-widest teachers-24-400 teachers-24-400">{item.title}</span>
+                <span className="text-center tracking-widest teachers-16-24-400">{item.title}</span>
                 <div className="flex items-center gap-6">
                     <p className="flex items-center gap-2 cursor-pointer" onClick={() => handleDownload('jpg')}>
-                        <span className="teachers-16-400">JPG</span>
+                        <span className="teachers-14-16-400">JPG</span>
                         <ArrowRight className="size-4" />
                     </p>
                     <p className="flex items-center gap-2 cursor-pointer" onClick={() => handleDownload('png')}>
-                        <span className="teachers-16-400">PNG</span>
+                        <span className="teachers-14-16-400">PNG</span>
                         <ArrowRight className="size-4" />
                     </p>
                     <p className="flex items-center gap-2 cursor-pointer" onClick={() => handleDownload('svg')}>
-                        <span className="teachers-16-400">SVG</span>
+                        <span className="teachers-14-16-400">SVG</span>
                         <ArrowRight className="size-4" />
                     </p>
                 </div>
@@ -128,37 +128,37 @@ const IconDiplayAndDownload = ({ item }: { item: any }) => {
 const Mediakit = () => {
     return (
         <>
-            <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-                <div className="unbounded-180-200">media kit</div>
-                <span className="teachers-24-400 tracking-widest">brand assets</span>
+            <div className="py-12 lg:py-0 lg:min-h-screen flex flex-col items-center justify-center gap-4">
+                <div className="unbounded-36-180-200">media kit</div>
+                <span className="teachers-14-24-400 tracking-widest">brand assets</span>
             </div>
 
-            <div className="bg-white py-14 flex flex-col gap-2 items-center text-center">
+            <div className="bg-white p-4 lg:px-0 lg:py-14 flex flex-col gap-2 items-center text-center">
                 <span className="!normal-case teachers-16-400 text-black">Cysic is a leading ZK Hardware acceleration company in the industry and the first ZK Prover Network to provide</span>
-                <div className="unbounded-32-500 text-gradient-v1 flex text-center">ZK-CaaS (ZK Compute-as-a-Service)</div>
+                <div className="unbounded-16-32-500 text-gradient-v1 flex text-center">ZK-CaaS (ZK Compute-as-a-Service)</div>
                 <span className="!normal-case teachers-16-400 text-black">Our goal is to address the computational inefficiencies in ZK proofs and enable real-time ZK proof generation.</span>
             </div>
 
             <div className="py-14 flex flex-col gap-12 items-center">
-                <div className="unbounded-64-300">
+                <div className="unbounded-24-64-300 text-center">
                     CYSIC LOGOS
                 </div>
 
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-6 flex-wrap w-full lg:w-auto">
 
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 w-full flex-col lg:flex-row items-center lg:items-start justify-center">
                         {symbolLogos.map(i => (
                             <IconDiplayAndDownload key={i.title} item={i} />
                         ))}
                     </div>
 
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 w-full flex-col lg:flex-row items-center lg:items-start justify-center">
                         {horizontalLogos.map(i => (
                             <IconDiplayAndDownload key={i.title} item={i} />
                         ))}
                     </div>
 
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 w-full flex-col lg:flex-row items-center lg:items-start justify-center">
                         {verticalLogos.map(i => (
                             <IconDiplayAndDownload key={i.title} item={i} />
                         ))}
@@ -173,10 +173,10 @@ const Mediakit = () => {
 
 
             <div className="py-14 flex flex-col gap-12 items-center">
-                <div className="unbounded-64-300">
+                <div className="unbounded-24-64-300 text-center">
                     Brand Colors
                 </div>
-                <div className="flex flex-wrap gap-6">
+                <div className="flex flex-wrap gap-6 justify-center">
                     {brandColors.map(i => (
                         <div key={i.title} className={`max-w-[15.625rem] flex flex-col gap-4 p-6 rounded-md ${i.className}`}>
                             <span className="tracking-widest teachers-24-400">{i.title}</span>

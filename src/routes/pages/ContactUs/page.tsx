@@ -101,13 +101,13 @@ const ContactUs = () => {
     return (
         <PT12Wrapper className="w-full flex-1 flex flex-col">
             <>
-                <h1 className="unbounded-180-200 text-center pb-12">
+                <h1 className="unbounded-36-180-200 text-center pb-12">
                     Contact
                     <br />
                     Us
                 </h1>
-                <div className="p-12 bg-black flex-1 flex flex-col">
-                    <div className="pt-6 px-12 flex gap-4 main-container">
+                <div className="p-2 pb-12 lg:p-12 bg-black flex-1 flex flex-col">
+                    <div className="pt-6 px-4 lg:px-12 flex flex-col lg:flex-row gap-4 main-container">
                         <p className="flex-1 teachers-24-400 tracking-widest leading-[1.3]">
                             Please fill in this form, we will get back to you as soon as we
                             can.

@@ -486,7 +486,7 @@ const otherScreenList = [
       </Link>
     ),
     action: (
-      <div className="flex flex-wrap gap-4 main-container w-full px-4 lg:px-0">
+      <div className="flex flex-wrap gap-4 main-container w-full ">
         {academyConfigShowInHome.map((item) => {
           return <AcademyCard key={item.title} item={item} />;
         })}
@@ -581,8 +581,7 @@ const Home = () => {
           <div className="flex flex-col items-center">
             <span
               className={cn(
-                "unbounded text-[36px] lg:text-[80px] font-[200] !text-white text-center",
-                isMobile && "py-4"
+                "unbounded text-[36px] lg:text-[80px] font-[200] !text-white text-center p-4 lg:p-0",
               )}
             >
               The Compute Layer of a
@@ -594,7 +593,7 @@ const Home = () => {
             </span>
           </div>
 
-          <div className="flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base w-full lg:w-auto">
+          <div className="px-4 lg:px-0 flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base w-full lg:w-auto">
             <JoinTestnetPhaseIIIButton className="w-full lg:w-auto" />
             <CysicHardwareStackButton className="w-full lg:w-auto" />
             <SeeWhatsComingButton className="w-full lg:w-auto" />
@@ -655,7 +654,7 @@ const Home = () => {
         <DrawCardList />
       </div>
 
-      <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full">
+      <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full px-4 lg:px-0">
         <div className="flex flex-col gap-6 flex-1">
           <div className="unbounded-32-40-500 text-center">
             LIVE NOW
@@ -724,7 +723,7 @@ const Home = () => {
               title={i.title}
               slogen={i.slogen}
               action={i.action}
-              className="my-12 lg:my-0"
+              className="my-12 lg:my-0 px-4 lg:px-0"
             />
           );
         })}

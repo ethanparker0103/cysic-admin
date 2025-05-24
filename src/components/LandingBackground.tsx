@@ -71,8 +71,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                 <main
                     className={cn(
                         "relative min-h-screen w-full z-10 mx-auto",
-                        noContainer ? "!pb-0" : "main-container lg:pb-12",
-                        "pb-6 px-3 lg:px-0"
+                        noContainer ? "!pb-0" : "main-container lg:pb-12 px-3 lg:px-0",
+                        "pb-6"
                     )}
                 >
                     {children}
@@ -127,8 +127,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                     <main
                         className={cn(
                             "relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-start lg:pt-[8rem]",
-                            noContainer ? "!pb-0" : "main-container lg:pb-12",
-                            "px-3 lg:px-0 pb-6 ",
+                            noContainer ? "!pb-0" : "px-3 lg:px-0 main-container lg:pb-12",
+                            "pb-6 ",
                             mainClassName
                         )}
                     >

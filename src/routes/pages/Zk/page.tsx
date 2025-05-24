@@ -14,9 +14,9 @@ import { isMobile } from "react-device-detect";
 const ZkLanding = () => {
   return (
     <>
-      <div className="pt-0 lg:pt-12 flex flex-col items-center gap-6 relative z-[2] h-[70vh] lg:h-screen ">
+      <div className="pt-0 lg:pt-12 flex flex-col items-center gap-6 relative z-[2] h-[70vh] lg:h-screen px-4 lg:px-0">
         <div
-          className={cn("flex flex-col items-center", isMobile ? "gap-4" : "")}
+          className={cn("flex flex-col items-center gap-4 lg:gpt-0 ")}
         >
           <span className="tracking-widest teachers-16-24-400 text-center">
             Decentralized Prover and Verifier NetworK for ZK.
@@ -128,7 +128,7 @@ const ZkLanding = () => {
           THE MOST DECENTRALIZED ZKP COMPUTING NETWORK.
         </ScrollingText>
 
-        <div className={cn("flex flex-col lg:flex-row gap-4 lg:gap-6 py-6 lg:py-16 main-container")}>
+        <div className={cn("flex flex-col lg:flex-row gap-4 lg:gap-6 py-6 lg:py-16 main-container px-4 lg:px-0")}>
           <GradientBorderCard className="p-4 lg:p-6 flex flex-col gap-2 lg:gap-16 flex-1 justify-between">
             <div className="!tracking-widest teachers-20-24-400 ">
               Unmatched

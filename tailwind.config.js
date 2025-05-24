@@ -398,6 +398,7 @@ export default {
         { mobile: 32, desktop: 30 },
         { mobile: 32, desktop: 36 },
         { mobile: 32, desktop: 40 },
+        { mobile: 32, desktop: 64 },
         { mobile: 32, desktop: 180 },
         { mobile: 32, desktop: 64 },
         { mobile: 36, desktop: 64 },

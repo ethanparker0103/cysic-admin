@@ -82,14 +82,14 @@ const basicNav = [
         href: mediasLink.gitbook,
       },
       {
-        content: "blog",
+        content: "Blog",
         key: "blog",
         href: mediasLink.medium,
       },
       {
-          content: 'media',
-          key: 'media',
-          href: '/mediakit'
+        content: "Media Kit",
+        key: "media",
+        href: "/mediakit",
       },
     ],
   },
