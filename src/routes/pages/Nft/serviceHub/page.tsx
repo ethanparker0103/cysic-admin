@@ -1,7 +1,6 @@
 import { getImageUrl } from "@/utils/tools";
 import { useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
-import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import SocialAccount from "@/routes/components/SocialAccount";
 import Profile from "@/routes/components/Profile";
@@ -28,7 +27,7 @@ const UserPortal = () => {
     return (
         <>
             {/* content */}
-            <div className="main-container mx-auto relative z-10 pt-6 pb-12 w-full">
+            <div className="main-container mx-auto relative z-10 pt-6 pb-12 w-full px-4 lg:px-0">
 
 
                 {/* GENERAL 部分 */}

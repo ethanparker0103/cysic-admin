@@ -2,7 +2,6 @@ import GradientBorderCard from "@/components/GradientBorderCard";
 import { getImageUrl } from "@/utils/tools";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAccount from "@/hooks/useAccount";
-import { isMobile } from "react-device-detect";
 import { cn } from "@nextui-org/react";
 import { Multiplier } from "@/routes/components/Multiplier";
 import SocialAccount from "@/routes/components/SocialAccount";
@@ -48,7 +47,7 @@ const UserPortal = () => {
             GENERAL
           </h2>
 
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 px-4 lg:px-0">
             {/* total rewards */}
             <div className="flex-[5] min-w-[250px]">
               <ZkBalanceCard />
@@ -62,7 +61,7 @@ const UserPortal = () => {
           </div>
         </div>
 
-        <div className="mb-12 flex flex-col lg:flex-row flex-wrap gap-4">
+        <div className="mb-12 flex flex-col lg:flex-row flex-wrap gap-4 px-4 lg:px-0">
           <div className="flex-[2]">
             <Profile />
           </div>
@@ -91,7 +90,7 @@ const UserPortal = () => {
             check invite details <ArrowRight size={12} className="ml-1" />
           </Link>
 
-          <div className="flex flex-col lg:flex-row flex-wrap gap-4">
+          <div className="flex flex-col lg:flex-row flex-wrap gap-4 px-4 lg:px-0">
             <InviteCardWithStatus />
             <GradientBorderCard
               borderRadius={8}
@@ -128,7 +127,7 @@ const UserPortal = () => {
         </div>
 
         {/* SERVICE HUB 部分 */}
-        <div>
+        <div className="px-4 lg:px-0">
           <h2 className="unbounded-36-300 text-center mb-6 lg:mb-12">
             SERVICE HUB
           </h2>

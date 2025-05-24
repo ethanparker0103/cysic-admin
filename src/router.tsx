@@ -227,7 +227,7 @@ export const backgroundImageList = {
     style: {
       backgroundPosition: "center -30vh",
     },
-    className: "h-[160vh]",
+    className: "h-[180vh]",
   },
   "/zk/invite": {
     img: getImageUrl("@/assets/images/_global/invite_landing_bg.png"),

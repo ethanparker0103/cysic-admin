@@ -536,6 +536,7 @@ const ScreenNavCard = ({
   action,
   className,
   autoHeight,
+  classNames
 }: {
   background?: string;
   subTitle?: string;
@@ -544,6 +545,7 @@ const ScreenNavCard = ({
   action?: React.ReactNode;
   className?: string;
   autoHeight?: boolean;
+  classNames?: {slogen?: string, action?: string}
 }) => {
   return (
     <div
@@ -561,8 +563,8 @@ const ScreenNavCard = ({
       ) : null}
       <span className="mt-2 unbounded-36-64-300 text-center">{title}</span>
       </div>
-      {slogen ? <div className="mt-6 ">{slogen}</div> : null}
-      {action ? <div className="mt-6 ">{action}</div> : null}
+      {slogen ? <div className={cn("mt-6 ", classNames?.slogen)}>{slogen}</div> : null}
+      {action ? <div className={cn("mt-6 ", classNames?.action)}>{action}</div> : null}
     </div>
   );
 };
@@ -573,8 +575,7 @@ const Home = () => {
     <>
       <div
         className={cn(
-          " h-screen flex flex-col justify-between items-center main-container",
-          isMobile ? "max-h-[70rem]" : "min-h-[1050px] "
+          " h-screen flex flex-col justify-between items-center main-container max-h-[60rem] lg:max-h-screen min-h-[50rem] lg:min-h-[1050px] ",
         )}
       >
         <div className="pt-10 flex flex-col items-center gap-6 relative z-[2]">
@@ -602,7 +603,7 @@ const Home = () => {
 
         <div
           className={cn(
-            "flex flex-col items-center gap-4 lg:gap-12 relative z-[2] -translate-y-[40px]",
+            "flex flex-col items-center gap-4 lg:gap-12 relative z-[2] -translate-y-[0px]",
             "py-6 lg:py-0 pb-6 lg:pb-[10rem] "
           )}
         >
@@ -746,11 +747,12 @@ const Home = () => {
       <ScreenNavCard
         title="As seen on"
         className="py-10"
+        classNames={{action: "px-4 lg:px-0 w-full"}}
         action={
           <div className="flex flex-col gap-4 main-container py-10">
-            <div className="flex flex-wrap gap-y-12 flex-col lg:flex-row">
+            <div className="flex flex-wrap gap-x-4 lg:gap-x-0 gap-y-12 flex-row justify-center lg:justify-start">
               {otherArticleShowInHome.map(i => (
-                <a href={i.href} target="_blank" className="w-full lg:w-[33%] px-0 lg:px-6 h-auto flex justify-center items-center " key={i.title} >
+                <a href={i.href} target="_blank" className="lg:w-[33%] px-0 lg:px-6 h-auto flex justify-center items-center " key={i.title} >
                   <GradientBorderCard className="h-full flex flex-col max-w-[20.625rem] ">
                     <>
                       <div className="py-2 px-24 mx-auto">

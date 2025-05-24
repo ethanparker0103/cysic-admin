@@ -31,7 +31,7 @@ const ZkLanding = () => {
 
       {/* section-2 */}
       <JoinZkPhase3
-        className="pb-16"
+        className="!pb-16"
         slogen="Cysic Network "
         title="Phase III Is Now Open"
         subTitle={<div className="flex flex-col lg:flex-row gap-1"><span>Instant proofs.</span> <span>Infinite Possibilities</span></div>}
