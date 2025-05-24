@@ -4,7 +4,7 @@ import { AboutTestnetButton, JoinTestnetPhaseIIIButton } from "@/routes/componen
 
 const JoinZkPhase3 = ({ slogen, title = 'Phase III', subTitle, className }: { slogen: string, title?: string, subTitle?: string | React.ReactNode, className?: string }) => {
     return (
-        <div className={cn("px-4 lg:px-0", "py-12 lg:py-0 relative z-1 size-full flex flex-col gap-4 items-center justify-between lg:justify-center", className)}>
+        <div className={cn("main-container py-12 lg:py-0 relative z-1 size-full flex flex-col gap-4 items-center justify-between lg:justify-center", className)}>
             <div className="flex flex-col gap-1 items-center">
             <span className={cn('slogen', classes.subTitle)}>{slogen}</span>
             <span className="unbounded-36-96-200 text-center">{title}</span>

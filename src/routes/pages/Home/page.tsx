@@ -11,8 +11,7 @@ import { EcosystemCard } from "@/routes/pages/Ecosystem/page";
 import { getImageUrl } from "@/utils/tools";
 import { cn, Divider } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
-import { ReactNode, useRef } from "react";
-import { isMobile } from "react-device-detect";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HorizontalScroll from "./HorizontalScroll";
 
@@ -496,7 +495,7 @@ const otherScreenList = [
   {
     title: "investors",
     action: (
-      <div className="mt-10 flex flex-wrap gap-10 justify-center">
+      <div className="mt-10 flex flex-wrap gap-10 justify-center main-container">
         <div className="flex flex-wrap gap-10 justify-center">
           {investors1?.map((i) => {
             return (
@@ -545,7 +544,7 @@ const ScreenNavCard = ({
   action?: React.ReactNode;
   className?: string;
   autoHeight?: boolean;
-  classNames?: {slogen?: string, action?: string}
+  classNames?: { slogen?: string, action?: string }
 }) => {
   return (
     <div
@@ -558,10 +557,10 @@ const ScreenNavCard = ({
       <div className={cn("absolute inset-0 -z-[1]", background)} />
       <div className="flex flex-col">
 
-      {subTitle ? (
-        <span className="teachers-16-24-400 tracking-[0.3em] text-center">{subTitle}</span>
-      ) : null}
-      <span className="mt-2 unbounded-36-64-300 text-center">{title}</span>
+        {subTitle ? (
+          <span className="teachers-16-24-400 tracking-[0.3em] text-center">{subTitle}</span>
+        ) : null}
+        <span className="mt-2 unbounded-36-64-300 text-center">{title}</span>
       </div>
       {slogen ? <div className={cn("mt-6 ", classNames?.slogen)}>{slogen}</div> : null}
       {action ? <div className={cn("mt-6 ", classNames?.action)}>{action}</div> : null}
@@ -594,7 +593,7 @@ const Home = () => {
             </span>
           </div>
 
-          <div className="px-4 lg:px-0 flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base w-full lg:w-auto">
+          <div className="flex items-center lg:items-start gap-4 flex-wrap flex-col lg:flex-row mx-auto text-base w-full lg:w-auto">
             <JoinTestnetPhaseIIIButton className="w-full lg:w-auto" />
             <CysicHardwareStackButton className="w-full lg:w-auto" />
             <SeeWhatsComingButton className="w-full lg:w-auto" />
@@ -655,7 +654,7 @@ const Home = () => {
         <DrawCardList />
       </div>
 
-      <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full px-4 lg:px-0">
+      <div className="main-container py-16 flex flex-col lg:flex-row gap-12 w-full">
         <div className="flex flex-col gap-6 flex-1">
           <div className="unbounded-32-40-500 text-center">
             LIVE NOW
@@ -724,7 +723,7 @@ const Home = () => {
               title={i.title}
               slogen={i.slogen}
               action={i.action}
-              className="my-12 lg:my-0 px-4 lg:px-0"
+              className="my-12 lg:my-0 "
             />
           );
         })}
@@ -747,7 +746,7 @@ const Home = () => {
       <ScreenNavCard
         title="As seen on"
         className="py-10"
-        classNames={{action: "px-4 lg:px-0 w-full"}}
+        classNames={{ action: " w-full" }}
         action={
           <div className="flex flex-col gap-4 main-container py-10">
             <div className="flex flex-wrap gap-x-4 lg:gap-x-0 gap-y-12 flex-row justify-center lg:justify-start">
@@ -775,7 +774,7 @@ const Home = () => {
                 </a>
               ))}
             </div>
-            
+
             {/* <div className="mt-10 main-container w-full flex items-center gap-[3.25rem]">
               {asSeenOnList.map((i) => {
                 return (

@@ -11,7 +11,7 @@ const HardwarePage = () => {
   return (
     <>
       {/* section-1 */}
-      <div className="px-4 lg:px-0 flex flex-col items-center justify-center gap-4 relative z-[2] h-screen">
+      <div className="main-container flex flex-col items-center justify-center gap-4 relative z-[2] h-screen">
         <span
           className={cn("unbounded-32-180-200 text-white text-center")}
         >
@@ -27,7 +27,6 @@ const HardwarePage = () => {
       {/* section-2 */}
       <div
         className={cn(
-          "px-4 lg:px-0",
           "w-full py-16 flex flex-col gap-2 items-center",
           container
         )}
@@ -46,7 +45,7 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className={cn("px-4 lg:px-0 py-6 lg:py-16 flex flex-col gap-12 items-center", container)}>
+      <div className={cn("  py-6 lg:py-16 flex flex-col gap-12 items-center", container)}>
         <div className="unbounded-24-64-300 text-center">
           Technical Breakthroughs
         </div>
@@ -71,7 +70,7 @@ const HardwarePage = () => {
       <div className="w-full uppercase text-center bg-white text-black py-4 unbounded-20-40-500">
         001. Asic Solutions
       </div>
-      <div className={cn("px-4 lg:px-0 py-16 flex gap-6 flex-wrap", container)}>
+      <div className={cn("  py-16 flex gap-6 flex-wrap", container)}>
         <div className="flex flex-col gap-4">
           <div className="text-center unbounded-20-24-300">
             Deep custom silicon for ultimate zk performance
@@ -136,7 +135,7 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div id="zk-chip" className="px-4 lg:px-0 pt-12 w-full pb-16">
+      <div id="zk-chip" className="  pt-12 w-full pb-16">
         <div className="pb-12 unbounded-36-64-300 text-center">
           Get to know ASIC Products
         </div>
@@ -266,7 +265,7 @@ const HardwarePage = () => {
         </a>
       </div>
 
-      <div className="px-4 lg:px-0 py-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
+      <div className="  py-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
         <div className="flex flex-col max-w-[46.5625rem] items-center text-center ">
           <span className="unbounded-24-200 leading-[1.2]">
             Cysic's Hypercube Intermediate <br />
@@ -324,7 +323,7 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className="px-4 lg:px-0 py-16">
+      <div className="  py-16">
         <div className="unbounded-36-64-300 text-center pb-6 lg:pb-12 uppercase ">
           Key advantages
         </div>
@@ -379,7 +378,9 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className="px-4 lg:px-0 w-full py-16 flex flex-col gap-6 items-center justify-center bg-gradient-to-r  from-[#9838FF] to-[#2C0B50]">
+      <div className="w-full py-16 bg-gradient-to-r  from-[#9838FF] to-[#2C0B50]">
+        <div className=" flex flex-col gap-6 items-center justify-center main-container">
+
         <div className="text-center">
           <div className="sub-title !text-base lg:!text-[24] !font-[400]">
             Interested in generating
@@ -397,13 +398,15 @@ const HardwarePage = () => {
             <ArrowRight className="w-3 h-3" />
           </Button>
         </a>
+
+        </div>
       </div>
 
       <div className="w-full uppercase text-center bg-white text-black py-4 unbounded-20-40-500">
         002. gpu Acceleration
       </div>
 
-      <div className={cn("px-4 lg:px-0 flex flex-col lg:flex-row items-center pt-6 lg:pt-0", container)}>
+      <div className={cn("  flex flex-col lg:flex-row items-center pt-6 lg:pt-0", container)}>
         <div className="flex flex-col gap-4 max-w-[32.25rem] px-0 lg:px-12">
           <div className="unbounded-24-300">
             Ready to Use GPU-Enhanced ZK Proving Acceleration?
@@ -428,7 +431,7 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className={cn("px-4 lg:px-0 w-full flex flex-col lg:flex-row gap-4 lg:gap-6 py-16", container)}>
+      <div className={cn("  w-full flex flex-col lg:flex-row gap-4 lg:gap-6 py-16", container)}>
         <GradientBorderCard className="p-4 lg:p-6 flex flex-col gap-4 flex-1 justify-between">
           <div className="!tracking-widest sub-title !text-base lg:!text-2xl !font-[400]">
             Support
@@ -458,38 +461,40 @@ const HardwarePage = () => {
 
       {/* section-4 */}
       <div
-        className="px-4 lg:px-0 w-full h-screen bg-black flex flex-col items-center justify-center gap-6"
+        className="w-full h-screen bg-black flex items-center"
         style={{
           background: `url(${getImageUrl(
             "@/assets/images/_global/zk_hardware_bg_4.png"
           )}) no-repeat center center / cover`,
         }}
       >
-        <div className="flex flex-col items-center text-center">
-          <div className=" sub-title !text-base lg:!text-xl !font-[400]">
-            GPU-Enhanced ZK Proving Acceleration
+        <div className="main-container  flex flex-col items-center justify-center gap-6">
+          <div className="flex flex-col items-center text-center">
+            <div className=" sub-title !text-base lg:!text-xl !font-[400]">
+              GPU-Enhanced ZK Proving Acceleration
+            </div>
+            <div className="unbounded-36-96-300 !normal-case">ZKPoG</div>
           </div>
-          <div className="unbounded-36-96-300 !normal-case">ZKPoG</div>
-        </div>
-        <div className=" sub-title !text-base lg:!text-xl !font-[400] text-center">
-          The first GPU platform to accelerate both witness generation and end-to-end ZKP computation.
-        </div>
+          <div className=" sub-title !text-base lg:!text-xl !font-[400] text-center">
+            The first GPU platform to accelerate both witness generation and end-to-end ZKP computation.
+          </div>
 
-        <a
-          href="https://x.com/cysic_xyz/status/1917772291083231530"
-          target="_blank"
-        >
-          <Button
-            className="sub-title !normal-case !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-            type="solid"
+          <a
+            href="https://x.com/cysic_xyz/status/1917772291083231530"
+            target="_blank"
           >
-            <span>READ ABOUT ZKPoG</span>
-            <ArrowRight className="w-3 h-3" />
-          </Button>
-        </a>
+            <Button
+              className="sub-title !normal-case !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+              type="solid"
+            >
+              <span>READ ABOUT ZKPoG</span>
+              <ArrowRight className="w-3 h-3" />
+            </Button>
+          </a>
+        </div>
       </div>
 
-      <div className="px-4 lg:px-0 py-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
+      <div className="py-16 flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
         <div className="flex flex-col max-w-[46.5625rem] items-center text-center ">
           <span
             className="unbounded-24-32-500 leading-[1.3]"
@@ -560,7 +565,7 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className="px-4 lg:px-0 py-16">
+      <div className="py-16">
         <div className="unbounded-36-64-300 text-center pb-12 uppercase">
           Key advantages
         </div>
@@ -622,25 +627,27 @@ const HardwarePage = () => {
         </div>
       </div>
 
-      <div className="px-4 lg:px-0 w-full py-16 flex flex-col gap-6 items-center justify-center bg-gradient-to-r  from-[#9838FF] to-[#2C0B50]">
-        <div className="text-center">
-          <div className="sub-title !text-[24] !font-[400]">Interested in</div>
-          <div className="unbounded-32-64-300">
-            GPU-accelerated ZKPs?
+      <div className="w-full py-16 bg-gradient-to-r  from-[#9838FF] to-[#2C0B50]">
+        <div className="flex flex-col gap-6 items-center justify-center main-container text-center">
+          <div >
+            <div className="sub-title !text-[24] !font-[400]">Interested in</div>
+            <div className="unbounded-32-64-300">
+              GPU-accelerated ZKPs?
+            </div>
           </div>
-        </div>
-        <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdC7cCKdV1MWuzMktSp5eDrTxVWPgu9Dj4zANXlxAMN85Nm9w/viewform"
-          target="_blank"
-        >
-          <Button
-            className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
-            type="solid"
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSdC7cCKdV1MWuzMktSp5eDrTxVWPgu9Dj4zANXlxAMN85Nm9w/viewform"
+            target="_blank"
           >
-            <span>Inquire about GPU-Accelerated ZKPs</span>
-            <ArrowRight className="w-3 h-3" />
-          </Button>
-        </a>
+            <Button
+              className="sub-title !tracking-widest !text-base backdrop-blur-sm !p-6 text-white flex gap-2 uppercase"
+              type="solid"
+            >
+              <span>Inquire about GPU-Accelerated ZKPs</span>
+              <ArrowRight className="w-3 h-3" />
+            </Button>
+          </a>
+        </div>
       </div>
     </>
   );
