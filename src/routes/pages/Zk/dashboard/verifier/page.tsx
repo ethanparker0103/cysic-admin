@@ -8,7 +8,7 @@ import { getImageUrl, shortStr } from "@/utils/tools";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";
-import { TableAvatar, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { TableAvatar, TaskStatus, VerifierStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { useState } from "react";
 import { useDebounce } from "ahooks";
 
@@ -59,7 +59,7 @@ const ProjectPage = () => {
         {
             key: "status",
             label: "Status",
-            renderCell: (row) => <TaskStatus status={row.status} />
+            renderCell: (row) => <VerifierStatus status={row.status} />
         },
         {
             key: "view",

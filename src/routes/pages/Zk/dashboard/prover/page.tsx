@@ -7,7 +7,7 @@ import { ArrowRight, Search, ShareIcon } from "lucide-react";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";
-import { TableAvatar, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { ProverStatus, TableAvatar, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { useState } from "react";
 import { useDebounce } from "ahooks";
 
@@ -50,7 +50,7 @@ const ProjectPage = () => {
         {
             key: "status",
             label: "Status",
-            renderCell: (row) => <TaskStatus status={row.status} />
+            renderCell: (row) => <ProverStatus status={row.status} />
         },
         {
             key: "detail",

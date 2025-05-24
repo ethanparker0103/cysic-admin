@@ -11,7 +11,7 @@ import { commonPageSize, mediasLink } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
 import { ArrowRight, ArrowUpRightIcon } from "lucide-react";
-import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { ProverStatus, TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 
 
@@ -68,7 +68,7 @@ const ProverDetail = () => {
             key: "status",
             label: "Status",
             renderCell: (item: any) => {
-                return <TaskStatus status={item?.status} />
+                return <ProverStatus status={item?.status} />
             }
         },
         {

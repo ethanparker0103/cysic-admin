@@ -15,6 +15,7 @@ import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
 import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowUpRightIcon } from "lucide-react";
 
 const VerifierDetail = () => {
   const { t } = useTranslation();
@@ -53,10 +54,7 @@ const VerifierDetail = () => {
               className="flex items-center gap-2"
             >
               <span>{item?.address}</span>
-              <img
-                className="size-3"
-                src={getImageUrl("@/assets/images/icon/share.svg")}
-              />
+              <ArrowUpRightIcon className="size-3" />
             </a>
             <a
               target="_blank"
@@ -64,10 +62,7 @@ const VerifierDetail = () => {
               className="flex items-center gap-2 text-[#737373]"
             >
               <span>{item?.cysicAddress}</span>
-              <img
-                className="size-3"
-                src={getImageUrl("@/assets/images/icon/share.svg")}
-              />
+              <ArrowUpRightIcon className="size-3" />
             </a>
           </div>
         );

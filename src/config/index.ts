@@ -18,7 +18,7 @@ export const rewardStatus: any = {
   "2": "No Reward",
 };
 
-export const providerStatus = baseStatus;
+export const proverStatus = baseStatus;
 
 export const projectStatus = baseStatus;
 
