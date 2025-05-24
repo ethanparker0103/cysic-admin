@@ -81,7 +81,7 @@ const ProjectPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("unbounded font-light mb-24 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Verifier</h1>
+                <h1 className={cn("unbounded-36-72-300 mb-24 text-center")}>Verifier</h1>
 
                 {/* s3 */}
                 <Input variant="bordered" classNames={{

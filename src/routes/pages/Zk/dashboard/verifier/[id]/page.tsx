@@ -2,7 +2,6 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
@@ -16,6 +15,8 @@ import CysicTable from "@/components/Table";
 import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { ArrowUpRightIcon } from "lucide-react";
+import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
+import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 const VerifierDetail = () => {
   const { t } = useTranslation();
@@ -53,7 +54,7 @@ const VerifierDetail = () => {
               href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
               className="flex items-center gap-2"
             >
-              <span>{item?.address}</span>
+              <span className="flex-1 lg:flex-none">{item?.address}</span>
               <ArrowUpRightIcon className="size-3" />
             </a>
             <a
@@ -61,7 +62,7 @@ const VerifierDetail = () => {
               href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
               className="flex items-center gap-2 text-[#737373]"
             >
-              <span>{item?.cysicAddress}</span>
+              <span className="flex-1 lg:flex-none">{item?.cysicAddress}</span>
               <ArrowUpRightIcon className="size-3" />
             </a>
           </div>
@@ -145,44 +146,27 @@ const VerifierDetail = () => {
   ];
 
   return (
-    <div
-      className={cn(
-        "mx-auto mb-auto relative z-10 pt-20 pb-16 w-full",
-        isMobile ? "break-words" : ""
-      )}
-    >
-      {/* title */}
-      <h1
-        className={cn(
-          "unbounded font-light mb-12 text-center",
-          isMobile ? "text-7xl" : "text-[2.25rem]"
-        )}
-      >
-        Verifier Detail
-      </h1>
-      <GradientBorderCard className="px-4 py-6 flex gap-6">
+    <DashboardDetailMainWrapper
 
-        {rows?.avatar ? <img src={rows?.avatar} className="size-14 rounded-full" /> : <div className="size-14 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center" >{rows?.name?.slice(0, 2)}</div>}
-        <div className="flex-1 flex">
+      title="Verifier Detail"
+      detail={<GradientBorderCard >
+        <Avatar className="!size-14" avatar={rows?.avatar} name={rows?.name} />
+        <div className="lg:!flex-row">
           <div className="flex flex-col gap-2 flex-1">
             {columns?.map((i, index) => {
               return (
                 <div
                   key={i?.key || index}
                   className={cn(
-                    ["verifier", "provider", "inputData"].includes(i?.key) &&
-                      isMobile
-                      ? "flex-col !items-start"
-                      : "",
-                    isMobile ? "gap-2 flex-wrap" : "gap-10",
+                    ["verifier", "provider", "inputData"].includes(i?.key) && "lg:!flex-row flex-col",
+                    "gap-2 lg:gap-10 flex-wrap",
                     "flex items-start"
                   )}
                 >
-                  <div className="text-[#A3A3A3] w-[10rem]">{t(i?.label)}</div>
+                  <div className="text-[#A3A3A3] w-[10rem] flex-1 lg:flex-none">{t(i?.label)}</div>
                   <div
                     className={cn(
-                      isMobile ? "break-all flex-wrap" : "",
-                      "flex-1"
+                      "break-all flex-wrap flex-1",
                     )}
                   >
                     {renderCell(rows, i?.key, i)}
@@ -191,35 +175,37 @@ const VerifierDetail = () => {
               );
             })}
           </div>
-          <div className="flex gap-10 flex-1">
-            <div className="text-[#A3A3A3] w-[10rem]">Description</div>
-            <div className="flex-1">{rows?.description || '-'}</div>
+          <div className="flex gap-2 flex-1 flex-col lg:flex-row">
+            <div className="flex-1 lg:flex-none text-[#A3A3A3] w-[10rem]">Description</div>
+            <div className="flex-1 break-words">{rows?.description || '-'}</div>
           </div>
-
         </div>
-      </GradientBorderCard>
+      </GradientBorderCard>}
+      table={
+        <GradientBorderCard >
+          <CysicTable
+            className="[&>div]:!p-0"
+            columns={listColumns}
+            data={listData?.data?.list || []}
+          />
 
-      <GradientBorderCard className="px-4 py-6 mt-8">
-        <CysicTable
-          className="[&>div]:!p-0"
-          columns={listColumns}
-          data={listData?.data?.list || []}
-        />
+          {total > commonPageSize && (
+            <div className="flex justify-center mb-4">
+              <Pagination
+                total={Math.ceil(total / commonPageSize)}
+                initialPage={1}
+                page={currentPage}
+                onChange={setCurrentPage}
+                color="primary"
+                size="sm"
+              />
+            </div>
+          )}
+        </GradientBorderCard>
+      }
+    />
 
-        {total > commonPageSize && (
-          <div className="flex justify-center mb-4">
-            <Pagination
-              total={Math.ceil(total / commonPageSize)}
-              initialPage={1}
-              page={currentPage}
-              onChange={setCurrentPage}
-              color="primary"
-              size="sm"
-            />
-          </div>
-        )}
-      </GradientBorderCard>
-    </div>
+
   );
 };
 

@@ -8,9 +8,9 @@ export const Avatar = ({ className, avatar, name }: { className?: string; avatar
     avatar ? (
       <img src={avatar} className={cn(className, "size-8 rounded-full")} />
     ) : (
-      <div className={cn(className, "size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center")}>
+      <p className={cn(className, "size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center")}>
         {name?.slice(0, 2)}
-      </div>
+      </p>
     )
   )
 }
@@ -29,7 +29,7 @@ export const TableAvatar = ({ avatar, name }: { avatar: string; name: string }) 
 export const TaskStatus = ({ status }: { status: number }) => {
   return (
     <div className=" rounded-full flex items-center gap-1">
-      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TaskStatusColor[status] }} />
+      <div className=" min-w-2 min-h-2 w-2 h-2 rounded-full" style={{ backgroundColor: TaskStatusColor[status] }} />
       {TaskStatusText[status]}
     </div>
   );

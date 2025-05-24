@@ -8,6 +8,7 @@ import { cn } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
 import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { getImageUrl } from "@/utils/tools";
+import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 
 
 
@@ -84,22 +85,33 @@ const TaskDetail = () => {
 
 
     return (
-        <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
-            {/* title */}
-            <h1 className={cn("unbounded font-light mb-12 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Task Detail</h1>
-            <GradientBorderCard className="px-4 py-6">
+
+
+        <DashboardDetailMainWrapper
+            title="Task Detail"
+            detail={<GradientBorderCard className="px-4 py-6">
                 <div className="flex flex-col gap-2">
                     {columns?.map((i, index) => {
                         return (
-                            <div key={i?.key || index} className={cn(['verifier', 'provider', 'inputData'].includes(i?.key) && isMobile ? "flex-col !items-start" : "", isMobile ? "gap-2 flex-wrap" : "gap-10", "flex items-start")}>
-                                <div className="text-[#A3A3A3] w-[25%]">{t(i?.label)}</div>
-                                <div className={cn(isMobile ? "break-all flex-wrap" : "", "flex-1")}>{renderCell(rows, i?.key, i)}</div>
+                            <div key={i?.key || index}
+                                className={cn(
+                                    ["verifier", "provider", "inputData"].includes(i?.key) &&
+                                    "flex-col lg:flex-row !items-start",
+                                    "gap-2 flex-wrap lg:gap-10",
+                                    "flex items-start",
+                                    ["proofList", "verifier", "inputData"].includes(i?.key) && "flex-col lg:flex-row"
+                                )}>
+                                <div className="flex-1 lg:flex-none text-[#A3A3A3] w-[25%]">{t(i?.label)}</div>
+                                <div className={cn(["proofList", "verifier", "inputData"].includes(i?.key) && "w-full lg:w-auto", "break-words flex-wrap flex-1")}>{renderCell(rows, i?.key, i)}</div>
                             </div>
                         );
                     })}
                 </div>
-            </GradientBorderCard>
-        </div>
+            </GradientBorderCard>}
+
+
+        />
+
     );
 };
 

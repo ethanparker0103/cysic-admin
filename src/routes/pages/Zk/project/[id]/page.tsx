@@ -13,6 +13,7 @@ import { shortStr } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
 import { TaskStatus } from "@/config";
 import { TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 interface ITask {
     taskId: number;
@@ -163,68 +164,47 @@ const ProjectDetailPage = () => {
                             <div className="flex flex-col gap-6">
                                 <div className="flex items-center justify-between">
                                     <div className="flex items-center gap-2">
-                                        {projectDetail.avatar ? (
-                                            <img src={projectDetail.avatar} alt="avatar" className="size-8 rounded-full" />
-                                        ) : (
-                                            <div className="size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center">
-                                                <span className="text-white">{projectDetail?.name?.slice(0, 2)}</span>
-                                            </div>
-                                        )}
+                                        <Avatar avatar={projectDetail?.avatar} name={projectDetail?.name} className="size-8" />
                                         <h2
                                             className={cn(
                                                 "unbounded-16-20-300 mt-2",
                                             )}
                                         >
-                                            {projectDetail?.name}
+                                            {projectDetail?.name || '-'}
                                         </h2>
                                     </div>
-                                    {/* <div className="flex items-center gap-2">
-                                        <Button
-                                            type="light"
-                                            className="uppercase !px-6 text-base min-w-fit min-h-fit"
-                                            onClick={() => {
-                                                dispatchEvent(new CustomEvent("modal_project_pause_visible", {
-                                                    detail: {
-                                                        visible: true
-                                                    }
-                                                }));
-                                            }}
-                                        >
-                                            Pause
-                                        </Button>
-                                    </div> */}
                                 </div>
 
-                                <div className="flex flex-col lg:flex-row items-start gap-4">
-                                    <div className="flex flex-col gap-1 flex-1">
+                                <div className="flex flex-col lg:flex-row items-start gap-2 lg:gap-4">
+                                    <div className="flex flex-col gap-1 flex-1 w-full lg:w-auto">
                                         <div className="flex items-center justify-between">
-                                            <div className="text-sub">Proof Category</div>
-                                            <div>{projectDetail.proofCategory}</div>
+                                            <div className="text-sub flex-1 lg:flex-none">Proof Category</div>
+                                            <div className="flex-1 lg:flex-none">{projectDetail?.proofCategory || '-'}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            <div className="text-sub">Proof Size</div>
-                                            <div>{projectDetail.proofSize}</div>
+                                            <div className="text-sub flex-1 lg:flex-none">Proof Size</div>
+                                            <div className="flex-1 lg:flex-none">{projectDetail?.proofSize || '-'}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            <div className="text-sub">Time Bounds</div>
-                                            <div>{projectDetail.timeBounds}</div>
+                                            <div className="text-sub flex-1 lg:flex-none">Time Bounds</div>
+                                            <div className="flex-1 lg:flex-none">{projectDetail?.timeBounds || '-'}</div>
                                         </div>
 
                                         <div className="flex items-center justify-between">
-                                            <div className="text-sub">Task Count</div>
-                                            <div>{projectDetail.taskCount}</div>
+                                            <div className="text-sub flex-1 lg:flex-none">Task Count</div>
+                                            <div className="flex-1 lg:flex-none">{projectDetail?.taskCount || '-'}</div>
                                         </div>
 
-                                        <div className="flex items-center justify-between">
-                                            <div className="text-sub">Hardware Requirements</div>
-                                            <div className="text-right lg:text-left">{projectDetail.hardwareRequirement}</div>
+                                        <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-2 lg:mt-0 gap-1 lg:gap-0">
+                                            <div className="text-sub flex-1 lg:flex-none">Hardware Requirements</div>
+                                            <div className="break-words flex-1 lg:flex-none text-left">{projectDetail.hardwareRequirement || '-'}</div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-row lg:flex-col justify-between lg:justify-start w-full lg:w-auto gap-1 text-sm flex-1">
+                                    <div className="flex flex-col justify-between lg:justify-start w-full lg:w-auto gap-1 text-sm flex-1">
                                         <div className="text-sub">Description</div>
-                                        <div>{projectDetail.description}</div>
+                                        <div className="break-words">{projectDetail.description || '-'}</div>
                                     </div>
                                 </div>
                             </div>

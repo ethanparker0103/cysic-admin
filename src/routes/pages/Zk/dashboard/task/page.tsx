@@ -80,11 +80,10 @@ const TaskPage = () => {
     return (
         <>
 
-
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("unbounded font-light mb-12 text-center", isMobile ? "text-7xl" : "text-[2.25rem]")}>Task</h1>
+                <h1 className={cn("unbounded-36-72-300 mb-12 text-center")}>Task</h1>
 
                 {/* s3 */}
                 <GradientBorderCard className="mt-8 flex flex-col px-6 py-4">

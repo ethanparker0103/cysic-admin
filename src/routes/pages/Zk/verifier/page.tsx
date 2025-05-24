@@ -361,7 +361,7 @@ const SelfProverStepCard = ({
                             disabled={!onClick}
                             onClick={onClick}
                             type="light"
-                            className="rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
+                            className="my-2 lg:my-0 rounded-lg h-[4.1875rem] w-[12.5rem] !p-0 min-h-fit !text-base !font-[400]"
                         >
                             {buttonText}
                         </Button>
