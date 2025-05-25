@@ -131,7 +131,7 @@ const guide = {
                 </p>,
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
             
-curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
+curl -L https://github.com/cysic-labs/cysic-phase3/releases/download/v1.0.0/setup_linux.sh > ~/setup_linux.sh && bash ~/setup_linux.sh 0x-Fill-in-your-reward-address-here`,
             },
             {
                 title: "Start the verifier program",
@@ -175,9 +175,9 @@ curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup
 
 cd $env:USERPROFILE
 
-Invoke-WebRequest -Uri "https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_win.ps1" -OutFile "setup_win.ps1"
+Invoke-WebRequest -Uri "https://github.com/cysic-labs/cysic-phase3/releases/download/v1.0.0/setup.ps1" -OutFile "setup_win.ps1"
 
-.\\setup_win.ps1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here" `,
+.\\setup_win.ps1 -CLAIM_REWARD_ADDRESS "0x-Fill-in-your-reward-address-here"`,
             },
             {
                 title: "Start the verifier program",
@@ -225,7 +225,7 @@ cd $env:USERPROFILE\\cysic-verifier
                 ),
                 code: `# replace 0x-Fill-in-your-reward-address-here with your reward address below
 
-curl -L https://github.com/cysic-labs/phase3_libs/releases/download/v1.0.0/setup_mac.sh > ~/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
+curl -L https://github.com/cysic-labs/cysic-phase3/releases/download/v1.0.0/setup_mac.sh && bash ~/setup_mac.sh 0x-Fill-in-your-reward-address-here`,
             },
             {
                 title: "Start the verifier program",
