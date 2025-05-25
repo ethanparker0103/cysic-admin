@@ -226,14 +226,29 @@ export const DrawCardList = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [dynamicStyles, setDynamicStyles] = useState("");
+    const [containerHeight, setContainerHeight] = useState("40rem");
     
     useEffect(() => {
         const calculateOffsets = () => {
             const heights = cardRefs.current.map(ref => ref?.offsetHeight || 0);
             
+            // 计算合适的容器高度
+            // 获取最后一个卡片的位置和高度，加上适当的底部边距
+            const lastCardIndex = drawerCardList.length - 1;
+            const lastCardElement = cardRefs.current[lastCardIndex];
+            if (lastCardElement) {
+                // 计算最后一个卡片底部的位置
+                const lastCardBottom = lastCardElement.offsetTop + lastCardElement.offsetHeight;
+                // 添加一些底部间距 (如50px)
+                const newHeight = `${lastCardBottom + 50}px`;
+                setContainerHeight(newHeight);
+            }
+            
             let styles = "";
             heights.forEach((height, index) => {
+                // 为每个卡片计算其他卡片的位移
                 for (let i = 0; i < index; i++) {
+                    // 添加一个小的偏移量(20px)作为卡片间的间距，确保卡片不会完全重叠
                     styles += `
                     @media (max-width: 768px) {
                         .cards-container[data-hover="${i}"] .card-layer:nth-child(${index + 1}) {
@@ -246,10 +261,16 @@ export const DrawCardList = () => {
             setDynamicStyles(styles);
         };
         
-        calculateOffsets();
+        // 在组件挂载后和窗口大小变化时重新计算
+        // 使用setTimeout确保DOM已完全渲染
+        const timer = setTimeout(() => {
+            calculateOffsets();
+        }, 100);
+        
         window.addEventListener('resize', calculateOffsets);
         
         return () => {
+            clearTimeout(timer);
             window.removeEventListener('resize', calculateOffsets);
         };
     }, []);
@@ -279,7 +300,8 @@ export const DrawCardList = () => {
 
             <div
                 ref={containerRef}
-                className="relative w-full hover-group cards-container h-[40rem]"
+                className="relative w-full hover-group cards-container"
+                style={{ height: containerHeight }}
                 onMouseLeave={() => {
                     containerRef.current?.removeAttribute("data-hover");
                 }}
