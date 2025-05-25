@@ -9,13 +9,16 @@ const HorizontalScroll = ({ children }: { children: React.ReactNode }) => {
   const containerRef = useRef(null);
   const scrollRef = useRef(null);
 
-  useEffect(() => {
+  // 设置滚动动画的函数，以便在初始化和窗口大小变化时调用
+  const setupScrollAnimation = () => {
     const sections = gsap.utils.toArray<HTMLElement>(".horizontal-section");
     const sectionWidth = sections[0]?.offsetWidth || window.innerWidth;
 
     const initialOffset = ( Math.floor(sections.length / 2) - 0.5) * sectionWidth;
     const remainingSections = sections.length - Math.floor(sections.length / 2) - 0.5;
 
+    // 清除之前的动画实例
+    ScrollTrigger.getAll().forEach(st => st.kill());
 
     gsap.set('.horizontal-scroll', {
         x: initialOffset
@@ -33,8 +36,27 @@ const HorizontalScroll = ({ children }: { children: React.ReactNode }) => {
             invalidateOnRefresh: true
         }
     });
+  };
 
-    return () => ScrollTrigger.killAll();
+  useEffect(() => {
+    // 初始化滚动动画
+    setupScrollAnimation();
+    
+    // 添加窗口大小变化监听器
+    const handleResize = () => {
+      // 使用requestAnimationFrame防止resize事件触发过于频繁
+      window.requestAnimationFrame(() => {
+        setupScrollAnimation();
+      });
+    };
+    
+    window.addEventListener("resize", handleResize);
+
+    // 清理函数
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      ScrollTrigger.killAll();
+    };
   }, []);
 
   return (
