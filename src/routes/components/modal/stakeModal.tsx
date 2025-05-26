@@ -5,15 +5,17 @@ import { ChevronDown, ChevronUp, Wallet } from "lucide-react";
 import Button from "@/components/Button";
 import { formatReward, showStatusModal, sleep } from "@/utils/tools";
 import { Slider } from "@nextui-org/react";
-import { StatusType } from "./statusModal"; // 导入状态类型枚举
+import { StatusType } from "./statusModal";
 import useCosmos from "@/models/_global/cosmos";
-import useStake from "@/models/stake"; // 引入stake store
+import useStake from "@/models/stake";
 import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosmos";
 import { blockTime, cosmosFee, cosmosCysicTestnet } from "@/config";
 import { MsgDelegate, MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import BigNumber from "bignumber.js";
 import { useRequest } from "ahooks";
 import axios from "@/service";
+import dayjs from "dayjs";
+import GradientBorderCard from "@/components/GradientBorderCard";
 
 // 操作类型枚举
 enum StakeAction {
@@ -161,7 +163,11 @@ const ValidatorDropdown = ({
             </div>
 
             {isOpen && (
-                <div className="absolute left-0 right-0 top-full mt-1 z-50 bg-black border border-[#333] rounded-lg overflow-hidden">
+                <GradientBorderCard borderRadius={8} 
+                style={{
+                    '--border-width': '0.5px'
+                }}
+                className="absolute left-0 right-0 top-full mt-1 z-50 bg-black border border-[#333] rounded-lg overflow-hidden">
                     <div className="p-4">
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
 
@@ -235,7 +241,7 @@ const ValidatorDropdown = ({
                                             </div>
                                             <div className="text-white">
                                                 {validatorTab === ValidatorTab.MY_VALIDATORS
-                                                    ? validator.apr || "0%"
+                                                    ? (validator.apr || "0") + "%"
                                                     : `${(Number(validator.commissionRate) * 100).toFixed(2)}%` || "0%"
                                                 }
                                             </div>
@@ -257,7 +263,7 @@ const ValidatorDropdown = ({
                         <div className="text-[#777]">Unbonding period</div>
                         <div className="text-white">21 Days</div>
                     </div>
-                </div>
+                </GradientBorderCard>
             )}
         </div>
     );
@@ -276,7 +282,7 @@ const StakeModal = () => {
     const [showValidatorList, setShowValidatorList] = useState(false);
     const [amount, setAmount] = useState("");
     const [stakePercentage, setStakePercentage] = useState(0);
-    const [estimatedArrivalTime, setEstimatedArrivalTime] = useState("Nov 12, 2025 08:00");
+    // const [estimatedArrivalTime, setEstimatedArrivalTime] = useState("Nov 12, 2025 08:00");
     const { balanceMap, address, connector } = useCosmos()
     const cgtBalance = balanceMap?.CGT?.hm_amount || 0
     const balance = cgtBalance.toString();
@@ -601,7 +607,7 @@ const StakeModal = () => {
             {/* 加载状态显示 */}
             {(stakeLoading || activeLoading) && (
                 <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="text-white">加载验证者数据中...</div>
+                    <div className="text-white">Loading validator data...</div>
                 </div>
             )}
 
@@ -748,7 +754,7 @@ const StakeModal = () => {
                         </div> */}
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Estimated Arrival Time</div>
-                            <div className="text-white">{estimatedArrivalTime}</div>
+                            <div className="text-white">{dayjs().add(21, 'day').format('YYYY-MM-DD HH:mm')}</div>
                         </div>
                     </div>
                 </>

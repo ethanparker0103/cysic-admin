@@ -6,8 +6,8 @@ export const cosmos_cysic_testnet = {
   // NOTE: local test connects to node 1
   // "rpc": "http://localhost:26668",
   // "rest": "http://localhost:8327",
-  "rpc": "https://rpc-testnet.prover.xyz",
-  "rest": "https://api-testnet.prover.xyz",
+  "rpc": "https://rpc-qa.prover.xyz",
+  "rest": "https://api-qa.prover.xyz",
   "walletUrlForStaking": "https://wallet.keplr.app/chains/cysic",
   "bip44": {
     "coinType": 60

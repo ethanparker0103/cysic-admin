@@ -24,7 +24,6 @@ const size = "full";
 export default function Header() {
   const { walletAddress, isSigned, isBinded } = useAccount();
   const { currentNavs } = useNav();
-  console.log('currentNavs', currentNavs)
   const location = useLocation();
 
   const { hasTryToConnectedOnce } = useTriedConnectedOnce();
