@@ -199,7 +199,7 @@ export default function Header() {
                 // @ts-ignore
                 currentNavs?.[0]?.type == 'subNav' && (
                   <div className="hidden lg:block main-container left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(5rem+18px)] w-full">
-                    <GradientBorderCard gradientTo="rgba(255, 255, 255, 0)" direction="0deg" className=" px-6 flex items-center h-[65px]">
+                    <GradientBorderCard gradientTo="rgba(255, 255, 255, 0)" direction="0deg" className="bg-gradient-to-t from-[#212121] to-[transparent] px-6 flex items-center h-[65px]">
                       {
                         // @ts-ignore
                         currentNavs?.[0]?.children?.map(i => {
