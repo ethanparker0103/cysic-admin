@@ -214,7 +214,7 @@ const StakePage = () => {
       renderCell: (validator) => (
         <div>
           <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
-          <div className="text-sm text-sub">{validator.votingPercentage}%</div>
+          <div className="text-sm text-sub">{validator.votingPercentage * 100}%</div>
         </div>
       )
     },
@@ -272,7 +272,7 @@ const StakePage = () => {
       renderCell: (validator) => (
         <div>
           <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
-          <div className="text-sm text-sub">{validator.votingPercentage}%</div>
+          <div className="text-sm text-sub">{validator.votingPercentage * 100}%</div>
         </div>
       )
     },
@@ -362,6 +362,20 @@ const StakePage = () => {
     }
   };
 
+
+
+// delegatorWithdrawAddress
+const queryWithdrawAddress = async () => {
+  const queryClient = QueryClient.withExtensions(
+    connector?.getQueryClient(),
+    setupDistributionExtension
+  );
+  const result_ = await queryClient.distribution.delegatorWithdrawAddress(
+    address
+  );
+
+  console.log('result_', result_)
+}
 
 
   const queryRewards = async () => {
@@ -474,7 +488,7 @@ const StakePage = () => {
           >
             <div className="w-full py-4 px-4 lg:px-6">
               <h2 className="unbounded-20-300 mb-4">CLAIM REWARDS</h2>
-              <div className={cn("unbounded-24-400 mb-4", "text-left lg:text-right")}>{formatReward(rewardsAmount, 4)} CGT</div>
+              <div className={cn("unbounded-24-400 mb-4", "text-left lg:text-right")}>{formatReward(rewardsAmount, 4)} CYS</div>
               <Button
                 needLoading
                 // disabled={!Number(rewardsAmount) || !address}
