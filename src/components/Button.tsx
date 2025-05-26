@@ -88,7 +88,7 @@ const Button = ({
       )}
     >
       <div className="flex items-center gap-2 justify-center">
-        {_loading ? <Spinner iconClassName={cn("!size-4", type === BtnType.light ? "fill-[rgba(0,0,0,0.5)]" : "")} /> : null}
+        {_loading ? <Spinner iconClassName={cn("!size-4", type === BtnType.light ? "!fill-[rgba(0,0,0,0.5)]" : "")} /> : null}
         {children}
       </div>
     </button>
