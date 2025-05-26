@@ -1,6 +1,3 @@
-const useStakeListUpdater = () => {
-
-
-}
+const useStakeListUpdater = () => {}
 
 export default useStakeListUpdater
