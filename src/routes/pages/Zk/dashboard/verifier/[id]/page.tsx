@@ -12,7 +12,7 @@ import {
 } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
-import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { TaskStatus, VerifierStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { ArrowUpRightIcon } from "lucide-react";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
@@ -129,7 +129,7 @@ const VerifierDetail = () => {
       key: "result",
       label: "Result",
       renderCell: (item: any) => {
-        return <TaskStatus status={item?.verifyResult} />
+        return <VerifierStatus status={item?.verifyResult} />
       },
     },
     {

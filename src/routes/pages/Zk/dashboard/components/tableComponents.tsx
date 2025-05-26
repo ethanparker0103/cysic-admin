@@ -1,4 +1,4 @@
-import { TaskStatus as TaskStatusText, TaskStatusColor, proverStatus, projectStatus, verifierStatus } from "@/config";
+import { TaskStatus as TaskStatusText, TaskStatusColor, proverStatus, projectStatus, verifierStatus, StatusColor } from "@/config";
 import { getImageUrl, shortStr } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
@@ -53,7 +53,7 @@ export const TaskReward = ({ className, rewardCYS, rewardCGT }: { className?: st
 export const ProverStatus = ({ status }: { status: number }) => {
   return (
     <div className=" rounded-full flex items-center gap-1">
-      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TaskStatusColor[status] }} />
+      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: StatusColor[status] }} />
       {proverStatus[status]}
     </div>
   );
@@ -62,7 +62,7 @@ export const ProverStatus = ({ status }: { status: number }) => {
 export const ProjectStatus = ({ status }: { status: number }) => {
   return (
     <div className=" rounded-full flex items-center gap-1">
-      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TaskStatusColor[status] }} />
+      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: StatusColor[status] }} />
       {projectStatus[status]}
     </div>
   );
@@ -71,7 +71,7 @@ export const ProjectStatus = ({ status }: { status: number }) => {
 export const VerifierStatus = ({ status }: { status: number }) => {
   return (
     <div className=" rounded-full flex items-center gap-1">
-      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: TaskStatusColor[status] }} />
+      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: StatusColor[status] }} />
       {verifierStatus[status]}
     </div>
   );

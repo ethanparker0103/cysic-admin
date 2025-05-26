@@ -47,6 +47,12 @@ export const TaskStatus: any = {
   "401": "TaskStatusMatchVerifierFailed",
 };
 
+export const StatusColor: any = {
+  "0": "#F0AE52",
+  "1": "#75FF52",
+  "2": "#FF5953",
+}
+
 export const TaskStatusColor: any = {
   "0": "#F0AE52",
   "1": "#F0AE52",
