@@ -91,6 +91,14 @@ const routeChildren = [
     path: "contactus",
     element: <ContactUs />,
   },
+  {
+    path: "media-kit",
+    element: <MediakitPage />,
+  },
+  {
+    path: "contact-us",
+    element: <ContactUs />,
+  },
   socialTaskModules,
   {
     path: "zk",
@@ -406,9 +414,17 @@ export const backgroundImageList = {
   "/mediakit": {
     img: getImageUrl("@/assets/images/_global/mediakit_landing_bg.png"),
     className: "h-screen",
-    // img: "#000",
+  },
+  "/media-kit": {
+    img: getImageUrl("@/assets/images/_global/mediakit_landing_bg.png"),
+    className: "h-screen",
   },
   "/contactus": {
+    img: getImageUrl("@/assets/images/_global/contactus_landing_bg.png"),
+    className: "purple-landing",
+    needShadow: true,
+  },
+  "/contact-us": {
     img: getImageUrl("@/assets/images/_global/contactus_landing_bg.png"),
     className: "purple-landing",
     needShadow: true,
