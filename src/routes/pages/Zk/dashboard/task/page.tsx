@@ -8,7 +8,7 @@ import { getImageUrl, shortStr } from "@/utils/tools";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";
-import { TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import dayjs from "dayjs";
 
 interface ITask {
@@ -17,6 +17,8 @@ interface ITask {
     "createBlock": number,
     "createAt": string,
     "reward": string,
+    "rewardCYS": string,
+    "rewardCGT": string,
     "status": number
 }
 
@@ -52,7 +54,9 @@ const TaskPage = () => {
         {
             key: "reward",
             label: "Reward",
-            renderCell: (task) => (task.reward)
+            renderCell: (task) => {
+                return <TaskReward rewardCYS={task.rewardCYS} rewardCGT={task.rewardCGT} />
+            }
         },
         {
             key: "createAt",

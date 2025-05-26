@@ -406,11 +406,23 @@ const StakeModal = () => {
         setSelectedValidator(null); // 清空验证者选择
     };
 
-    // 处理金额变更
+    const precision = 4
     const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        setAmount(value);
-        calculatePercentage(value);
+        const rawValue = e.target.value.replace(/,/g, "");
+        if (!/^(\d*\.?\d*)$/.test(rawValue)) {
+          return;
+        }
+    
+
+        const parts = rawValue.split('.');
+        if (parts.length > 1 && parts[1].length > precision) {
+            return;
+        }
+
+        setAmount(rawValue);
+        calculatePercentage(rawValue);
+
+
     };
 
     // 计算质押百分比 - 需要根据不同模式使用不同的基准值

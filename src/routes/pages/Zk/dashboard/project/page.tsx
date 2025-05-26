@@ -58,6 +58,9 @@ const ProjectPage = () => {
         {
             key: "hardwardRequirement",
             label: "Hardware Requirements",
+            renderCell: (row) => {
+                return row?.hardwardRequirement || '-'
+            }
             // renderCell: (row) => (row.hardwardRequirement)
         },
         {

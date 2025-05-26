@@ -97,9 +97,9 @@ const TaskDetail = () => {
                                 className={cn(
                                     ["verifier", "provider", "inputData"].includes(i?.key) &&
                                     "flex-col lg:flex-row !items-start",
-                                    "gap-2 flex-wrap lg:gap-10",
+                                    "gap-2 lg:gap-10",
                                     "flex items-start",
-                                    ["proofList", "verifier", "inputData"].includes(i?.key) && "flex-col lg:flex-row"
+                                    ["proofList", "verifier", "inputData"].includes(i?.key) && "mt-2 flex-col lg:flex-row"
                                 )}>
                                 <div className="flex-1 lg:flex-none text-[#A3A3A3] w-[25%]">{t(i?.label)}</div>
                                 <div className={cn(["proofList", "verifier", "inputData"].includes(i?.key) && "w-full lg:w-auto", "break-words flex-wrap flex-1")}>{renderCell(rows, i?.key, i)}</div>

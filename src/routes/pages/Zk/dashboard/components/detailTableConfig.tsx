@@ -1,7 +1,7 @@
 import StatusIcon from "@/components/StatusIcon";
 import CysicTable from "@/components/Table";
 import { TaskStatus, mediasLink, rewardStatus } from "@/config";
-import { getImageUrl } from "@/utils/tools";
+import { getImageUrl, shortStr } from "@/utils/tools";
 
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
@@ -198,14 +198,23 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                 {
                     key: "name",
                     label: "Prover Name",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.name}</span>
+                    }
                 },
                 {
                     key: "proofHash",
-                    label: "Hash"
+                    label: "Hash",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.proofHash}</span>
+                    }
                 },
                 {
                     key: "commitHash",
-                    label: "Commit Hash"
+                    label: "Commit Hash",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.commitHash}</span>
+                    }
                 }
             ]
             return (
@@ -223,15 +232,24 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                 {
                     key: "name",
                     label: "Verifier Name",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.name}</span>
+                    }
                 },
                 {
                     key: "commitHash",
                     label: "Commit Hash",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.commitHash}</span>
+                    }
                 },
             ] : [
                 {
                     key: "name",
                     label: "Verifier Name",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.name}</span>
+                    }
                 },
                 {
                     key: "verifyResult",
@@ -253,6 +271,9 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                 {
                     key: "commitHash",
                     label: "Commit Hash",
+                    renderCell: (item: any) => {
+                        return <span className="break-all">{item?.commitHash}</span>
+                    }
                 },
             ]
             return (
