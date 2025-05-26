@@ -412,139 +412,143 @@ const InvitePage = () => {
                         </div>
 
                         {/* 邀请等级 */}
-                        <div
-                            style={{
-                                gap: isMobile
-                                    ? "9rem"
-                                    : `calc(calc(100% - 10rem * ${tiers.length}) / ${tiers.length})`,
-                            }}
-                            className={cn("grid grid-cols-5 overflow-x-scroll w-max lg:w-auto")}
-                        >
-                            {tiers
-                                .sort((a, b) => a.level - b.level)
-                                .map((tier, index) => (
-                                    <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
-                                        <GradientBorderCard
-                                            gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
-                                            gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
-                                            borderRadius={8}
-                                            borderWidth={1}
-                                            className="h-full"
-                                        >
-                                            <div className="w-full p-4 flex flex-col items-center h-full">
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <h3 className="text-sm lg:text-base !font-light unbounded tracking-wider">
-                                                        {tier.name}
-                                                    </h3>
-                                                    <Tooltip
-                                                        classNames={{
-                                                            content: "!p-0",
-                                                        }}
-                                                        content={
-                                                            <>
-                                                                <GradientBorderCard className="p-4 flex flex-col gap-1 w-[12.5rem]">
-                                                                    <>
-                                                                        <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                                                            Levelup Rewards
-                                                                        </div>
-                                                                        <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                                                            <div className="!text-sub w-20">
-                                                                                Rebate Rate
+                        <div className="w-full overflow-x-scroll">
+                            <div
+                                style={{
+                                    gap: isMobile
+                                        ? "9rem"
+                                        : `calc(calc(100% - 10rem * ${tiers.length}) / ${tiers.length})`,
+                                }}
+                                className={cn("grid grid-cols-5 overflow-x-scroll ")}
+                            >
+                                {tiers
+                                    .sort((a, b) => a.level - b.level)
+                                    .map((tier, index) => (
+                                        <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
+                                            <GradientBorderCard
+                                                gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
+                                                gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
+                                                borderRadius={8}
+                                                borderWidth={1}
+                                                className="h-full"
+                                            >
+                                                <div className="w-full p-4 flex flex-col items-center h-full">
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <h3 className="text-sm lg:text-base !font-light unbounded tracking-wider">
+                                                            {tier.name}
+                                                        </h3>
+                                                        <Tooltip
+                                                            classNames={{
+                                                                content: "!p-0",
+                                                            }}
+                                                            content={
+                                                                <>
+                                                                    <GradientBorderCard className="p-4 flex flex-col gap-1 w-[12.5rem]">
+                                                                        <>
+                                                                            <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                                Levelup Rewards
                                                                             </div>
-                                                                            <div>+{tier.rebateRate} %</div>
-                                                                        </div>
-                                                                        <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                                                            <div className="!text-sub w-20">
-                                                                                Multiplier
+                                                                            <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                                <div className="!text-sub w-20">
+                                                                                    Rebate Rate
+                                                                                </div>
+                                                                                <div>+{tier.rebateRate} %</div>
                                                                             </div>
-                                                                            <div>+{tier.multiplier} 🔥FIRE</div>
-                                                                        </div>
-                                                                    </>
-                                                                </GradientBorderCard>
-                                                            </>
-                                                        }
-                                                    >
-                                                        <div className="flex items-center">
-                                                            <CircleHelp width={12} height={12} />
-                                                        </div>
-                                                    </Tooltip>
+                                                                            <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                                                                <div className="!text-sub w-20">
+                                                                                    Multiplier
+                                                                                </div>
+                                                                                <div>+{tier.multiplier} 🔥FIRE</div>
+                                                                            </div>
+                                                                        </>
+                                                                    </GradientBorderCard>
+                                                                </>
+                                                            }
+                                                        >
+                                                            <div className="flex items-center">
+                                                                <CircleHelp width={12} height={12} />
+                                                            </div>
+                                                        </Tooltip>
+                                                    </div>
+
+                                                    {/* 宝石图标 */}
+                                                    <div className="relative h-24 w-full flex items-center justify-center">
+                                                        <img
+                                                            src={getTierIcon(tier.name)}
+                                                            alt={tier.name}
+                                                            className="h-full object-contain"
+                                                        />
+                                                    </div>
+
+                                                    {
+                                                        inviteLevelId == tier.level ? (<>
+
+                                                            <div className="mt-4 flex-1 flex flex-col items-center justify-end gap-2">
+                                                                <div className="unbounded-16-300 text-center">{tier.level}</div>
+                                                                <div className="unbounded-12-300 text-center">Current Level</div>
+                                                            </div>
+                                                        </>) : null
+                                                    }
+                                                    {
+                                                        Number(inviteLevelId) >= tier.level ? (<></>) : (<>
+                                                            <div className="mt-4 flex items-center flex-col gap-1">
+                                                                <svg
+                                                                    width="24"
+                                                                    height="24"
+                                                                    viewBox="0 0 24 24"
+                                                                    fill="none"
+                                                                    xmlns="http://www.w3.org/2000/svg"
+                                                                >
+                                                                    <path
+                                                                        d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+                                                                        stroke="white"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    />
+                                                                    <path
+                                                                        d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
+                                                                        stroke="white"
+                                                                        strokeWidth="2"
+                                                                        strokeLinecap="round"
+                                                                        strokeLinejoin="round"
+                                                                    />
+                                                                </svg>
+                                                                <span className="unbounded-16-300">
+                                                                    {tiers[index - 1]?.needInviteCnt || 0}
+                                                                </span>
+
+                                                                <div className="unbounded-12-300 text-center">Invites Required</div>
+                                                            </div>
+                                                        </>)
+                                                    }
+
                                                 </div>
+                                            </GradientBorderCard>
 
-                                                {/* 宝石图标 */}
-                                                <div className="relative h-24 w-full flex items-center justify-center">
-                                                    <img
-                                                        src={getTierIcon(tier.name)}
-                                                        alt={tier.name}
-                                                        className="h-full object-contain"
-                                                    />
-                                                </div>
+                                            {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
+                                            {index < tiers.length - 1 && (
+                                                <div
+                                                    style={{
+                                                        width: isMobile
+                                                            ? "1.2rem"
+                                                            : `calc(calc(100% / ${tiers.length - 1})`,
+                                                    }}
+                                                    className={cn(
+                                                        "absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
+                                                        // (100% - 10rem*tiers.length )/tiers.length
+                                                        isMobile
+                                                            ? " translate-x-[calc(calc(2rem-1.2rem)/2)] "
+                                                            : `translate-x-1/2`
+                                                    )}
+                                                />
+                                            )}
+                                        </div>
+                                    ))}
+                            </div>
 
-                                                {
-                                                    inviteLevelId == tier.level ? (<>
-
-                                                        <div className="mt-4 flex-1 flex flex-col items-center justify-end gap-2">
-                                                            <div className="unbounded-16-300 text-center">{tier.level}</div>
-                                                            <div className="unbounded-12-300 text-center">Current Level</div>
-                                                        </div>
-                                                    </>) : null
-                                                }
-                                                {
-                                                    Number(inviteLevelId) >= tier.level ? (<></>) : (<>
-                                                        <div className="mt-4 flex items-center flex-col gap-1">
-                                                            <svg
-                                                                width="24"
-                                                                height="24"
-                                                                viewBox="0 0 24 24"
-                                                                fill="none"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                                <path
-                                                                    d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                                                                    stroke="white"
-                                                                    strokeWidth="2"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                />
-                                                                <path
-                                                                    d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
-                                                                    stroke="white"
-                                                                    strokeWidth="2"
-                                                                    strokeLinecap="round"
-                                                                    strokeLinejoin="round"
-                                                                />
-                                                            </svg>
-                                                            <span className="unbounded-16-300">
-                                                                {tiers[index - 1]?.needInviteCnt || 0}
-                                                            </span>
-
-                                                            <div className="unbounded-12-300 text-center">Invites Required</div>
-                                                        </div>
-                                                    </>)
-                                                }
-
-                                            </div>
-                                        </GradientBorderCard>
-
-                                        {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
-                                        {index < tiers.length - 1 && (
-                                            <div
-                                                style={{
-                                                    width: isMobile
-                                                        ? "1.2rem"
-                                                        : `calc(calc(100% / ${tiers.length - 1})`,
-                                                }}
-                                                className={cn(
-                                                    "absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
-                                                    // (100% - 10rem*tiers.length )/tiers.length
-                                                    isMobile
-                                                        ? " translate-x-[calc(calc(2rem-1.2rem)/2)] "
-                                                        : `translate-x-1/2`
-                                                )}
-                                            />
-                                        )}
-                                    </div>
-                                ))}
                         </div>
+
 
                         {/* 团队领导表格 */}
                         {leaderData && (
