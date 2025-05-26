@@ -68,10 +68,10 @@ const StakePage = () => {
   const { balanceMap } = useCosmos()
   const { setState, stakeList, activeList } = useStake(); // 使用stake store
 
-  const unstakeAmount = balanceMap?.CGT?.hm_amount || 0
+  // const unstakeAmount = balanceMap?.CGT?.hm_amount || 0
   const [stakeAmount, setStakeAmount] = useState("0");
   const [rewardsAmount, setRewardsAmount] = useState("0");
-
+  const [unstakeAmount, setUnstakeAmount] = useState("0");
 
   const apr = useMemo(() => {
     // 检查数据是否都已加载
@@ -123,19 +123,26 @@ const StakePage = () => {
 
   // 获取质押验证者列表
   const { data: stakeListData, loading: stakeLoading } = useRequest(
-    () => axios.get('/api/v1/stake/list'),
+    () => Promise.allSettled([axios.get('/api/v1/stake/list'), axios.get('/api/v1/unstake/list')]),
     {
-      ready: isSigned && walletAddress,
+      ready: isSigned && !!walletAddress,
       refreshDeps: [isSigned, walletAddress],
-      onSuccess: (res) => {
-        // 存储原始响应到store
-        setState({ stakeList: res });
+      onSuccess: (res: any) => {
+        const stakeRes = res[0]?.value
+        const unstakeRes = res[1]?.value
 
-        if (res?.data?.validatorList && res.data.validatorList.length > 0) {
+        if(unstakeRes?.data?.validatorList && unstakeRes.data.validatorList.length > 0) {
+          const totalUnstakeAmount = unstakeRes.data.validatorList.reduce((acc: number, curr: any) => acc + parseFloat(curr.amount), 0)
+          setUnstakeAmount(totalUnstakeAmount)
+        }
+        
+        setState({ stakeList: stakeRes });
+
+        if (stakeRes?.data?.validatorList && stakeRes.data.validatorList.length > 0) {
           // 计算总质押金额和平均APR
           let totalStake = 0;
 
-          res.data.validatorList.forEach((validator: ValidatorResponse) => {
+          stakeRes.data.validatorList.forEach((validator: ValidatorResponse) => {
             if (validator.stake) {
               totalStake += parseFloat(validator.stake.amount);
             }

@@ -12,6 +12,7 @@ import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize, TaskStatus } from "@/config";
 import { useState } from "react";
 import dayjs from "dayjs";
+import { TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 interface IOverview {
     "projectNum": number,
@@ -30,6 +31,8 @@ interface ITask {
     "createBlock": number,
     "createAt": string,
     "reward": string,
+    "rewardCYS": string,
+    "rewardCGT": string,
     "status": number
 }
 
@@ -93,7 +96,7 @@ const DashboardPage = () => {
         {
             key: "reward",
             label: "Reward",
-            renderCell: (task) => (task.reward)
+            renderCell: (task) => <TaskReward rewardCYS={task.rewardCYS} rewardCGT={task.rewardCGT} />
         },
         {
             key: "createAt",
