@@ -72,14 +72,14 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         label: "font-medium text-default-700 text-medium",
                         value: "font-medium text-default-500 text-small",
                         thumb: [
-                          "[&:after]:!bg-white [&:after]:!h-3 [&:after]:!w-3",
-                          "transition-size",
-                          "bg-gradient-to-r from-[#9D47FF] to-lightBrand",
-                          "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
-                          "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
+                            "[&:after]:!bg-white [&:after]:!h-3 [&:after]:!w-3",
+                            "transition-size",
+                            "bg-gradient-to-r from-[#9D47FF] to-lightBrand",
+                            "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
+                            "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
                         ],
                         step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50",
-                      }}
+                    }}
                     showSteps={false}
                     marks={[
                         { value: 0, label: "0%" },
@@ -88,12 +88,12 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         { value: 75, label: "75%" },
                         { value: 100, label: "100%" },
                     ]}
-                    // renderThumb={(props) => (
-                    //     <div
-                    //         {...props}
-                    //         className="group absolute h-4 w-4 rounded-full bg-cyan-400 cursor-pointer z-10"
-                    //     />
-                    // )}
+                // renderThumb={(props) => (
+                //     <div
+                //         {...props}
+                //         className="group absolute h-4 w-4 rounded-full bg-cyan-400 cursor-pointer z-10"
+                //     />
+                // )}
                 />
 
 
@@ -139,6 +139,7 @@ const ValidatorDropdown = ({
         setValidatorTab(tab);
     };
 
+    console.log('validators', validators)
     return (
         <div className="relative">
             <div
@@ -163,11 +164,11 @@ const ValidatorDropdown = ({
             </div>
 
             {isOpen && (
-                <GradientBorderCard borderRadius={8} 
-                style={{
-                    '--border-width': '0.5px'
-                }}
-                className="absolute left-0 right-0 top-full mt-1 z-50 bg-black border border-[#333] rounded-lg overflow-hidden">
+                <GradientBorderCard borderRadius={8}
+                    style={{
+                        '--border-width': '0.5px'
+                    }}
+                    className="absolute left-0 right-0 top-full mt-1 z-50 bg-black border border-[#333] rounded-lg overflow-hidden">
                     <div className="p-4">
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
 
@@ -186,13 +187,11 @@ const ValidatorDropdown = ({
                                 MY STAKE
                             </button>
                             <button
-                                className={`py-3 uppercase text-center text-base ${
-                                    validatorTab === ValidatorTab.OTHERS
+                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.OTHERS
                                         ? "bg-white text-black"
                                         : "bg-[#1E1E1E] text-[#777]"
-                                    } ${
-                                        activeTab === StakeAction.UNSTAKE 
-                                        ? "opacity-50 cursor-not-allowed" 
+                                    } ${activeTab === StakeAction.UNSTAKE
+                                        ? "opacity-50 cursor-not-allowed"
                                         : ""
                                     }`}
                                 onClick={(e) => {
@@ -213,6 +212,13 @@ const ValidatorDropdown = ({
                                 {/* 验证人列表头部 */}
                                 <div className="flex justify-between items-center bg-[#111] p-3 rounded-md mb-2">
                                     <div className="text-white">Validator</div>
+                                    {
+                                        validatorTab === ValidatorTab.MY_VALIDATORS ? (
+                                            <div className="text-white">Stake Amount</div>
+                                        ) : (
+                                            null
+                                        )
+                                    }
                                     {
                                         validatorTab === ValidatorTab.MY_VALIDATORS ? (
                                             <div className="text-white">Expected APR</div>
@@ -239,6 +245,13 @@ const ValidatorDropdown = ({
                                                 </div>
                                                 <span className="text-white">{validator.validatorName}</span>
                                             </div>
+                                            {
+                                                validatorTab === ValidatorTab.MY_VALIDATORS ? (
+                                                    <div className="text-white">
+                                                        {formatReward(validator.stake?.amount || '0', 4)} CGT
+                                                    </div>
+                                                ) : null
+                                            }
                                             <div className="text-white">
                                                 {validatorTab === ValidatorTab.MY_VALIDATORS
                                                     ? (validator.apr || "0") + "%"
@@ -765,7 +778,7 @@ const StakeModal = () => {
                 type="light"
                 className="w-full py-4 rounded-lg text-base"
                 onClick={activeTab === StakeAction.STAKE ? handleStake : handleUnstake}
-                disabled={!Number(amount) || !selectedValidator}
+                disabled={!Number(amount) || !selectedValidator || BigNumber(amount).gt(activeTab === StakeAction.STAKE ? cgtBalance : selectedValidator?.stake?.amount || "0")}
             >
                 {activeTab === StakeAction.STAKE ? "STAKE" : "UNSTAKE"}
             </Button>
