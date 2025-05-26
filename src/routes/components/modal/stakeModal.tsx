@@ -214,7 +214,7 @@ const ValidatorDropdown = ({
                                     <div className="text-white">Validator</div>
                                     {
                                         validatorTab === ValidatorTab.MY_VALIDATORS ? (
-                                            <div className="text-white">Stake Amount</div>
+                                            <div className="text-white">Staked Amount</div>
                                         ) : (
                                             null
                                         )
