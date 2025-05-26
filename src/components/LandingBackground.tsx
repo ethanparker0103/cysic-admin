@@ -24,11 +24,19 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
         const location = useLocation();
         const path = location.pathname;
 
+        // 处理 /m 前缀路径
+        const normalizedPath = useMemo(() => {
+            if (path.startsWith('/m/')) {
+                return path.replace(/^\/m/, '');
+            }
+            return path === '/m' ? '/' : path;
+        }, [path]);
+
         // 使用useMemo缓存背景配置
         const backgroundConfig = useMemo<BackgroundConfig | undefined>(() => {
             // 直接检查是否有完全匹配的路径
             const config =
-                backgroundImageList[path as keyof typeof backgroundImageList];
+                backgroundImageList[normalizedPath as keyof typeof backgroundImageList];
             if (config) {
                 return config;
             }
@@ -43,28 +51,31 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                     const regex = new RegExp(`^${pattern}$`);
 
                     // 检查当前路径是否匹配此模式
-                    if (regex.test(path)) {
+                    if (regex.test(normalizedPath)) {
                         return backgroundImageList[key as keyof typeof backgroundImageList];
                     }
                 }
             }
 
             return undefined;
-        }, [path]);
+        }, [normalizedPath]);
 
         const needBack = backgroundConfig?.needBack ?? false;
 
         const backPath = useMemo(() => {
             if (needBack) {
-                return (
-                    backgroundConfig?.backTo ?? path.split("/").slice(0, -1).join("/")
-                );
+                // 保持同样的路径前缀（如果是以 /m 开头则保留）
+                const prefix = path.startsWith('/m') ? '/m' : '';
+                const backTo = backgroundConfig?.backTo ?? normalizedPath.split("/").slice(0, -1).join("/");
+                // 如果 backTo 以 / 开头，则不添加 prefix
+                return backTo.startsWith('/') ? 
+                    (prefix + backTo) : 
+                    (prefix + '/' + backTo);
             }
             return path;
-        }, [needBack, path, backgroundConfig?.backTo]);
+        }, [needBack, path, normalizedPath, backgroundConfig?.backTo]);
 
-        const noContainer = path == "/" || NO_CONTAINER_PATHS.includes(path);
-
+        const noContainer = normalizedPath === "/" || NO_CONTAINER_PATHS.includes(normalizedPath);
 
         if (!backgroundConfig?.img) {
             return (
@@ -126,7 +137,7 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                 <div className="relative w-full" style={{ minHeight: height }}>
                     <main
                         className={cn(
-                            path.includes('/zk') ? "lg:pt-[calc(8rem+65px)]" : " lg:pt-[8rem]",
+                            normalizedPath.includes('/zk') ? "lg:pt-[calc(8rem+65px)]" : " lg:pt-[8rem]",
                             "relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-start]",
                             noContainer ? "!pb-0" : "px-3 lg:px-0 main-container lg:pb-12",
                             "pb-6 ",

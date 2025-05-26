@@ -59,139 +59,144 @@ const bridgeModules = enableBridge ? {
   element: <Bridge />,
 } : {}
 
-export const router = createBrowserRouter(
-  [
-    {
-      path: "/",
-      element: <Root />,
-      children: [
-        {
-          index: true,
-          element: <Home />,
-        },
-        portalModules,
-        bridgeModules,
-        {
-          path: "/unbind",
-          element: <UnbindPage />,
-        },
-        {
-          path: "/ecosystem",
-          element: <EcosystemPage />,
-        },
-        {
-          path: "/academy",
-          element: <AcademyPage />,
-        },
-        {
-          path: "/hardware",
-          element: <HardwarePage />,
-        },
-        {
-          path: "/mediakit",
-          element: <MediakitPage />,
-        },
-        {
-          path: "/contactus",
-          element: <ContactUs />,
-        },
-        socialTaskModules,
-        {
-          path: "/zk",
-          children: [
-            {
-              index: true,
-              element: <Zk />,
-            },
-            {
-              path: "invite",
-              element: <ZkInvite />,
-            },
-            {
-              path: "prover",
-              element: <ZkProver />,
-            },
-            {
-              path: "verifier",
-              element: <VerifierPage />,
-            },
-            {
-              path: "project",
-              element: <ProjectPage />,
-            },
-            {
-              path: "project/my",
-              element: <MyProjectPage />,
-            },
-            {
-              path: "project/:id",
-              element: <MyProjectDetailPage />,
-            },
+// 定义共享的路由结构
+const routeChildren = [
+  {
+    index: true,
+    element: <Home />,
+  },
+  portalModules,
+  bridgeModules,
+  {
+    path: "unbind",
+    element: <UnbindPage />,
+  },
+  {
+    path: "ecosystem",
+    element: <EcosystemPage />,
+  },
+  {
+    path: "academy",
+    element: <AcademyPage />,
+  },
+  {
+    path: "hardware",
+    element: <HardwarePage />,
+  },
+  {
+    path: "mediakit",
+    element: <MediakitPage />,
+  },
+  {
+    path: "contactus",
+    element: <ContactUs />,
+  },
+  socialTaskModules,
+  {
+    path: "zk",
+    children: [
+      {
+        index: true,
+        element: <Zk />,
+      },
+      {
+        path: "invite",
+        element: <ZkInvite />,
+      },
+      {
+        path: "prover",
+        element: <ZkProver />,
+      },
+      {
+        path: "verifier",
+        element: <VerifierPage />,
+      },
+      {
+        path: "project",
+        element: <ProjectPage />,
+      },
+      {
+        path: "project/my",
+        element: <MyProjectPage />,
+      },
+      {
+        path: "project/:id",
+        element: <MyProjectDetailPage />,
+      },
 
-            {
-              path: "dashboard",
-              element: <DashboardPage />,
-            },
-            {
-              path: "dashboard/project",
-              element: <ProjectListPage />,
-            },
-            {
-              path: "dashboard/verifier",
-              element: <VerifierListPage />,
-            },
-            {
-              path: "dashboard/prover",
-              element: <ProverListPage />,
-            },
-            {
-              path: "dashboard/task",
-              element: <TaskListPage />,
-            },
-            {
-              path: "dashboard/project/:id",
-              element: <ProjectDetailPage />,
-            },
-            {
-              path: "dashboard/verifier/:id",
-              element: <VerifierDetailPage />,
-            },
-            {
-              path: "dashboard/prover/:id",
-              element: <ProverDetailPage />,
-            },
-            {
-              path: "dashboard/task/:id",
-              element: <TaskDetailPage />,
-            },
-            portalModules,
-          ],
-        },
-        {
-          path: "/ai",
-          element: <Ai />,
-        },
-        {
-          path: "/nft",
-          children: [
-            {
-              index: true,
-              element: <Nft />,
-            },
-            portalModules,
-          ],
-        },
-        {
-          path: "/stake",
-          element: <Stake />,
-        },
-      ],
-    },
-  ],
-  // {
-  //   basename: "/m",
-  // }
-);
+      {
+        path: "dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "dashboard/project",
+        element: <ProjectListPage />,
+      },
+      {
+        path: "dashboard/verifier",
+        element: <VerifierListPage />,
+      },
+      {
+        path: "dashboard/prover",
+        element: <ProverListPage />,
+      },
+      {
+        path: "dashboard/task",
+        element: <TaskListPage />,
+      },
+      {
+        path: "dashboard/project/:id",
+        element: <ProjectDetailPage />,
+      },
+      {
+        path: "dashboard/verifier/:id",
+        element: <VerifierDetailPage />,
+      },
+      {
+        path: "dashboard/prover/:id",
+        element: <ProverDetailPage />,
+      },
+      {
+        path: "dashboard/task/:id",
+        element: <TaskDetailPage />,
+      },
+      portalModules,
+    ],
+  },
+  {
+    path: "ai",
+    element: <Ai />,
+  },
+  {
+    path: "nft",
+    children: [
+      {
+        index: true,
+        element: <Nft />,
+      },
+      portalModules,
+    ],
+  },
+  {
+    path: "stake",
+    element: <Stake />,
+  },
+];
+
+export const router = createBrowserRouter([
+  // 默认路径 "/"
+  {
+    path: "/",
+    element: <Root />,
+    children: routeChildren,
+  },
+  // 备份路径 "/m"
+  {
+    path: "/m",
+    element: <Root />,
+    children: routeChildren,
+  }
+]);
 
 export const backgroundImageList = {
   "/": {
@@ -217,7 +222,7 @@ export const backgroundImageList = {
   },
   "/hardware": {
     img: getImageUrl("@/assets/images/_global/zk_hardware_bg.png"),
-    className: "h-screen",
+    className: "h-[calc(100vh+5.625rem)] lg:h-screen",
     style: { backgroundPosition: "center -10vh" },
     mainClassName: "pt-0",
   },
@@ -313,11 +318,6 @@ export const backgroundImageList = {
   },
   "/zk/dashboard/project/:id": {
     img: "#000",
-    // img: getImageUrl('@/assets/images/_global/socialTask_landing_bg.png'),
-    // className: "h-screen purple-landing",
-    // style: {
-    //   backgroundPosition: "center -20vh"
-    // },
     needBack: true,
     backContent: "Project",
   },

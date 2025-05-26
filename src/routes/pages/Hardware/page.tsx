@@ -11,7 +11,7 @@ const HardwarePage = () => {
   return (
     <>
       {/* section-1 */}
-      <div className="main-container flex flex-col items-center justify-center gap-4 relative z-[2] h-screen">
+      <div className="main-container flex flex-col items-center justify-center gap-4 relative z-[2] h-[calc(100vh-5.625rem)] lg:h-[100vh-8rem]">
         <span
           className={cn("unbounded-32-180-200 text-white text-center")}
         >

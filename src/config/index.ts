@@ -2,9 +2,11 @@ import { cosmos_cysic_devnet, cosmos_cysic_testnet } from "@/config/cosmos/cysic
 import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 
-export const BIND_CHECK_PATHS = ["/zk", "/ai"];
-export const NO_BIND_CHECK_PATHS = ["/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub"];
-export const NO_CONTAINER_PATHS = ['/contactus', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub']
+export const BIND_CHECK_PATHS = ["/zk", "/ai", "/m/zk", "/m/ai"];
+export const NO_BIND_CHECK_PATHS = ["/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub", 
+                                  "/m/mediakit", "/m/userPortal", "/m/zk/userPortal", "/m/zk/userPortal/serviceHub", "/m/userPortal/serviceHub"];
+export const NO_CONTAINER_PATHS = ['/contactus', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub',
+                                 '/m/contactus', '/m/mediakit', '/m/hardware', '/m/zk', '/m/userPortal', '/m/zk/userPortal', '/m/zk/userPortal/serviceHub', '/m/userPortal/serviceHub']
 
 export const baseStatus: any = {
   "0": "Pending",
