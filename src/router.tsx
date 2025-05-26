@@ -225,7 +225,7 @@ export const backgroundImageList = {
     img: getImageUrl("@/assets/images/_global/zk_landing_bg.png"),
     // className: "h-[180vh] lg:h-[180vh]",
     style: {
-      backgroundPosition: "center -30vh",
+      backgroundPosition: "center -20vh",
     },
     className: "h-[180vh]",
   },
