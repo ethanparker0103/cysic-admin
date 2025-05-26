@@ -1,9 +1,6 @@
-import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { downloadLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import useStatic, { IProofType } from "@/models/_global";
-import DownloadQRCodeTooltip from "@/routes/components/DownloadQRCodeTooltip";
 import { cn } from "@nextui-org/react";
 import { useRequest } from "ahooks";
 import axios from "axios";
@@ -19,9 +16,12 @@ import { ArrowRight } from "lucide-react";
 
 export const useVerifierStatus = () => {
   const { proofTypeList } = useStatic();
-  const { zkPart } = useAccount();
+  const { zkPart, isSigned, walletAddress } = useAccount();
   const { data } = useRequest(() => {
     return axios.get("/api/v1/zkTask/prover/status");
+  }, {
+    ready: !!walletAddress && isSigned,
+    refreshDeps: [isSigned, walletAddress]
   });
 
   const proverStatusData = {

@@ -16,11 +16,14 @@ import { ArrowRight } from "lucide-react";
 // /zkTask/prover/status
 
 export const useProverStatus = () => {
-    const { zkPart } = useAccount();
+    const { zkPart, isSigned, walletAddress } = useAccount();
     const { proofTypeList } = useStatic();
 
     const { data } = useRequest(() => {
         return axios.get('/api/v1/zkTask/prover/status')
+    }, {
+        ready: !!walletAddress && isSigned,
+        refreshDeps: [isSigned, walletAddress]
     });
 
     const proverStatusData = {
