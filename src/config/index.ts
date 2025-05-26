@@ -60,7 +60,7 @@ export const TaskStatusColor: any = {
 export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
-export const enableSocialTask = false && isQa
+export const enableSocialTask = isQa
 export const enableBridge = false && isQa
 
 export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_devnet;
