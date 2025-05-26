@@ -365,7 +365,7 @@ export default {
   plugins: [
     plugin(function ({ addComponents }) {
       const fonts = ["unbounded", "teachers"];
-      const sizes = [12, 14, 16, 18, 20, 22, 24, 30, 32, 36, 48, 64, 72, 96, 128, 196, 180];
+      const sizes = [12, 14, 16, 18, 20, 22, 24, 30, 32, 36, 40, 48, 64, 72, 96, 128, 196, 180];
       const weights = {
         thin: 100,
         extralight: 200,
