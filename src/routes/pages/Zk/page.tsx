@@ -10,28 +10,32 @@ import { cn } from "@nextui-org/react";
 const ZkLanding = () => {
   return (
     <>
-      <div className="pt-0 lg:pt-12 flex flex-col items-center gap-6 relative z-[2] h-[70vh] lg:h-screen ">
+      <div
+        className="pt-0 lg:pt-12 flex flex-col justify-between h-[calc(100vh-5.625rem)] lg:h-[calc(min(160vh,100.875rem)-8rem-3rem-65px)]"
+      >
         <div
-          className={cn("flex flex-col items-center gap-4 lg:gpt-0 ")}
-        >
-          <span className="tracking-widest teachers-16-24-400 text-center">
-            Decentralized Prover and Verifier NetworK for ZK.
-          </span>
-          <span className="unbounded-36-180-200 text-white text-center">
-            Cysic ZK
-          </span>
+
+          className="flex flex-col items-center gap-6 relative z-[2] ">
+          <div
+            className={cn("flex flex-col items-center gap-4 lg:gpt-0 ")}
+          >
+            <span className="tracking-widest teachers-16-24-400 text-center">
+              Decentralized Prover and Verifier NetworK for ZK.
+            </span>
+            <span className="unbounded-36-180-200 text-white text-center">
+              Cysic ZK
+            </span>
+          </div>
         </div>
 
-        {/* <div className="min-h-[15rem]"><SignInButton className="backdrop-blur-sm mt-[8.25rem] mb-[4rem]" /></div> */}
+        <JoinZkPhase3
+          className="!pb-16 !justify-end"
+          slogen="Cysic Network "
+          title="Phase III Is Now Open"
+          subTitle={<div className="flex flex-col lg:flex-row gap-1"><span>Instant proofs.</span> <span>Infinite Possibilities</span></div>}
+        />
       </div>
 
-      {/* section-2 */}
-      <JoinZkPhase3
-        className="!pb-16"
-        slogen="Cysic Network "
-        title="Phase III Is Now Open"
-        subTitle={<div className="flex flex-col lg:flex-row gap-1"><span>Instant proofs.</span> <span>Infinite Possibilities</span></div>}
-      />
 
       <div className="w-full bg-black">
         <div
