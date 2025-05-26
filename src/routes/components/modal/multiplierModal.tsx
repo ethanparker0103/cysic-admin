@@ -7,31 +7,34 @@ import useAccount from "@/hooks/useAccount";
 import useModalState from "@/hooks/useModalState";
 import { getTierIcon } from "@/routes/pages/Zk/invite/page";
 import { handleStakeModal } from "@/utils/tools";
-import { cn, Tab, Tabs, Tooltip } from "@nextui-org/react";
+import { cn, Tooltip } from "@nextui-org/react";
 import { ArrowRight, Check, CircleHelp } from "lucide-react";
 import { isMobile } from "react-device-detect";
 import { Link } from "react-router-dom";
 import { MultiplierPercentBar } from "@/routes/components/Multiplier";
 import useStatic from "@/models/_global";
 import { enableSocialTask } from "@/config";
+import Tab, { TabItem } from "@/routes/components/Tab";
 
-const stakeBoosts = true ? [] : [
-  {
-    name: "STAKE 100 CGT",
-    reward: "10", // +10 Boosts
-    status: 2, // 0: pending, 1: completed, 2: claimed
-  },
-  {
-    name: "STAKE 200 CGT",
-    reward: "20", // +20 Boosts
-    status: 1, // 0: pending, 1: completed, 2: claimed
-  },
-  {
-    name: "STAKE 300 CGT",
-    reward: "30", // +30 Boosts
-    status: 0, // 0: pending, 1: completed, 2: claimed
-  },
-];
+const stakeBoosts = true
+  ? []
+  : [
+    {
+      name: "STAKE 100 CGT",
+      reward: "10", // +10 Boosts
+      status: 2, // 0: pending, 1: completed, 2: claimed
+    },
+    {
+      name: "STAKE 200 CGT",
+      reward: "20", // +20 Boosts
+      status: 1, // 0: pending, 1: completed, 2: claimed
+    },
+    {
+      name: "STAKE 300 CGT",
+      reward: "30", // +30 Boosts
+      status: 0, // 0: pending, 1: completed, 2: claimed
+    },
+  ];
 
 const tasks = [
   {
@@ -85,244 +88,280 @@ const StatusButton = ({
   );
 };
 
-const BoostingList = () => {
+const InviteTabItem = () => {
   const { inviteCode, inviteLevelId } = useAccount();
   const { referralLevelList: tiers } = useStatic();
+  return (
+    <div className="flex flex-col gap-4">
+      <GradientBorderCard
+        borderRadius={8}
+        className="py-4 px-6 flex flex-col gap-4"
+      >
+        <div className="flex flex-col gap-4">
+          <h2 className="unbounded-16-300">Invite Code</h2>
+          {/* 推荐码显示 */}
+          <div className="flex items-center justify-end">
+            <Copy value={inviteCode} className="unbounded-24-300">
+              {inviteCode || "-"}
+            </Copy>
+          </div>
+          <Link
+            to="/zk/invite"
+            onClick={() => {
+              dispatchEvent(
+                new CustomEvent("modal_multiplier_visible", {
+                  detail: { visible: false },
+                })
+              );
+            }}
+            className="flex items-center gap-2 justify-end"
+          >
+            <span className="text-sm uppercase !font-[400]">
+              Check my Invites
+            </span>
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </GradientBorderCard>
 
+      <div
+        className={cn(
+          "grid grid-cols-5 overflow-x-scroll",
+          isMobile ? "gap-[9rem]" : "gap-[11.25rem]"
+        )}
+      >
+        {tiers
+          .sort((a, b) => a.level - b.level)
+          .map((tier, index) => (
+            <div key={tier.id} className="relative h-full min-w-[9.5rem]">
+              <GradientBorderCard
+                borderRadius={8}
+                borderWidth={1}
+                className="h-full"
+                gradientFrom={
+                  tier.level == inviteLevelId ? "#19FFE0" : undefined
+                }
+                gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
+              >
+                <div className="w-full p-4 flex flex-col items-center h-full">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="unbounded-16-300 tracking-wider">
+                      {tier.name}
+                    </h3>
+                    <Tooltip
+                      classNames={{
+                        content: "!p-0",
+                      }}
+                      content={
+                        <>
+                          <GradientBorderCard className="p-4 flex flex-col gap-1">
+                            <>
+                              <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                Levelup Rewards
+                              </div>
+                              <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                <div className="!text-sub w-20">
+                                  Rebate Rate
+                                </div>
+                                <div>+{tier.rebateRate} %</div>
+                              </div>
+                              <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
+                                <div className="!text-sub w-20">Multiplier</div>
+                                <div>+{tier.multiplier} 🔥FIRE</div>
+                              </div>
+                            </>
+                          </GradientBorderCard>
+                        </>
+                      }
+                    >
+                      <div className="flex items-center">
+                        <CircleHelp width={12} height={12} />
+                      </div>
+                    </Tooltip>
+                  </div>
+
+                  {/* 宝石图标 */}
+                  <div className="relative h-24 w-full flex items-center justify-center">
+                    <img
+                      src={getTierIcon(tier.name)}
+                      alt={tier.name}
+                      className="h-full object-contain"
+                    />
+                  </div>
+                  {tier.level == inviteLevelId && (
+                    <div className="flex-1 flex flex-col items-center justify-end gap-2">
+                      <div className="unbounded-16-300 text-center">
+                        {tier.level}
+                      </div>
+                      <div className="unbounded-12-300 text-center">
+                        Current Level
+                      </div>
+                    </div>
+                  )}
+                  {Number(inviteLevelId) >= tier.level ? (
+                    <></>
+                  ) : (
+                    <>
+                      <div className="mt-4 flex items-center flex-col gap-1">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
+                            stroke="white"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span className="unbounded-16-300">
+                          {tiers[index - 1]?.needInviteCnt || 0}
+                        </span>
+
+                        <div className="unbounded-12-300 text-center">
+                          Invites Required
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </GradientBorderCard>
+
+              {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
+              {index < tiers.length - 1 && (
+                <div
+                  className={cn(
+                    "absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
+
+                    isMobile
+                      ? "w-[1.2rem] translate-x-[calc(calc(2rem-1.2rem)/2)] "
+                      : "w-[1rem] translate-x-[calc(calc(1rem)/2)]"
+                  )}
+                />
+              )}
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+
+const StakeTabItem = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="text-base">
+        Staking more CGT unlocks additional Boosts and a higher Multiplier.
+      </div>
+      <Button
+        type="light"
+        className="py-4 flex items-center justify-center gap-2"
+        onClick={handleStakeModal}
+      >
+        <span>STAKE</span>
+        <ArrowRight className="w-3 h-3" />
+      </Button>
+      <div className="flex flex-col gap-2">
+        {stakeBoosts.map((stakeBoost) => (
+          <div
+            key={stakeBoost.name}
+            className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
+          >
+            <div>{stakeBoost.name}</div>
+            <StatusButton status={stakeBoost.status}>
+              {stakeBoost.status === 2 ? (
+                <>
+                  <Check className="w-3 h-3 text-lightBrand" />
+                  <span>Claimed</span>
+                </>
+              ) : stakeBoost.status === 1 ? (
+                <span>Claim {stakeBoost.reward} Boosts</span>
+              ) : (
+                <span>+{stakeBoost.reward} Boosts</span>
+              )}
+            </StatusButton>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const SocialTaskTabItem = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      {tasks.map((task) => (
+        <div
+          key={task.name}
+          className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
+        >
+          <div>{task.name}</div>
+          <StatusButton status={task.status}>
+            {task.status === 2 ? (
+              <>
+                <Check className="w-3 h-3 text-lightBrand" />
+                <span>Claimed</span>
+              </>
+            ) : task.status === 1 ? (
+              <span>Claim {task.reward} Boosts</span>
+            ) : (
+              <span>+{task.reward} Boosts</span>
+            )}
+          </StatusButton>
+        </div>
+      ))}
+    </div>
+  );
+};
+const BoostingList = () => {
+
+  const tabs: TabItem[] = [
+    {
+      key: "stake",
+      label: "STAKE",
+      content: <StakeTabItem />,
+    },
+    // {
+    //   key: "tasks",
+    //   label: "TASKS",
+    //   content: <div>Tasks</div>,
+    // },
+    {
+      key: "invites",
+      label: "INVITES",
+      content: <InviteTabItem />,
+    },
+  ];
   return (
     <div className="flex flex-col gap-4">
       <div className="uppercase text-[32px] !font-normal">
         Level up your Boosting
       </div>
-      <Tabs
-        classNames={{
-          panel: "!p-0",
-          tabList:
-            "w-full p-0 gap-0 rounded-md overflow-hidden border border-[#FFFFFF80]",
-          tab: 'py-6 [&:not(:last-child)]:border-r  [&:not(:last-child)]:border-r-[#FFFFFF80] !rounded-none px-0 [data-selected="true"]:text-black [data-selected="true"]:bg-white [data-selected="true"]:border-black bg-[#FFFFFF1A] text-[#FFFFFF80]',
-          cursor: "rounded-none",
-        }}
-        className="w-full"
-      >
-        <Tab key="stake" title="STAKE">
-          <div className="flex flex-col gap-4">
-            <div className="text-base">
-              Staking more CGT unlocks additional Boosts and a higher
-              Multiplier.
-            </div>
-            <Button
-              type="light"
-              className="py-4 flex items-center justify-center gap-2"
-              onClick={handleStakeModal}
-            >
-              <span>STAKE</span>
-              <ArrowRight className="w-3 h-3" />
-            </Button>
-            <div className="flex flex-col gap-2">
-              {stakeBoosts.map((stakeBoost) => (
-                <div
-                  key={stakeBoost.name}
-                  className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
-                >
-                  <div>{stakeBoost.name}</div>
-                  <StatusButton status={stakeBoost.status}>
-                    {stakeBoost.status === 2 ? (
-                      <>
-                        <Check className="w-3 h-3 text-lightBrand" />
-                        <span>Claimed</span>
-                      </>
-                    ) : stakeBoost.status === 1 ? (
-                      <span>Claim {stakeBoost.reward} Boosts</span>
-                    ) : (
-                      <span>+{stakeBoost.reward} Boosts</span>
-                    )}
-                  </StatusButton>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Tab>
-        {/* <Tab key="tasks" title="TASKS">
-          <div className="flex flex-col gap-4">
-            {tasks.map((task) => (
-              <div
-                key={task.name}
-                className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
-              >
-                <div>{task.name}</div>
-                <StatusButton status={task.status}>
-                  {task.status === 2 ? (
-                    <>
-                      <Check className="w-3 h-3 text-lightBrand" />
-                      <span>Claimed</span>
-                    </>
-                  ) : task.status === 1 ? (
-                    <span>Claim {task.reward} Boosts</span>
-                  ) : (
-                    <span>+{task.reward} Boosts</span>
-                  )}
-                </StatusButton>
-              </div>
-            ))}
-          </div>
-        </Tab> */}
-        <Tab key="invites" title="INVITES">
-          <div className="flex flex-col gap-4">
-            <GradientBorderCard borderRadius={8} className="py-4 px-6 flex flex-col gap-4">
-              <div className="flex flex-col gap-4">
-                <h2 className="unbounded-16-300">
-                  Invite Code
-                </h2>
-                {/* 推荐码显示 */}
-                <div className="flex items-center justify-end">
-                  <Copy
-                    value={inviteCode}
-                    className="unbounded-24-300"
-                  >
-                    {inviteCode || '-'}
-                  </Copy>
-                </div>
-                <Link to="/zk/invite" onClick={() => {
-                  dispatchEvent(
-                    new CustomEvent("modal_multiplier_visible", {
-                      detail: { visible: false },
-                    })
-                  );
-                }} className="flex items-center gap-2 justify-end">
-                  <span className="text-sm uppercase !font-[400]">
-                    Check my Invites
-                  </span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </GradientBorderCard>
+      <Tab
+        // classNames={{
+        //   panel: "!p-0",
+        //   tabList:
+        //     "w-full p-0 gap-0 rounded-md overflow-hidden border border-[#FFFFFF80]",
+        //   tab: 'py-6 [&:not(:last-child)]:border-r  [&:not(:last-child)]:border-r-[#FFFFFF80] !rounded-none px-0 [data-selected="true"]:text-black [data-selected="true"]:bg-white [data-selected="true"]:border-black bg-[#FFFFFF1A] text-[#FFFFFF80]',
+        //   cursor: "rounded-none",
+        // }}
+        // className="w-full"
 
-            <div
-              className={cn(
-                "grid grid-cols-5 overflow-x-scroll",
-                isMobile ? "gap-[9rem]" : "gap-[11.25rem]"
-              )}
-            >
-              {tiers
-                .sort((a, b) => a.level - b.level)
-                .map((tier, index) => (
-                  <div key={tier.id} className="relative h-full min-w-[9.5rem]">
-                    <GradientBorderCard
-                      borderRadius={8}
-                      borderWidth={1}
-                      className="h-full"
-                      gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
-                      gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
-                    >
-                      <div className="w-full p-4 flex flex-col items-center h-full">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="unbounded-16-300 tracking-wider">
-                            {tier.name}
-                          </h3>
-                          <Tooltip
-                            classNames={{
-                              content: "!p-0",
-                            }}
-                            content={
-                              <>
-                                <GradientBorderCard className="p-4 flex flex-col gap-1">
-                                  <>
-                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                      Levelup Rewards
-                                    </div>
-                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                      <div className="!text-sub w-20">
-                                        Rebate Rate
-                                      </div>
-                                      <div>+{tier.rebateRate} %</div>
-                                    </div>
-                                    <div className="w-full flex items-center justify-between text-sm teacher !normal-case">
-                                      <div className="!text-sub w-20">
-                                        Multiplier
-                                      </div>
-                                      <div>+{tier.multiplier} 🔥FIRE</div>
-                                    </div>
-                                  </>
-                                </GradientBorderCard>
-                              </>
-                            }
-                          >
-                            <div className="flex items-center">
-                              <CircleHelp width={12} height={12} />
-                            </div>
-                          </Tooltip>
-                        </div>
-
-                        {/* 宝石图标 */}
-                        <div className="relative h-24 w-full flex items-center justify-center">
-                          <img
-                            src={getTierIcon(tier.name)}
-                            alt={tier.name}
-                            className="h-full object-contain"
-                          />
-                        </div>
-                        {
-                          tier.level == inviteLevelId && (
-                            <div className="flex-1 flex flex-col items-center justify-end gap-2">
-                              <div className="unbounded-16-300 text-center">{tier.level}</div>
-                              <div className="unbounded-12-300 text-center">Current Level</div>
-                            </div>
-                          )
-                        }
-                        {
-                          Number(inviteLevelId) >= tier.level ? (<></>) : (<>
-                            <div className="mt-4 flex items-center flex-col gap-1">
-                              <svg
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                                  stroke="white"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                                <path
-                                  d="M18 21C18 19.1362 17.2625 17.3487 15.9497 16.0485C14.637 14.7482 12.8326 14 11 14C9.16737 14 7.36302 14.7482 6.05025 16.0485C4.73748 17.3487 4 19.1362 4 21"
-                                  stroke="white"
-                                  strokeWidth="2"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                />
-                              </svg>
-                              <span className="unbounded-16-300">
-                                {tiers[index - 1]?.needInviteCnt || 0}
-                              </span>
-
-                              <div className="unbounded-12-300 text-center">Invites Required</div>
-                            </div>
-                          </>)
-                        }
-                      </div>
-                    </GradientBorderCard>
-
-                    {/* 连接线 - 除了最后一个项目外的所有项目都有 */}
-                    {index < tiers.length - 1 && (
-                      <div
-                        className={cn(
-                          "absolute left-full top-1/2 h-px bg-white  -translate-y-1/2 z-[1]",
-
-                          isMobile
-                            ? "w-[1.2rem] translate-x-[calc(calc(2rem-1.2rem)/2)] "
-                            : "w-[1rem] translate-x-[calc(calc(1rem)/2)]"
-                        )}
-                      />
-                    )}
-                  </div>
-                ))}
-            </div>
-          </div>
-        </Tab>
-      </Tabs>
+        items={tabs}
+        defaultActiveKey="stake"
+        tabClassName="w-full"
+        renderMode="hidden"
+      />
     </div>
   );
 };
@@ -383,9 +422,7 @@ const MoreFire = () => {
           <div className="unbounded-16-300">Invite code</div>
           <div className="mt-8 ml-auto ">
             <Copy value={inviteCode}>
-              <span className="unbounded-24-300">
-                {inviteCode || "-"}
-              </span>
+              <span className="unbounded-24-300">{inviteCode || "-"}</span>
             </Copy>
           </div>
         </>
@@ -411,15 +448,14 @@ const MultiplierModal = () => {
         item.level == zkPart?.multiplierLevel
     ) || multiplierLevelList?.[0];
 
-  const nextLevelMultiplier = multiplierLevelList?.find(
-    (item: { level: number | undefined }) =>
-      item.level == Number(zkPart?.multiplierLevel) + 1
-  ) || multiplierLevelList?.[multiplierLevelList.length - 1];
+  const nextLevelMultiplier =
+    multiplierLevelList?.find(
+      (item: { level: number | undefined }) =>
+        item.level == Number(zkPart?.multiplierLevel) + 1
+    ) || multiplierLevelList?.[multiplierLevelList.length - 1];
 
   const nextLevelMultiplierRequire =
     currentMultiplier?.nextLevelRequire - (zkPart?.multiplierFire || 0);
-
-
 
   const hasNextLevel = multiplierLevelList?.find(
     (item: { level: number | undefined }) =>
@@ -441,7 +477,7 @@ const MultiplierModal = () => {
         <GradientBorderCard className="py-4 px-6 flex flex-col gap-4">
           <>
             <div className="unbounded-16-300">
-              {currentMultiplier?.name || '-'} Boosting
+              {currentMultiplier?.name || "-"} Boosting
               <br /> in Progress
             </div>
             <MultiplierPercentBar />

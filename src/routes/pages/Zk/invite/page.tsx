@@ -418,7 +418,7 @@ const InvitePage = () => {
                                     ? "9rem"
                                     : `calc(calc(100% - 10rem * ${tiers.length}) / ${tiers.length})`,
                             }}
-                            className={cn("grid grid-cols-5 overflow-x-scroll")}
+                            className={cn("grid grid-cols-5 overflow-x-scroll w-max lg:w-auto")}
                         >
                             {tiers
                                 .sort((a, b) => a.level - b.level)
