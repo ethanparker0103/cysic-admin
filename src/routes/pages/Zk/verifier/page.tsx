@@ -460,7 +460,7 @@ const VerifierPage = () => {
                     <GradientBorderCard borderRadius={8} className="mb-4 relative px-4 lg:px-6 py-4">
                         <SelfProverStepCard
                             step={1}
-                            linkContent="Click here to know how to earn CYS"
+                            // linkContent="Click here to know how to earn CYS"
                             title="RESERVE 100 CYS"
                             description={
                                 <>

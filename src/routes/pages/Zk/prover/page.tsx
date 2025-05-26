@@ -46,12 +46,12 @@ const SelfProverStepCard = ({ showLink, step, title, description, buttonText, ch
                     <p className="text-sub text-sm mb-4 teacher !normal-case">{description}</p>
                 </div>
 
-                {
+                {/* {
                     showLink ? (<div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
                         <span>Click here to know how to earn CYS</span>
                         <ArrowRight width={16} height={16} />
                     </div>) : null
-                }
+                } */}
             </div>
             {children || <div className="border-b border-white/10 mt-6"></div>}
         </div>

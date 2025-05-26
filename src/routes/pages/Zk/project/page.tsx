@@ -113,13 +113,15 @@ const ProjectPage = () => {
                         <ArrowRight size={16} />
                     </div>
 
-                    <Button
-                        type="solid"
-                        className="uppercase !p-6 text-base flex gap-2 items-center "
-                    >
-                        <span>apply</span>
-                        <ArrowRight size={16} />
-                    </Button>
+                    <a target="_blank" href="https://docs.google.com/forms/d/1_AbdPw6vPzlnOFjptblMOZJKqo9d9-LcZTxucp7vI-E/edit">
+                        <Button
+                            type="solid"
+                            className="uppercase !p-6 text-base flex gap-2 items-center "
+                        >
+                            <span>apply</span>
+                            <ArrowRight size={16} />
+                        </Button>
+                    </a>
                 </div>
             </div>
 
