@@ -17,6 +17,7 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { ArrowUpRightIcon } from "lucide-react";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import Copy from "@/components/Copy";
 
 const VerifierDetail = () => {
   const { t } = useTranslation();
@@ -48,23 +49,26 @@ const VerifierDetail = () => {
       label: "Address",
       renderCell: (item: any) => {
         return (
+          
           <div className="flex flex-col gap-2">
-            <a
-              target="_blank"
-              href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
-              className="flex items-center gap-2"
-            >
-              <span className="flex-1 lg:flex-none">{item?.address}</span>
-              <ArrowUpRightIcon className="size-3" />
-            </a>
-            <a
-              target="_blank"
-              href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
-              className="flex items-center gap-2 text-[#737373]"
-            >
-              <span className="flex-1 lg:flex-none">{item?.cysicAddress}</span>
-              <ArrowUpRightIcon className="size-3" />
-            </a>
+            <Copy text={item?.address} >{item?.address}</Copy>
+            <Copy text={item?.cysicAddress} >{item?.cysicAddress}</Copy>
+           {/* <a
+             target="_blank"
+             href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
+             className="flex items-center gap-2"
+           >
+             <span className="flex-1 lg:flex-none">{item?.address}</span>
+             <ArrowUpRightIcon className="size-3" />
+           </a>
+           <a
+             target="_blank"
+             href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
+             className="flex items-center gap-2 text-[#737373]"
+           >
+             <span className="flex-1 lg:flex-none">{item?.cysicAddress}</span>
+             <ArrowUpRightIcon className="size-3" />
+           </a> */}
           </div>
         );
       },
