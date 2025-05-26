@@ -8,6 +8,7 @@ import useAccount from "@/hooks/useAccount";
 import { commonPageSize, enableBridge, mediasLink } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 interface IBridgeHistoryItem {
   ID: string; // 记录ID
@@ -119,14 +120,14 @@ const BridgeHistoryModal = () => {
       )}
 
      {enableBridge ? <div className="mt-auto">
-        <a href={mediasLink.bridge} target="_blank">
+        <Link to={'/bridge'} target="_blank">
           <Button
             type="light"
             className="w-full py-4 rounded-lg text-base font-medium"
           >
             BRIDGE
           </Button>
-        </a>
+        </Link>
       </div> : null}
     </Modal>
   );

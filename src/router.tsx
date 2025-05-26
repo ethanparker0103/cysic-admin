@@ -188,9 +188,9 @@ export const router = createBrowserRouter(
       ],
     },
   ],
-  {
-    basename: "/m",
-  }
+  // {
+  //   basename: "/m",
+  // }
 );
 
 export const backgroundImageList = {

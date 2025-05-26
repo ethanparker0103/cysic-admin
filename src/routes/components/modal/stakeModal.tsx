@@ -273,7 +273,7 @@ const ValidatorDropdown = ({
                     </div>
 
                     <div className="flex justify-between items-center px-4 py-2 border-t border-[#333]">
-                        <div className="text-[#777]">Unbonding period</div>
+                        <div className="text-[#777]">Unstaking period</div>
                         <div className="text-white">21 Days</div>
                     </div>
                 </GradientBorderCard>
@@ -716,7 +716,7 @@ const StakeModal = () => {
                             <div className="text-white">{selectedValidator?.commissionRate ? (Number(selectedValidator?.commissionRate) * 100) : "0"}%</div>
                         </div>
                         <div className="flex justify-between items-center">
-                            <div className="text-[#777]">Unbonding period</div>
+                            <div className="text-[#777]">Unstaking period</div>
                             <div className="text-white">21 Days</div>
                         </div>
                     </div>

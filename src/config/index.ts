@@ -67,7 +67,7 @@ export const cosmosCysicTestnet = isProd ? cosmos_cysic_testnet : cosmos_cysic_d
 
 export const mainUrl = import.meta.env.VITE_APP_BASE_URL;
 
-export const baseHref = "/m";
+export const baseHref = "";
 
 export const defaultRewardAmount = 100;
 
@@ -126,7 +126,6 @@ export const mediasLink = {
   twitter: "https://x.com/cysic_xyz",
   medium: "https://medium.com/@cysic",
   twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
-  bridge: "https://testnet.prover.xyz/m/bridge",
   telegram: "https://t.me/CysicHQ",
   github: "https://github.com/cysic-labs",
   doc: "https://hackmd.io/@Cysic",
