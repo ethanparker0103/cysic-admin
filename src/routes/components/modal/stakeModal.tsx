@@ -26,7 +26,7 @@ enum StakeAction {
 // 验证人选项卡
 enum ValidatorTab {
     MY_VALIDATORS = "MY_VALIDATORS",
-    OTHERS = "OTHERS"
+    ALL = "ALL"
 }
 
 // 直接使用接口数据类型，确保与API响应一致
@@ -172,7 +172,7 @@ const ValidatorDropdown = ({
                     <div className="p-4">
                         <h3 className="text-white text-xl mb-4">VALIDATOR</h3>
 
-                        {/* 验证人选项卡 - 在Unstake模式下禁用Others选项卡 */}
+                        {/* 验证人选项卡 - 在Unstake模式下禁用ALL选项卡 */}
                         <div className="grid grid-cols-2 rounded-lg overflow-hidden mb-4 border border-[#FFFFFF4D]">
                             <button
                                 className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.MY_VALIDATORS
@@ -187,7 +187,7 @@ const ValidatorDropdown = ({
                                 MY STAKE
                             </button>
                             <button
-                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.OTHERS
+                                className={`py-3 uppercase text-center text-base ${validatorTab === ValidatorTab.ALL
                                         ? "bg-white text-black"
                                         : "bg-[#1E1E1E] text-[#777]"
                                     } ${activeTab === StakeAction.UNSTAKE
@@ -196,13 +196,13 @@ const ValidatorDropdown = ({
                                     }`}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    // 只有在Stake模式下才能切换到Others
+                                    // 只有在Stake模式下才能切换到ALL
                                     if (activeTab !== StakeAction.UNSTAKE) {
-                                        handleValidatorTabChange(ValidatorTab.OTHERS);
+                                        handleValidatorTabChange(ValidatorTab.ALL);
                                     }
                                 }}
                             >
-                                OTHERS
+                                ALL
                             </button>
                         </div>
 
