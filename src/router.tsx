@@ -408,6 +408,8 @@ export const backgroundImageList = {
     needShadow: true,
   },
   "/mediakit": {
+    img: getImageUrl("@/assets/images/_global/mediakit_landing_bg.png"),
+    className: "h-screen",
     // img: "#000",
   },
   "/contactus": {

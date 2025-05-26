@@ -126,7 +126,8 @@ export const LandingBackground: React.FC<{ children?: React.ReactNode }> =
                 <div className="relative w-full" style={{ minHeight: height }}>
                     <main
                         className={cn(
-                            "relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-start lg:pt-[8rem]",
+                            path.includes('/zk') ? "lg:pt-[calc(8rem+65px)]" : " lg:pt-[8rem]",
+                            "relative min-h-screen w-full z-10 mx-auto flex flex-col items-center justify-start]",
                             noContainer ? "!pb-0" : "px-3 lg:px-0 main-container lg:pb-12",
                             "pb-6 ",
                             mainClassName

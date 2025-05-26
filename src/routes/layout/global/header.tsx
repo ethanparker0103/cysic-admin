@@ -24,6 +24,7 @@ const size = "full";
 export default function Header() {
   const { walletAddress, isSigned, isBinded } = useAccount();
   const { currentNavs } = useNav();
+  console.log('currentNavs', currentNavs)
   const location = useLocation();
 
   const { hasTryToConnectedOnce } = useTriedConnectedOnce();
@@ -134,7 +135,7 @@ export default function Header() {
         {createPortal(
           <div className="hidden lg:block main-container fixed top-0 z-[11] h-[8rem] w-full left-1/2 -translate-x-1/2">
             <div className="relative py-6">
-              <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
+              <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2] overflow-visible">
                 <div className="w-full h-full flex justify-between items-center">
                   <div className="flex items-center h-full flex-1">
                     <Link to={"/"}>
@@ -193,6 +194,24 @@ export default function Header() {
                   </div>
                 </div>
               </GradientBorderCard>
+
+              {
+                // @ts-ignore
+                currentNavs?.[0]?.type == 'subNav' && (
+                  <div className="hidden lg:block main-container left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(5rem+18px)] w-full">
+                    <GradientBorderCard gradientTo="rgba(255, 255, 255, 0)" direction="0deg" className=" px-6 flex items-center h-[65px]">
+                      {
+                        // @ts-ignore
+                        currentNavs?.[0]?.children?.map(i => {
+                          return <Link to={i.href} key={i.key} className="flex-1 max-w-[11.25rem] p-6 flex items-center justify-center hover:bg-default/40">
+                            <span className="teachers-14-400">{i.content}</span>
+                          </Link>
+                        })
+                      }
+                    </GradientBorderCard>
+                  </div>
+                )
+              }
             </div>
           </div>,
           document.body

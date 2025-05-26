@@ -125,6 +125,7 @@ const _zkNavs = [
   {
     content: "Cysic ZK",
     href: "/zk",
+    type: 'subNav',
     children: [
       {
         content: "Prover",

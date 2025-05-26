@@ -201,7 +201,7 @@ const ContactUs = () => {
                   <RadioGroup
                     classNames={{
                       label: "h-[30px]",
-                      // wrapper: "ml-2"
+                      wrapper: "!flex-col lg:!flex-row [&_label]:!max-w-none lg:[&_label]:!max-w-fit",
                     }}
                     value={formData.topic}
                     onValueChange={(value) => {

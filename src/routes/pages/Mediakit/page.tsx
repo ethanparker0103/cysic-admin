@@ -128,15 +128,15 @@ const IconDiplayAndDownload = ({ item }: { item: any }) => {
 const Mediakit = () => {
     return (
         <>
-            <div className="py-12 lg:py-0 lg:min-h-screen flex flex-col items-center justify-center gap-4">
+            <div className="py-12 lg:py-0 min-h-[calc(100vh-5.625rem)] lg:min-h-[calc(100vh-8rem)] flex flex-col items-center justify-center gap-4">
                 <div className="unbounded-36-180-200">media kit</div>
                 <span className="teachers-14-24-400 tracking-widest">brand assets</span>
             </div>
 
-            <div className="bg-white p-4 lg:px-0 lg:py-14 flex flex-col gap-2 items-center text-center">
-                <span className="!normal-case teachers-16-400 text-black">Cysic is a leading ZK Hardware acceleration company in the industry and the first ZK Prover Network to provide</span>
-                <div className="unbounded-16-32-500 text-gradient-v1 flex text-center">ZK-CaaS (ZK Compute-as-a-Service)</div>
-                <span className="!normal-case teachers-16-400 text-black">Our goal is to address the computational inefficiencies in ZK proofs and enable real-time ZK proof generation.</span>
+            <div className="w-full bg-gradient-to-r from-[#6B2CE1] to-[#3A187B] p-4 lg:px-0 lg:py-14 flex flex-col gap-2 items-center text-center">
+                <span className="!normal-case teachers-16-400 ">Cysic is a leading ZK Hardware acceleration company in the industry and the first ZK Prover Network to provide</span>
+                <div className="unbounded-16-32-500 flex text-center">ZK-CaaS (ZK Compute-as-a-Service)</div>
+                <span className="!normal-case teachers-16-400 ">Our goal is to address the computational inefficiencies in ZK proofs and enable real-time ZK proof generation.</span>
             </div>
 
             <div className="py-14 flex flex-col gap-12 items-center">
