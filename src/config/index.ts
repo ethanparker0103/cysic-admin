@@ -32,7 +32,10 @@ export const taskStatus: any = {
   TaskStatusFinishSuccess: "Success",
   TaskStatusWaitProof: "Wait For Proof",
   TaskStatusMatchProviderFailed: "Failed",
-  TaskStatusPublished: "Wait For Proof"
+  TaskStatusPublished: "Wait For Proof",
+  TaskStatusFinishFailed: "Failed",
+  TaskStatusInvalid: "Failed",
+  TaskStatusMatchVerifierFailed: "Failed",
 };
 
 export const TaskStatus: any = {
@@ -41,10 +44,10 @@ export const TaskStatus: any = {
   "2": taskStatus["TaskStatusWaitProof"],
   "3": taskStatus["TaskStatusWaitVerifier"],
   "100": taskStatus["TaskStatusFinishSuccess"],
-  "200": "TaskStatusFinishFailed",
-  "400": "TaskStatusInvalid",
+  "200": taskStatus["TaskStatusFinishFailed"],
+  "400": taskStatus["TaskStatusInvalid"],
   "40": taskStatus["TaskStatusMatchProviderFailed"],
-  "401": "TaskStatusMatchVerifierFailed",
+  "401": taskStatus["TaskStatusMatchVerifierFailed"],
 };
 
 export const StatusColor: any = {
@@ -60,8 +63,8 @@ export const TaskStatusColor: any = {
   "3": "#F0AE52",
   
   "100": "#75FF52",
-  "200": "#F0AE52",
 
+  "200": "#FF5953",
   "400": "#FF5953",
   "40": "#FF5953",
   "401": "#FF5953",
