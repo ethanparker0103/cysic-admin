@@ -1,4 +1,4 @@
-import { baseHref } from "@/config";
+import { baseHref, enableBridge } from "@/config";
 // 生态系统项目数据
 export interface IEcosystemProject {
   projectName: string;
@@ -261,7 +261,7 @@ export const ecosystemProjects: IEcosystemProject[] = [
     category: "Bridge",
     subLabel: [],
     blurb: "The bridge solution developed by Cysic Network.",
-    websiteLink: "https://cysic.xyz/bridge",
+    websiteLink: enableBridge ? "https://cysic.xyz/bridge" : "",
     twitterLink: "",
     img: "https://cysic.xyz/assets/logo.svg",
     className: "bg-[transparent]"
