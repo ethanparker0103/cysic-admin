@@ -107,7 +107,7 @@ const BoostingList = () => {
         <Tab key="stake" title="STAKE">
           <div className="flex flex-col gap-4">
             <div className="text-base">
-              Staking more CCT unlocks additional Boosts and a higher
+              Staking more CGT unlocks additional Boosts and a higher
               Multiplier.
             </div>
             <Button
@@ -179,7 +179,7 @@ const BoostingList = () => {
                     value={inviteCode}
                     className="unbounded-24-300"
                   >
-                    {inviteCode}
+                    {inviteCode || '-'}
                   </Copy>
                 </div>
                 <Link to="/zk/invite" onClick={() => {
@@ -404,7 +404,7 @@ const MultiplierModal = () => {
   };
 
   const { multiplierLevelList } = useStatic();
-  const { zkPart } = useAccount();
+  const { zkPart, isSigned, walletAddress } = useAccount();
   const currentMultiplier =
     multiplierLevelList?.find(
       (item: { level: number | undefined }) =>
@@ -445,7 +445,11 @@ const MultiplierModal = () => {
               <br /> in Progress
             </div>
             <MultiplierPercentBar />
-            {hasNextLevel ? (
+            {!walletAddress || !isSigned ? (
+              <span className="text-sub text-sm ml-auto teacher">
+                Connect your wallet to earn more 🔥Fire
+              </span>
+            ) : hasNextLevel ? (
               <span className="text-sub text-sm ml-auto teacher">
                 Earn {nextLevelMultiplierRequire} more{" "}
                 <span className="text-[#22D3EE] font-bold">🔥FIRE</span> to

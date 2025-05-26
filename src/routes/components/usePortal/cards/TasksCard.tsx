@@ -107,7 +107,7 @@ export const ProjectCard = () => {
                 {status.map((item) => (
                     <div className="flex items-center gap-2 unbounded-14-300">
                         <div className={`h-2 w-2 rounded-full ${item.key == 'underReviewCnt' ? 'bg-lightBrand' : 'bg-warning'}`}></div>
-                        {zkPart?.projectStatus?.[item.key]}&nbsp;
+                        {zkPart?.projectStatus?.[item.key] || '0'}&nbsp;
                         {item.label}
                     </div>
                 ))}
