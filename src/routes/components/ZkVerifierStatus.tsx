@@ -46,14 +46,14 @@ export const useVerifierStatus = () => {
             <div className="flex items-center gap-2" key={index}>
               <div
                 className={`w-3 h-3 rounded-full ${
-                  proverStatusData[item.name as keyof typeof proverStatusData]
+                  data?.data?.proverStatus
                     ? "bg-lightBrand"
                     : "bg-error"
                 }`}
               ></div>
               <span className="unbounded-14-300">
                 {item.name} PROVER{" "}
-                {proverStatusData[item.name as keyof typeof proverStatusData]
+                {data?.data?.proverStatus
                   ? "ACTIVE"
                   : "INACTIVE"}
               </span>

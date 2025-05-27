@@ -55,12 +55,12 @@ export const useProverStatus = () => {
                 <div className="flex flex-col gap-4 w-full">
                     <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${proverStatusData.zkSync ? 'bg-lightBrand' : 'bg-gray-500'}`}></div>
-                        <span className="unbounded-14-300">ZKSYNC PROVER {proverStatusData.zkSync ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${data?.data?.proverStatus ? 'bg-lightBrand' : 'bg-gray-500'}`}></div>
+                        <span className="unbounded-14-300">ZKSYNC PROVER {data?.data?.proverStatus ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <div className={`w-3 h-3 rounded-full ${proverStatusData.ethProve ? 'bg-lightBrand' : 'bg-error'}`}></div>
-                        <span className="unbounded-14-300">ETHProve {proverStatusData.ethProve ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <div className={`w-3 h-3 rounded-full ${data?.data?.proverStatus ? 'bg-lightBrand' : 'bg-error'}`}></div>
+                        <span className="unbounded-14-300">ETHProve {data?.data?.proverStatus ? 'ACTIVE' : 'INACTIVE'}</span>
                     </div>
                 </div>
             </div>
