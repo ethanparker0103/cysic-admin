@@ -3,22 +3,24 @@ import { getImageUrl, shortStr } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
 
-export const Avatar = ({ className, avatar, name }: { className?: string; avatar: string; name: string }) => {
+export const Avatar = ({ switchColor, className, avatar, name }: { switchColor?: boolean, className?: string; avatar: string; name: string }) => {
+
+  const colors = switchColor && name?.charCodeAt(0) % 2 === 0 ? 'from-purple-700 to-purple-500' : 'from-[#2744FF] to-[#589EFF]';
   return (
     avatar ? (
       <img src={avatar} className={cn(className, "size-8 rounded-full")} />
     ) : (
-      <p className={cn(className, "size-8 rounded-full bg-gradient-to-b from-[#2744FF] to-[#589EFF] flex items-center justify-center")}>
+      <p className={cn(className, colors, "size-8 rounded-full bg-gradient-to-b  flex items-center justify-center")}>
         {name?.slice(0, 2)}
       </p>
     )
   )
 }
 
-export const TableAvatar = ({ avatar, name }: { avatar: string; name: string }) => {
+export const TableAvatar = ({ switchColor, className, avatar, name }: { switchColor?: boolean, className?: string, avatar?: string; name: string }) => {
   return (
-    <div className="flex items-center gap-2">
-      <Avatar avatar={avatar} name={name} />
+    <div className={cn("flex items-center gap-2", className)}>
+      <Avatar switchColor={switchColor} avatar={avatar || ''} name={name} />
       <span>{shortStr(name, isMobile ? 10 : 140)}</span>
     </div>
   );

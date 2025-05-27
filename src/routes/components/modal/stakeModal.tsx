@@ -16,6 +16,7 @@ import { useRequest } from "ahooks";
 import axios from "@/service";
 import dayjs from "dayjs";
 import GradientBorderCard from "@/components/GradientBorderCard";
+import { TableAvatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 // 操作类型枚举
 enum StakeAction {
@@ -139,7 +140,6 @@ const ValidatorDropdown = ({
         setValidatorTab(tab);
     };
 
-    console.log('validators', validators)
     return (
         <div className="relative">
             <div
@@ -149,10 +149,7 @@ const ValidatorDropdown = ({
                 <div className="flex items-center gap-2">
                     {selectedValidator ? (
                         <>
-                            <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
-                                {selectedValidator.validatorName.substring(0, 2).toUpperCase()}
-                            </div>
-                            <span className="text-white">{selectedValidator.validatorName}</span>
+                            <TableAvatar switchColor name={selectedValidator.validatorName} />
                         </>
                     ) : (
                         <span className="text-[#777]">Select Validator</span>
@@ -211,19 +208,19 @@ const ValidatorDropdown = ({
                             <>
                                 {/* 验证人列表头部 */}
                                 <div className="flex justify-between items-center bg-[#111] p-3 rounded-md mb-2">
-                                    <div className="text-white">Validator</div>
+                                    <div className="text-white w-[8.25rem]">Validator</div>
                                     {
                                         validatorTab === ValidatorTab.MY_VALIDATORS ? (
-                                            <div className="text-white">Staked Amount</div>
+                                            <div className="text-white text-center">Staked Amount</div>
                                         ) : (
                                             null
                                         )
                                     }
                                     {
                                         validatorTab === ValidatorTab.MY_VALIDATORS ? (
-                                            <div className="text-white">Expected APR</div>
+                                            <div className="text-white text-right w-[8.25rem]">Expected APR</div>
                                         ) : (
-                                            <div className="text-white">Commission Rate</div>
+                                            <div className="text-white text-right w-[8.25rem]">Commission Rate</div>
                                         )
                                     }
                                 </div>
@@ -239,20 +236,15 @@ const ValidatorDropdown = ({
                                                 onSelect(validator);
                                             }}
                                         >
-                                            <div className="flex items-center gap-2">
-                                                <div className={`w-8 h-8 rounded-full ${index % 2 === 0 ? 'bg-blue-500' : 'bg-purple-500'} flex items-center justify-center text-white`}>
-                                                    {validator.validatorName.substring(0, 2).toUpperCase()}
-                                                </div>
-                                                <span className="text-white">{validator.validatorName}</span>
-                                            </div>
+                                            <TableAvatar switchColor name={validator.validatorName} className="w-[8.25rem]" />
                                             {
                                                 validatorTab === ValidatorTab.MY_VALIDATORS ? (
-                                                    <div className="text-white">
+                                                    <div className="text-white text-center">
                                                         {formatReward(validator.stake?.amount || '0', 4)} CGT
                                                     </div>
                                                 ) : null
                                             }
-                                            <div className="text-white">
+                                            <div className="text-white text-right w-[8.25rem]">
                                                 {validatorTab === ValidatorTab.MY_VALIDATORS
                                                     ? (validator.apr || "0") + "%"
                                                     : `${(Number(validator.commissionRate) * 100).toFixed(2)}%` || "0%"

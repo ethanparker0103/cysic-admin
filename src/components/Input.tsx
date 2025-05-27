@@ -91,7 +91,7 @@ const Input = ({
           value={value || ""}
           onChange={handleChange}
           type="text"
-          className={cn(classNames.input, "grow w-full inner-input")}
+          className={cn(classNames?.input, "grow w-full inner-input")}
         />
         {suffix || null}
       </div>

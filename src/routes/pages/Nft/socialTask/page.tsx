@@ -9,6 +9,7 @@ import usePagnation from "@/hooks/usePagnation";
 import Spinner from "@/components/spinner";
 import useAccount from "@/hooks/useAccount";
 import { IUserProileResponseInSocialTask } from "@/models/user";
+import { toast } from "react-toastify";
 
 interface ITaskGroup {
   id: number;
@@ -21,21 +22,34 @@ interface ITask {
   id: number;
   title: string;
   description: string;
-  status: number; // 0: 未开始, 1: 已完成, 2: 进行中
-  actionText: string;
+  status: number; // 0: 未开始, 1: 进行中, 2: 已完成
+  actionText?: string;
+
+  action: number; // 0 - check, 1 - link
+  link: string; // url
+  relatedTaskId: string; // '1&&2&&3'
+
+
 }
 
 interface IClaimResponse {
   taskList: ITask[];
   userProfile: IUserProileResponseInSocialTask;
+  relatedTaskId: string;
+  success: boolean;
+  taskId: number;
 }
 interface TaskCardProps {
   title: string;
   status: number; // 0: 未开始, 1: 已完成, 2: 进行中
   buttonText: "CLAIM" | "CHECK" | string;
   description: string;
-  onClick?: () => void;
+  onClick?: () => Promise<void>;
   hideBtn?: boolean;
+
+  action: number; // 0 - check, 1 - link
+  link: string; // url
+  relatedTaskId: string; // '1&&2&&3'
 }
 
 interface TaskSectionProps {
@@ -52,6 +66,9 @@ const TaskCard = ({
   description,
   onClick,
   hideBtn,
+  action,
+  link,
+  relatedTaskId,
 }: TaskCardProps) => (
   <GradientBorderCard
     borderRadius={8}
@@ -140,7 +157,17 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
       });
 
       const response = res.data as IClaimResponse;
-      console.log('res', response)
+
+      const currentTaskId = response?.taskId
+      const status = response?.taskList?.find(item => item.id == currentTaskId)?.status
+
+      if(status != 2){
+        // if()
+        toast.error('Claim failed, please try again later')
+      }else{
+        toast.success('Claim success')
+      }
+
 
       if(response?.userProfile){
         updateUserProfile(address, response?.userProfile);
@@ -169,11 +196,6 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
       key={taskGroup.id}
       title={taskGroup.name}
       description={taskGroup.description}
-    // rightAction={
-    //   <div onClick={handleVoucherModal} className={cn("flex items-center text-sub hover:text-white", isMobile ? "text-base" : "text-sm")}>
-    //     CHECK ALL YOUR VOUCHERS <ArrowRight size={16} className="ml-1" />
-    //   </div>
-    // }
     >
       {loading ? (
         <Spinner />
@@ -188,9 +210,18 @@ const TaskGroup = ({ taskGroup }: { taskGroup: ITaskGroup }) => {
             title={task.title}
             status={task.status}
             description={task.description}
-            buttonText={task?.actionText || "CHECK"}
-            onClick={() => handleClaim(task, taskGroup.id)}
+            buttonText={task?.actionText || (task.action == 0 ? "CHECK" : "VIEW")}
+            onClick={async () => {
+              if(task.action == 0){
+                await handleClaim(task, taskGroup.id);
+              }else{
+                window.open(task.link, '_blank');
+              }
+            }}
             hideBtn={!isSigned}
+            action={task.action}
+            link={task.link}
+            relatedTaskId={task.relatedTaskId}
           />
         ))
       )}

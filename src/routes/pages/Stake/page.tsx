@@ -1,6 +1,6 @@
 import Button, { BtnType } from "@/components/Button";
 import { formatReward, handleStakeModal, handleUnstakeModal } from "@/utils/tools";
-import { History } from "lucide-react";
+import { History, Search } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
@@ -25,7 +25,9 @@ import { showStatusModal } from "@/utils/tools";
 import { StatusType } from "@/routes/components/modal/statusModal";
 import { cosmosCysicTestnet } from "@/config";
 import useAccount from "@/hooks/useAccount";
-import { cn } from "@nextui-org/react";
+import { cn, Input } from "@nextui-org/react";
+import { TableAvatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+// import Input from "@/components/Input";
 
 interface Validator {
   id: string;
@@ -202,12 +204,7 @@ const StakePage = () => {
       key: "validator",
       label: "Validator",
       renderCell: (validator) => (
-        <div className="flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-full ${validator.color} flex items-center justify-center text-white`}>
-            {validator.abbr}
-          </div>
-          <span>{validator.name}</span>
-        </div>
+        <TableAvatar switchColor name={validator.name} />
       )
     },
     {
@@ -265,12 +262,7 @@ const StakePage = () => {
       key: "validator",
       label: "Validator",
       renderCell: (validator) => (
-        <div className="flex items-center gap-2">
-          <div className={`w-8 h-8 rounded-full ${validator.color} flex items-center justify-center text-white`}>
-            {validator.abbr}
-          </div>
-          <span>{validator.name}</span>
-        </div>
+        <TableAvatar switchColor name={validator.name} />
       )
     },
     {
@@ -443,6 +435,11 @@ const queryWithdrawAddress = async () => {
     }
   );
 
+  const [search, setSearch] = useState('')
+  const filteredValidators = useMemo(() => {
+    return activeValidators.filter((validator) => validator.name.toLowerCase().includes(search.toLowerCase()))
+  }, [search, activeValidators])
+
   return (
     <>
       {/* 主标题 */}
@@ -561,13 +558,14 @@ const queryWithdrawAddress = async () => {
           <div className="w-full py-4 px-4 lg:px-6">
             <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center")}>
               <h2 className="unbounded-20-300">ACTIVE VALIDATORS</h2>
+              <Input startContent={<Search size={16} />} classNames={{ base: 'max-w-[12.5rem]'}} variant="bordered" value={search} onValueChange={setSearch} placeholder="Search by validator name" />
             </div>
 
             {activeLoading ? (
               <div className="text-center py-6">loading active validators...</div>
             ) : (
               <CysicTable
-                data={activeValidators}
+                data={filteredValidators}
                 columns={activeValidatorsColumns}
                 keyExtractor={(validator) => validator.id}
               />
