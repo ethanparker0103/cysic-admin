@@ -12,6 +12,8 @@ import { checkKeplrWallet, checkkTx, signAndBroadcastDirect } from "@/utils/cosm
 import { blockTime, cosmosFee, cosmosCysicTestnet } from "@/config";
 import { MsgDelegate, MsgUndelegate } from 'cosmjs-types/cosmos/staking/v1beta1/tx'
 import BigNumber from "bignumber.js";
+import { useRequest } from "ahooks";
+import axios from "@/service";
 import dayjs from "dayjs";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { TableAvatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
@@ -56,6 +58,13 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                     maxValue={100}
                     value={value}
                     onChange={(val) => onChange(val as number)}
+                    // classNames={{
+                    //     base: "max-w-full",
+                    //     track: "bg-[#333] h-2",
+                    //     filler: "bg-gradient-to-r from-blue-400 to-cyan-400 h-2",
+                    //     thumb: "bg-cyan-400 shadow-lg w-4 h-4 -top-1",
+                    //     mark: "bg-[#666] data-[active=true]:bg-cyan-400",
+                    // }}
                     classNames={{
                         // base: "max-w-md",
                         filler: "bg-gradient-to-r from-lightBrand to-[#9D47FF] rounded-[20px]",
@@ -80,6 +89,12 @@ const PercentageSlider = ({ value, onChange }: { value: number, onChange: (value
                         { value: 75, label: "75%" },
                         { value: 100, label: "100%" },
                     ]}
+                // renderThumb={(props) => (
+                //     <div
+                //         {...props}
+                //         className="group absolute h-4 w-4 rounded-full bg-cyan-400 cursor-pointer z-10"
+                //     />
+                // )}
                 />
 
 
@@ -264,9 +279,8 @@ const StakeModal = () => {
     const { visible, setVisible, data }: any = useModalState({
         eventName: "modal_stake_visible",
     });
-    const { queryActiveListLoading, queryStakeListLoading, stakeList, activeList } = useStake(); // 使用stake store
-    const activeLoading = queryActiveListLoading
-    const stakeLoading = queryStakeListLoading
+    const { stakeList, activeList, setState } = useStake(); // 使用stake store
+
     // 状态管理
     const [activeTab, setActiveTab] = useState<StakeAction>(StakeAction.STAKE);
     const [selectedValidator, setSelectedValidator] = useState<ValidatorResponse | null>(null);
@@ -278,18 +292,53 @@ const StakeModal = () => {
     const cgtBalance = balanceMap?.CGT?.hm_amount || 0
     const balance = cgtBalance.toString();
 
-    // 获取活跃验证者列表
-    useEffect(() => {
-        if (data?.validator && !selectedValidator &&
-            (!stakeList || !stakeList.data || !stakeList.data.validatorList)) {
-            const foundValidator = activeList?.data?.validatorList?.find(
-                (v: ValidatorResponse) => v.validatorName === data.validator
-            );
-            if (foundValidator) {
-                setSelectedValidator(foundValidator);
+    // 在弹窗打开时，如果store中没有数据，则获取数据
+    // 获取质押验证者列表
+    const { loading: stakeLoading, run: runStakeList } = useRequest(
+        () => axios.get('/api/v1/stake/list'),
+        {
+            ready: visible && (!stakeList || !stakeList.data),
+            onSuccess: (res) => {
+                // 存储原始响应到store
+                setState({ stakeList: res });
+                console.log('质押验证者数据获取成功:', res?.data);
+
+                // 如果已设置了验证者名称但未找到验证者对象，尝试使用新获取的数据
+                if (data?.validator && !selectedValidator) {
+                    const foundValidator = res?.data?.validatorList?.find(
+                        (v: ValidatorResponse) => v.validatorName === data.validator
+                    );
+                    if (foundValidator) {
+                        setSelectedValidator(foundValidator);
+                    }
+                }
             }
         }
-    }, [data?.validator, selectedValidator, stakeList, activeList])
+    );
+
+    // 获取活跃验证者列表
+    const { loading: activeLoading, run: runActiveList } = useRequest(
+        () => axios.get('/api/v1/validator/activeList'),
+        {
+            ready: visible && (!activeList || !activeList.data),
+            onSuccess: (res) => {
+                // 存储原始响应到store
+                setState({ activeList: res });
+                console.log('活跃验证者数据获取成功:', res?.data);
+
+                // 如果已设置了验证者名称但未找到验证者对象，尝试使用新获取的数据
+                if (data?.validator && !selectedValidator &&
+                    (!stakeList || !stakeList.data || !stakeList.data.validatorList)) {
+                    const foundValidator = res?.data?.validatorList?.find(
+                        (v: ValidatorResponse) => v.validatorName === data.validator
+                    );
+                    if (foundValidator) {
+                        setSelectedValidator(foundValidator);
+                    }
+                }
+            }
+        }
+    );
 
     // 通过名称查找验证者
     const findValidatorByName = (name: string): ValidatorResponse | null => {
@@ -460,12 +509,14 @@ const StakeModal = () => {
             showStatusModal({
                 type: StatusType.SUCCESS,
                 title: "Transaction Submitted",
-                message: 'Your Stake status will be updated in few seconds.',
                 chainName: cosmosCysicTestnet.chainName,
                 txHash: tx
             });
 
-            dispatchEvent(new Event('refresh_stake_list'))
+            sleep(blockTime.long).then(() => {
+                runStakeList()
+                runActiveList()
+            })
 
             // 关闭质押模态框
             setVisible(false);
@@ -517,12 +568,14 @@ const StakeModal = () => {
             showStatusModal({
                 type: StatusType.SUCCESS,
                 title: "Unstake Successful",
-                message: 'Your Unstake status will be updated in few seconds.',
                 chainName: "CYSIC CHAIN",
                 txHash: tx
             });
 
-            dispatchEvent(new Event('refresh_stake_list'))
+            sleep(blockTime.long).then(() => {
+                runStakeList()
+                runActiveList()
+            })
 
             setVisible(false);
             resetState();

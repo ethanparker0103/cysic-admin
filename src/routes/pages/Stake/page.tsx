@@ -4,6 +4,7 @@ import { History, Search } from "lucide-react";
 import { useState, useMemo, useEffect } from "react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
+import axios from "@/service";
 import { useRequest } from "ahooks";
 import useCosmos from "@/models/_global/cosmos";
 import useStake from "@/models/stake"; // 引入stake store
@@ -23,9 +24,9 @@ import BigNumber from "bignumber.js";
 import { showStatusModal } from "@/utils/tools";
 import { StatusType } from "@/routes/components/modal/statusModal";
 import { cosmosCysicTestnet } from "@/config";
+import useAccount from "@/hooks/useAccount";
 import { cn, Input } from "@nextui-org/react";
 import { TableAvatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
-import { ValidatorResponse } from "@/hooks/useStakeList";
 // import Input from "@/components/Input";
 
 interface Validator {
@@ -38,6 +39,20 @@ interface Validator {
   commissionRate: string;
 }
 
+interface ValidatorResponse {
+  validatorName: string;
+  stake?: {
+    amount: string;
+    symbol: string;
+  };
+  votingPower: {
+    amount: string;
+    symbol: string;
+  };
+  votingPowerPercent: string;
+  commissionRate: string;
+  apr?: string;
+}
 
 const sliceFormat = (value: string, decimal: number = 18) => {
   if (value.length <= decimal) return value;
@@ -51,13 +66,14 @@ const sliceFormat = (value: string, decimal: number = 18) => {
 
 
 const StakePage = () => {
-  const { queryActiveListLoading, queryStakeListLoading, stakeList, activeList: activeListData, stakeAmount, unstakeAmount } = useStake();
-  const activeLoading = queryActiveListLoading
-  const stakeListData = stakeList
-  const stakeLoading = queryStakeListLoading
-  const activeList = activeListData
+  const { isSigned, walletAddress } = useAccount()
+  const { balanceMap } = useCosmos()
+  const { setState, stakeList, activeList } = useStake(); // 使用stake store
 
+  // const unstakeAmount = balanceMap?.CGT?.hm_amount || 0
+  const [stakeAmount, setStakeAmount] = useState("0");
   const [rewardsAmount, setRewardsAmount] = useState("0");
+  const [unstakeAmount, setUnstakeAmount] = useState("0");
 
   const apr = useMemo(() => {
     // 检查数据是否都已加载
@@ -107,6 +123,42 @@ const StakePage = () => {
   }, [stakeList, activeList]);
 
 
+  // 获取质押验证者列表
+  const { data: stakeListData, loading: stakeLoading } = useRequest(
+    () => Promise.allSettled([axios.get('/api/v1/stake/list'), axios.get('/api/v1/unstake/list')]),
+    {
+      ready: isSigned && !!walletAddress,
+      refreshDeps: [isSigned, walletAddress],
+      onSuccess: (res: any) => {
+        const stakeRes = res[0]?.value
+        const unstakeRes = res[1]?.value
+
+        if(unstakeRes?.data?.validatorList && unstakeRes.data.validatorList.length > 0) {
+          const totalUnstakeAmount = unstakeRes.data.validatorList.reduce((acc: number, curr: any) => acc + parseFloat(curr.amount), 0)
+          setUnstakeAmount(totalUnstakeAmount)
+        }
+        
+        setState({ stakeList: stakeRes });
+
+        if (stakeRes?.data?.validatorList && stakeRes.data.validatorList.length > 0) {
+          // 计算总质押金额和平均APR
+          let totalStake = 0;
+
+          stakeRes.data.validatorList.forEach((validator: ValidatorResponse) => {
+            if (validator.stake) {
+              totalStake += parseFloat(validator.stake.amount);
+            }
+          });
+
+          // 设置状态
+          setStakeAmount(totalStake.toLocaleString('en-US', { maximumFractionDigits: 2 }));
+        } else {
+          setStakeAmount("0");
+        }
+      }
+    }
+  );
+
   // 转换API数据为表格数据
   const transformValidators = (validatorList: ValidatorResponse[] = []): Validator[] => {
     return validatorList.map((v, index) => ({
@@ -125,6 +177,18 @@ const StakePage = () => {
   const myValidators = (stakeList?.data?.validatorList || stakeListData?.data?.validatorList)
     ? transformValidators(stakeList?.data?.validatorList || stakeListData?.data?.validatorList)
     : [];
+
+  // 获取活跃验证者列表
+  const { data: activeListData, loading: activeLoading } = useRequest(
+    () => axios.get('/api/v1/validator/activeList'),
+    {
+      onSuccess: (res) => {
+        // 存储原始响应到store
+        setState({ activeList: res });
+        console.log('活跃验证者数据:', res?.data);
+      }
+    }
+  );
 
   // 获取活跃验证者数据 - 优先使用store中的数据
   const activeValidators = (activeList?.data?.validatorList || activeListData?.data?.validatorList)

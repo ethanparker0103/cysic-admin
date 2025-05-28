@@ -26,7 +26,6 @@ import PrivyAccountMismatchModal from "@/routes/components/modal/privyAccountMis
 import useScrollToTop from "@/hooks/useScrollToTop";
 import BridgeHistoryModal from "@/routes/components/modal/bridgeHistoryModal";
 import usePathQuery from "@/hooks/usePathQuery";
-import useStakeList from "@/hooks/useStakeList";
 
 
 export default function App({ children }: { children: React.ReactNode }) {
@@ -35,8 +34,6 @@ export default function App({ children }: { children: React.ReactNode }) {
     useBootstrap()
     useScrollToTop();
     usePathQuery();
-
-    useStakeList()
 
     return (
         <>
