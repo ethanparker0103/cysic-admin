@@ -3,10 +3,10 @@ import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { coins } from "@cosmjs/proto-signing";
 
 export const BIND_CHECK_PATHS = ["/zk", "/ai", "/m/zk", "/m/ai"];
-export const NO_BIND_CHECK_PATHS = ["/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub", 
-                                  "/m/mediakit", "/m/userPortal", "/m/zk/userPortal", "/m/zk/userPortal/serviceHub", "/m/userPortal/serviceHub"];
-export const NO_CONTAINER_PATHS = ['/contactus', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub',
-                                 '/m/contactus', '/m/mediakit', '/m/hardware', '/m/zk', '/m/userPortal', '/m/zk/userPortal', '/m/zk/userPortal/serviceHub', '/m/userPortal/serviceHub']
+export const NO_BIND_CHECK_PATHS = ['/contact-us', '/contactus', '/media-kit', "/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub", 
+                                  '/m/contact-us', '/m/contactus', '/m/media-kit', "/m/mediakit", "/m/userPortal", "/m/zk/userPortal", "/m/zk/userPortal/serviceHub", "/m/userPortal/serviceHub"];
+export const NO_CONTAINER_PATHS = ['/contact-us', '/contactus', '/media-kit', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub',
+                                 '/m/contact-us', '/m/contactus', '/m/media-kit', '/m/mediakit', '/m/hardware', '/m/zk', '/m/userPortal', '/m/zk/userPortal', '/m/zk/userPortal/serviceHub', '/m/userPortal/serviceHub']
 
 export const baseStatus: any = {
   "0": "Pending",
