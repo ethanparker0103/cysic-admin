@@ -132,7 +132,7 @@ const VerifierDetail = () => {
       key: "result",
       label: "Result",
       renderCell: (item: any) => {
-        return <VerifierStatus status={item?.verifyResult} />
+        return <TaskStatus status={item?.verifyResult} />
       },
     },
     {
