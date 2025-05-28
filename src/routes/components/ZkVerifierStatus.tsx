@@ -5,6 +5,7 @@ import { cn } from "@nextui-org/react";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 // {
 //     "multiplier": 60,
@@ -31,7 +32,7 @@ export const useVerifierStatus = () => {
   };
 
   // 返回组件函数而不是组件实例
-  const ProverCardListComponent = ({ className }: { className?: string }) => (
+  const ProverCardListComponent = ({ className, linkContent, to }: { className?: string, linkContent?: string, to?: string }) => (
     <GradientBorderCard borderRadius={8} className={className}>
       <div
         className={cn(
@@ -40,15 +41,25 @@ export const useVerifierStatus = () => {
         )}
       >
         <div className="flex flex-col gap-4 w-full">
-          <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
+            {
+              linkContent && to && (
+                <Link to={to} className="text-sub text-sm teacher hover:text-white flex items-center gap-2">
+                  {linkContent}
+                  <ArrowRight size={12} />
+                </Link>
+              )
+            }
+          </div>
 
           <div className="prover-status-list flex flex-col gap-4 w-full">
             {proofTypeList.map((item: IProofType, index: number) => (
               <div className="flex items-center gap-2" key={index}>
                 <div
                   className={`indicator w-3 h-3 rounded-full ${data?.data?.proverStatus
-                      ? "bg-lightBrand"
-                      : "bg-error"
+                    ? "bg-lightBrand"
+                    : "bg-error"
                     }`}
                 ></div>
                 <span className="unbounded-14-300">
@@ -78,8 +89,8 @@ export const useVerifierStatus = () => {
           <div className="flex items-center gap-2">
             <div
               className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive
-                  ? "bg-lightBrand"
-                  : "bg-error"
+                ? "bg-lightBrand"
+                : "bg-error"
                 }`}
             ></div>
             <span className="unbounded-14-300">
@@ -90,8 +101,8 @@ export const useVerifierStatus = () => {
           <div className="flex items-center gap-2">
             <div
               className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive
-                  ? "bg-lightBrand"
-                  : "bg-error"
+                ? "bg-lightBrand"
+                : "bg-error"
                 }`}
             ></div>
             <span className="unbounded-14-300">

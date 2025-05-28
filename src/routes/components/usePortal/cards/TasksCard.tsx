@@ -85,7 +85,10 @@ export const ProverCard = () => {
     //     { label: "NFT", key: "nftActive" },
     //     { label: "SELF", key: "selfActive" }
     // ] as const
-    return <ProverCardListComponent className="[&_.indicator]:w-2 [&_.indicator]:h-2 [&_.prover-status-list]:flex-row [&_.prover-status-list]:flex-wrap " />
+    return <ProverCardListComponent
+        linkContent="More about ZK Prover"
+        to="/zk/prover"
+        className="[&_.indicator]:w-2 [&_.indicator]:h-2 [&_.prover-status-list]:flex-row [&_.prover-status-list]:flex-wrap " />
 }
 
 export const ProjectCard = () => {

@@ -152,7 +152,7 @@ const ProjectDetailPage = () => {
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">
                         <span className="unbounded-36-300 text-white text-center">
-                            My projects
+                            projects
                         </span>
                     </div>
                 </div>
@@ -218,7 +218,7 @@ const ProjectDetailPage = () => {
                                     "unbounded-16-20-300 mt-2 mb-4",
                                 )}
                             >
-                                My projects
+                                Task List
                             </h2>
                             <CysicTable
                                 data={taskList || []}
