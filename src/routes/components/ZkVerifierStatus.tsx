@@ -31,8 +31,8 @@ export const useVerifierStatus = () => {
   };
 
   // 返回组件函数而不是组件实例
-  const ProverCardListComponent = () => (
-    <GradientBorderCard borderRadius={8}>
+  const ProverCardListComponent = ({ className }: { className?: string }) => (
+    <GradientBorderCard borderRadius={8} className={className}>
       <div
         className={cn(
           "w-full px-4 lg:px-6 py-4 flex justify-between items-center",
@@ -42,23 +42,24 @@ export const useVerifierStatus = () => {
         <div className="flex flex-col gap-4 w-full">
           <h3 className="unbounded-16-300">ZK PROVER STATUS</h3>
 
-          {proofTypeList.map((item: IProofType, index: number) => (
-            <div className="flex items-center gap-2" key={index}>
-              <div
-                className={`w-3 h-3 rounded-full ${
-                  data?.data?.proverStatus
-                    ? "bg-lightBrand"
-                    : "bg-error"
-                }`}
-              ></div>
-              <span className="unbounded-14-300">
-                {item.name} PROVER{" "}
-                {data?.data?.proverStatus
-                  ? "ACTIVE"
-                  : "INACTIVE"}
-              </span>
-            </div>
-          ))}
+          <div className="prover-status-list flex flex-col gap-4 w-full">
+            {proofTypeList.map((item: IProofType, index: number) => (
+              <div className="flex items-center gap-2" key={index}>
+                <div
+                  className={`indicator w-3 h-3 rounded-full ${data?.data?.proverStatus
+                      ? "bg-lightBrand"
+                      : "bg-error"
+                    }`}
+                ></div>
+                <span className="unbounded-14-300">
+                  {item.name} PROVER{" "}
+                  {data?.data?.proverStatus
+                    ? "ACTIVE"
+                    : "INACTIVE"}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </GradientBorderCard>
@@ -76,11 +77,10 @@ export const useVerifierStatus = () => {
           <h3 className="unbounded-16-300">ZK VERIFIER STATUS</h3>
           <div className="flex items-center gap-2">
             <div
-              className={`w-3 h-3 rounded-full ${
-                zkPart?.verifierStatus?.standardActive
+              className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.standardActive
                   ? "bg-lightBrand"
                   : "bg-error"
-              }`}
+                }`}
             ></div>
             <span className="unbounded-14-300">
               Standard{" "}
@@ -89,11 +89,10 @@ export const useVerifierStatus = () => {
           </div>
           <div className="flex items-center gap-2">
             <div
-              className={`w-3 h-3 rounded-full ${
-                zkPart?.verifierStatus?.mobileActive
+              className={`w-3 h-3 rounded-full ${zkPart?.verifierStatus?.mobileActive
                   ? "bg-lightBrand"
                   : "bg-error"
-              }`}
+                }`}
             ></div>
             <span className="unbounded-14-300">
               Mobile{" "}
@@ -169,9 +168,8 @@ export const ProverCard = ({
               </h3>
               <div className="flex items-center gap-2">
                 <div
-                  className={`h-3 w-3 rounded-full ${
-                    isActive ? "bg-lightBrand" : "bg-error"
-                  }`}
+                  className={`h-3 w-3 rounded-full ${isActive ? "bg-lightBrand" : "bg-error"
+                    }`}
                 ></div>
                 <span className="unbounded-14-300">
                   {isActive ? "ACTIVE" : "INACTIVE"}

@@ -1,5 +1,7 @@
 import GradientBorderCard from "@/components/GradientBorderCard"
 import useAccount from "@/hooks/useAccount"
+import { useProverStatus } from "@/routes/components/ZkProverStatus"
+import { useVerifierStatus } from "@/routes/components/ZkVerifierStatus"
 import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
@@ -75,24 +77,15 @@ export const VerifierCard = () => {
 }
 
 export const ProverCard = () => {
-    const { zkPart } = useAccount()
-    const status = [
-        { label: "NFT", key: "nftActive" },
-        { label: "SELF", key: "selfActive" }
-    ] as const
-    return (
-        <BaseCard title="ZK Prover" linkContent="More about ZK Prover" to="/zk/prover">
-            <div className="flex flex-col lg:flex-row items-start lg:items-center gap-x-12 gap-y-4 flex-wrap">
-                {status.map((item) => (
-                    <div className="flex items-center gap-2 unbounded-14-300">
-                        <div className={`h-2 w-2 rounded-full ${zkPart?.proverStatus?.[item.key] == 1 ? 'bg-lightBrand' : 'bg-error'}`}></div>
-                        {item.label}&nbsp;
-                        {zkPart?.proverStatus?.[item.key] == 1 ? 'ACTIVE' : 'INACTIVE'}
-                    </div>
-                ))}
-            </div>
-        </BaseCard>
-    )
+
+    const { ProverCardListComponent } = useVerifierStatus()
+
+    // const { zkPart } = useAccount()
+    // const status = [
+    //     { label: "NFT", key: "nftActive" },
+    //     { label: "SELF", key: "selfActive" }
+    // ] as const
+    return <ProverCardListComponent className="[&_.indicator]:w-2 [&_.indicator]:h-2 [&_.prover-status-list]:flex-row [&_.prover-status-list]:flex-wrap " />
 }
 
 export const ProjectCard = () => {
