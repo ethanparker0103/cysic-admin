@@ -31,6 +31,7 @@ const Tab = ({
                     <button
                         key={item.key}
                         className={cn(
+                            '[&:not(:last-child)]:border-r border-[#FFFFFF4D]',
                             'py-4 uppercase text-center text-base transition-colors',
                             activeKey === item.key
                                 ? 'bg-white text-black'
