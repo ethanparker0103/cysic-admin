@@ -9,10 +9,10 @@ import { getImageUrl, shortStr } from "@/utils/tools";
 import Chart from "@/routes/pages/Zk/components/chart";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
-import { commonPageSize, TaskStatus } from "@/config";
+import { commonPageSize } from "@/config";
 import { useState } from "react";
 import dayjs from "dayjs";
-import { TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 
 interface IOverview {
     "projectNum": number,
@@ -106,7 +106,7 @@ const DashboardPage = () => {
         {
             key: "status",
             label: "Status",
-            renderCell: (task) => (TaskStatus[task.status])
+            renderCell: (task) => <TaskStatus status={task.status} />
         },
         {
             key: "view",

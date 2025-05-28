@@ -1,7 +1,7 @@
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { isMobile } from "react-device-detect";
-import { cn } from "@nextui-org/react";
+import { cn, Pagination } from "@nextui-org/react";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import Modal from "@/components/Modal";
 import useModalState from "@/hooks/useModalState";
@@ -11,9 +11,10 @@ import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { shortStr } from "@/utils/tools";
 import { ArrowRight } from "lucide-react";
-import { TaskStatus } from "@/config";
-import { TaskReward } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { commonPageSize, TaskStatus as TaskStatusText } from "@/config";
+import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import usePagnation from "@/hooks/usePagnation";
 
 interface ITask {
     taskId: number;
@@ -27,7 +28,7 @@ interface ITask {
     hardwareRequirement: string;
     latency: string;
     proofType: string;
-    
+
 }
 
 interface IProjectDetail {
@@ -49,7 +50,7 @@ interface IProjectDetail {
 const ProjectDetailPage = () => {
     const { id } = useParams();
     const [projectDetail, setProjectDetail] = useState<IProjectDetail>({} as IProjectDetail);
-    const [taskList, setTaskList] = useState<ITask[]>([]);
+    // const [taskList, setTaskList] = useState<ITask[]>([]);
     useRequest(() => {
         // /zkTask/project/detail
         return axios.get(`/api/v1/zkTask/project/detail`, {
@@ -65,15 +66,44 @@ const ProjectDetailPage = () => {
         }
     });
 
-    useRequest(() => {
-        return axios.get(`/api/v1/zkTask/dashboard/project/taskList/${id}`);
-    }, {
-        ready: !!id,
-        refreshDeps: [id],
-        onSuccess: (res) => {
-            setTaskList(res.data?.list as ITask[]);
+    // useRequest(() => {
+    //     return axios.get(`/api/v1/zkTask/dashboard/project/taskList/${id}`);
+    // }, {
+    //     ready: !!id,
+    //     refreshDeps: [id],
+    //     onSuccess: (res) => {
+    //         setTaskList(res.data?.list as ITask[]);
+    //     }
+    // });
+
+
+
+    const {
+        data: listData,
+        currentPage,
+        total,
+        setCurrentPage,
+    } = usePagnation(
+        (page: number) => {
+            return axios.get(
+                `/api/v1/zkTask/dashboard/project/taskList/${id}`,
+                {
+                    params: {
+                        pageNum: page,
+                        pageSize: commonPageSize,
+                    },
+                }
+            );
+        },
+        {
+            ready: !!id,
+            refreshDeps: [id],
+            staleTime: 10_000,
         }
-    });
+    );
+
+    const taskList = listData?.data?.list || []
+
 
 
 
@@ -116,7 +146,7 @@ const ProjectDetailPage = () => {
             key: "status",
             label: "Status",
             width: "33%",
-            renderCell: (project) => <span>{TaskStatus?.[project.status] || project.status}</span>,
+            renderCell: (project) => <TaskStatus status={project.status} />,
         },
         {
             key: "detail",
@@ -152,7 +182,7 @@ const ProjectDetailPage = () => {
                 <div className="pt-12 flex flex-col items-center gap-6 relative z-[2]">
                     <div className="flex flex-col items-center gap-4">
                         <span className="unbounded-36-300 text-white text-center">
-                            projects
+                            Project Details
                         </span>
                     </div>
                 </div>
@@ -224,6 +254,20 @@ const ProjectDetailPage = () => {
                                 data={taskList || []}
                                 columns={projectColumns}
                             />
+
+
+                            {total > commonPageSize && (
+                                <div className="flex justify-center mb-4">
+                                    <Pagination
+                                        total={Math.ceil(total / commonPageSize)}
+                                        initialPage={1}
+                                        page={currentPage}
+                                        onChange={setCurrentPage}
+                                        color="primary"
+                                        size="sm"
+                                    />
+                                </div>
+                            )}
                         </div>
                     </GradientBorderCard>
                 </div>

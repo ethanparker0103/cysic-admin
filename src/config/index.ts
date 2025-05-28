@@ -29,7 +29,7 @@ export const verifierStatus = baseStatus;
 export const taskStatus: any = {
   TaskStatusWaitSchedule: "Wait For Assign",
   TaskStatusWaitVerifier: "Wait For Verifier",
-  TaskStatusFinishSuccess: "Success",
+  TaskStatusFinishSuccess: "Finished",
   TaskStatusWaitProof: "Wait For Proof",
   TaskStatusMatchProviderFailed: "Failed",
   TaskStatusPublished: "Wait For Proof",
