@@ -1,5 +1,5 @@
 import { TaskStatus as TaskStatusText, TaskStatusColor, proverStatus, projectStatus, verifierStatus, StatusColor } from "@/config";
-import { getImageUrl, shortStr } from "@/utils/tools";
+import { formatReward, getImageUrl, shortStr } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
 
@@ -42,11 +42,11 @@ export const TaskReward = ({ className, rewardCYS, rewardCGT }: { className?: st
     <div className={cn("flex gap-2", className)}>
       {rewardCYS && <div className="flex items-center gap-1">
         <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
-        <span>{rewardCYS} CYS</span>
+        <span>{formatReward(rewardCYS, 4, true)} CYS</span>
       </div>}
       {rewardCGT && <div className="flex items-center gap-1">
         <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
-        <span>{rewardCGT} CGT</span>
+        <span>{formatReward(rewardCGT, 4, true)} CGT</span>
       </div>}
     </div>
   )

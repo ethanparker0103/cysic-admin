@@ -582,29 +582,42 @@ export function calculateTransactionFee() {
   return feeInCYS.toString();
 }
 
-export const formatReward = (num: string, x: number) => {
+export const formatReward = (num: string, x: number, killZero = false) => {
   const subscriptDigits = ['₀','₁','₂','₃','₄','₅','₆','₇','₈','₉'];
 
   if (!num) return num;
+  if (!Number(num)) return num;
 
   const str = num.toString();
   const parts = str.split('.');
   if (parts.length < 2) {
-    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    const n = BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    if (killZero) {
+      return n.replace(/\.?0+$/, '');
+    }
+    return n;
   }
 
   const integerPart = parts[0];
   const decimalPart = parts[1];
 
   if (parseInt(integerPart) >= 1) {
-    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    const n = BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    if (killZero) {
+      return n.replace(/\.?0+$/, '');
+    }
+    return n;
   }
 
   const leadingZeros = decimalPart.match(/^0+/);
   const leadingZeroCount = leadingZeros ? leadingZeros[0].length : 0;
 
   if (leadingZeroCount < x) {
-    return BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    const n = BigNumber(str).toFixed(x, BigNumber.ROUND_DOWN);
+    if (killZero) {
+      return n.replace(/\.?0+$/, '');
+    }
+    return n;
   }
 
   // const exponent = leadingZeroCount - x + 2;

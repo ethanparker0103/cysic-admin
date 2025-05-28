@@ -87,7 +87,7 @@ const TaskPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("unbounded-36-72-300 mb-12 text-center")}>Task</h1>
+                <h1 className={cn("unbounded-36-300 mb-12 text-center")}>Task</h1>
 
                 {/* s3 */}
                 <GradientBorderCard className="mt-8 flex flex-col px-6 py-4">

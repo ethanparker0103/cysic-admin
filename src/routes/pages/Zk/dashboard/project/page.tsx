@@ -82,7 +82,7 @@ const ProjectPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("unbounded-36-72-300 mb-12 text-center")}>Project</h1>
+                <h1 className={cn("unbounded-36-300 mb-12 text-center")}>Project</h1>
 
                 {/* s3 */}
                 <Input variant="bordered" classNames={{

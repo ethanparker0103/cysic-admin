@@ -18,7 +18,7 @@ export const DashboardDetailMainWrapper = ({
         "mx-auto mb-auto relative z-10 pt-20 pb-16 w-full break-words lg"
       )}
     >
-      <h1 className={cn("unbounded-36-72-400 font-light mb-12 text-center ")}>
+      <h1 className={cn("unbounded-36-400 font-light mb-12 text-center ")}>
         {title}
       </h1>
 

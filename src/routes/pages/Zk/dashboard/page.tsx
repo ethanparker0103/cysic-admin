@@ -129,7 +129,7 @@ const DashboardPage = () => {
             {/* content */}
             <div className={cn("mx-auto mb-auto relative z-10 pt-20 pb-16 w-full", isMobile ? "break-words" : "")}>
                 {/* title */}
-                <h1 className={cn("unbounded-36-72-300 font-light mb-24 text-center")}>Dashboard</h1>
+                <h1 className={cn("unbounded-36-300 font-light mb-24 text-center")}>Dashboard</h1>
 
                 {/* s1 */}
                 <div className="flex flex-col gap-8">

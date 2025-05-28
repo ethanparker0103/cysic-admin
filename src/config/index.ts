@@ -10,8 +10,8 @@ export const NO_CONTAINER_PATHS = ['/contactus', '/mediakit', '/hardware', '/zk'
 
 export const baseStatus: any = {
   "0": "Pending",
-  "1": "Accept",
-  "2": "Reject",
+  "1": "Online",
+  "2": "Offline",
 };
 
 export const rewardStatus: any = {
