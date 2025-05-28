@@ -28,7 +28,7 @@ export const ecosystemProjects: IEcosystemProject[] = [
     blurb: "zkEVM-based Ethereum scaling solution offering high throughput.",
     websiteLink: "https://scroll.io",
     twitterLink: "https://twitter.com/Scroll_ZKP",
-    img: `${baseHref}/ecosystem/scroll.png`
+    img: `${baseHref}/ecosystems/scroll.png`
   },
   {
     projectName: "Herodotus",
