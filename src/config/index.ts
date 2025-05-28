@@ -26,6 +26,12 @@ export const projectStatus = baseStatus;
 
 export const verifierStatus = baseStatus;
 
+export const verifierTaskStatus: any = {
+  "0": "Pending",
+  "1": "Accepted",
+  "2": "Rejected",
+};
+
 export const taskStatus: any = {
   TaskStatusWaitSchedule: "Wait For Assign",
   TaskStatusWaitVerifier: "Wait For Verifier",

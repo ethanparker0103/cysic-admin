@@ -1,4 +1,4 @@
-import { TaskStatus as TaskStatusText, TaskStatusColor, proverStatus, projectStatus, verifierStatus, StatusColor } from "@/config";
+import { TaskStatus as TaskStatusText, TaskStatusColor, proverStatus, projectStatus, verifierStatus, StatusColor, verifierTaskStatus } from "@/config";
 import { formatReward, getImageUrl, shortStr } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
@@ -75,6 +75,15 @@ export const VerifierStatus = ({ status }: { status: number }) => {
     <div className=" rounded-full flex items-center gap-1">
       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: StatusColor[status] }} />
       {verifierStatus[status]}
+    </div>
+  );
+};
+
+export const VerifierTaskStatus = ({ status }: { status: number }) => {
+  return (
+    <div className=" rounded-full flex items-center gap-1">
+      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: StatusColor[status] }} />
+      {verifierTaskStatus[status]}
     </div>
   );
 };

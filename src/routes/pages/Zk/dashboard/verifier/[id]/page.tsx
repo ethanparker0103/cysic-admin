@@ -5,16 +5,14 @@ import { useTranslation } from "react-i18next";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
-import { getImageUrl, shortStr } from "@/utils/tools";
+import { shortStr } from "@/utils/tools";
 import {
   commonPageSize,
-  mediasLink,
 } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
-import { TaskStatus, VerifierStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { VerifierTaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { ArrowUpRightIcon } from "lucide-react";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import Copy from "@/components/Copy";
@@ -132,7 +130,7 @@ const VerifierDetail = () => {
       key: "result",
       label: "Result",
       renderCell: (item: any) => {
-        return <TaskStatus status={item?.verifyResult} />
+        return <VerifierTaskStatus status={item?.verifyResult} />
       },
     },
     {
