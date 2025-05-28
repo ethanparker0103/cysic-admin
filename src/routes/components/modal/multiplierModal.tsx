@@ -15,53 +15,66 @@ import { MultiplierPercentBar } from "@/routes/components/Multiplier";
 import useStatic from "@/models/_global";
 import { enableSocialTask } from "@/config";
 import Tab, { TabItem } from "@/routes/components/Tab";
+import { useRequest } from "ahooks";
+import axios from "axios";
+import useTasksInMultiplierModal from "@/models/multiplier";
+import { useEffect } from "react";
+import Spinner from "@/components/spinner";
+import { toast } from "react-toastify";
+import { IClaimResponse, ITask } from "@/routes/pages/Nft/socialTask/page";
 
-const stakeBoosts = true
-  ? []
-  : [
-    {
-      name: "STAKE 100 CGT",
-      reward: "10", // +10 Boosts
-      status: 2, // 0: pending, 1: completed, 2: claimed
-    },
-    {
-      name: "STAKE 200 CGT",
-      reward: "20", // +20 Boosts
-      status: 1, // 0: pending, 1: completed, 2: claimed
-    },
-    {
-      name: "STAKE 300 CGT",
-      reward: "30", // +30 Boosts
-      status: 0, // 0: pending, 1: completed, 2: claimed
-    },
-  ];
-
-const tasks = [
-  {
-    name: "Start Digital Harvester Trial",
-    reward: "10", // +10 Boosts
-    status: 0, // 0: pending, 1: completed, 2: claimed
-  },
-  {
-    name: "Bond your Discord",
-    reward: "10", // +10 Boosts
-    status: 2, // 0: pending, 1: completed, 2: claimed
-  },
-  {
-    name: "Tweet with cysic PhaseIII",
-    reward: "10", // +10 Boosts
-    status: 1, // 0: pending, 1: completed, 2: claimed
-  },
-];
+const stakeGroupId = 2
+const baseGroupId = 1
 
 const StatusButton = ({
+  taskId,
   status,
   children,
+  onSuccess,
 }: {
+  taskId: number;
   status: number;
   children: React.ReactNode;
+  onSuccess: (task: ITask[]) => void;
 }) => {
-  if (status === 2) {
+
+  const { isSigned, address, updateUserProfile } = useAccount();
+
+  const handleClaim = async () => {
+    try {
+      if (!isSigned || !address) return;
+      const res = await axios.post("/api/v1/social/task/claim", {
+        taskId: taskId,
+      });
+
+      const response = res.data as IClaimResponse;
+
+      const currentTaskId = response?.taskId
+      const status = response?.taskList?.find(item => item.id == currentTaskId)?.status
+
+      if(status != 2){
+        toast.error('Claim failed, please try again later')
+      }else{
+        toast.success('Claim success')
+      }
+
+
+      if(response?.userProfile){
+        updateUserProfile(address, response?.userProfile);
+      }
+
+      if(response?.taskList?.length){
+        onSuccess(response?.taskList);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+
+  if (status == 2) {
     return (
       <Button
         type="dark"
@@ -74,9 +87,9 @@ const StatusButton = ({
       </Button>
     );
   }
-  if (status === 1) {
+  if (status == 1) {
     return (
-      <Button type="light" className="rounded-full text-sm">
+      <Button onClick={handleClaim} needLoading type="light" className="rounded-full text-sm">
         {children}
       </Button>
     );
@@ -258,6 +271,12 @@ const InviteTabItem = () => {
 };
 
 const StakeTabItem = () => {
+  const { stakeTaskList, loading, setStakeTaskList } = useTasksInMultiplierModal()
+
+  const handleStakeSuccess = (taskList: ITask[]) => {
+    setStakeTaskList(taskList)
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="text-base">
@@ -271,51 +290,62 @@ const StakeTabItem = () => {
         <span>STAKE</span>
         <ArrowRight className="w-3 h-3" />
       </Button>
-      <div className="flex flex-col gap-2">
-        {stakeBoosts.map((stakeBoost) => (
-          <div
-            key={stakeBoost.name}
-            className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
-          >
-            <div>{stakeBoost.name}</div>
-            <StatusButton status={stakeBoost.status}>
-              {stakeBoost.status === 2 ? (
-                <>
-                  <Check className="w-3 h-3 text-lightBrand" />
-                  <span>Claimed</span>
-                </>
-              ) : stakeBoost.status === 1 ? (
-                <span>Claim {stakeBoost.reward} Boosts</span>
-              ) : (
-                <span>+{stakeBoost.reward} Boosts</span>
-              )}
-            </StatusButton>
+      {
+        loading ? <Spinner /> : (
+          <div className="flex flex-col gap-2">
+            {stakeTaskList?.map((task: ITask) => (
+              <div
+                key={task.id}
+                className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
+              >
+                <div>{task.description}</div>
+                <StatusButton taskId={task.id} status={task.status} onSuccess={handleStakeSuccess}>
+                  {task.status == 2 ? (
+                    <>
+                      <Check className="w-3 h-3 text-lightBrand" />
+                      <span>Claimed</span>
+                    </>
+                  ) : task.status == 1 ? (
+                    <span>Claim {task?.rewardFire || 0} 🔥Fire</span>
+                  ) : (
+                    <span>+{task?.rewardFire || 0} 🔥Fire</span>
+                  )}
+                </StatusButton>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        )
+      }
+
     </div>
   );
 };
 
 const SocialTaskTabItem = () => {
-  return (
+  const { baseTaskList, loading, setBaseTaskList } = useTasksInMultiplierModal()
+
+  const handleBaseTaskSuccess = (taskList: ITask[]) => {
+    setBaseTaskList(taskList)
+  }
+
+  return loading ? <Spinner /> : (
     <div className="flex flex-col gap-4">
-      {tasks.map((task) => (
+      {baseTaskList.map((task: ITask) => (
         <div
-          key={task.name}
+          key={task.id}
           className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
         >
-          <div>{task.name}</div>
-          <StatusButton status={task.status}>
-            {task.status === 2 ? (
+          <div>{task.description}</div>
+          <StatusButton taskId={task.id} status={task.status} onSuccess={handleBaseTaskSuccess}>
+            {task.status == 2 ? (
               <>
                 <Check className="w-3 h-3 text-lightBrand" />
                 <span>Claimed</span>
               </>
-            ) : task.status === 1 ? (
-              <span>Claim {task.reward} Boosts</span>
+            ) : task.status == 1 ? (
+              <span>Claim {task?.rewardFire || 0} 🔥Fire</span>
             ) : (
-              <span>+{task.reward} Boosts</span>
+              <span>+{task?.rewardFire || 0} 🔥Fire</span>
             )}
           </StatusButton>
         </div>
@@ -325,17 +355,28 @@ const SocialTaskTabItem = () => {
 };
 const BoostingList = () => {
 
-  const tabs: TabItem[] = [
+  const tabs: TabItem[] = enableSocialTask ? [
     {
       key: "stake",
       label: "STAKE",
       content: <StakeTabItem />,
     },
-    // {
-    //   key: "tasks",
-    //   label: "TASKS",
-    //   content: <div>Tasks</div>,
-    // },
+    {
+      key: "tasks",
+      label: "TASKS",
+      content: <SocialTaskTabItem />,
+    },
+    {
+      key: "invites",
+      label: "INVITES",
+      content: <InviteTabItem />,
+    },
+  ] : [
+    {
+      key: "stake",
+      label: "STAKE",
+      content: <StakeTabItem />,
+    },
     {
       key: "invites",
       label: "INVITES",
@@ -436,12 +477,42 @@ const MultiplierModal = () => {
     eventName: "modal_multiplier_visible",
   });
 
+  const { multiplierLevelList } = useStatic();
+  const { zkPart, isSigned, walletAddress } = useAccount();
+
   const handleClose = () => {
     setVisible(false);
   };
 
-  const { multiplierLevelList } = useStatic();
-  const { zkPart, isSigned, walletAddress } = useAccount();
+  const { setBaseTaskList, setStakeTaskList, setLoading } = useTasksInMultiplierModal()
+
+  const { loading } = useRequest(
+    () => Promise.allSettled([
+      axios.get("/api/v1/social/task/list", {
+        params: {
+          groupId: baseGroupId,
+        },
+      }),
+      axios.get("/api/v1/social/task/list", {
+        params: {
+          groupId: stakeGroupId,
+        },
+      })
+    ]),
+    {
+      ready: enableSocialTask && visible && isSigned && !!walletAddress,
+      refreshDeps: [visible, isSigned, walletAddress],
+      onSuccess: (res: any) => {
+        setBaseTaskList(res?.[0]?.value?.data?.taskList)
+        setStakeTaskList(res?.[1]?.value?.data?.taskList)
+      }
+    }
+  );
+
+  useEffect(() => {
+    setLoading(loading)
+  }, [loading])
+
   const currentMultiplier =
     multiplierLevelList?.find(
       (item: { level: number | undefined }) =>

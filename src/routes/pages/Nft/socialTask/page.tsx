@@ -18,7 +18,7 @@ interface ITaskGroup {
   description: string;
 }
 
-interface ITask {
+export interface ITask {
   id: number;
   title: string;
   description: string;
@@ -29,10 +29,14 @@ interface ITask {
   link: string; // url
   relatedTaskId: string; // '1&&2&&3'
 
+  rewardFire: number;
+  rewardCYS: string;
+  rewardCGT: string;
+  rewardRebeatRate: number;
 
 }
 
-interface IClaimResponse {
+export interface IClaimResponse {
   taskList: ITask[];
   userProfile: IUserProileResponseInSocialTask;
   relatedTaskId: string;
