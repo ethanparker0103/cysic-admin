@@ -76,6 +76,9 @@ const VerifierDetail = () => {
     {
       key: "totalTask",
       label: "Task Amount",
+      renderCell: (item: any) => {
+        return <span>{item?.totalTask || 0}</span>
+      }
     },
   ];
 

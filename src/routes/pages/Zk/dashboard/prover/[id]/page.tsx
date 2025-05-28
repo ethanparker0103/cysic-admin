@@ -64,10 +64,16 @@ const ProverDetail = () => {
         {
             key: "totalTask",
             label: "Task Amount",
+            renderCell: (item: any) => {
+                return <span>{item?.totalTask || 0}</span>
+            }
         },
         {
             key: "finishTask",
             label: "Task Finished Amount",
+            renderCell: (item: any) => {
+                return <span>{item?.finishTask || 0}</span>
+            }
         },
         {
             key: "status",
