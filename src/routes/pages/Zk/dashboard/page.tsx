@@ -21,8 +21,8 @@ interface IOverview {
     "approvedVerifierNum": number,
     "totalTask": number,
     "runningTask": number,
-    "totalRewardCys": string,
-    "totalRewardCgt": string
+    "totalRewardCYS": string,
+    "totalRewardCGT": string
 }
 
 interface ITask {
@@ -219,7 +219,7 @@ const DashboardPage = () => {
                                     <div className="flex items-center gap-2 justify-between">
                                         <span className="unbounded text-base font-light !tracking-widest " />
                                         <div className="flex items-center gap-2 unbounded-24-300">
-                                            <span className="unbounded-24-400 !tracking-widest">{overview?.totalRewardCys || '0'}</span>
+                                            <span className="unbounded-24-400 !tracking-widest">{overview?.totalRewardCYS || '0'}</span>
                                             <img src={getImageUrl("@/assets/images/tokens/CYS.svg")} className="size-6" />
                                             CYS
                                         </div>
@@ -228,7 +228,7 @@ const DashboardPage = () => {
                                     <div className="flex items-center gap-2 justify-between">
                                         <span className="unbounded text-base font-light !tracking-widest " />
                                         <div className="flex items-center gap-2 unbounded-24-300">
-                                            <span className="unbounded-24-400 !tracking-widest">{overview?.totalRewardCgt || '0'}</span>
+                                            <span className="unbounded-24-400 !tracking-widest">{overview?.totalRewardCGT || '0'}</span>
                                             <img src={getImageUrl("@/assets/images/tokens/CGT.svg")} className="size-6" />
                                             CGT
                                         </div>
