@@ -16,7 +16,7 @@ import axios from "@/service";
 import { useRequest } from "ahooks";
 import useAccount from "@/hooks/useAccount";
 import { isMobile } from "react-device-detect";
-import { cn, Divider } from "@nextui-org/react";
+import { cn, Divider, Pagination } from "@nextui-org/react";
 import useStatic from "@/models/_global";
 import {
     TableAvatar,
@@ -24,7 +24,8 @@ import {
 } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
-import { enableSocialTask } from "@/config";
+import { commonPageSize, enableSocialTask } from "@/config";
+import usePagnation from "@/hooks/usePagnation";
 
 // 团队成员类型
 interface TeamMember {
@@ -66,7 +67,7 @@ const InvitePage = () => {
         inviteCode: registeredInviteCode,
         currentRebateRate,
         zkPart,
-        inviteLevelId
+        inviteLevelId,
     } = useAccount();
 
     const [memberData, setMemberData] = useState<TeamMember[]>([]);
@@ -99,19 +100,26 @@ const InvitePage = () => {
     );
 
     // 获取团队列表
-    const { loading: teamLoading } = useRequest(
-        () => axios.get("/api/v1/referral/teamList"),
-        {
-            ready: !!isSigned && !!walletAddress,
-            refreshDeps: [isSigned, walletAddress],
-            onSuccess: (res) => {
-                if (res?.data) {
-                    setLeaderData(res.data.leaderInfo);
-                    setMemberData(res.data.teamList);
-                }
-            },
-        }
-    );
+    const {
+        loading: teamLoading,
+        currentPage,
+        total,
+        setCurrentPage,
+    } = usePagnation((page: number) => axios.get("/api/v1/referral/teamList", {
+        params: {
+            pageNum: page,
+            pageSize: commonPageSize,
+        },
+    }), {
+        ready: !!isSigned && !!walletAddress,
+        refreshDeps: [isSigned, walletAddress],
+        onSuccess: (res) => {
+            if (res?.data) {
+                setLeaderData(res.data.leaderInfo);
+                setMemberData(res.data.teamList);
+            }
+        },
+    });
 
     // 团队领导表格列定义
     const leaderColumns: CysicTableColumn<TeamLeader>[] = [
@@ -141,7 +149,11 @@ const InvitePage = () => {
             key: "time",
             label: "Time",
             width: "40%",
-            renderCell: (leader) => <div className="">{dayjs.unix(Number(leader.joinAt)).format("YYYY-MM-DD HH:mm:ss")}</div>,
+            renderCell: (leader) => (
+                <div className="">
+                    {dayjs.unix(Number(leader.joinAt)).format("YYYY-MM-DD HH:mm:ss")}
+                </div>
+            ),
         },
         // {
         //     key: "inviteBy",
@@ -183,7 +195,7 @@ const InvitePage = () => {
             width: "10%",
             renderCell: (member) => (
                 <div className="text-left flex gap-2">
-                    <span>{member.layer || '-'}</span>
+                    <span>{member.layer || "-"}</span>
                 </div>
             ),
         },
@@ -209,7 +221,11 @@ const InvitePage = () => {
             key: "time",
             label: "Time",
             width: "25%",
-            renderCell: (member) => <div className="text-right">{dayjs.unix(Number(member.joinAt)).format("YYYY-MM-DD HH:mm:ss")}</div>,
+            renderCell: (member) => (
+                <div className="text-right">
+                    {dayjs.unix(Number(member.joinAt)).format("YYYY-MM-DD HH:mm:ss")}
+                </div>
+            ),
         },
     ];
 
@@ -271,9 +287,7 @@ const InvitePage = () => {
 
                             {/* 推荐收益 */}
                             <div className="flex justify-between items-start px-4 lg:px-6">
-                                <span className="unbounded-16-300">
-                                    REBATE EARNINGS
-                                </span>
+                                <span className="unbounded-16-300">REBATE EARNINGS</span>
                                 <div className="flex flex-col items-center gap-4">
                                     <span className="unbounded-24-400 text-right">
                                         {rewards.cys} CYS
@@ -301,17 +315,16 @@ const InvitePage = () => {
 
                     {/* 右侧 - 您的推荐码 */}
                     <div className="flex flex-col lg:flex-row gap-4">
-                        <GradientBorderCard borderRadius={8} className="flex-[2] flex flex-col lg:flex-row gap-4 px-4 lg:px-6 py-4 ">
+                        <GradientBorderCard
+                            borderRadius={8}
+                            className="flex-[2] flex flex-col lg:flex-row gap-4 px-4 lg:px-6 py-4 "
+                        >
                             <div className="flex-1 flex flex-col gap-4">
                                 <div className="flex justify-between items-start">
-                                    <h2 className="unbounded-20-300">
-                                        Invite code
-                                    </h2>
+                                    <h2 className="unbounded-20-300">Invite code</h2>
                                     <div className="flex items-center self-start">
                                         <Copy value={inviteCode}>
-                                            <span className="unbounded-24-400">
-                                                {inviteCode}
-                                            </span>
+                                            <span className="unbounded-24-400">{inviteCode}</span>
                                         </Copy>
                                     </div>
                                 </div>
@@ -329,12 +342,14 @@ const InvitePage = () => {
                                 </p>
                             </div>
 
-
                             <Divider className="bg-[#FFFFFFCC] w-full lg:w-divider h-divider lg:h-full" />
 
                             <div className="flex-1 flex flex-col gap-4 justify-between">
                                 <div className="flex justify-between items-start">
-                                    <h2 className="unbounded-20-300">Successful <br />Invites</h2>
+                                    <h2 className="unbounded-20-300">
+                                        Successful <br />
+                                        Invites
+                                    </h2>
                                 </div>
 
                                 <p className="unbounded text-2xl font-light ml-auto">
@@ -348,16 +363,18 @@ const InvitePage = () => {
                                 <div className="flex justify-between items-start">
                                     <h2 className="unbounded text-xl font-light">rebate rate</h2>
                                     <span className="unbounded-24-400">
-                                        {currentRebateRate || '0'}%
+                                        {currentRebateRate || "0"}%
                                     </span>
                                 </div>
 
-                                {enableSocialTask ? <Link
-                                    to="/socialTask"
-                                    className="unbounded text-xs font-light !normal-case !text-lightBrand"
-                                >
-                                    Complete the basic tasks to earn extra 3% →
-                                </Link> : null}
+                                {enableSocialTask ? (
+                                    <Link
+                                        to="/socialTask"
+                                        className="unbounded text-xs font-light !normal-case !text-lightBrand"
+                                    >
+                                        Complete the basic tasks to earn extra 3% →
+                                    </Link>
+                                ) : null}
 
                                 <p className="teacher !normal-case text-base">
                                     Your Rebate Rate determines how much token rebate you earn
@@ -374,13 +391,11 @@ const InvitePage = () => {
                         <div
                             className={cn(
                                 "flex justify-between items-center",
-                                "flex-col lg:flex-row gap-4 lg:gap-0",
+                                "flex-col lg:flex-row gap-4 lg:gap-0"
                             )}
                         >
                             <div>
-                                <h2 className="unbounded-20-300 mb-2">
-                                    INVITE LEVEL
-                                </h2>
+                                <h2 className="unbounded-20-300 mb-2">INVITE LEVEL</h2>
                                 <div className="text-base !font-[400] flex items-center flex-wrap break-words">
                                     Successful Invites{" "}
                                     <Tooltip
@@ -424,10 +439,17 @@ const InvitePage = () => {
                                 {tiers
                                     .sort((a, b) => a.level - b.level)
                                     .map((tier, index) => (
-                                        <div key={tier.id} className="relative h-full min-w-[8rem] lg:min-w-[10rem]">
+                                        <div
+                                            key={tier.id}
+                                            className="relative h-full min-w-[8rem] lg:min-w-[10rem]"
+                                        >
                                             <GradientBorderCard
-                                                gradientFrom={tier.level == inviteLevelId ? "#19FFE0" : undefined}
-                                                gradientTo={tier.level == inviteLevelId ? "#9D47FF" : undefined}
+                                                gradientFrom={
+                                                    tier.level == inviteLevelId ? "#19FFE0" : undefined
+                                                }
+                                                gradientTo={
+                                                    tier.level == inviteLevelId ? "#9D47FF" : undefined
+                                                }
                                                 borderRadius={8}
                                                 borderWidth={1}
                                                 className="h-full"
@@ -480,17 +502,22 @@ const InvitePage = () => {
                                                         />
                                                     </div>
 
-                                                    {
-                                                        inviteLevelId == tier.level ? (<>
-
+                                                    {inviteLevelId == tier.level ? (
+                                                        <>
                                                             <div className="mt-4 flex-1 flex flex-col items-center justify-end gap-2">
-                                                                <div className="unbounded-16-300 text-center">{tier.level}</div>
-                                                                <div className="unbounded-12-300 text-center">Current Level</div>
+                                                                <div className="unbounded-16-300 text-center">
+                                                                    {tier.level}
+                                                                </div>
+                                                                <div className="unbounded-12-300 text-center">
+                                                                    Current Level
+                                                                </div>
                                                             </div>
-                                                        </>) : null
-                                                    }
-                                                    {
-                                                        Number(inviteLevelId) >= tier.level ? (<></>) : (<>
+                                                        </>
+                                                    ) : null}
+                                                    {Number(inviteLevelId) >= tier.level ? (
+                                                        <></>
+                                                    ) : (
+                                                        <>
                                                             <div className="mt-4 flex items-center flex-col gap-1">
                                                                 <svg
                                                                     width="24"
@@ -518,11 +545,12 @@ const InvitePage = () => {
                                                                     {tiers[index - 1]?.needInviteCnt || 0}
                                                                 </span>
 
-                                                                <div className="unbounded-12-300 text-center">Invites Required</div>
+                                                                <div className="unbounded-12-300 text-center">
+                                                                    Invites Required
+                                                                </div>
                                                             </div>
-                                                        </>)
-                                                    }
-
+                                                        </>
+                                                    )}
                                                 </div>
                                             </GradientBorderCard>
 
@@ -546,16 +574,12 @@ const InvitePage = () => {
                                         </div>
                                     ))}
                             </div>
-
                         </div>
-
 
                         {/* 团队领导表格 */}
                         {leaderData && (
                             <div className="mt-4">
-                                <h2 className="unbounded-16-300 mb-4">
-                                    TEAM LEADER
-                                </h2>
+                                <h2 className="unbounded-16-300 mb-4">TEAM LEADER</h2>
                                 <CysicTable
                                     data={[leaderData]}
                                     columns={leaderColumns}
@@ -567,14 +591,26 @@ const InvitePage = () => {
                         {/* 团队列表表格 */}
                         {memberData.length > 0 && (
                             <div className="mt-4">
-                                <h2 className="unbounded-16-300 mb-4">
-                                    TEAM MEMBERS
-                                </h2>
+                                <h2 className="unbounded-16-300 mb-4">TEAM MEMBERS</h2>
                                 <CysicTable
                                     data={memberData}
                                     columns={memberColumns}
                                     keyExtractor={(member) => member.address}
+                                    loading={teamLoading}
                                 />
+
+                                {total > commonPageSize && (
+                                    <div className="flex justify-center mb-4">
+                                        <Pagination
+                                            total={Math.ceil(total / commonPageSize)}
+                                            initialPage={1}
+                                            page={currentPage}
+                                            onChange={setCurrentPage}
+                                            color="primary"
+                                            size="sm"
+                                        />
+                                    </div>
+                                )}
                             </div>
                         )}
 
