@@ -130,10 +130,10 @@ const InvitePage = () => {
             renderCell: (leader) => (
                 <div className="flex items-center">
                     <div
-                        className={`h-3 w-3 rounded-full ${leader.status === 1 ? "bg-success" : "bg-error"
+                        className={`h-3 w-3 rounded-full ${leader.status == 1 ? "bg-success" : "bg-error"
                             } mr-2 flex-shrink-0`}
                     ></div>
-                    <span>{leader.status === 1 ? "Activated" : "Not Activated"}</span>
+                    <span>{leader.status == 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             ),
         },
@@ -170,10 +170,10 @@ const InvitePage = () => {
             renderCell: (member) => (
                 <div className="flex items-center">
                     <div
-                        className={`h-3 w-3 rounded-full ${member.status === 1 ? "bg-success" : "bg-error"
+                        className={`h-3 w-3 rounded-full ${member.status == 1 ? "bg-success" : "bg-error"
                             } mr-2 flex-shrink-0`}
                     ></div>
-                    <span>{member.status === 1 ? "Activated" : "Not Activated"}</span>
+                    <span>{member.status == 1 ? "Activated" : "Not Activated"}</span>
                 </div>
             ),
         },
