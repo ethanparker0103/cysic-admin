@@ -1,6 +1,6 @@
 import { getImageUrl, shortStr, handleFaucetModal } from "@/utils/tools";
 
-import { DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { DropdownMenu, DropdownItem, Tooltip } from "@nextui-org/react";
 import Copy from "@/components/Copy";
 import Button from "@/components/Button";
 import useAccount from "@/hooks/useAccount";
@@ -8,10 +8,11 @@ import ConnectCosmosButton from "@/components/connectCosmosButton";
 import { Link, useLocation } from "react-router-dom";
 import useUser from "@/models/user";
 import { useWriteContract } from "@/hooks/useWriteContract";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LaptopMinimal as LaptopMinimalCheck } from "lucide-react";
 import HoverDropdown from "@/components/HoverDropdown";
 import { useState } from "react";
 import { useLogout } from "@/hooks/useLogout";
+import { easterEggVisible } from "@/config";
 
 const ConnectInfo = () => {
   // 使用新的useAccount获取状态
@@ -41,6 +42,26 @@ const ConnectInfo = () => {
 
   return (
     <>
+
+      {
+        easterEggVisible['2025_06_02'] && (
+          <Tooltip disableAnimation delay={0} closeDelay={0} content={<div className="!normal-case py-2 px-4 max-w-[12.625rem] text-center teachers-14-400 text-sub">In this new era, compute is the new oil. We’re the refinery.</div>}>
+            <div className="opacity-0 hover:opacity-100 transition-opacity duration-300 mr-4 size-[1.875rem] rounded-full border flex items-center justify-center">
+              {/* <LaptopMinimalCheck className="w-4 h-4" /> */}
+              <img src="/mediakits/symbol_gradient.svg" className="w-6 h-6" />
+            </div>
+          </Tooltip>
+        )
+      }
+
+
+      {/* {
+      easterEggVisible['2025_06_02'] && (
+        <div className="!normal-case flex-1 pr-4 text-center teachers-12-400 text-sub">In this new era, compute is the new oil. We’re the refinery.</div>
+      )
+    } */}
+
+
       <Button needLoading className="!p-0" onClick={handleFaucetModal}>
         <img
           src={getImageUrl("@/assets/images/icon/faucet.svg")}

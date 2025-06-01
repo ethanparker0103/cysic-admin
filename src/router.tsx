@@ -34,6 +34,7 @@ import Bridge from "@/routes/pages/Bridge/page";
 import { enableBridge, enableSocialTask } from "@/config";
 import MediakitPage from "@/routes/pages/Mediakit/page";
 import ContactUs from "@/routes/pages/ContactUs/page";
+import CareersPage from "@/routes/pages/Careers/page";
 
 const portalModules = {
   path: "userPortal",
@@ -67,6 +68,10 @@ const routeChildren = [
   },
   portalModules,
   bridgeModules,
+  {
+    path: "careers",
+    element: <CareersPage />,
+  },
   {
     path: "unbind",
     element: <UnbindPage />,
@@ -212,6 +217,9 @@ export const backgroundImageList = {
     className: "grayscale h-[100vh] min-h-[1200px]",
     needShadow: true,
     mainClassName: "overflow-x-hidden",
+  },
+  "/careers": {
+    img: "#000",
   },
   "/ecosystem": {
     img: getImageUrl("@/assets/images/_global/zk_ecosystem_bg.png"),

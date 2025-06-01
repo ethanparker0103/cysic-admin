@@ -36,17 +36,17 @@ const brandColors = [
 const symbolLogos = [
     {
         title: 'Symbol White',
-        img: '/mediaKit/symbol_white.svg',
+        img: '/mediakits/symbol_white.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Symbol Black',
-        img: '/mediaKit/symbol_black.svg',
+        img: '/mediakits/symbol_black.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Symbol Gradient',
-        img: '/mediaKit/symbol_gradient.svg',
+        img: '/mediakits/symbol_gradient.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
 ]
@@ -54,17 +54,17 @@ const symbolLogos = [
 const horizontalLogos = [
     {
         title: 'Horizontal White',
-        img: '/mediaKit/horizontal_white.svg',
+        img: '/mediakits/horizontal_white.svg',
         className: "w-[13.875rem] lg:w-[18.5rem]"
     },
     {
         title: 'Horizontal Black',
-        img: '/mediaKit/horizontal_black.svg',
+        img: '/mediakits/horizontal_black.svg',
         className: "w-[13.875rem] lg:w-[18.5rem]"
     },
     {
         title: 'Horizontal Gradient',
-        img: '/mediaKit/horizontal_gradient.svg',
+        img: '/mediakits/horizontal_gradient.svg',
         className: "w-[13.875rem] lg:w-[18.5rem]"
     },
 ]
@@ -72,17 +72,17 @@ const horizontalLogos = [
 const verticalLogos = [
     {
         title: 'Vertical White',
-        img: '/mediaKit/vertical_white.svg',
+        img: '/mediakits/vertical_white.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Vertical Black',
-        img: '/mediaKit/vertical_black.svg',
+        img: '/mediakits/vertical_black.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
     {
         title: 'Vertical Gradient',
-        img: '/mediaKit/vertical_gradient.svg',
+        img: '/mediakits/vertical_gradient.svg',
         className: "w-[6.9375rem] lg:w-[9.25rem]"
     },
 ]

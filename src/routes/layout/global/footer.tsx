@@ -1,9 +1,14 @@
 import Media from "@/components/Media"
-import { mediasLink } from "@/config"
+import { easterEggVisible, mediasLink } from "@/config"
 import { getImageUrl } from "@/utils/tools"
 import { Button, cn, Link as NextLink } from "@nextui-org/react"
 import { isMobile } from "react-device-detect"
 import { Link } from "react-router-dom"
+
+const other = easterEggVisible['2025_06_02'] ? [{
+    content: 'Careers',
+    href: '/careers'
+}] : []
 
 const navs = [
     {
@@ -37,7 +42,8 @@ const navs = [
     {
         content: 'Contact Us',
         href: '/contactus'
-    }
+    },
+    ...other
 ]
 
 export default function Footer() {

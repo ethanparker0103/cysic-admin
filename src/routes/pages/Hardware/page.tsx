@@ -1,13 +1,18 @@
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
+import { easterEggVisible } from "@/config";
 import InViewFlip from "@/routes/components/InViewFlip";
 import { hardwareAcademyConfig } from "@/routes/pages/Academy/config";
 import { getImageUrl, scrollIntoView } from "@/utils/tools";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
 
 const container = "main-container";
 const HardwarePage = () => {
+
+  const [easterEggTextVisible, setEasterEggVisible] = useState(false);
+
   return (
     <>
       {/* section-1 */}
@@ -27,10 +32,23 @@ const HardwarePage = () => {
       {/* section-2 */}
       <div
         className={cn(
-          "w-full py-16 flex flex-col gap-2 items-center",
+          "w-full py-16 flex flex-col gap-2 items-center relative",
           container
         )}
       >
+        {
+          easterEggVisible['2025_06_02'] && (
+            <div 
+            onClick={() => {
+              setEasterEggVisible(old => !old);
+            }}
+            className={cn(
+              "absolute z-1 cursor-pointer unbounded-16-500 top-7",
+              "text-black [&::selection]:text-white",
+              easterEggTextVisible && 'text-white'
+            )}>The future is powered by math and metal</div>
+          )
+        }
         <div className="text-sm text-center">
           Our world-class engineering team, with deep roots in both cutting-edge
           research and real-world deployments, is shaping the future of the zk

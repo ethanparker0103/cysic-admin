@@ -9,7 +9,7 @@ import { AcademyCard } from "@/routes/pages/Academy/page";
 import { ecosystemProjectsShowInHome } from "@/routes/pages/Ecosystem/config";
 import { EcosystemCard } from "@/routes/pages/Ecosystem/page";
 import { getImageUrl } from "@/utils/tools";
-import { cn, Divider } from "@nextui-org/react";
+import { cn, Divider, Tooltip } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -395,11 +395,13 @@ const Home = () => {
               desc="Low-cost AI infra for custom models"
               imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
             />
-            <AdCard
-              title="Cysic digital mining"
-              desc="Compute-backed digital assets"
-              imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
-            />
+            <Tooltip content={<div className="max-w-[16.625rem] px-4 py-2 text-sub !normal-case teachers-16-300">The protocol you told your parents not to worry about</div>}>
+              <div><AdCard
+                title="Cysic digital mining"
+                desc="Compute-backed digital assets"
+                imageSrc={getImageUrl("@/assets/images/nft/preset2.png")}
+              /></div>
+            </Tooltip>
           </div>
         </div>
       </div>

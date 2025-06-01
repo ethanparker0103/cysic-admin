@@ -167,6 +167,9 @@ export const classes = {
 }
 
 
+export const easterEggVisible = {
+  ['2025_06_02']: true
+}
 
 export * from './evm'
 export * from './abi/faucet'
