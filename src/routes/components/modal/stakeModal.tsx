@@ -468,8 +468,7 @@ const StakeModal = () => {
             dispatchEvent(new Event('refresh_stake_list'))
 
             // 关闭质押模态框
-            setVisible(false);
-            resetState();
+            handleClose();
         } catch (error) {
             console.error("Error staking:", error);
 
@@ -524,8 +523,7 @@ const StakeModal = () => {
 
             dispatchEvent(new Event('refresh_stake_list'))
 
-            setVisible(false);
-            resetState();
+            handleClose();
         } catch (error) {
             console.error("Error unstaking:", error);
 
@@ -541,7 +539,8 @@ const StakeModal = () => {
 
     // 关闭模态框并重置状态
     const handleClose = () => {
-        setVisible(false);
+        // setVisible(false);
+        dispatchEvent(new CustomEvent('modal_stake_visible', { detail: { visible: false } }))
         resetState();
     };
 

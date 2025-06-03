@@ -45,7 +45,9 @@ const useStakeList = () => {
 
 
     const { run: runStakeList, loading: stakeLoading } = useRequest(
-        () => Promise.allSettled([axios.get('/api/v1/stake/list'), axios.get('/api/v1/unstake/list')]),
+        () => {
+            return Promise.allSettled([axios.get('/api/v1/stake/list'), axios.get('/api/v1/unstake/list')])
+        },
         {
             ready: isSigned && !!walletAddress && stakeListValid,
             refreshDeps: [isSigned, walletAddress, stakeListValid],
