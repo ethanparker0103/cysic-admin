@@ -38,21 +38,21 @@ const SocialAccount = () => {
 
   const linkDiscord = async () => {
     const res = await axios.post('/api/v1/social/bind/discord', {
-      ref: window.location.href
+      ref: window.location.origin + window.location.pathname
     })
     return res.data.authURL
   }
 
   const linkGoogle = async () => {
     const res = await axios.post('/api/v1/social/bind/google', {
-      ref: window.location.href
+      ref: window.location.origin + window.location.pathname
     })
     return res.data.authURL
   }
 
   const linkTwitter = async () => {
     const res = await axios.post('/api/v1/social/bind/twitter', {
-      ref: window.location.href
+      ref: window.location.origin + window.location.pathname
     })
     return res.data.authURL
   }

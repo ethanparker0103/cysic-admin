@@ -32,9 +32,9 @@ const useBindPathQuery = () => {
 
         if (bindType) {
             if (bindStatus == '0') {
-                toast.success(`${bindType} bind success`)
+                toast.success(`${bindType?.toUpperCase()} bind success`)
             } else {
-                toast.error(`Duplicate account, ${bindType} bind failed`)
+                toast.error(`Duplicate account, ${bindType?.toUpperCase()} bind failed`)
             }
         }
     }, [location?.search]);
