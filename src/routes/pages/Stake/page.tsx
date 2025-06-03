@@ -451,10 +451,10 @@ const queryWithdrawAddress = async () => {
             <div className="w-full py-4 px-4 lg:px-6">
               <div className={cn("flex mb-4", "flex-col gap-4 lg:flex-row lg:justify-between lg:items-center" )}>
                 <h2 className="unbounded-20-400">MY STAKE</h2>
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <History size={16} />
                   <span className="!text-sm text-sub">Daily update at 2PM UTC</span>
-                </div>
+                </div> */}
               </div>
 
               {stakeLoading ? (
