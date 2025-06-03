@@ -2,7 +2,6 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn, Pagination } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
@@ -84,7 +83,7 @@ const ProverDetail = () => {
         },
         {
             key: "rewards",
-            label: "Rewards",
+            label: "Earned Rewards",
             renderCell: (item: any) => {
                 return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
             }

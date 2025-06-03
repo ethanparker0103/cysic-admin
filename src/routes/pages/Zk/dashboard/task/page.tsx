@@ -3,8 +3,8 @@ import { isMobile } from "react-device-detect";
 import { cn, Pagination } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
-import { ArrowRightIcon, ShareIcon } from "lucide-react";
-import { getImageUrl, shortStr } from "@/utils/tools";
+import { ArrowRightIcon } from "lucide-react";
+import { shortStr } from "@/utils/tools";
 import CysicTable, { CysicTableColumn } from "@/components/Table";
 import usePagnation from "@/hooks/usePagnation";
 import { commonPageSize } from "@/config";
@@ -38,7 +38,6 @@ const TaskPage = () => {
     })
 
     const taskList = taskListData?.data?.list || [] as ITask[]
-    console.log('taskList', taskList)
 
     const taskListColumns: CysicTableColumn<ITask>[] = [
         {
@@ -53,7 +52,7 @@ const TaskPage = () => {
         },
         {
             key: "reward",
-            label: "Reward",
+            label: "Expected Rewards",
             renderCell: (task) => {
                 return <TaskReward rewardCYS={task.rewardCYS} rewardCGT={task.rewardCGT} />
             }

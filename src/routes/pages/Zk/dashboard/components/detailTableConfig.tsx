@@ -228,22 +228,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
 
         case "verifier": {
 
-            const columns = isMobile ? [
-                {
-                    key: "name",
-                    label: "Verifier Name",
-                    renderCell: (item: any) => {
-                        return <span className="break-all">{item?.name}</span>
-                    }
-                },
-                {
-                    key: "commitHash",
-                    label: "Commit Hash",
-                    renderCell: (item: any) => {
-                        return <span className="break-all">{item?.commitHash}</span>
-                    }
-                },
-            ] : [
+            const columns = [
                 {
                     key: "name",
                     label: "Verifier Name",
@@ -253,7 +238,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                 },
                 {
                     key: "verifyResult",
-                    label: "verify result",
+                    label: "Verify Result",
                     renderCell: (row: any) => {
                         return (<div className="flex itmes-center gap-2">
                             {
@@ -276,6 +261,7 @@ export const renderCell = (item: any, columnKey: any, columnConfig?: any) => {
                     }
                 },
             ]
+
             return (
                 <CysicTable
                     columns={columns}

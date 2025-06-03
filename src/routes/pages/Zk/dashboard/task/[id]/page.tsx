@@ -37,7 +37,7 @@ const TaskDetail = () => {
         },
         {
             key: "reward",
-            label: "Reward",
+            label: "Distributed Rewards",
             renderCell: (item: any) => {
                 return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
             }

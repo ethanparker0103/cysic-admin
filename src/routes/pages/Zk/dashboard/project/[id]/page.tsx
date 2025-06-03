@@ -102,15 +102,15 @@ const ProjectDetail = () => {
       key: "taskId",
       label: "Task ID",
     },
-    {
-      key: "rewards",
-      label: "Rewards",
-      renderCell: (item: any) => {
-        return (
-          <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
-        );
-      },
-    },
+    // {
+    //   key: "rewards",
+    //   label: "Rewards",
+    //   renderCell: (item: any) => {
+    //     return (
+    //       <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
+    //     );
+    //   },
+    // },
     {
       key: "timeBounds",
       label: "Time Bounds",

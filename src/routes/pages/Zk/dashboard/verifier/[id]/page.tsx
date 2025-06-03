@@ -11,7 +11,7 @@ import {
 } from "@/config";
 import usePagnation from "@/hooks/usePagnation";
 import CysicTable from "@/components/Table";
-import { VerifierTaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
+import { TaskReward, VerifierTaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
@@ -71,6 +71,13 @@ const VerifierDetail = () => {
         );
       },
     },
+    {
+      key: "rewards",
+      label: "Earned Rewards",
+      renderCell: (item: any) => {
+          return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
+      }
+  },
     {
       key: "totalTask",
       label: "Task Amount",

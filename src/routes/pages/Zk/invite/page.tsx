@@ -579,7 +579,7 @@ const InvitePage = () => {
                         {/* 团队领导表格 */}
                         {leaderData && (
                             <div className="mt-4">
-                                <h2 className="unbounded-16-300 mb-4">TEAM LEADER</h2>
+                                <h2 className="unbounded-16-300 mb-4">My Address</h2>
                                 <CysicTable
                                     data={[leaderData]}
                                     columns={leaderColumns}

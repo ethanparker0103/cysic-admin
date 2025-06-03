@@ -332,6 +332,7 @@ const SelfProverStepCard = ({
     buttonText,
     children,
     onClick,
+    linkHref,
 }: {
     linkContent?: string | React.ReactNode;
     step: number;
@@ -340,6 +341,7 @@ const SelfProverStepCard = ({
     buttonText?: string;
     children?: React.ReactNode;
     onClick?: () => void;
+    linkHref?: string;
 }) => {
     return (
         <>
@@ -375,10 +377,10 @@ const SelfProverStepCard = ({
 
 
                 {
-                    linkContent ? (<div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                    linkContent ? (<a href={linkHref} target="_blank" className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
                         <span>{linkContent}</span>
                         <ArrowRight width={16} height={16} />
-                    </div>) : null
+                    </a>) : null
                 }
 
             </div>
@@ -482,6 +484,7 @@ const VerifierPage = () => {
                         <SelfProverStepCard
                             step={2}
                             linkContent="For more details, see the full Verifier Tutorial Doc"
+                            linkHref="https://docs.cysic.xyz/how-to-run-a-verifier-node"
                             // buttonText="TIME LIMITED FREE"
                             // onClick={handleReserveModal}
                             title={
@@ -504,11 +507,10 @@ const VerifierPage = () => {
                                 </h3>
                             </div>
 
-
-                            <div className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
+                            <a href="https://docs.cysic.xyz/how-to-run-a-verifier-node" target="_blank" className="flex items-center gap-2 teacher tracking-widest text-sm !font-[400] text-sub cursor-pointer hover:text-white transition-colors">
                                 <span>For more details, see the full Verifier Tutorial Doc</span>
                                 <ArrowRight width={16} height={16} />
-                            </div>
+                            </a>
 
                             <div className="flex flex-col gap-4 mt-4">
                                 <Tabs

@@ -29,6 +29,7 @@ const ZkLanding = () => {
         </div>
 
         <JoinZkPhase3
+          overrideTitle="Sign In"
           className="!pb-16 !justify-end"
           slogen="Cysic Network "
           title="Phase III Is Now Open"

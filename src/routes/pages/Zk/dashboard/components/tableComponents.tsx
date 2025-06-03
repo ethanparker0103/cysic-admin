@@ -39,14 +39,14 @@ export const TaskStatus = ({ status }: { status: number }) => {
 
 export const TaskReward = ({ className, rewardCYS, rewardCGT }: { className?: string, rewardCYS?: string, rewardCGT?: string }) => {
   return (
-    <div className={cn("flex gap-2", className)}>
+    <div className={cn("flex gap-2 w-max lg:w-fit", className)}>
       {rewardCYS && <div className="flex items-center gap-1">
         <img className="size-4" src={getImageUrl('@/assets/images/tokens/CYS.svg')} />
-        <span>{formatReward(rewardCYS, 4, true)} CYS</span>
+        <div className="flex items-center gap-1">{formatReward(rewardCYS, 4, true)} <span className="hidden lg:block">CYS</span></div>
       </div>}
       {rewardCGT && <div className="flex items-center gap-1">
         <img className="size-4" src={getImageUrl('@/assets/images/tokens/CGT.svg')} />
-        <span>{formatReward(rewardCGT, 4, true)} CGT</span>
+        <div className="flex items-center gap-1">{formatReward(rewardCGT, 4, true)} <span className="hidden lg:block">CGT</span></div>
       </div>}
     </div>
   )

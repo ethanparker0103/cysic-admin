@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { handleHowInviteWorkModal } from "@/utils/tools";
 import { enableSocialTask } from "@/config";
+import { ArrowLeft } from "lucide-react";
+import { useEventListener } from "ahooks";
 
 const steps = [
   {
-    buttonText: "Next",
+    buttonText: "Continue",
     content: (
       <>
         1. Invite Code and Levels<br/><br/>
@@ -19,10 +21,19 @@ const steps = [
     ),
   },
   {
-    buttonText: "Previous",
+    buttonText: "Confirm",
     content: (
       <>
-      2. Rebate Rewards<br/><br/>
+      <div className="flex items-center gap-2">
+        <ArrowLeft className="w-4 h-4 cursor-pointer" onClick={()=>{
+          dispatchEvent(new CustomEvent('how_invite_work_step', {
+            detail: {
+              step: 0
+            }
+          }));
+        }} />
+        <span>2. Rebate Rewards</span>
+      </div><br/>
       Rebate Rewards = (NFT purchase by direct invitee × your Rebate Rate) + (NFT purchase by indirect invitee × fixed 2%)<br/><br/>
       Your invite performance earns you token rewards based on the NFT purchases made by your invitees.<br/><br/>
       You can boost your Rebate Rate by completing tasks—visit the {enableSocialTask ? <Link onClick={()=>handleHowInviteWorkModal(false)} to={'/socialTask'} className="!text-lightBrand !underline">Social Tasks page</Link> : <span className="!text-lightBrand !underline">Social Tasks page(Coming Soon)</span>} to learn how.
@@ -37,6 +48,10 @@ const HowInviteWorkModal = () => {
     eventName: "modal_how_invite_work_visible",
   });
 
+  useEventListener('how_invite_work_step', (e: any) => {
+    setStep(e.detail.step);
+  });
+
   const [step, setStep] = useState(0);
 
   const handleClose = () => {
@@ -46,7 +61,9 @@ const HowInviteWorkModal = () => {
 
   const handleSwitchStep = () => {
     if (step > 0) {
-      setStep(step - 1);
+      // confirm
+      handleClose();
+      // setStep(step - 1);
     } else {
       setStep(step + 1);
     }
@@ -61,7 +78,7 @@ const HowInviteWorkModal = () => {
     >
       <div className="flex flex-col gap-6">
         <p>{steps[step].content}</p>
-        <Button type="light" onClick={handleSwitchStep} className="py-6">
+        <Button type="solid" onClick={handleSwitchStep} className="py-6 text-base">
           {steps[step].buttonText}
         </Button>
       </div>

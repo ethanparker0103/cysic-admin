@@ -79,7 +79,7 @@ const ProjectPage = () => {
             label: <div className="text-right">Worker Address</div>,
             width: "33%",
             renderCell: (project) => (
-                <div className="text-right">{shortStr(project.workerAddress, 14)}</div>
+                <div className="text-right">{shortStr(project.workerAddress, 99)}</div>
             ),
         },
         {
