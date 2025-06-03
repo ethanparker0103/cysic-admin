@@ -91,7 +91,7 @@ const drawerCardList = [
                         className="size-6 lg:size-12"
                     />
                 ),
-                title: "Mining RIG",
+                title: "MINING RIG",
             },
         ],
     },

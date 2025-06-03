@@ -64,7 +64,7 @@ const navScreenList = [
       <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-6">
         <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8">
           <div className="flex items-center gap-2 justify-between lg:justify-start">
-            <span>About Cysic Netowork</span>
+            <span>About Cysic Network</span>
             <ArrowRight width={16} height={16} />
           </div>
         </Button>
