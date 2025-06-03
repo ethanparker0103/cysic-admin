@@ -36,6 +36,8 @@ const useBindPathQuery = () => {
             } else {
                 toast.error(`Duplicate account, ${bindType?.toUpperCase()} bind failed`)
             }
+
+            window.history.replaceState('', '', window.location.origin + window.location.pathname)
         }
     }, [location?.search]);
 }
