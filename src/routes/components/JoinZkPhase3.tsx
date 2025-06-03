@@ -2,7 +2,7 @@ import { classes } from "@/config";
 import { cn } from "@nextui-org/react";
 import { AboutTestnetButton, JoinTestnetPhaseIIIButton } from "@/routes/components/JoinTestnetPhaseIIIButtonGroups";
 
-const JoinZkPhase3 = ({ overrideTitle, slogen, title = 'Phase III', subTitle, className }: { overrideTitle?: string, slogen: string, title?: string, subTitle?: string | React.ReactNode, className?: string }) => {
+const JoinZkPhase3 = ({ overrideTitle, slogen, title = 'Phase III: Ignition', subTitle, className }: { overrideTitle?: string, slogen: string, title?: string | React.ReactNode, subTitle?: string | React.ReactNode, className?: string }) => {
     return (
         <div className={cn("main-container py-12 lg:py-0 relative z-1 size-full flex flex-col gap-4 items-center justify-between lg:justify-center", className)}>
             <div className="flex flex-col gap-1 items-center">

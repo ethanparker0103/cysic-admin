@@ -94,7 +94,7 @@ const UserPortal = () => {
                         backgroundRepeat: "no-repeat",
                     }}
                 />
-                <JoinZkPhase3 slogen="Join Cysic Network " title="Phase III" />
+                <JoinZkPhase3 slogen="Join Cysic Network " title="Phase III: Ignition" />
             </div>
         </>
     );

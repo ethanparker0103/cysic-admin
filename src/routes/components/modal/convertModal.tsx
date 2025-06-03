@@ -248,8 +248,8 @@ const ConvertModal = () => {
       className="max-w-[600px]"
     >
       {/* 提示信息 */}
-      <ul className="mb-6 text-white list-disc list-inside">
-        <li>Only Rewards from the current Phase III is available to convert</li>
+      <ul className="mb-6 text-white list-disc list-inside space-y-2">
+        <li>Only Rewards from the current Phase III: Ignition is available to convert</li>
         <li>Only CGT converted from CYS can be reconverted to CYS.</li>
       </ul>
 

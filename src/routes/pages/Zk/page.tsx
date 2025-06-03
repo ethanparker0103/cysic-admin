@@ -11,7 +11,7 @@ const ZkLanding = () => {
   return (
     <>
       <div
-        className="pt-0 lg:pt-12 flex flex-col justify-between h-[calc(100vh-5.625rem)] lg:h-[calc(min(160vh,100.875rem)-8rem-3rem-65px)]"
+        className="pt-0 lg:pt-12 flex flex-col justify-between h-[calc(100vh-5.625rem)] lg:h-[calc(min(180vh,110.875rem)-8rem-3rem-65px)]"
       >
         <div
 
@@ -32,7 +32,7 @@ const ZkLanding = () => {
           overrideTitle="Sign In"
           className="!pb-16 !justify-end"
           slogen="Cysic Network "
-          title="Phase III Is Now Open"
+          title={<>Phase III: Ignition<br/> Is Now Open</>}
           subTitle={<div className="flex flex-col lg:flex-row gap-1"><span>Instant proofs.</span> <span>Infinite Possibilities</span></div>}
         />
       </div>
@@ -206,7 +206,7 @@ const ZkLanding = () => {
               backgroundRepeat: "no-repeat",
             }}
           />
-          <JoinZkPhase3 slogen="Join Cysic Network " title="Phase III" />
+          <JoinZkPhase3 slogen="Join Cysic Network " title="Phase III: Ignition" />
         </div>
 
         <div className="py-16 flex flex-col items-center gap-12 relative z-[2]">
