@@ -215,7 +215,9 @@ const ConvertModal = () => {
   };
 
   const cysBalance = balanceMap?.[cysicBaseCoin]?.hm_amount || 0;
-  const cgtBalance = exchangeableMap?.hm_amount || 0;
+
+
+  const cgtBalance = Math.min(exchangeableMap?.hm_amount || 0, balanceMap?.[cysicStCoin]?.hm_amount || 0);
 
   // 查看转换历史
   const handleViewHistory = () => {
