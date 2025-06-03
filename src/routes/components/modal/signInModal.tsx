@@ -437,7 +437,7 @@ const SignInModal = () => {
                   className="font-[400] w-full h-16 bg-white text-black rounded-lg hover:bg-gray-200 transition-colors"
                   onClick={handleLoginPersonalMessage}
                 >
-                  SIGN MESSAGE
+                  GET STARTED
                 </Button>
               ) : (
                 <Button

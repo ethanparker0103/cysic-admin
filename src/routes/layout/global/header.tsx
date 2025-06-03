@@ -162,7 +162,7 @@ export default function Header() {
                           className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
                         >
                           <span className="text-sub font-[400] uppercase text-sm">
-                            SIGN MESSAGE
+                            Get Started
                           </span>
                           <ArrowRight width={16} height={16} />
                         </div>
