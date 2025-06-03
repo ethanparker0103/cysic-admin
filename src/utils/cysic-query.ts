@@ -80,6 +80,18 @@ class QueryDepositClient {
     this.rpc = rpc;
     this.Deposit = this.Deposit.bind(this);
   }
+  ExchangeableAmount(request: { address: string }) {
+    const data = MsgDepositRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "cysicmint.govtoken.v1.Query",
+      "ExchangeableAmount",
+      data
+    );
+    return promise.then((data: any) => {
+      const r = MsgDepositRequest.decode(new Reader(data));
+      return r;
+    });
+  }
   Deposit(request: { address: string; depositType: string | number }) {
 
     const data = MsgDepositRequest.encode(request).finish();
@@ -95,6 +107,7 @@ class QueryDepositClient {
   }
 }
 
+
 export function setupDepositExtension(base: QueryClient) {
   const rpc = createProtobufRpcClient(base);
   // Use this service to get easy typed access to query methods
@@ -103,6 +116,10 @@ export function setupDepositExtension(base: QueryClient) {
   const queryService = new QueryDepositClient(rpc);
   return {
     distribution: {
+      exchangeableCGT: async (address: string) => {
+        const response = await queryService.ExchangeableAmount({ address });
+        return response;
+      },
       prover: async (address: string) => {
         const response = await queryService.Deposit({
           address: cosmosToEthAddress(address) as string,

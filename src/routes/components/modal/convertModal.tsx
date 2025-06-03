@@ -28,7 +28,7 @@ enum TokenType {
 }
 
 const ConvertModal = () => {
-  const { balanceMap, connector, address } = useCosmos();
+  const { balanceMap, connector, address, exchangeableMap } = useCosmos();
   const { visible, setVisible, data } = useModalState({
     eventName: "modal_convert_visible",
   });
@@ -215,7 +215,7 @@ const ConvertModal = () => {
   };
 
   const cysBalance = balanceMap?.[cysicBaseCoin]?.hm_amount || 0;
-  const cgtBalance = balanceMap?.[cysicStCoin]?.hm_amount || 0;
+  const cgtBalance = exchangeableMap?.hm_amount || 0;
 
   // 查看转换历史
   const handleViewHistory = () => {

@@ -13,7 +13,6 @@ const useCosmosBalance = () => {
     const { address, connector, unmatchedAddressWithEVM, setState } = useCosmos()
 
     const depositExtension = useRef<any>(null)
-
     const initDepositExtension = async () => {
         if (depositExtension.current) return depositExtension.current;
         const tmClient = await connectComet(cosmosCysicTestnet.rpc);
@@ -39,7 +38,7 @@ const useCosmosBalance = () => {
         return connector?.['getAllBalances']?.(address)
     }, {
         ready: !!connector && !!address,
-        refreshDeps: [connector, address, unmatchedAddressWithEVM],
+        refreshDeps: [address],
         pollingInterval: blockTime.long,
         onSuccess(e: any) {
             const res = e?.reduce((prev: any, next: any) => {
@@ -73,13 +72,15 @@ const useCosmosBalance = () => {
 
             if (!depositExtension) return;
             // 获取验证者和证明者的存款
-            const [proverResult] = await Promise.allSettled([
+            const [proverResult, exchangeableResult] = await Promise.allSettled([
                 depositExtension?.distribution?.prover(address),
+                depositExtension?.distribution?.exchangeableCGT(address)
                 // depositExtension.distribution.verifier(address)
             ]);
 
             // 处理存款结果
             const depositMap: any = {};
+            const exchangeableMap: any = {};
 
             // 处理验证者存款
             if (proverResult.status === 'fulfilled' && proverResult.value) {
@@ -88,9 +89,16 @@ const useCosmosBalance = () => {
                 depositMap.proverHmAmount = BigNumber(proverAmount).div(10 ** basicDecimaal).toString();
             }
 
+            if (exchangeableResult.status === 'fulfilled' && exchangeableResult.value) {
+                const exchangeableAmount = exchangeableResult.value.deposit_amount || "0";
+                exchangeableMap.amount = exchangeableAmount;
+                exchangeableMap.hm_amount = BigNumber(exchangeableAmount).div(10 ** basicDecimaal).toString();
+            }
+
             // 更新状态
             setState({
-                depositMap
+                depositMap,
+                exchangeableMap
             });
 
             console.log("Deposit info updated:", depositMap);
