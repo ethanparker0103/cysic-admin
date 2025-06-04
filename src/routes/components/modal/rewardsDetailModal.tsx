@@ -252,9 +252,16 @@ const RewardsDetailModal = () => {
                                 <span>{parseInt(phase3?.cysIncomeDetail?.income?.activity).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
+                                <span className="text-sub">Staking</span>
+                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.staking).toLocaleString()}</span>
+                            </div>
+                        </div>
+                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                            <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Others</span>
                                 <span>{parseInt(phase3?.cysIncomeDetail?.income?.others).toLocaleString()}</span>
                             </div>
+                            <div className="flex-1"/>
                         </div>
                     </div>
                     <div className="border-t border-dashed border-[#333] my-4"></div>
