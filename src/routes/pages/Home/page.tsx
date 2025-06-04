@@ -290,12 +290,13 @@ const Home = () => {
                 "unbounded text-[36px] lg:text-[80px] font-[200] !text-white text-center p-4 lg:p-0",
               )}
             >
-              The Compute Layer of a
+              The First Full-Stack 
               <br />
-              Verifiable Future.
+              Compute Network
+              
             </span>
             <span className="teachers-16-24-400 tracking-widest lg:tracking-[8.88px] font-normal mt-6 desc text-center">
-              World's first vertically integrated compute layer
+              Own the growth of on-chain compute, powered by Cysic.
             </span>
           </div>
 
