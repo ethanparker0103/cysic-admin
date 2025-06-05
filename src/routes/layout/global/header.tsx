@@ -5,6 +5,8 @@ import {
   getImageUrl,
   handleLoginPersonalMessage,
   handleSignIn,
+  scrollIntoView,
+  scrollToTop,
 } from "@/utils/tools";
 
 import { ArrowRight, Menu } from "lucide-react";
@@ -20,6 +22,11 @@ import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
 import Spinner from "@/components/spinner";
 
 const size = "full";
+
+function preventScroll(event) {
+  event.preventDefault();
+}
+
 
 export default function Header() {
   const { walletAddress, isSigned, isBinded } = useAccount();
@@ -55,6 +62,27 @@ export default function Header() {
     onOpen();
   };
 
+  const handleOpenChange = (v)=>{
+    if(v){
+      document.addEventListener('wheel', preventScroll, { passive: false });
+      document.addEventListener('touchmove', preventScroll, { passive: false });
+
+      // document.body.style.overflow = 'auto'
+    }else{
+      document.removeEventListener('wheel', preventScroll);
+      document.removeEventListener('touchmove', preventScroll);
+
+      // document.body.style.overflow = 'hidden'
+    }
+  }
+
+  const handleScrollToTopInHome = ()=>{
+    const path = location.pathname;
+    if(path == '/'){
+      scrollToTop()
+    }
+  }
+
   return (
     <>
       <>
@@ -74,7 +102,7 @@ export default function Header() {
               />
             </Link>
           </div>
-          <Drawer isOpen={isOpen} size={size} onClose={onClose}>
+          <Drawer isOpen={isOpen} size={size} onClose={onClose} onOpenChange={handleOpenChange} shouldBlockScroll>
             <DrawerContent className="bg-[#090A09]">
               {(onClose) => (
                 <>
@@ -137,7 +165,7 @@ export default function Header() {
               <GradientBorderCard className="h-20 flex items-center backdrop-blur bg-[#090A09B2]">
                 <div className="w-full h-full flex justify-between items-center">
                   <div className="flex items-center h-full flex-1">
-                    <Link to={"/"}>
+                    <Link to={"/"} onClick={handleScrollToTopInHome}>
                       <img
                         src={getImageUrl("@/assets/images/logo/cysic.svg")}
                         className="flex-1 max-w-[11.25rem]"

@@ -511,6 +511,14 @@ export async function getEthersSigner({ chainId }: { chainId?: number } = {}) {
   return walletClientToSigner(walletClient);
 }
 
+export const scrollToTop = () => {
+  window.scrollTo({
+    left: 0,
+    top: 0,
+    behavior: 'smooth'
+  })
+}
+
 export const scrollIntoView = (target: string, offset?: any) => {
   const element = document.querySelectorAll(target)?.[0];
   if (!element) return;
@@ -583,7 +591,7 @@ export function calculateTransactionFee() {
 }
 
 export const formatReward = (num: string, x: number, killZero = false) => {
-  const subscriptDigits = ['₀','₁','₂','₃','₄','₅','₆','₇','₈','₉'];
+  const subscriptDigits = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
 
   if (!num) return num;
   if (!Number(num)) return num;
@@ -628,69 +636,69 @@ export const formatReward = (num: string, x: number, killZero = false) => {
   return `0.0${exponentStr}${significantPart.slice(0, x)}`;
 };
 
-export const handleUserProfileModal = (props: any={}) => {
-  const event = new CustomEvent('modal_user_profile_visible', { 
-    detail: { visible: true, ...props } 
+export const handleUserProfileModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_user_profile_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 }
 
 export const handleSignIn = (targetStep?: string) => {
-    // 从当前store获取状态
-    const userStore = useUser.getState();
-    const walletConnectRecordStore = useWalletConnectRecord.getState();
-    const { getActiveUser, activeAddress } = userStore;
-    
-    // 获取当前活跃用户信息
-    const activeUser = getActiveUser();
-    const address = activeAddress;
-    const record = walletConnectRecordStore?.record?.[address as string];
-    // 如果未指定步骤，则根据用户状态自动决定
-    if (!targetStep) {
-        // 获取多地址架构下的状态
-        const isSigned = !!activeUser?.isSigned;
-        const isRegistered = !!activeUser?.isRegistered;
-        const isBinded = !!activeUser?.isBinded || !!activeUser?.inviteCode;
-        const profileCompleted = !!activeUser?.name && !!activeUser?.avatarUrl;
-        
-        // 如果已注册但未完成个人资料
-        if (isRegistered && !profileCompleted) {
-            targetStep = 'profile';
-        } 
-        // 如果已连接并已签名但未绑定或未注册
-        else if (address && isSigned && (!isBinded || !isRegistered)) {
-            targetStep = 'code';
-        }
-        // 其他情况使用默认步骤
-    }
+  // 从当前store获取状态
+  const userStore = useUser.getState();
+  const walletConnectRecordStore = useWalletConnectRecord.getState();
+  const { getActiveUser, activeAddress } = userStore;
 
-    if(targetStep == 'profile' && record && record != '0'){
-      handleUserProfileModal()
-      return;
+  // 获取当前活跃用户信息
+  const activeUser = getActiveUser();
+  const address = activeAddress;
+  const record = walletConnectRecordStore?.record?.[address as string];
+  // 如果未指定步骤，则根据用户状态自动决定
+  if (!targetStep) {
+    // 获取多地址架构下的状态
+    const isSigned = !!activeUser?.isSigned;
+    const isRegistered = !!activeUser?.isRegistered;
+    const isBinded = !!activeUser?.isBinded || !!activeUser?.inviteCode;
+    const profileCompleted = !!activeUser?.name && !!activeUser?.avatarUrl;
+
+    // 如果已注册但未完成个人资料
+    if (isRegistered && !profileCompleted) {
+      targetStep = 'profile';
     }
-    const event = new CustomEvent('modal_signin_visible', { 
-        detail: { visible: true, step: targetStep, force: true } 
-    });
-    window.dispatchEvent(event);
+    // 如果已连接并已签名但未绑定或未注册
+    else if (address && isSigned && (!isBinded || !isRegistered)) {
+      targetStep = 'code';
+    }
+    // 其他情况使用默认步骤
+  }
+
+  if (targetStep == 'profile' && record && record != '0') {
+    handleUserProfileModal()
+    return;
+  }
+  const event = new CustomEvent('modal_signin_visible', {
+    detail: { visible: true, step: targetStep, force: true }
+  });
+  window.dispatchEvent(event);
 };
 
-export const handleReserveModal = (props: any={}) => {
-  const event = new CustomEvent('modal_reserve_visible', { 
-    detail: { visible: true, ...props } 
+export const handleReserveModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_reserve_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 };
 
 export const handleStakeModal = (props: any = {}) => {
-  const event = new CustomEvent('modal_stake_visible', { 
-    detail: { visible: true, tab: "stake", ...props } 
+  const event = new CustomEvent('modal_stake_visible', {
+    detail: { visible: true, tab: "stake", ...props }
   });
   window.dispatchEvent(event);
 };
 
 export const handleUnstakeModal = (props: any = {}) => {
-  const event = new CustomEvent('modal_stake_visible', { 
-    detail: { visible: true, tab: "unstake", ...props } 
+  const event = new CustomEvent('modal_stake_visible', {
+    detail: { visible: true, tab: "unstake", ...props }
   });
   window.dispatchEvent(event);
 };
@@ -706,30 +714,30 @@ export const showStatusModal = (props: StatusModalProps) => {
   window.dispatchEvent(event);
 };
 
-export const handlePurchaseNftModal = (props: any={}) => {
-  const event = new CustomEvent('modal_purchase_nft_visible', { 
-    detail: { visible: true, ...props } 
+export const handlePurchaseNftModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_purchase_nft_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 };
 
-export const handleRewardsDetailModal = (props: any={}) => {
-  const event = new CustomEvent('modal_rewards_detail_visible', { 
-    detail: { visible: true, ...props } 
+export const handleRewardsDetailModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_rewards_detail_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 };
 
-export const handleConvertModal = (props: any={}) => {
-  const event = new CustomEvent('modal_convert_visible', { 
-    detail: { visible: true, ...props } 
+export const handleConvertModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_convert_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 };
 
-export const handleConvertHistoryModal = (props: any={}) => {
-  const event = new CustomEvent('modal_convert_history_visible', { 
-    detail: { visible: true, ...props } 
+export const handleConvertHistoryModal = (props: any = {}) => {
+  const event = new CustomEvent('modal_convert_history_visible', {
+    detail: { visible: true, ...props }
   });
   window.dispatchEvent(event);
 };
@@ -774,7 +782,7 @@ export const handleFaucetModal = () => {
   window.dispatchEvent(event);
 }
 
-export const handleBridgeHistoryModal = ()=>{
+export const handleBridgeHistoryModal = () => {
   const event = new CustomEvent('modal_bridge_history_visible', {
     detail: { visible: true }
   });
