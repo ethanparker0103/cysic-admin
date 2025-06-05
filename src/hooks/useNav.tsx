@@ -1,7 +1,16 @@
 import { enableBridge, enableSocialTask, mediasLink } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import { useMemo } from "react";
+import { isMobile } from "react-device-detect";
 import { useLocation } from "react-router-dom";
+
+const mobileNav = isMobile ? [
+  {
+    content: "User Portal",
+    key: "user-portal",
+    href: "/userPortal",
+  },
+] : []
 
 const comingSoonConfig = [
   {
@@ -144,6 +153,7 @@ const _zkNavs = [
       },
     ],
   },
+  ...mobileNav,
   ...basicNav,
 ];
 
