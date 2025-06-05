@@ -153,7 +153,7 @@ const StakePage = () => {
       label: "Voting Power",
       renderCell: (validator) => (
         <div>
-          <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
+          <div>{formatReward(validator.votingPower || '0', 4, true)} <span className="text-sm text-sub">CGT</span></div>
           <div className="text-sm text-sub">{validator.votingPercentage * 100}%</div>
         </div>
       )
@@ -206,7 +206,7 @@ const StakePage = () => {
       label: "Voting Power",
       renderCell: (validator) => (
         <div>
-          <div>{validator.votingPower} <span className="text-sm text-sub">CGT</span></div>
+          <div>{formatReward(validator.votingPower || '0', 4, true)} <span className="text-sm text-sub">CGT</span></div>
           <div className="text-sm text-sub">{validator.votingPercentage * 100}%</div>
         </div>
       )

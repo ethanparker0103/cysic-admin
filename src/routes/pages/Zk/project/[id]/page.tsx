@@ -42,7 +42,7 @@ interface IProjectDetail {
     hardwareRequirement: string;
     description: string;
     status: number;
-
+    totalTask: number;
 }
 
 
@@ -53,11 +53,7 @@ const ProjectDetailPage = () => {
     // const [taskList, setTaskList] = useState<ITask[]>([]);
     useRequest(() => {
         // /zkTask/project/detail
-        return axios.get(`/api/v1/zkTask/project/detail`, {
-            params: {
-                id: id
-            }
-        });
+        return axios.get(`/api/v1/zkTask/dashboard/project/detail/${id}`);
     }, {
         ready: !!id,
         refreshDeps: [id],
@@ -126,7 +122,7 @@ const ProjectDetailPage = () => {
         },
         {
             key: "bonus",
-            label: "Bonus",
+            label: "Expected Rewards",
             width: "33%",
             renderCell: (project) => <TaskReward rewardCYS={project.rewardCYS} rewardCGT={project.rewardCGT} />,
         },
@@ -224,7 +220,7 @@ const ProjectDetailPage = () => {
 
                                         <div className="flex items-center justify-between">
                                             <div className="text-sub flex-1 lg:flex-none">Task Count</div>
-                                            <div className="flex-1 lg:flex-none">{projectDetail?.taskCount || '-'}</div>
+                                            <div className="flex-1 lg:flex-none">{projectDetail?.totalTask || '-'}</div>
                                         </div>
 
                                         <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-2 lg:mt-0 gap-1 lg:gap-0">

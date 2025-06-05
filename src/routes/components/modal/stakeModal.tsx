@@ -355,10 +355,11 @@ const StakeModal = () => {
         if (!/^(\d*\.?\d*)$/.test(rawValue)) {
           return;
         }
-    
 
         const parts = rawValue.split('.');
-        if (parts.length > 1 && parts[1].length > precision) {
+        const old = amount?.split('.')
+
+        if (parts.length > 1 && parts[1].length > precision && parts?.[1]?.length > old?.[1]?.length) {
             return;
         }
 
@@ -659,7 +660,7 @@ const StakeModal = () => {
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Voting Power</div>
-                            <div className="text-white">{selectedValidator?.votingPower?.amount || "0"}</div>
+                            <div className="text-white">{formatReward(selectedValidator?.votingPower?.amount || "0", 4, true)}</div>
                         </div>
                         <div className="flex justify-between items-center">
                             <div className="text-[#777]">Commission rate</div>
