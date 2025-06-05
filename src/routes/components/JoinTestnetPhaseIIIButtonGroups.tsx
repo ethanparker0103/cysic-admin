@@ -7,12 +7,12 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const AboutTestnetButton = ({className}:{className?: string}) => {
     return (
-        <Link to="/" className={cn(className)}  >
+        <a href="https://x.com/cysic_xyz/status/1930264646079971458" target="_blank" className={cn(className)}  >
             <Button type="solid" className="w-full lg:w-auto backdrop-blur-sm px-6 py-4 lg:!p-6 flex gap-4 flex items-center justify-between lg:justify-start uppercase">
                 <span>About Testnet</span>
                 <ArrowRight className="w-4 h-4" />
             </Button>
-        </Link>
+        </a>
     )
 }
 
