@@ -625,7 +625,7 @@ const StakeModal = () => {
                             <div className="text-white">Staking Amount</div>
                             <div className="flex items-center text-white">
                                 <Wallet size={16} className="mr-2" />
-                                Balance: {cgtBalance}
+                                Balance: {formatReward(cgtBalance, 4, true)}
                             </div>
                         </div>
                         <div className="flex justify-between items-center bg-transparent border border-[#333] rounded-lg p-4">

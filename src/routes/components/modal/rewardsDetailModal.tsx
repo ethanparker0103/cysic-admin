@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import useModalState from "@/hooks/useModalState";
 import Modal from "@/components/Modal";
 import Button from "@/components/Button";
-import { getImageUrl, handleConvertModal, handleReserveModal, handleStakeModal } from "@/utils/tools";
+import { formatReward, getImageUrl, handleConvertModal, handleReserveModal, handleStakeModal } from "@/utils/tools";
 import { useRequest } from "ahooks";
 import axios from "@/service";
 import useAccount from "@/hooks/useAccount";
 import { cn } from "@nextui-org/react";
 import { isMobile } from "react-device-detect";
+import BigNumber from "bignumber.js";
 
 // 阶段枚举
 enum RewardPhase {
@@ -53,9 +54,9 @@ const RewardsDetailModal = () => {
                 axios.get('/api/v1/zkTask/reward/phase2'),
                 axios.get('/api/v1/zkTask/reward/phase3')
             ];
-            
+
             const results = await Promise.allSettled(requests);
-            
+
             return {
                 phase1: results[0].status === 'fulfilled' ? results[0].value.data : null,
                 phase2: results[1].status === 'fulfilled' ? results[1].value.data : null,
@@ -67,7 +68,7 @@ const RewardsDetailModal = () => {
             ready: visible && isSigned && !!address,
         }
     );
-    
+
     // 处理阶段切换
     const handlePhaseChange = (phase: RewardPhase) => {
         setActivePhase(phase);
@@ -92,28 +93,28 @@ const RewardsDetailModal = () => {
     // 渲染 Phase I 内容
     const renderPhaseI = () => {
         const phase1 = phasesData?.phase1;
-        
+
         if (loading || !phase1) {
             return <div className="text-center py-8">Loading...</div>;
         }
-        
-        const totalPoints = parseInt(phase1.activity) + parseInt(phase1.staking);
-        
+
+        const totalPoints = BigNumber(phase1?.activity || 0).plus(phase1.staking || 0).toString();
+
         return (
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
                         <span className={cn("unbounded-18-36-300")}>Total Points</span>
-                        <span className={cn("unbounded-18-36-300", isMobile ? "!text-[18px]" : "!text-3xl")}>{totalPoints.toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300", isMobile ? "!text-[18px]" : "!text-3xl")}>{formatReward(totalPoints, 4, true)}</span>
                     </div>
                     <div className="flex justify-between items-center mt-4 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Activity</span>
-                            <span>{parseInt(phase1.activity).toLocaleString()}</span>
+                            <span>{formatReward(phase1.activity, 4, true)}</span>
                         </div>
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Staking</span>
-                            <span>{parseInt(phase1.staking).toLocaleString()}</span>
+                            <span>{formatReward(phase1.staking, 4, true)}</span>
                         </div>
                     </div>
                 </div>
@@ -131,20 +132,20 @@ const RewardsDetailModal = () => {
     // 渲染 Phase II 内容
     const renderPhaseII = () => {
         const phase2 = phasesData?.phase2;
-        
+
         if (loading || !phase2) {
             return <div className="text-center py-8">Loading...</div>;
         }
-        
+
         return (
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center">
                         <span className={cn("unbounded-18-36-300")}>Claimable</span>
-                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.claimable).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>{formatReward(phase2.claimable, 4, true)}</span>
                         <Button
                             needLoading
-                            disabled={!parseInt(phase2.claimable)}
+                            disabled={!Number(phase2?.claimable)}
                             type="light"
                             className="px-6 py-2 rounded-lg text-base font-[400]"
                             onClick={handleClaim}
@@ -157,26 +158,26 @@ const RewardsDetailModal = () => {
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className={cn("unbounded-18-36-300")}>Total CYS</span>
-                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.cys.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>{formatReward(phase2.cys.total, 4, true)}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Prover</span>
-                            <span>{parseInt(phase2.cys.prover).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cys.prover, 4, true)}</span>
                         </div>
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Verifier</span>
-                            <span>{parseInt(phase2.cys.verifier).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cys.verifier, 4, true)}</span>
                         </div>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Activity</span>
-                            <span>{parseInt(phase2.cys.activity).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cys.activity, 4, true)}</span>
                         </div>
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Staking</span>
-                            <span>{parseInt(phase2.cys.staking).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cys.staking, 4, true)}</span>
                         </div>
                     </div>
                 </div>
@@ -184,26 +185,26 @@ const RewardsDetailModal = () => {
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className={cn("unbounded-18-36-300")}>Total CGT</span>
-                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase2.cgt.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>{formatReward(phase2.cgt.total, 4, true)}</span>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Prover</span>
-                            <span>{parseInt(phase2.cgt.prover).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cgt.prover, 4, true)}</span>
                         </div>
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Verifier</span>
-                            <span>{parseInt(phase2.cgt.verifier).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cgt.verifier, 4, true)}</span>
                         </div>
                     </div>
                     <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Activity</span>
-                            <span>{parseInt(phase2.cgt.activity).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cgt.activity, 4, true)}</span>
                         </div>
                         <div className="flex justify-between items-center flex-1">
                             <span className="text-sub">Staking</span>
-                            <span>{parseInt(phase2.cgt.staking).toLocaleString()}</span>
+                            <span>{formatReward(phase2.cgt.staking, 4, true)}</span>
                         </div>
                     </div>
                 </div>
@@ -222,46 +223,46 @@ const RewardsDetailModal = () => {
     // 渲染 Phase III 内容
     const renderPhaseIII = () => {
         const phase3 = phasesData?.phase3;
-        
+
         if (loading || !phase3) {
             return <div className="text-center py-8">Loading...</div>;
         }
-        
+
         return (
             <div className="space-y-4">
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className={cn("unbounded-18-36-300")}>Total CYS</span>
-                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase3?.cysIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>{formatReward(phase3?.cysIncomeDetail?.total, 4, true)}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
                         <div className="flex justify-between items-center gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Prover</span>
-                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.prover).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cysIncomeDetail?.income?.prover, 4, true)}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Verifier</span>
-                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.verifier).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cysIncomeDetail?.income?.verifier, 4, true)}</span>
                             </div>
                         </div>
                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Activity</span>
-                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.activity).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cysIncomeDetail?.income?.activity, 4, true)}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Staking</span>
-                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.staking).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cysIncomeDetail?.income?.staking, 4, true)}</span>
                             </div>
                         </div>
-                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
+                        <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Others</span>
-                                <span>{parseInt(phase3?.cysIncomeDetail?.income?.others).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cysIncomeDetail?.income?.others, 4, true)}</span>
                             </div>
-                            <div className="flex-1"/>
+                            <div className="flex-1" />
                         </div>
                     </div>
                     <div className="border-t border-dashed border-[#333] my-4"></div>
@@ -270,7 +271,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Convertable CYS - CGT</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.cysIncomeDetail?.information?.convertable || "0").toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{formatReward(phase3?.cysIncomeDetail?.information?.convertable || "0", 4, true)}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
@@ -288,28 +289,28 @@ const RewardsDetailModal = () => {
                 <div className="border border-[#333] rounded-lg px-6 py-4">
                     <div className="flex justify-between items-center border-b border-[#FFFFFF4D] pb-2">
                         <span className={cn("unbounded-18-36-300")}>Total CGT</span>
-                        <span className={cn("unbounded-18-36-300")}>{parseInt(phase3?.cgtIncomeDetail?.total).toLocaleString()}</span>
+                        <span className={cn("unbounded-18-36-300")}>{formatReward(phase3?.cgtIncomeDetail?.total, 4, true)}</span>
                     </div>
                     <div className="mt-2">
                         <div className="text-sub mb-2">Income</div>
                         <div className="flex justify-between items-center gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Prover</span>
-                                <span>{parseInt(phase3?.cgtIncomeDetail?.income?.prover).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cgtIncomeDetail?.income?.prover, 4, true)}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Verifier</span>
-                                <span>{parseInt(phase3?.cgtIncomeDetail?.income?.verifier).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cgtIncomeDetail?.income?.verifier, 4, true)}</span>
                             </div>
                         </div>
                         <div className="flex justify-between items-center mt-2 gap-6 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Activity</span>
-                                <span>{parseInt(phase3?.cgtIncomeDetail?.income?.activity).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cgtIncomeDetail?.income?.activity, 4, true)}</span>
                             </div>
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub">Others</span>
-                                <span>{parseInt(phase3?.cgtIncomeDetail?.income?.others).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cgtIncomeDetail?.income?.others, 4, true)}</span>
                             </div>
                         </div>
                     </div>
@@ -319,7 +320,7 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex-1 flex justify-between items-center">
                                 <span className="text-sub">Maintenance Fee</span>
-                                <span>{parseInt(phase3?.cgtIncomeDetail?.cost?.maintenanceFee).toLocaleString()}</span>
+                                <span>{formatReward(phase3?.cgtIncomeDetail?.cost?.maintenanceFee, 4, true)}</span>
                             </div>
                             <div className="flex-1" />
                         </div>
@@ -330,13 +331,13 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center mb-2 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Convertable CGT - CYS</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.cgtIncomeDetail?.information?.convertable || "0").toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{formatReward(phase3?.cgtIncomeDetail?.information?.convertable || "0", 4, true)}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={() => handleConvertModal({fromToken: 'CGT'})}
+                                    onClick={() => handleConvertModal({ fromToken: 'CGT' })}
                                 >
                                     CONVERT <span className="ml-1">→</span>
                                 </Button>
@@ -345,13 +346,13 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center mb-2 text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Staked Amount</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.cgtIncomeDetail?.information?.stakedAmount || "0").toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{formatReward(phase3?.cgtIncomeDetail?.information?.stakedAmount || "0", 4, true)}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={()=>handleStakeModal({tab: 'unstake'})}
+                                    onClick={() => handleStakeModal({ tab: 'unstake' })}
                                 >
                                     UNSTAKE <span className="ml-1">→</span>
                                 </Button>
@@ -360,13 +361,13 @@ const RewardsDetailModal = () => {
                         <div className="flex justify-between items-center text-sm">
                             <div className="flex justify-between items-center flex-1">
                                 <span className="text-sub flex-1">Reserved Amount</span>
-                                <span className="flex-1 text-right mr-4">{parseInt(phase3?.cgtIncomeDetail?.information?.reservedAmount || "0").toLocaleString()}</span>
+                                <span className="flex-1 text-right mr-4">{formatReward(phase3?.cgtIncomeDetail?.information?.reservedAmount || "0", 4, true)}</span>
                             </div>
                             <div className="flex-1 flex justify-end">
                                 <Button
                                     type="text"
                                     className="text-sm flex items-center min-h-fit h-fit text-sub !p-0"
-                                    onClick={()=>handleReserveModal({tab: 'withdraw'})}
+                                    onClick={() => handleReserveModal({ tab: 'withdraw' })}
                                 >
                                     WITHDRAW <span className="ml-1">→</span>
                                 </Button>
