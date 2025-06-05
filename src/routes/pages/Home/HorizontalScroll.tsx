@@ -83,8 +83,8 @@ const MobileTransitionScroll = ({ children }: { children: React.ReactNode }) => 
 
   function setSection(newSection: any) {
     if (newSection !== currentSection.current) {
-      gsap.to(currentSection.current, {scale: 0.8, autoAlpha: 0, duration: 0.3})
-      gsap.to(newSection, {scale: 1, autoAlpha: 1, duration: 0.6});
+      gsap.to(currentSection.current, {autoAlpha: 0, duration: 0.6})
+      gsap.to(newSection, {autoAlpha: 1, duration: 0.6});
       currentSection.current = newSection;
     }
   }
