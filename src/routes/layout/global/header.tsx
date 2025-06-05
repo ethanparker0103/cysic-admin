@@ -14,7 +14,7 @@ import ConnectInfo from "@/components/ConnectInfo";
 import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
 import { Link, useLocation } from "react-router-dom";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { cn, Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
@@ -62,19 +62,13 @@ export default function Header() {
     onOpen();
   };
 
-  const handleOpenChange = (v)=>{
-    if(v){
-      document.addEventListener('wheel', preventScroll, { passive: false });
-      document.addEventListener('touchmove', preventScroll, { passive: false });
-
-      // document.body.style.overflow = 'auto'
-    }else{
-      document.removeEventListener('wheel', preventScroll);
-      document.removeEventListener('touchmove', preventScroll);
-
-      // document.body.style.overflow = 'hidden'
-    }
-  }
+  // const handleOpenChange = (v: any)=>{
+  //   if(v){
+  //     document.body.style.overflow = 'auto'
+  //   }else{
+  //     document.body.style.overflow = 'hidden'
+  //   }
+  // }
 
   const handleScrollToTopInHome = ()=>{
     const path = location.pathname;
@@ -82,6 +76,12 @@ export default function Header() {
       scrollToTop()
     }
   }
+
+  // useEffect(()=>{
+  //   if(isOpen){
+  //     document.body.style.overflow = 'auto'
+  //   }
+  // }, [isOpen])
 
   return (
     <>
@@ -102,7 +102,7 @@ export default function Header() {
               />
             </Link>
           </div>
-          <Drawer isOpen={isOpen} size={size} onClose={onClose} onOpenChange={handleOpenChange} shouldBlockScroll>
+          <Drawer isOpen={isOpen} size={size} onClose={onClose} shouldBlockScroll classNames={{wrapper: 'z-[51]'}}>
             <DrawerContent className="bg-[#090A09]">
               {(onClose) => (
                 <>
@@ -118,7 +118,8 @@ export default function Header() {
                     </Link>
                   </div>
 
-                  <div className="flex flex-col items-center gap-10 overflow-y-auto py-12">
+                  <div className="overflow-y-auto">
+                  <div className="flex flex-col items-center gap-10 overflow-hidden py-12">
                     {currentNavs?.map((i: any) => {
                       if (i?.children?.length) {
                         return i?.children?.map((j: any) => {
@@ -150,6 +151,7 @@ export default function Header() {
                         );
                       }
                     })}
+                  </div>
                   </div>
                 </>
               )}
