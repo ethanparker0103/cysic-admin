@@ -168,7 +168,7 @@ export const classes = {
 
 
 export const easterEggVisible = {
-  ['2025_06_02']: true
+  ['2025_06_02']: false
 }
 
 export * from './evm'
