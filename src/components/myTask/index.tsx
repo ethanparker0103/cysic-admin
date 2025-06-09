@@ -1,18 +1,19 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
+import HoverDropdown from "@/components/HoverDropdown";
 import CysicTable from "@/components/Table";
 import { commonPageSize } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import usePagnation from "@/hooks/usePagnation";
 import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { shortStr } from "@/utils/tools";
-import { Pagination } from "@nextui-org/react";
+import { Dropdown, DropdownItem, DropdownMenu, Pagination } from "@nextui-org/react";
 // import Tab, { TabItem } from "@/routes/components/Tab";
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { useRequest } from "ahooks";
 import axios from "axios";
 import dayjs from "dayjs";
-import { ArrowRight, ArrowRightIcon } from "lucide-react";
-import { useState } from "react";
+import { ArrowDown, ArrowRight, ArrowRightIcon, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface IVerifier {
@@ -34,7 +35,7 @@ interface IProver {
     "status": number
     "startAt": string
     "finishAt": string
-  }
+}
 
 const verifierListColumns = [
     {
@@ -152,24 +153,7 @@ const proverListColumns = [
 
 ]
 
-const MyVerifierTaskList = () => {
-    const { address } = useAccount()
-
-    const { data } = useRequest(
-        () =>
-            axios.get("/api/v1/zkTask/dashboard/verifier/list", {
-                params: {
-                    keyword: address,
-                },
-            }),
-        {
-            ready: !!address,
-            staleTime: 10_000,
-            refreshDeps: [address],
-        }
-    );
-    const id = data?.data?.list?.[0]?.id;
-
+const MyVerifierTaskList = ({ id, removeData }: { id?: string, removeData: boolean }) => {
     const { data: listData, loading, total, currentPage, setCurrentPage } = usePagnation(
         (currentPage: number) => {
             return axios.get(`/api/v1/zkTask/dashboard/verifier/taskList/${id}`, {
@@ -185,20 +169,18 @@ const MyVerifierTaskList = () => {
             refreshDeps: [id],
         }
     );
-    const list = listData?.data?.list || [] as IVerifier[]
-
-    console.log("listData", listData, list);
+    const list = removeData ? [] : listData?.data?.list || [] as IVerifier[]
 
 
     return (
         <>
             <CysicTable
                 columns={verifierListColumns}
-                data={list || []}
+                data={(list || [])}
                 loading={loading}
             />
 
-            {total > commonPageSize && (
+            {!removeData && total > commonPageSize && (
                 <div className="flex justify-center mb-4">
                     <Pagination
                         total={Math.ceil(total / commonPageSize)}
@@ -214,24 +196,7 @@ const MyVerifierTaskList = () => {
     );
 };
 
-const MyProverTaskList = () => {
-    const { address } = useAccount()
-
-    const { data } = useRequest(
-        () =>
-            axios.get("/api/v1/zkTask/dashboard/prover/list", {
-                params: {
-                    keyword: address,
-                },
-            }),
-        {
-            ready: !!address,
-            staleTime: 10_000,
-            refreshDeps: [address],
-        }
-    );
-    const id = data?.data?.list?.[0]?.id;
-
+const MyProverTaskList = ({ id, removeData }: { id?: string, removeData: boolean }) => {
     const { data: listData, loading, total, currentPage, setCurrentPage } = usePagnation(
         (currentPage: number) => {
             return axios.get(`/api/v1/zkTask/dashboard/prover/taskList/${id}`, {
@@ -247,17 +212,17 @@ const MyProverTaskList = () => {
             refreshDeps: [id],
         }
     );
-    const list = listData?.data?.list || [] as IProver[]
+    const list = removeData ? [] : listData?.data?.list || [] as IProver[]
 
     return (
         <>
             <CysicTable
                 columns={proverListColumns}
-                data={list || []}
+                data={(list || [])}
                 loading={loading}
             />
 
-            {total > commonPageSize && (
+            {!removeData && total > commonPageSize && (
                 <div className="flex justify-center mb-4">
                     <Pagination
                         total={Math.ceil(total / commonPageSize)}
@@ -285,18 +250,99 @@ const tabs = [
 ];
 
 export const MyTask = () => {
+    const { address } = useAccount()
+
     const [tab, setTab] = useState<any>(tabs[0].value);
+
+    const [verifierIds, setVerifierIds] = useState<string[]>()
+    const [proverIds, setProverIds] = useState<string[]>()
+
+    const [selectedVerifierId, setSelectedVerifierId] = useState<string>()
+    const [selectedProverId, setSelectedProverId] = useState<string>()
+
+    const activeSelectIds = tab == tabs?.[0]?.value ? verifierIds : proverIds
+    const activeSelectId = tab == tabs?.[0]?.value ? selectedVerifierId : selectedProverId
+
+    useEffect(()=>{
+        if(!address){
+            setSelectedVerifierId(undefined)
+            setSelectedProverId(undefined)
+            setVerifierIds(undefined)
+            setProverIds(undefined)
+        }
+    }, [address])
+
+    const handleSelectId = (v: string)=>{
+        if(tab == tabs?.[0]?.value){
+            setSelectedVerifierId(v)
+        }else{
+            setSelectedProverId(v)
+        }
+    }
+
+    useRequest(() => {
+        return Promise.allSettled([
+            axios.get("/api/v1/zkTask/dashboard/prover/list", {
+                params: {
+                    keyword: address,
+                },
+            }),
+            axios.get("/api/v1/zkTask/dashboard/verifier/list", {
+                params: {
+                    keyword: address,
+                },
+            }),
+        ])
+    }, {
+        ready: !!address,
+        refreshDeps: [address],
+        onSuccess(data: any) {
+            const proverIds = data?.[0]?.value?.data?.list?.map(i => i?.id)
+            const verifierIds = data?.[1]?.value?.data?.list?.map(i => i?.id)
+            setVerifierIds(verifierIds)
+            setProverIds(proverIds)
+
+            setSelectedVerifierId(verifierIds?.[0])
+            setSelectedProverId(proverIds?.[0])
+        }
+    })
+
     return (
         <>
-            <GradientBorderCard className="px-6 py-4">
-                {/* <Tab
-                items={tabs}
-                defaultActiveKey="stake"
-                tabClassName="w-full"
-                renderMode="hidden"
-            /> */}
-
+            <GradientBorderCard borderRadius={8} className="px-6 py-4 relative">
                 <>
+                    {
+                        activeSelectIds?.length && address ? (
+                            <HoverDropdown
+                                offset={0}
+                                trigger={
+                                    <div className="absolute right-0 top-2 "><GradientBorderCard borderRadius={8} className="z-[1] w-fit px-4 py-2 flex items-center gap-2 text-xs">{activeSelectId}<ChevronDown className="size-4 min-size-4"/> </GradientBorderCard></div>
+                                }
+                            >
+                                <DropdownMenu
+                                    className="p-0 min-w-[40px] backdrop-blur gradient-border-card bg-[transparent] rounded-lg overflow-hidden"
+                                    variant="flat"
+                                    itemClasses={{
+                                        base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
+                                    }}
+                                >
+                                    {
+                                        activeSelectIds?.map(i => {
+                                            return <DropdownItem
+                                                onClick={()=>handleSelectId(i)}
+                                                key={i}
+                                                className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between "
+                                            >
+                                                {i}
+                                            </DropdownItem>
+                                        })
+                                    }
+                                </DropdownMenu>
+                            </HoverDropdown>
+                        ) : null
+                    }
+
+
                     <Tabs
                         key={"underlined"}
                         aria-label="Tabs variants"
@@ -312,6 +358,11 @@ export const MyTask = () => {
                         className="w-full"
                         selectedKey={tab}
                         onSelectionChange={(v) => {
+                            if(v == tabs?.[0]?.value){
+                                setSelectedVerifierId(verifierIds?.[0])
+                            }else{
+                                setSelectedProverId(proverIds?.[0])
+                            }
                             setTab(v);
                         }}
                     >
@@ -321,9 +372,9 @@ export const MyTask = () => {
                     </Tabs>
 
                     {tab == tabs?.[0]?.value ? (
-                        <MyVerifierTaskList />
+                        <MyVerifierTaskList id={activeSelectId} removeData={!address} />
                     ) : (
-                        <MyProverTaskList />
+                        <MyProverTaskList id={activeSelectId} removeData={!address} />
                     )}
                 </>
             </GradientBorderCard>
