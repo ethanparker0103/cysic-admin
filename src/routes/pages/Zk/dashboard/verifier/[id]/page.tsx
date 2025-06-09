@@ -16,6 +16,7 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import Copy from "@/components/Copy";
+import dayjs from "dayjs";
 
 const VerifierDetail = () => {
   const { t } = useTranslation();
@@ -47,11 +48,11 @@ const VerifierDetail = () => {
       label: "Address",
       renderCell: (item: any) => {
         return (
-          
+
           <div className="flex flex-col gap-2">
             <Copy value={item?.address} >{item?.address}</Copy>
             <Copy value={item?.cysicAddress} >{item?.cysicAddress}</Copy>
-           {/* <a
+            {/* <a
              target="_blank"
              href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
              className="flex items-center gap-2"
@@ -75,9 +76,9 @@ const VerifierDetail = () => {
       key: "rewards",
       label: "Earned Rewards",
       renderCell: (item: any) => {
-          return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
+        return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
       }
-  },
+    },
     {
       key: "totalTask",
       label: "Task Amount",
@@ -139,6 +140,22 @@ const VerifierDetail = () => {
       renderCell: (item: any) => {
         // return <VerifierTaskStatus status={item?.verifyResult} />
         return <TaskStatus status={item?.taskResult} />
+      },
+    },
+    {
+      key: "startAt",
+      label: "Start Time",
+      renderCell: (item: any) => {
+        // return <VerifierTaskStatus status={item?.verifyResult} />
+        return dayjs(item?.startAt * 1000).format('YYYY-MM-DD HH:mm:ss');
+      },
+    },
+    {
+      key: "finishAt",
+      label: "End Time",
+      renderCell: (item: any) => {
+        // return <VerifierTaskStatus status={item?.verifyResult} />
+        return item?.finishAt ? dayjs(item?.finishAt * 1000).format('YYYY-MM-DD HH:mm:ss') : '-';
       },
     },
     {

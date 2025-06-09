@@ -12,6 +12,7 @@ import JoinZkPhase3 from "@/routes/components/JoinZkPhase3";
 import useStatic from "@/models/_global";
 import { getTierIcon } from "@/routes/pages/Zk/invite/page";
 import { CompletionTasksCard, VerifierCard, ProverCard, ProjectCard } from "@/routes/components/usePortal/cards/TasksCard";
+import { MyTask } from "@/components/myTask";
 
 // 主要组件
 const UserPortal = () => {
@@ -79,8 +80,10 @@ const UserPortal = () => {
                         </div>
                     </div>
                 </div>
+                <MyTask />
 
             </div>
+
 
             <div className="relative h-[36.25rem] lg:h-screen w-full">
                 <div

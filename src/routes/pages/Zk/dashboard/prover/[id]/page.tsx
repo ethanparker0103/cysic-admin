@@ -14,6 +14,7 @@ import { ProverStatus, TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboar
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 import { Avatar } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import Copy from "@/components/Copy";
+import dayjs from "dayjs";
 
 
 
@@ -132,6 +133,22 @@ const ProverDetail = () => {
             }
         },
         {
+            key: "startAt",
+            label: "Start Time",
+            renderCell: (item: any) => {
+                // return <VerifierTaskStatus status={item?.verifyResult} />
+                return dayjs(item?.startAt * 1000).format('YYYY-MM-DD HH:mm:ss');
+            },
+        },
+        {
+            key: "finishAt",
+            label: "End Time",
+            renderCell: (item: any) => {
+                // return <VerifierTaskStatus status={item?.verifyResult} />
+                return item?.finishAt ? dayjs(item?.finishAt * 1000).format('YYYY-MM-DD HH:mm:ss') : '-';
+            },
+        },
+        {
             key: "detail",
             label: "Task Detail",
             renderCell: (item: any) => {
@@ -151,13 +168,13 @@ const ProverDetail = () => {
                 <div >
                     {columns?.map((i, index) => {
                         return (
-                            <div key={i?.key || index} 
-                            className={cn(
-                                ["verifier", "provider", "inputData"].includes(i?.key) &&
-                                  "flex-col lg:flex-row !items-start",
-                                "gap-2 flex-wrap lg:gap-10",
-                                "flex items-start"
-                              )}>
+                            <div key={i?.key || index}
+                                className={cn(
+                                    ["verifier", "provider", "inputData"].includes(i?.key) &&
+                                    "flex-col lg:flex-row !items-start",
+                                    "gap-2 flex-wrap lg:gap-10",
+                                    "flex items-start"
+                                )}>
                                 <div className="text-[#A3A3A3] w-[10rem] flex-1 lg:flex-none">{t(i?.label)}</div>
                                 <div className={cn("break-words flex-wrap flex-1")}>{renderCell(rows, i?.key, i)}</div>
                             </div>
