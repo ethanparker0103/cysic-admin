@@ -16,7 +16,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 import en from '@/lng/en.json'
 import BigNumber from "bignumber.js";
 // import ReownProvider from "@/config/reownProvider";
-import PrivyProvider from "@/config/privyProvider";
+// import PrivyProvider from "@/config/privyProvider";
 
 
 BigNumber.config({ EXPONENTIAL_AT: 99 });
@@ -45,9 +45,9 @@ i18n
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <>
         <Theme>
-            <PrivyProvider>
+            {/* <PrivyProvider> */}
                 <RouterProvider router={router} />
-            </PrivyProvider>
+            {/* </PrivyProvider> */}
         </Theme>
     </>
 );

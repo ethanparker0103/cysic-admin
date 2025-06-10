@@ -4,11 +4,11 @@ import axios from "axios";
 
 const useBootstrap = () => {
 
-    const { setState } = useStatic()
+  const { setState } = useStatic()
 
   useRequest(async () => axios.get('/api/v1/metadata/get'), {
     onSuccess: (res) => {
-      if(res?.data){
+      if (res?.data) {
         setState({
           proofTypeList: res?.data?.proofTypeList,
           referralLevelList: res?.data?.referralLevelList,
