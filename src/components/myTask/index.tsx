@@ -153,10 +153,11 @@ const proverListColumns = [
 
 ]
 
-const MyVerifierTaskList = ({ id, removeData }: { id?: string, removeData: boolean }) => {
+const MyVerifierTaskList = ({ removeData }: { removeData: boolean }) => {
+    const { isSigned } = useAccount()
     const { data: listData, loading, total, currentPage, setCurrentPage } = usePagnation(
         (currentPage: number) => {
-            return axios.get(`/api/v1/zkTask/dashboard/verifier/taskList/${id}`, {
+            return axios.get(`/api/v1/zkTask/verifier/taskList`, {
                 params: {
                     pageNum: currentPage,
                     pageSize: commonPageSize,
@@ -164,9 +165,9 @@ const MyVerifierTaskList = ({ id, removeData }: { id?: string, removeData: boole
             });
         },
         {
-            ready: !!id,
+            ready: !!isSigned,
             staleTime: 10_000,
-            refreshDeps: [id],
+            refreshDeps: [isSigned],
         }
     );
     const list = removeData ? [] : listData?.data?.list || [] as IVerifier[]
@@ -196,10 +197,11 @@ const MyVerifierTaskList = ({ id, removeData }: { id?: string, removeData: boole
     );
 };
 
-const MyProverTaskList = ({ id, removeData }: { id?: string, removeData: boolean }) => {
+const MyProverTaskList = ({ removeData }: { removeData: boolean }) => {
+    const { isSigned } = useAccount()
     const { data: listData, loading, total, currentPage, setCurrentPage } = usePagnation(
         (currentPage: number) => {
-            return axios.get(`/api/v1/zkTask/dashboard/prover/taskList/${id}`, {
+            return axios.get(`/api/v1/zkTask/prover/taskList`, {
                 params: {
                     pageNum: currentPage,
                     pageSize: commonPageSize,
@@ -207,9 +209,9 @@ const MyProverTaskList = ({ id, removeData }: { id?: string, removeData: boolean
             });
         },
         {
-            ready: !!id,
+            ready: !!isSigned,
             staleTime: 10_000,
-            refreshDeps: [id],
+            refreshDeps: [isSigned],
         }
     );
     const list = removeData ? [] : listData?.data?.list || [] as IProver[]
@@ -251,98 +253,12 @@ const tabs = [
 
 export const MyTask = () => {
     const { address } = useAccount()
-
     const [tab, setTab] = useState<any>(tabs[0].value);
-
-    const [verifierIds, setVerifierIds] = useState<string[]>()
-    const [proverIds, setProverIds] = useState<string[]>()
-
-    const [selectedVerifierId, setSelectedVerifierId] = useState<string>()
-    const [selectedProverId, setSelectedProverId] = useState<string>()
-
-    const activeSelectIds = tab == tabs?.[0]?.value ? verifierIds : proverIds
-    const activeSelectId = tab == tabs?.[0]?.value ? selectedVerifierId : selectedProverId
-
-    useEffect(()=>{
-        if(!address){
-            setSelectedVerifierId(undefined)
-            setSelectedProverId(undefined)
-            setVerifierIds(undefined)
-            setProverIds(undefined)
-        }
-    }, [address])
-
-    const handleSelectId = (v: string)=>{
-        if(tab == tabs?.[0]?.value){
-            setSelectedVerifierId(v)
-        }else{
-            setSelectedProverId(v)
-        }
-    }
-
-    useRequest(() => {
-        return Promise.allSettled([
-            axios.get("/api/v1/zkTask/dashboard/prover/list", {
-                params: {
-                    keyword: address,
-                },
-            }),
-            axios.get("/api/v1/zkTask/dashboard/verifier/list", {
-                params: {
-                    keyword: address,
-                },
-            }),
-        ])
-    }, {
-        ready: !!address,
-        refreshDeps: [address],
-        onSuccess(data: any) {
-            const proverIds = data?.[0]?.value?.data?.list?.map(i => i?.id)
-            const verifierIds = data?.[1]?.value?.data?.list?.map(i => i?.id)
-            setVerifierIds(verifierIds)
-            setProverIds(proverIds)
-
-            setSelectedVerifierId(verifierIds?.[0])
-            setSelectedProverId(proverIds?.[0])
-        }
-    })
 
     return (
         <>
             <GradientBorderCard borderRadius={8} className="px-6 py-4 relative">
                 <>
-                    {
-                        activeSelectIds?.length && address ? (
-                            <HoverDropdown
-                                offset={0}
-                                trigger={
-                                    <div className="absolute right-0 top-2 "><GradientBorderCard borderRadius={8} className="z-[1] w-fit px-4 py-2 flex items-center gap-2 text-xs">{activeSelectId}<ChevronDown className="size-4 min-size-4"/> </GradientBorderCard></div>
-                                }
-                            >
-                                <DropdownMenu
-                                    className="p-0 min-w-[40px] backdrop-blur gradient-border-card bg-[transparent] rounded-lg overflow-hidden"
-                                    variant="flat"
-                                    itemClasses={{
-                                        base: "hover:!opacity-100 text-sub uppercase transition-colors hover-bright-gradient",
-                                    }}
-                                >
-                                    {
-                                        activeSelectIds?.map(i => {
-                                            return <DropdownItem
-                                                onClick={()=>handleSelectId(i)}
-                                                key={i}
-                                                className="py-4 px-6 flex items-center gap-2 [&>span]:flex [&>span]:items-center [&>span]:justify-between "
-                                            >
-                                                {i}
-                                            </DropdownItem>
-                                        })
-                                    }
-                                </DropdownMenu>
-                            </HoverDropdown>
-                        ) : null
-                    }
-
-
                     <Tabs
                         key={"underlined"}
                         aria-label="Tabs variants"
@@ -358,11 +274,6 @@ export const MyTask = () => {
                         className="w-full"
                         selectedKey={tab}
                         onSelectionChange={(v) => {
-                            if(v == tabs?.[0]?.value){
-                                setSelectedVerifierId(verifierIds?.[0])
-                            }else{
-                                setSelectedProverId(proverIds?.[0])
-                            }
                             setTab(v);
                         }}
                     >
@@ -372,9 +283,9 @@ export const MyTask = () => {
                     </Tabs>
 
                     {tab == tabs?.[0]?.value ? (
-                        <MyVerifierTaskList id={activeSelectId} removeData={!address} />
+                        <MyVerifierTaskList removeData={!address} />
                     ) : (
-                        <MyProverTaskList id={activeSelectId} removeData={!address} />
+                        <MyProverTaskList removeData={!address} />
                     )}
                 </>
             </GradientBorderCard>
