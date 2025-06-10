@@ -15,6 +15,7 @@ import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HorizontalScroll from "./HorizontalScroll";
 import { DrawCardList } from "@/routes/pages/Home/Drawlist";
+import { appUrl } from "@/config";
 
 
 
@@ -373,7 +374,7 @@ const Home = () => {
               className="translate-x-[30%] -translate-y-[20%]"
               imageSrc={getImageUrl("@/assets/images/nft/preset3.png")}
               onClick={() => {
-                navigate("/zk");
+                window.open(appUrl, '_blank')
               }}
             />
             <AdCard

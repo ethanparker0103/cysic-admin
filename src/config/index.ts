@@ -79,6 +79,9 @@ export const TaskStatusColor: any = {
 export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
+export const homeUrl = isProd ? 'https://cysic.xyz' : 'https://qa.cysic.xyz'
+export const appUrl = isProd ? 'https://app.cysic.xyz' : 'https://qa-app.cysic.xyz'
+
 export const enableSocialTask = true
 export const enableBridge = false && isQa
 

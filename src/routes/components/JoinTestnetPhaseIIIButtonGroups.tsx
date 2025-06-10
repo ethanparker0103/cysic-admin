@@ -1,11 +1,10 @@
 import Button from "@/components/Button";
-import { mediasLink } from "@/config";
-import { handleSignIn } from "@/utils/tools";
+import { appUrl, mediasLink } from "@/config";
 import { cn } from "@nextui-org/react";
 import { ArrowRight } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const AboutTestnetButton = ({className}:{className?: string}) => {
+const AboutTestnetButton = ({ className }: { className?: string }) => {
     return (
         <a href="https://x.com/cysic_xyz/status/1930264646079971458" target="_blank" className={cn(className)}  >
             <Button type="solid" className="w-full lg:w-auto backdrop-blur-sm px-6 py-4 lg:!p-6 flex gap-4 flex items-center justify-between lg:justify-start uppercase">
@@ -17,28 +16,19 @@ const AboutTestnetButton = ({className}:{className?: string}) => {
 }
 
 
-const JoinTestnetPhaseIIIButton = ({overrideTitle, className}:{overrideTitle?: string, className?: string}) => {
-    const navigate = useNavigate()
-    const pathname = useLocation().pathname
+const JoinTestnetPhaseIIIButton = ({ overrideTitle, className }: { overrideTitle?: string, className?: string }) => {
     return (
-        // <Link to="/zk">
+        <a href={appUrl} target="_blank">
             <Button type="solid" className={cn("backdrop-blur-sm px-6 py-4 lg:!p-6 flex gap-4 items-center justify-between lg:justify-start uppercase", className)}
-            onClick={()=>{
-                if(!pathname.includes('zk')){
-                    navigate('/zk')
-                }else{
-                    handleSignIn()
-                }
-            }}
             >
                 <span>{overrideTitle || 'Join Testnet Phase III'}</span>
                 <ArrowRight className="w-4 h-4" />
             </Button>
-        // </Link>
+        </a>
     )
 }
 
-const CysicHardwareStackButton = ({className}:{className?: string}) => {
+const CysicHardwareStackButton = ({ className }: { className?: string }) => {
     return (
         <Link to="/hardware" className={cn(className)}>
             <Button type="solid" className="w-full lg:w-auto backdrop-blur-sm px-6 py-4 lg:!p-6 flex gap-4 items-center justify-between lg:justify-start uppercase">
@@ -49,7 +39,7 @@ const CysicHardwareStackButton = ({className}:{className?: string}) => {
     )
 }
 
-const SeeWhatsComingButton = ({className}:{className?: string}) => {
+const SeeWhatsComingButton = ({ className }: { className?: string }) => {
     return (
         <a href={mediasLink.discord} target="_blank" className={cn(className)}>
             <Button type="solid" className="w-full lg:w-auto backdrop-blur-sm px-6 py-4 lg:!p-6 flex gap-4 items-center justify-between lg:justify-start uppercase">
