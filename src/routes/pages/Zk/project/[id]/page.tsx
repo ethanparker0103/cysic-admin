@@ -23,7 +23,13 @@ interface ITask {
     rewardCGT: string;
     timeBounds: number;
     status: number;
-
+    "rewardDetail": {
+        distributedCYS: string,
+        distributedCGT: string,
+        planningCYS: string,
+        planningCGT: string,
+        multiplier: string
+    },
 
     hardwareRequirement: string;
     latency: string;
@@ -121,10 +127,14 @@ const ProjectDetailPage = () => {
             ),
         },
         {
-            key: "bonus",
-            label: "Expected Rewards",
-            width: "33%",
-            renderCell: (project) => <TaskReward rewardCYS={project.rewardCYS} rewardCGT={project.rewardCGT} />,
+            key: "planningReward",
+            label: "Planning Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.planningCYS || '-'} rewardCGT={task?.rewardDetail?.planningCYS || '-'} />
+        },
+        {
+            key: "distributedReward",
+            label: "Distributed Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
         },
         {
             key: "latency",

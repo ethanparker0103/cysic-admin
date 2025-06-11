@@ -52,32 +52,14 @@ const VerifierDetail = () => {
           <div className="flex flex-col gap-2">
             <Copy value={item?.address} >{item?.address}</Copy>
             <Copy value={item?.cysicAddress} >{item?.cysicAddress}</Copy>
-            {/* <a
-             target="_blank"
-             href={mediasLink.cosmosExplorer + `/address/${item?.address}`}
-             className="flex items-center gap-2"
-           >
-             <span className="flex-1 lg:flex-none">{item?.address}</span>
-             <ArrowUpRightIcon className="size-3" />
-           </a>
-           <a
-             target="_blank"
-             href={mediasLink.cosmosExplorer + `/address/${item?.cysicAddress}`}
-             className="flex items-center gap-2 text-[#737373]"
-           >
-             <span className="flex-1 lg:flex-none">{item?.cysicAddress}</span>
-             <ArrowUpRightIcon className="size-3" />
-           </a> */}
           </div>
         );
       },
     },
     {
       key: "rewards",
-      label: "Earned Rewards",
-      renderCell: (item: any) => {
-        return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
-      }
+      label: "Distributed Rewards",
+      renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
     },
     {
       key: "totalTask",
@@ -128,12 +110,22 @@ const VerifierDetail = () => {
       },
     },
     {
-      key: "prover",
-      label: "Prover",
-      renderCell: (item: any) => {
-        return shortStr(item?.prover, 16);
-      },
+      key: "planningReward",
+      label: "Planning Reward",
+      renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.planningCYS || '-'} rewardCGT={task?.rewardDetail?.planningCYS || '-'} />
     },
+    {
+      key: "distributedReward",
+      label: "Distributed Reward",
+      renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
+    },
+    // {
+    //   key: "prover",
+    //   label: "Prover",
+    //   renderCell: (item: any) => {
+    //     return shortStr(item?.prover, 16);
+    //   },
+    // },
     {
       key: "result",
       label: "Result",

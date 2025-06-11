@@ -19,6 +19,13 @@ interface ITask {
     "reward": string,
     "rewardCYS": string,
     "rewardCGT": string,
+    "rewardDetail": {
+        distributedCYS: string,
+        distributedCGT: string,
+        planningCYS: string,
+        planningCGT: string,
+        multiplier: string
+    },
     "status": number
 }
 
@@ -51,11 +58,14 @@ const TaskPage = () => {
             renderCell: (task) => (task.createBlock)
         },
         {
-            key: "reward",
-            label: "Expected Rewards",
-            renderCell: (task) => {
-                return <TaskReward rewardCYS={task.rewardCYS} rewardCGT={task.rewardCGT} />
-            }
+            key: "planningReward",
+            label: "Planning Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.planningCYS || '-'} rewardCGT={task?.rewardDetail?.planningCYS || '-'} />
+        },
+        {
+            key: "distributedReward",
+            label: "Distributed Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
         },
         {
             key: "createAt",
