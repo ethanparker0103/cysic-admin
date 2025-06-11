@@ -127,14 +127,9 @@ const ProjectDetailPage = () => {
             ),
         },
         {
-            key: "planningReward",
-            label: "Planning Reward",
-            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.planningCYS || '-'} rewardCGT={task?.rewardDetail?.planningCYS || '-'} />
-        },
-        {
-            key: "distributedReward",
-            label: "Distributed Reward",
-            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
+            key: "rewards",
+            label: "Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardCYS || '-'} rewardCGT={task?.rewardCGT || '-'} />
         },
         {
             key: "latency",
