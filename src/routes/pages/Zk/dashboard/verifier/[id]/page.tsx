@@ -59,7 +59,7 @@ const VerifierDetail = () => {
     {
       key: "rewards",
       label: "Distributed Rewards",
-      renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
+      renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '0'} rewardCGT={task?.rewardDetail?.distributedCGT || '0'} />
     },
     {
       key: "totalTask",
