@@ -1,7 +1,7 @@
 import axios from "@/service";
 import { useRequest } from "ahooks";
 import { isMobile } from "react-device-detect";
-import { cn, Divider, Tab, Tabs } from "@nextui-org/react";
+import { cn, Divider, Pagination, Tab, Tabs } from "@nextui-org/react";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
@@ -74,7 +74,7 @@ const DashboardPage = () => {
 
 
     const [status, setStatusTab] = useState<any>(tabs[0].value)
-    const { data: taskListData, loading: taskListLoading } = usePagnation((currentPage: number) => {
+    const { data: taskListData, loading: taskListLoading, total, currentPage, setCurrentPage } = usePagnation((currentPage: number) => {
         return axios.get('/api/v1/zkTask/dashboard/task/list', {
             params: {
                 pageNum: currentPage,
@@ -275,6 +275,7 @@ const DashboardPage = () => {
                         className="w-full"
                         selectedKey={status} onSelectionChange={(v) => {
                             setStatusTab(v)
+                            setCurrentPage(1)
                         }}>
                         {
                             tabs.map((tab) => (
@@ -290,6 +291,20 @@ const DashboardPage = () => {
                         data={taskList}
                         columns={taskListColumns}
                     />
+
+                    {total > commonPageSize && (
+                        <div className="flex justify-center mb-4 mt-2">
+                            <Pagination
+                                total={Math.ceil(total / commonPageSize)}
+                                initialPage={1}
+                                page={currentPage}
+                                onChange={setCurrentPage}
+                                color="primary"
+                                size="sm"
+                            />
+                        </div>
+                    )}
+
                 </GradientBorderCard>
 
 
