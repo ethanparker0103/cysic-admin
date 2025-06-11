@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import Root from "./routes/root";
 import Home from "./routes/pages/Home/page";
 import { getImageUrl } from "@/utils/tools";
@@ -10,6 +10,7 @@ import HardwarePage from "@/routes/pages/Hardware/page";
 import MediakitPage from "@/routes/pages/Mediakit/page";
 import ContactUs from "@/routes/pages/ContactUs/page";
 import CareersPage from "@/routes/pages/Careers/page";
+import NotFound from "@/not-found";
 
 
 // 定义共享的路由结构
@@ -50,6 +51,14 @@ const routeChildren = [
     path: "contact-us",
     element: <ContactUs />,
   },
+  {
+    path: "404",
+    element: <NotFound />
+  },
+  {
+    path: "*",
+    element: <Navigate to="/404" replace />
+  }
 ];
 
 export const router = createBrowserRouter([
@@ -116,4 +125,8 @@ export const backgroundImageList = {
     className: "purple-landing",
     needShadow: true,
   },
+  "/404": {
+    // img: '#000',
+    needShadow: true,
+  }
 };
