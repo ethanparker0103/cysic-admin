@@ -111,12 +111,13 @@ const navs = [
     key: "hardware",
     href: "/hardware",
   },
-  ...basicNav,
   {
     content: "Ecosystem",
     key: "ecosystem",
     href: "/ecosystem",
   },
+  ...basicNav,
+  
 ];
 
 const useNav = () => {

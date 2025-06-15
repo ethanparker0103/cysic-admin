@@ -314,33 +314,6 @@ export const ecosystemProjects: IEcosystemProject[] = [
     img: ""
   },
   {
-    projectName: "Aave",
-    category: "Infrastructure",
-    subLabel: ["Lending"],
-    blurb: "Decentralized protocol for lending and borrowing digital assets.",
-    websiteLink: "https://aave.com",
-    twitterLink: "https://x.com/aave",
-    img: "https://aave.com/favicon.png"
-  },
-  {
-    projectName: "Uniswap",
-    category: "Infrastructure",
-    subLabel: ["DEX"],
-    blurb: "Decentralized exchange with liquidity pools for trading tokens.",
-    websiteLink: "https://app.uniswap.org",
-    twitterLink: "https://x.com/Uniswap",
-    img: "https://app.uniswap.org/images/192x192_App_Icon.png"
-  },
-  {
-    projectName: "Compound",
-    category: "Infrastructure",
-    subLabel: ["Lending"],
-    blurb: "Lending protocol on Ethereum for crypto assets.",
-    websiteLink: "https://compoundlabs.xyz/",
-    twitterLink: "https://x.com/compoundfinance",
-    img: "https://compoundlabs.xyz/favicon.ico"
-  },
-  {
     projectName: "Ankr",
     category: "Infrastructure",
     subLabel: [],
@@ -466,33 +439,6 @@ export const ecosystemProjects: IEcosystemProject[] = [
     websiteLink: "https://www.noble.xyz/",
     twitterLink: "https://x.com/noble_xyz",
     img: "https://framerusercontent.com/images/XdcD0abLVZF0aVw8YeT8rU7N9TE.png"
-  },
-  {
-    projectName: "Tether",
-    category: "Infrastructure",
-    subLabel: ["Stablecoin"],
-    blurb: "Popular stablecoin pegged to USD.",
-    websiteLink: "https://www.tether.to",
-    twitterLink: "https://x.com/Tether_to",
-    img: "https://www.tether.to/favicon.ico"
-  },
-  {
-    projectName: "Celestia",
-    category: "Infrastructure",
-    subLabel: ["Data Availability"],
-    blurb: "Scalable, modular blockchain for data availability.",
-    websiteLink: "https://celestia.org",
-    twitterLink: "https://x.com/celestia",
-    img: "https://celestia.org/favicon.ico"
-  },
-  {
-    projectName: "Avail",
-    category: "Infrastructure",
-    subLabel: ["Data Availability"],
-    blurb: "Data availability layer for scalable decentralized applications.",
-    websiteLink: "https://www.availproject.org/",
-    twitterLink: "https://x.com/AvailProject",
-    img: "https://www.availproject.org/favicon.ico"
   },
   {
     projectName: "Mina",
