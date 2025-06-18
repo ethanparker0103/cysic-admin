@@ -12,7 +12,6 @@ import ContactUs from "@/routes/pages/ContactUs/page";
 import CareersPage from "@/routes/pages/Careers/page";
 import NotFound from "@/not-found";
 
-
 // 定义共享的路由结构
 const routeChildren = [
   {
@@ -57,7 +56,7 @@ const routeChildren = [
   },
   {
     path: "*",
-    element: <Navigate to="/404" replace />
+    element: <NotFound />
   }
 ];
 
