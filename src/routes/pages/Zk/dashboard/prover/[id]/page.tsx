@@ -84,10 +84,8 @@ const ProverDetail = () => {
         },
         {
             key: "rewards",
-            label: "Earned Rewards",
-            renderCell: (item: any) => {
-                return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
-            }
+            label: "Distributed Rewards",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '0'} rewardCGT={task?.rewardDetail?.distributedCGT || '0'} />
         },
     ];
 

@@ -60,10 +60,10 @@ const verifierListColumns = [
     },
     {
         key: "reward",
-        label: "Reward",
+        label: "Multiplied Rewards",
         renderCell: (item: any) => {
             // return <VerifierTaskStatus status={item?.verifyResult} />
-            return <TaskReward rewardCGT={item?.rewardCGT} rewardCYS={item?.rewardCYS} />;
+            return <TaskReward rewardCGT={item?.rewardCGT || '-'} rewardCYS={item?.rewardCYS || '-'} />;
         },
     },
     {

@@ -2,12 +2,10 @@ import { useRequest } from "ahooks";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { isMobile } from "react-device-detect";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { cn } from "@nextui-org/react";
 import { renderCell } from "@/routes/pages/Zk/dashboard/components/detailTableConfig";
 import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
-import { getImageUrl } from "@/utils/tools";
 import { DashboardDetailMainWrapper } from "@/routes/pages/Zk/components/template";
 
 
@@ -35,12 +33,23 @@ const TaskDetail = () => {
             key: "taskHash",
             label: "Task Hash",
         },
+        
+        // {
+        //     key: "reward",
+        //     label: "Distributed Rewards",
+        //     renderCell: (item: any) => {
+        //         return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
+        //     }
+        // },
         {
-            key: "reward",
-            label: "Distributed Rewards",
-            renderCell: (item: any) => {
-                return <TaskReward rewardCYS={item?.rewardCYS} rewardCGT={item?.rewardCGT} />
-            }
+            key: "planningReward",
+            label: "Planning Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.planningCYS || '-'} rewardCGT={task?.rewardDetail?.planningCYS || '-'} />
+        },
+        {
+            key: "distributedReward",
+            label: "Distributed Reward",
+            renderCell: (task: any) => <TaskReward rewardCYS={task?.rewardDetail?.distributedCYS || '-'} rewardCGT={task?.rewardDetail?.distributedCGT || '-'} />
         },
         {
             key: "createBlock",

@@ -335,7 +335,7 @@ const SocialTaskTabItem = () => {
           key={task.id}
           className="flex items-center justify-between gap-2 p-4 border border-[#FFFFFF80] rounded-md"
         >
-          <div>{task.description}</div>
+          <div className="flex-1">{task.description}</div>
           <StatusButton taskId={task.id} status={task.status} onSuccess={handleBaseTaskSuccess}>
             {task.status == 2 ? (
               <>
