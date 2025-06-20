@@ -1,19 +1,17 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
-import HoverDropdown from "@/components/HoverDropdown";
 import CysicTable from "@/components/Table";
-import { commonPageSize } from "@/config";
+import { appUrl, commonPageSize } from "@/config";
 import useAccount from "@/hooks/useAccount";
 import usePagnation from "@/hooks/usePagnation";
 import { TaskReward, TaskStatus } from "@/routes/pages/Zk/dashboard/components/tableComponents";
 import { shortStr } from "@/utils/tools";
-import { Dropdown, DropdownItem, DropdownMenu, Pagination } from "@nextui-org/react";
+import { Pagination } from "@nextui-org/react";
 // import Tab, { TabItem } from "@/routes/components/Tab";
 import { Tabs, Tab } from "@nextui-org/tabs";
-import { useRequest } from "ahooks";
 import axios from "axios";
 import dayjs from "dayjs";
-import { ArrowDown, ArrowRight, ArrowRightIcon, ChevronDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, ArrowRightIcon } from "lucide-react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 interface IVerifier {
@@ -90,7 +88,7 @@ const verifierListColumns = [
         renderCell: (item: any) => {
             return (
                 <Link
-                    to={`/zk/dashboard/task/${item?.taskId || item?.task_id}`}
+                    to={`${appUrl}/dashboard/task/${item?.taskId || item?.task_id}`}
                     className="flex items-center justify-end gap-2"
                 >
                     <span>View</span>

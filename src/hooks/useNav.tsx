@@ -1,16 +1,6 @@
-import { enableBridge, enableSocialTask, mediasLink } from "@/config";
-import useAccount from "@/hooks/useAccount";
+import { appUrl, enableBridge, enableSocialTask, mediasLink } from "@/config";
 import { useMemo } from "react";
-import { isMobile } from "react-device-detect";
-import { useLocation } from "react-router-dom";
 
-const mobileNav = isMobile ? [
-  {
-    content: "User Portal",
-    key: "user-portal",
-    href: "/userPortal",
-  },
-] : []
 
 const comingSoonConfig = [
   {
@@ -45,7 +35,7 @@ const socialTaskNav = enableSocialTask
   ? {
       content: "Social Tasks",
       key: "social-tasks",
-      href: "/socialTask",
+      href: appUrl + "/socialTask",
     }
   : null;
 
@@ -57,13 +47,13 @@ const basicNav = [
       {
         content: "Staking",
         key: "staking",
-        href: "/stake",
+        href: appUrl + "/stake",
       },
       bridgeNav,
       {
         content: "Dashboard",
         key: "dashboard",
-        href: "/zk/dashboard",
+        href: appUrl + "/dashboard",
       },
       {
         content: "Explorer",
@@ -111,7 +101,7 @@ const navs = [
       {
         content: "Cysic ZK",
         key: "zk",
-        href: "/zk",
+        href: appUrl
       },
       ...comingSoonConfig,
     ],
@@ -127,195 +117,14 @@ const navs = [
     href: "/ecosystem",
   },
   ...basicNav,
+  
 ];
-
-// zk
-const _zkNavs = [
-  {
-    content: "Cysic ZK",
-    href: "/zk",
-    type: 'subNav',
-    children: [
-      {
-        content: "Prover",
-        key: "prover",
-        href: "/zk/prover",
-      },
-      {
-        content: "Verifier",
-        key: "verifier",
-        href: "/zk/verifier",
-      },
-      {
-        content: "Project",
-        key: "project",
-        href: "/zk/project",
-      },
-    ],
-  },
-  ...mobileNav,
-  ...basicNav,
-];
-
-// /ai
-const aiNavs = [
-  {
-    content: (
-      <div className="text-center">
-        Cysic AI
-        <br />
-        (Coming Soon)
-      </div>
-    ),
-    children: [
-      {
-        content: "Project",
-        key: "project",
-        href: "/",
-      },
-      {
-        content: "Playground",
-        key: "playground",
-        href: "/",
-      },
-      {
-        content: "Synergy",
-        key: "synergy",
-        href: "/",
-      },
-    ],
-  },
-  {
-    content: "leaderboard",
-    key: "leaderboard",
-    href: "/",
-  },
-  {
-    content: "dashboard",
-    key: "dashboard",
-    href: "/nft/userPortal",
-  },
-];
-
-const computeNavs = navs.map((i, index) => {
-  if (index == 0) {
-    return {
-      content: (
-        <div className="text-center">
-          Cysic NFT
-          <br />
-          (Coming Soon)
-        </div>
-      ),
-      children: [
-        {
-          content: "Service",
-          key: "service",
-          href: "/",
-        },
-        {
-          content: "Cysic ZK",
-          key: "zk",
-          href: "/zk",
-        },
-        {
-          content: (
-            <div className="text-center">
-              Cysic AI
-              <br />
-              (Coming Soon)
-            </div>
-          ),
-          key: "ai",
-          href: "/ai",
-          disabled: true,
-        },
-        {
-          content: "Cysic Mining",
-          key: "stake",
-          href: "/stake",
-        },
-      ],
-    };
-  }
-  return i;
-});
-
-const stakeeNavs = navs.map((i, index) => {
-  if (index == 0) {
-    return navs[0];
-    // return {
-    //     content: 'Cysic Mining',
-    //     children: [
-    //         {
-    //             content: 'Service',
-    //             key: 'service',
-    //             href: '/'
-    //         },
-    //         {
-    //             content: <div className="text-center">Cysic NFT<br/>(Coming Soon)</div>,
-    //             key: 'nft',
-    //             href: '/nft',
-    //             disabled: true
-    //         },
-    //         {
-    //             content: 'Cysic ZK',
-    //             key: 'zk',
-    //             href: '/zk'
-    //         },
-    //         {
-    //             content: <div className="text-center">Cysic AI<br/>(Coming Soon)</div>,
-    //             key: 'ai',
-    //             href: '/ai',
-    //             disabled: true
-    //         },
-    //     ]
-    // }
-  }
-  return i;
-});
 
 const useNav = () => {
-  const location = useLocation();
-  const { isSigned } = useAccount();
-
-  const zkNavs = useMemo(() => {
-    if (isSigned) {
-      return _zkNavs.slice(0, 1).concat(
-        {
-          content: "Invite",
-          href: "/zk/invite",
-        },
-        _zkNavs.slice(1)
-      );
-    }
-    return _zkNavs;
-  }, [isSigned]);
 
   const currentNavs = useMemo(() => {
-    const path = location.pathname;
-
-    if (path === "/zk/serviceHub") {
-      return computeNavs;
-    }
-
-    if (path === "/zk" || path.startsWith("/zk/")) {
-      return zkNavs;
-    }
-
-    if (path === "/ai" || path.startsWith("/ai/")) {
-      return aiNavs;
-    }
-
-    if (path === "/nft" || path.startsWith("/nft/")) {
-      return computeNavs;
-    }
-
-    if (path === "/stake" || path.startsWith("/stake/")) {
-      return stakeeNavs;
-    }
     return navs;
-  }, [location.pathname, zkNavs]);
+  }, []);
 
   return {
     currentNavs,

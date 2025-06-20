@@ -1,60 +1,27 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import GradientNavDropdown from "@/components/GradientNavDropdown";
-import { BIND_CHECK_PATHS, NO_BIND_CHECK_PATHS } from "@/config";
 import {
   getImageUrl,
   handleLoginPersonalMessage,
-  handleSignIn,
-  scrollIntoView,
   scrollToTop,
 } from "@/utils/tools";
 
 import { ArrowRight, Menu } from "lucide-react";
-import ConnectInfo from "@/components/ConnectInfo";
-import useAccount from "@/hooks/useAccount";
 import useNav from "@/hooks/useNav";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useMemo } from "react";
 import { cn, Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
-import useTriedConnectedOnce from "@/hooks/useTriedConnectedOnce";
-import Spinner from "@/components/spinner";
+import { appUrl } from "@/config";
 
 const size = "full";
 
-function preventScroll(event) {
-  event.preventDefault();
-}
-
 
 export default function Header() {
-  const { walletAddress, isSigned, isBinded } = useAccount();
   const { currentNavs } = useNav();
   const location = useLocation();
 
-  const { hasTryToConnectedOnce } = useTriedConnectedOnce();
 
-  // 检查当前路径是否需要绑定邀请码
-  const needsBindCheck = useMemo(() => {
-    const path = location.pathname;
-
-    return BIND_CHECK_PATHS.some(
-      (checkPath) =>
-        path.includes(checkPath) && !NO_BIND_CHECK_PATHS.includes(path)
-    );
-  }, [location.pathname]);
-
-  // 需要显示绑定提示的条件
-  const shouldShowBindPrompt = isSigned && needsBindCheck && !isBinded;
-
-  const handleConnect = () => {
-    handleSignIn();
-  };
-
-  const handleBindInviteCode = () => {
-    handleSignIn();
-  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -70,9 +37,9 @@ export default function Header() {
   //   }
   // }
 
-  const handleScrollToTopInHome = ()=>{
+  const handleScrollToTopInHome = () => {
     const path = location.pathname;
-    if(path == '/'){
+    if (path == '/') {
       scrollToTop()
     }
   }
@@ -102,7 +69,7 @@ export default function Header() {
               />
             </Link>
           </div>
-          <Drawer isOpen={isOpen} size={size} onClose={onClose} shouldBlockScroll classNames={{wrapper: 'z-[51]'}}>
+          <Drawer isOpen={isOpen} size={size} onClose={onClose} shouldBlockScroll classNames={{ wrapper: 'z-[51]' }}>
             <DrawerContent className="bg-[#090A09]">
               {(onClose) => (
                 <>
@@ -119,39 +86,39 @@ export default function Header() {
                   </div>
 
                   <div className="overflow-y-auto">
-                  <div className="flex flex-col items-center gap-10 overflow-hidden py-12">
-                    {currentNavs?.map((i: any) => {
-                      if (i?.children?.length) {
-                        return i?.children?.map((j: any) => {
+                    <div className="flex flex-col items-center gap-10 overflow-hidden py-12">
+                      {currentNavs?.map((i: any) => {
+                        if (i?.children?.length) {
+                          return i?.children?.map((j: any) => {
+                            return (
+                              <Link
+                                onClick={onClose}
+                                to={j?.href}
+                                className={cn(
+                                  "text-xl !text-sub",
+                                  j?.disabled && "blur-[5px]"
+                                )}
+                              >
+                                {j.content}
+                              </Link>
+                            );
+                          });
+                        } else {
                           return (
                             <Link
                               onClick={onClose}
-                              to={j?.href}
+                              to={i?.href || "/"}
                               className={cn(
                                 "text-xl !text-sub",
-                                j?.disabled && "blur-[5px]"
+                                i?.disabled && "blur-[5px]"
                               )}
                             >
-                              {j.content}
+                              {i.content}
                             </Link>
                           );
-                        });
-                      } else {
-                        return (
-                          <Link
-                            onClick={onClose}
-                            to={i?.href || "/"}
-                            className={cn(
-                              "text-xl !text-sub",
-                              i?.disabled && "blur-[5px]"
-                            )}
-                          >
-                            {i.content}
-                          </Link>
-                        );
-                      }
-                    })}
-                  </div>
+                        }
+                      })}
+                    </div>
                   </div>
                 </>
               )}
@@ -183,43 +150,16 @@ export default function Header() {
                     ))}
                   </div>
                   <div className="h-full flex items-center justify-end w-[26.75rem]">
-                    {!hasTryToConnectedOnce ? (
-                      <Spinner className="px-10" />
-                    ) : walletAddress ? (
-                      !isSigned ? (
-                        <div
-                          onClick={handleLoginPersonalMessage}
-                          className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
-                        >
-                          <span className="text-sub font-[400] uppercase text-sm">
-                            Get Started
-                          </span>
-                          <ArrowRight width={16} height={16} />
-                        </div>
-                      ) : shouldShowBindPrompt ? (
-                        <div
-                          onClick={handleBindInviteCode}
-                          className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
-                        >
-                          <span className="text-sub font-[400] uppercase text-sm">
-                            BIND INVITE CODE
-                          </span>
-                          <ArrowRight width={16} height={16} />
-                        </div>
-                      ) : (
-                        <ConnectInfo />
-                      )
-                    ) : (
-                      <div
-                        onClick={handleConnect}
-                        className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
-                      >
-                        <span className="text-sub font-[400] uppercase text-sm">
-                          SIGN IN
-                        </span>
-                        <ArrowRight width={16} height={16} />
-                      </div>
-                    )}
+                    <a
+                      href={appUrl}
+                      target="_blank"
+                      className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
+                    >
+                      <span className="text-sub font-[400] uppercase text-sm">
+                        Get Started
+                      </span>
+                      <ArrowRight width={16} height={16} />
+                    </a>
                   </div>
                 </div>
               </GradientBorderCard>

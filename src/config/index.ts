@@ -5,7 +5,7 @@ import { coins } from "@cosmjs/proto-signing";
 export const BIND_CHECK_PATHS = ["/zk", "/ai", "/m/zk", "/m/ai"];
 export const NO_BIND_CHECK_PATHS = ['/contact-us', '/contactus', '/media-kit', "/mediakit", "/userPortal", "/zk/userPortal", "/zk/userPortal/serviceHub", "/userPortal/serviceHub", 
                                   '/m/contact-us', '/m/contactus', '/m/media-kit', "/m/mediakit", "/m/userPortal", "/m/zk/userPortal", "/m/zk/userPortal/serviceHub", "/m/userPortal/serviceHub"];
-export const NO_CONTAINER_PATHS = ['/contact-us', '/contactus', '/media-kit', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub',
+export const NO_CONTAINER_PATHS = ['/404', '/contact-us', '/contactus', '/media-kit', '/mediakit', '/hardware', '/zk', '/userPortal', '/zk/userPortal', '/zk/userPortal/serviceHub', '/userPortal/serviceHub',
                                  '/m/contact-us', '/m/contactus', '/m/media-kit', '/m/mediakit', '/m/hardware', '/m/zk', '/m/userPortal', '/m/zk/userPortal', '/m/zk/userPortal/serviceHub', '/m/userPortal/serviceHub']
 
 export const baseStatus: any = {
@@ -78,6 +78,9 @@ export const TaskStatusColor: any = {
 
 export const isQa = import.meta.env.VITE_APP_ENV == "qa";
 export const isProd = import.meta.env.VITE_APP_ENV == "prod";
+
+export const homeUrl = isProd ? 'https://cysic.xyz' : 'https://qa.prover.xyz'
+export const appUrl = isProd ? 'https://app.cysic.xyz' : 'https://qa-app.prover.xyz'
 
 export const enableSocialTask = true
 export const enableBridge = false && isQa

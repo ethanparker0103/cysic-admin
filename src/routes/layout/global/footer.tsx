@@ -1,5 +1,5 @@
 import Media from "@/components/Media"
-import { easterEggVisible, mediasLink } from "@/config"
+import { appUrl, easterEggVisible, mediasLink } from "@/config"
 import { getImageUrl } from "@/utils/tools"
 import { Button, cn, Link as NextLink } from "@nextui-org/react"
 import { isMobile } from "react-device-detect"
@@ -17,7 +17,7 @@ const navs = [
     },
     {
         content: 'Cysic ZK',
-        href: '/zk'
+        href: appUrl
     },
     {
         content: 'Hardware',
