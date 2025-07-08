@@ -33,7 +33,7 @@ const drawerCardList = [
                         className="size-6 lg:size-12"
                     />
                 ),
-                title: "AI Interence/Training",
+                title: "AI Inference/Training",
             },
             {
                 icon: (
