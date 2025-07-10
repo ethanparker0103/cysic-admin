@@ -451,6 +451,16 @@ export const ecosystemProjects: IEcosystemProject[] = [
     className: "bg-[transparent]"
   },
   {
+    projectName: "Nexus",
+    category: "AI Ecosystem",
+    subLabel: ["L1"],
+    blurb: "The Layer 1 Supercomputer built for mass adoption.",
+    websiteLink: "https://nexus.xyz/",
+    twitterLink: "https://x.com/NexusLabs",
+    img: "https://framerusercontent.com/images/AeDwlPlZaXChRFVGExpfgFn1crs.png",
+    className: "bg-[transparent]"
+  },
+  {
     projectName: "Ora",
     category: "AI Ecosystem",
     subLabel: [],
