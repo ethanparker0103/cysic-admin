@@ -4,15 +4,14 @@ import { useMemo } from "react";
 
 const comingSoonConfig = [
   {
+    content: "Cysic NFT",
+    key: "cysic-nft",
+    href: "https://cube.cysicfoundation.org/",
+  },
+  {
     content: "Cysic AI",
     key: "cysic-ai",
     href: "https://ai.cysic.xyz/",
-  },
-  {
-    content: "Cysic NFT",
-    key: "cysic-nft",
-    href: "/",
-    disabled: true,
   },
   {
     content: "Cysic Mining",

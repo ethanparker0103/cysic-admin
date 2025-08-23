@@ -13,6 +13,7 @@ import { cn, Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
 import { appUrl } from "@/config";
+import { Notify } from "@/routes/layout/global/notify";
 
 const size = "full";
 
@@ -182,6 +183,8 @@ export default function Header() {
                 )
               }
             </div>
+
+            <Notify className="left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(6.6rem)] w-screen" />
           </div>,
           document.body
         )}

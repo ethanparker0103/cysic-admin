@@ -117,14 +117,16 @@ const navScreenList = [
         </p>
       </div>
     ),
+    // 
     action: (
-      <Button
-        type="light"
-        disabled
-        className="py-2 px-4 unbounded font-medium !bg-white !text-black !opacity-100"
-      >
-        coming soon
-      </Button>
+      <a href="https://ai.cysic.xyz/" target="_blank" className="flex items-center gap-6">
+        <Button type="solid" className="backdrop-blur-sm teacher py-4 lg:py-6 px-6 lg:px-8">
+          <div className="flex items-center gap-2 justify-between lg:justify-start">
+            <span>About Cysic AI</span>
+            <ArrowRight width={16} height={16} />
+          </div>
+        </Button>
+      </a>
     ),
   },
   {
@@ -396,6 +398,9 @@ const Home = () => {
               title="Cysic AI"
               desc="Low-cost AI infra for custom models"
               imageSrc={getImageUrl("@/assets/images/nft/preset1.png")}
+              onClick={() => {
+                window.open("https://ai.cysic.xyz/", "_blank")
+              }}
             />
             <Tooltip content={<div className="max-w-[16.625rem] px-4 py-2 text-sub !normal-case teachers-16-300">The protocol you told your parents not to worry about</div>}>
               <div><AdCard
