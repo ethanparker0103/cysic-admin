@@ -7,11 +7,13 @@ import CysicTable from "@/routes/pages/Leaderboard/CysicTabe";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { Pagination, Input } from "@nextui-org/react"; // 加了 Input
 import { BigNumber } from "bignumber.js";
+import { appUrl } from "@/config";
 
 const apiKey = import.meta.env.VITE_APP_KAITO_API_KEY
 
 const apiClient = axios.create({
-    baseURL: "https://api.kaito.ai/api/v1",
+    // baseURL: "https://api.kaito.ai/api/v1",
+    baseURL: appUrl + '/api/v1',
     timeout: 30_000,
 });
 
