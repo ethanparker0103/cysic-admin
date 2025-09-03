@@ -11,6 +11,7 @@ import MediakitPage from "@/routes/pages/Mediakit/page";
 import ContactUs from "@/routes/pages/ContactUs/page";
 import CareersPage from "@/routes/pages/Careers/page";
 import NotFound from "@/not-found";
+import { LeaderboardPage } from "@/routes/pages/Leaderboard/page";
 
 // 定义共享的路由结构
 const routeChildren = [
@@ -49,6 +50,10 @@ const routeChildren = [
   {
     path: "contact-us",
     element: <ContactUs />,
+  },
+  {
+    path: "leaderboard",
+    element: <LeaderboardPage />,
   },
   {
     path: "404",
@@ -123,6 +128,9 @@ export const backgroundImageList = {
     img: getImageUrl("@/assets/images/_global/contactus_landing_bg.png"),
     className: "purple-landing",
     needShadow: true,
+  },
+  "/leaderboard": {
+    img: "#000",
   },
   "/404": {
     // img: '#000',
