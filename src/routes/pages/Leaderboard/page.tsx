@@ -19,7 +19,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-        config.headers["x-api-key"] = apiKey;
+        // config.headers["x-api-key"] = apiKey;
         return config;
     },
     (error) => Promise.reject(error)
