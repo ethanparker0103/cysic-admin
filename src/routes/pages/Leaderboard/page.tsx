@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { CysicTableColumn } from "@/components/Table";
 import CysicTable from "@/routes/pages/Leaderboard/CysicTabe";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { Pagination, Input } from "@nextui-org/react"; // 加了 Input
+import { Pagination, Input, cn } from "@nextui-org/react"; // 加了 Input
 import { BigNumber } from "bignumber.js";
 import { resqUrl } from "@/config";
 
@@ -71,7 +71,7 @@ export interface CommunityMindshareResponse {
 }
 
 export const fetchCommunityMindshare = (params: CommunityMindshareParams) => {
-    return apiClient.get("/community_mindshare", { params });
+    return apiClient.get("/community_midshare", { params });
 };
 
 export const LeaderboardPage = () => {
@@ -87,7 +87,7 @@ export const LeaderboardPage = () => {
 
     const { loading } = useRequest(() => fetchCommunityMindshare({
         ticker,
-        window: '7d'
+        window: '30d'
     }), {
         onSuccess(resp) {
             setTopYapper(resp?.data?.community_mindshare?.top_1000_yappers || [])
@@ -96,9 +96,9 @@ export const LeaderboardPage = () => {
 
     const taskListColumns: CysicTableColumn<Yappers>[] = [
         { key: "rank", label: "Rank", sortable: true },
-        { key: "displayname", label: "User Name" },
+        { key: "username", label: "User Name", renderCell:(row)=> <a className="flex items-center !cursor-pointer hover:text-[#34f3e2]" target="_blank" href={`https://x.com/${row?.username}`}><span>@</span><span>{row?.username}</span></a> },
         { key: "language", label: "Language", renderCell: (row) => row?.language?.toUpperCase() || '-' },
-        { key: "mindshare", label: "Mindshare", sortable: true, renderCell: (row) => BigNumber(row?.mindshare * 100).toFixed(4, BigNumber.ROUND_DOWN) + '%' },
+        { key: "mindshare", label: "Mindshare", sortable: true, renderCell: (row) => <span className="text-[#34f3e2]">{BigNumber(row?.mindshare * 100).toFixed(4, BigNumber.ROUND_DOWN) + '%'}</span> },
         { key: "tweet_counts", label: "Tweets", sortable: true },
         { key: "total_impressions", label: "Impressions", sortable: true },
         { key: "total_likes", label: "Likes", sortable: true },
@@ -164,30 +164,49 @@ export const LeaderboardPage = () => {
     const totalPages = Math.ceil(totalFiltered / pageSize);
 
     return (
+
+        <>
+        <style>
+            {`
+            body tr[data-rank='1'] {
+                background: #3f3a26;
+            }
+                body tr[data-rank='2'] {
+                background: #3c3e40;
+            }
+                body tr[data-rank='3'] {
+                background: #433a38;
+            }
+            `}
+        </style>
         <PT12Wrapper className="w-full pb-12 px-[3rem]">
-            <GradientBorderCard borderRadius={8} className="main-container mb-6 !px-0">
-                <Input
+            <GradientBorderCard  borderRadius={8} className="main-container p-6">
+                <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
+                    <div className="text-2xl font-semibold">TOP CYSIC YAPPERS</div>
+                    <Input
                     classNames={{
-                        inputWrapper: "!bg-transparent"
+                        base: 'max-w-[300px]',
+                        inputWrapper: "!bg-[#151515]"
                     }}
                     isClearable
-                    placeholder="Search by username or display name"
+                    placeholder="Filter by username or display name"
                     value={search}
                     onValueChange={(val) => {
                         setSearch(val);
                         setCurrentPage(1); // 搜索时回第一页
                     }}
-                    size="lg"
+                    size="md"
                 />
-            </GradientBorderCard>
-            <GradientBorderCard  borderRadius={8} className="main-container p-6">
+                </div>
                 <CysicTable
                     sortable
                     data={processedData}
                     columns={taskListColumns}
-                    className="[&>div]:!pt-0"
+                    className={cn("[&>div]:!pt-0")}
                     loading={loading}
                     onColumnClick={handleColumnClick}
+                    sortKey={sortConfig?.key}
+                    sortDirection={sortConfig?.direction}
                 />
 
                 {totalPages > 1 && (
@@ -203,5 +222,6 @@ export const LeaderboardPage = () => {
                 )}
             </GradientBorderCard>
         </PT12Wrapper>
+        </>
     )
 }
