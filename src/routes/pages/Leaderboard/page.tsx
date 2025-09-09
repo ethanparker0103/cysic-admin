@@ -1,19 +1,30 @@
 import axios from "axios";
-import { PT12Wrapper } from "@/components/Wrappers"
+import { PT12Wrapper } from "@/components/Wrappers";
 import { useRequest } from "ahooks";
 import { useMemo, useState } from "react";
 import { CysicTableColumn } from "@/components/Table";
 import CysicTable from "@/routes/pages/Leaderboard/CysicTabe";
 import GradientBorderCard from "@/components/GradientBorderCard";
-import { Pagination, Input, cn } from "@nextui-org/react"; // 加了 Input
+import {
+    Pagination,
+    Input,
+    cn,
+    Dropdown,
+    DropdownTrigger,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+} from "@nextui-org/react"; // 加了 Input
 import { BigNumber } from "bignumber.js";
 import { resqUrl } from "@/config";
+import { ChevronDown } from "lucide-react";
 
-const apiKey = import.meta.env.VITE_APP_KAITO_API_KEY
+
+const apiKey = import.meta.env.VITE_APP_KAITO_API_KEY;
 
 const apiClient = axios.create({
     // baseURL: "https://api.kaito.ai/api/v1",
-    baseURL: resqUrl + '/api/v1',
+    baseURL: resqUrl + "/api/v1",
     timeout: 30_000,
 });
 
@@ -25,7 +36,7 @@ apiClient.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-const ticker = 'CYSIC'
+const ticker = "CYSIC";
 
 export interface CommunityMindshareParams {
     ticker: string;
@@ -67,7 +78,7 @@ export interface CommunityMindshareResponse {
     top_1000_yapper_bookmarks: number;
     top_1000_yapper_smart_engagements: number;
     top_1000_yapper_community_engagements: number;
-    top_1000_yappers: Yappers[]
+    top_1000_yappers: Yappers[];
 }
 
 export const fetchCommunityMindshare = (params: CommunityMindshareParams) => {
@@ -75,34 +86,76 @@ export const fetchCommunityMindshare = (params: CommunityMindshareParams) => {
 };
 
 export const LeaderboardPage = () => {
-    const [topYapper, setTopYapper] = useState<Yappers[]>([])
-    const [currentPage, setCurrentPage] = useState(1)
+    const [topYapper, setTopYapper] = useState<Yappers[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const [sortConfig, setSortConfig] = useState<{
-        key?: keyof Yappers,
-        direction: "asc" | "desc"
-    }>({})
-    const [search, setSearch] = useState("")
+        key?: keyof Yappers;
+        direction: "asc" | "desc";
+    }>({});
+    const [search, setSearch] = useState("");
 
     const pageSize = 10;
 
-    const { loading } = useRequest(() => fetchCommunityMindshare({
-        ticker,
-        window: '30d'
-    }), {
-        onSuccess(resp) {
-            setTopYapper(resp?.data?.community_mindshare?.top_1000_yappers || [])
+    const { loading, run } = useRequest(
+        (window?: string) => {
+            let _window = "7d";
+            if(window && window.endsWith('m')){
+                const monthValue = parseInt(window.replace('m', ''), 10);
+                _window = `${monthValue * 30}d`;
+            }
+                
+            return fetchCommunityMindshare({
+                ticker,
+                window: _window as any,
+            })
+        },
+        {
+            onSuccess(resp) {
+                setTopYapper(resp?.data?.community_mindshare?.top_1000_yappers || []);
+            },
         }
-    })
+    );
 
     const taskListColumns: CysicTableColumn<Yappers>[] = [
         { key: "rank", label: "Rank", sortable: true },
-        { key: "username", label: "User Name", renderCell:(row)=> <a className="flex items-center !cursor-pointer hover:text-[#34f3e2]" target="_blank" href={`https://x.com/${row?.username}`}><span>@</span><span>{row?.username}</span></a> },
-        { key: "language", label: "Language", renderCell: (row) => row?.language?.toUpperCase() || '-' },
-        { key: "mindshare", label: "Mindshare", sortable: true, renderCell: (row) => <span className="text-[#34f3e2]">{BigNumber(row?.mindshare * 100).toFixed(4, BigNumber.ROUND_DOWN) + '%'}</span> },
+        {
+            key: "username",
+            label: "User Name",
+            renderCell: (row) => (
+                <a
+                    className="flex items-center !cursor-pointer hover:text-[#34f3e2]"
+                    target="_blank"
+                    href={`https://x.com/${row?.username}`}
+                >
+                    <span>@</span>
+                    <span>{row?.username}</span>
+                </a>
+            ),
+        },
+        {
+            key: "language",
+            label: "Language",
+            renderCell: (row) => row?.language?.toUpperCase() || "-",
+        },
+        {
+            key: "mindshare",
+            label: "Mindshare",
+            sortable: true,
+            renderCell: (row) => (
+                <span className="text-[#34f3e2]">
+                    {BigNumber(row?.mindshare * 100).toFixed(4, BigNumber.ROUND_DOWN) +
+                        "%"}
+                </span>
+            ),
+        },
         { key: "tweet_counts", label: "Tweets", sortable: true },
         { key: "total_impressions", label: "Impressions", sortable: true },
         { key: "total_likes", label: "Likes", sortable: true },
-        { key: "total_community_engagements", label: "Engagements", sortable: true },
+        {
+            key: "total_community_engagements",
+            label: "Engagements",
+            sortable: true,
+        },
     ];
 
     /** 搜索 + 排序 + 分页处理 */
@@ -112,9 +165,10 @@ export const LeaderboardPage = () => {
         // 搜索
         if (search.trim()) {
             const lower = search.trim().toLowerCase();
-            data = data.filter(y =>
-                y.username?.toLowerCase().includes(lower) ||
-                y.displayname?.toLowerCase().includes(lower)
+            data = data.filter(
+                (y) =>
+                    y.username?.toLowerCase().includes(lower) ||
+                    y.displayname?.toLowerCase().includes(lower)
             );
         }
 
@@ -139,7 +193,7 @@ export const LeaderboardPage = () => {
     const handleColumnClick = (col: CysicTableColumn<Yappers>) => {
         if (!col.sortable) return;
 
-        setSortConfig(prev => {
+        setSortConfig((prev) => {
             let direction: "asc" | "desc" = "asc";
             if (prev.key === col.key && prev.direction === "asc") {
                 direction = "desc";
@@ -153,9 +207,10 @@ export const LeaderboardPage = () => {
         let data = topYapper;
         if (search.trim()) {
             const lower = search.trim().toLowerCase();
-            data = data.filter(y =>
-                y.username?.toLowerCase().includes(lower) ||
-                y.displayname?.toLowerCase().includes(lower)
+            data = data.filter(
+                (y) =>
+                    y.username?.toLowerCase().includes(lower) ||
+                    y.displayname?.toLowerCase().includes(lower)
             );
         }
         return data.length;
@@ -163,65 +218,103 @@ export const LeaderboardPage = () => {
 
     const totalPages = Math.ceil(totalFiltered / pageSize);
 
-    return (
+    const [selectedKeys, setSelectedKeys] = useState(new Set(["7d"]));
 
+    const selectedValue = useMemo(
+        () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
+        [selectedKeys]
+    );
+
+    const handleSelect = (v) => {
+        run(v.currentKey)
+        setSelectedKeys(v)
+    }
+    return (
         <>
-        <style>
-            {`
+            <style>
+                {`
             body tr[data-rank='1'] {
-                background: #3f3a26;
+                background: rgba(255, 185, 48, 0.4);
             }
                 body tr[data-rank='2'] {
-                background: #3c3e40;
+                background: rgba(218, 223, 232, 0.4);
             }
                 body tr[data-rank='3'] {
-                background: #433a38;
+                background: rgba(206, 137, 70, 0.4);
             }
             `}
-        </style>
-        <PT12Wrapper className="w-full pb-12 px-[3rem]">
-            <GradientBorderCard  borderRadius={8} className="main-container p-6">
-                <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-                    <div className="text-2xl font-semibold">TOP CYSIC YAPPERS</div>
-                    <Input
-                    classNames={{
-                        base: 'max-w-[300px]',
-                        inputWrapper: "!bg-[#151515]"
-                    }}
-                    isClearable
-                    placeholder="Filter by username or display name"
-                    value={search}
-                    onValueChange={(val) => {
-                        setSearch(val);
-                        setCurrentPage(1); // 搜索时回第一页
-                    }}
-                    size="md"
-                />
-                </div>
-                <CysicTable
-                    sortable
-                    data={processedData}
-                    columns={taskListColumns}
-                    className={cn("[&>div]:!pt-0")}
-                    loading={loading}
-                    onColumnClick={handleColumnClick}
-                    sortKey={sortConfig?.key}
-                    sortDirection={sortConfig?.direction}
-                />
+            </style>
+            <PT12Wrapper className="w-full pb-12 px-3 md:px-[3rem]">
+                <GradientBorderCard borderRadius={8} className="main-container p-6">
+                    <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
+                        <div className="text-2xl font-semibold">TOP CYSIC YAPPERS</div>
+                        <div className="flex items-center gap-2 flex-1 w-full justify-end">
+                            <Input
+                                classNames={{
+                                    base: "max-w-[260px]",
+                                    inputWrapper: " min-h-8 h-8 rounded-[8px] border-[1px]",
+                                }}
+                                variant="bordered"
+                                // isClearable
+                                placeholder="Filter by username or display name"
+                                value={search}
+                                onValueChange={(val) => {
+                                    setSearch(val);
+                                    setCurrentPage(1); // 搜索时回第一页
+                                }}
+                                size="md"
+                            />
 
-                {totalPages > 1 && (
-                    <div className="flex justify-center mt-4">
-                        <Pagination
-                            total={totalPages}
-                            page={currentPage}
-                            onChange={setCurrentPage}
-                            color="primary"
-                            size="sm"
-                        />
+                            <Dropdown size="sm"
+                                classNames={{
+                                    content: "min-w-[120px]"
+                                }}>
+                                <DropdownTrigger>
+                                    <Button size="sm" className="uppercase h-8 border-[1px]" variant="bordered" >
+                                        {selectedValue}
+                                        <ChevronDown className="size-3" />
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    disallowEmptySelection
+                                    aria-label="Dropdown Variants"
+                                    selectedKeys={selectedKeys}
+                                    onSelectionChange={handleSelect}
+                                    selectionMode="single"
+                                >
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="7d">7d</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="30d">30d</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="3m">3m</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="6m">6m</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="12m">12m</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </div>
                     </div>
-                )}
-            </GradientBorderCard>
-        </PT12Wrapper>
+                    <CysicTable
+                        sortable
+                        data={processedData}
+                        columns={taskListColumns}
+                        className={cn("[&>div]:!pt-0")}
+                        loading={loading}
+                        onColumnClick={handleColumnClick}
+                        sortKey={sortConfig?.key}
+                        sortDirection={sortConfig?.direction}
+                    />
+
+                    {!loading && totalPages > 1 && (
+                        <div className="flex justify-center mt-4">
+                            <Pagination
+                                total={totalPages}
+                                page={currentPage}
+                                onChange={setCurrentPage}
+                                color="primary"
+                                size="sm"
+                            />
+                        </div>
+                    )}
+                </GradientBorderCard>
+            </PT12Wrapper>
         </>
-    )
-}
+    );
+};

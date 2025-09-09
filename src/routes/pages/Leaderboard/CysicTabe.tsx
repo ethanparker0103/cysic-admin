@@ -83,7 +83,7 @@ const CysicTable = <T extends object>({
           </TableColumn>
         ))}
       </TableHeader>
-      <TableBody isLoading={loading} loadingContent={<Spinner />} items={data} emptyContent={emptyContent}>
+      <TableBody isLoading={loading} loadingContent={<div className="size-full flex items-center justify-center bg-black/20 backdrop-blur-[2px]"><Spinner /></div>} items={data} emptyContent={emptyContent}>
         {(item: any) => (
           <TableRow
             data-rank={item?.rank || ''}
