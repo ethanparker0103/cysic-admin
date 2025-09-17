@@ -90,6 +90,10 @@ const basicNav = [
       },
     ],
   },
+  {
+    content: "Leaderboard",
+    href: '/leaderboard'
+  },
 ];
 
 const navs = [
