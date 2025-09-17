@@ -89,6 +89,7 @@ export const fetchCommunityMindshare = (params: CommunityMindshareParams) => {
 export const LeaderboardPage = () => {
     const [topYapper, setTopYapper] = useState<Yappers[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [lngSortKey, setLngSortKey] = useState("")
     const [sortConfig, setSortConfig] = useState<{
         key?: keyof Yappers;
         direction: "asc" | "desc";
@@ -100,11 +101,11 @@ export const LeaderboardPage = () => {
     const { loading, run } = useRequest(
         (window?: string) => {
             let _window = "7d";
-            if(window && window.endsWith('m')){
+            if (window && window.endsWith('m')) {
                 const monthValue = parseInt(window.replace('m', ''), 10);
                 _window = `${monthValue * 30}d`;
             }
-                
+
             return fetchCommunityMindshare({
                 ticker,
                 window: _window as any,
@@ -172,6 +173,14 @@ export const LeaderboardPage = () => {
                     y.displayname?.toLowerCase().includes(lower)
             );
         }
+        if(lngSortKey){
+            console.log('lngSortKey', lngSortKey)
+            if(lngSortKey != "OTHERS"){
+                data = data.filter(i=>i.language?.toUpperCase() == lngSortKey)
+            }else{
+                data = data.filter(i=>!["EN", "ZH", "KO", "ID", "VI", "TR"].includes(i.language?.toUpperCase()))
+            }
+        }
 
         // 排序
         if (sortConfig.key) {
@@ -188,7 +197,7 @@ export const LeaderboardPage = () => {
         // 分页
         const start = (currentPage - 1) * pageSize;
         return data.slice(start, start + pageSize);
-    }, [topYapper, search, currentPage, sortConfig]);
+    }, [topYapper, search, currentPage, sortConfig, lngSortKey]);
 
     /** 点击列头进行排序 */
     const handleColumnClick = (col: CysicTableColumn<Yappers>) => {
@@ -230,6 +239,47 @@ export const LeaderboardPage = () => {
         run(v.currentKey)
         setSelectedKeys(v)
     }
+
+
+    const [lngKeys, setLngKeys] = useState(new Set(["All"]));
+    const valueOfLngKey = Array.from(lngKeys).toString()
+
+    const selectedLngValue = useMemo(
+        () => {
+            switch (valueOfLngKey) {
+                case 'EN':
+                    setLngSortKey("EN")
+                    return <img className="w-4" src="/leaderboard-assets/usa.png" />
+                case 'ZH':
+                    setLngSortKey("ZH")
+                    return <img className="w-4" src="/leaderboard-assets/china.png" />
+                case 'KO':
+                    setLngSortKey("KO")
+                    return <img className="w-4" src="/leaderboard-assets/south-korea.png" />
+                case 'ID':
+                    setLngSortKey("ID")
+                    return <img className="w-4" src="/leaderboard-assets/indonesia.png" />
+                case 'VI':
+                    setLngSortKey("VI")
+                    return <img className="w-4" src="/leaderboard-assets/vietnam.png" />
+                case 'TR':
+                    setLngSortKey("TR")
+                    return <img className="w-4" src="/leaderboard-assets/turkey.png" />
+                case 'OTHERS':
+                    setLngSortKey("OTHERS")
+                    return <img className="w-4" src="/leaderboard-assets/others.png" />
+
+                default:
+                    setLngSortKey("")
+                    return 'All'
+            }
+        },
+        [valueOfLngKey]
+    );
+    const handleLngSelect = (v) => {
+        setLngKeys(v)
+    }
+
     return (
         <>
             <style>
@@ -281,6 +331,49 @@ export const LeaderboardPage = () => {
                                 }}
                                 size="md"
                             />
+
+                            <Dropdown size="sm"
+                                classNames={{
+                                    content: "min-w-[120px]"
+                                }}>
+                                <DropdownTrigger>
+                                    <Button size="sm" className="uppercase h-12 border-[1px] text-white/50" variant="bordered" >
+                                        {selectedLngValue}
+                                        <ChevronDown className="size-3" />
+                                    </Button>
+                                </DropdownTrigger>
+                                <DropdownMenu
+                                    disallowEmptySelection
+                                    aria-label="Dropdown Variants"
+                                    selectedKeys={lngKeys}
+                                    onSelectionChange={handleLngSelect}
+                                    selectionMode="single"
+                                    className="[&_img]:w-4"
+                                >
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="All">All</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="EN">
+                                        <img src="/leaderboard-assets/usa.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="ZH">
+                                        <img src="/leaderboard-assets/china.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="KO">
+                                        <img src="/leaderboard-assets/south-korea.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="ID">
+                                        <img src="/leaderboard-assets/indonesia.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="VI">
+                                        <img src="/leaderboard-assets/vietnam.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="TR">
+                                        <img src="/leaderboard-assets/turkey.png" />
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="OTHERS">
+                                        <img src="/leaderboard-assets/others.png" />
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
 
                             <Dropdown size="sm"
                                 classNames={{
