@@ -18,6 +18,7 @@ import {
 import { BigNumber } from "bignumber.js";
 import { resqUrl } from "@/config";
 import { ChevronDown } from "lucide-react";
+import Spinner from "@/components/spinner";
 
 
 const apiKey = import.meta.env.VITE_APP_KAITO_API_KEY;
@@ -142,7 +143,7 @@ export const LeaderboardPage = () => {
             label: "Mindshare",
             sortable: true,
             renderCell: (row) => (
-                <span className="text-[#34f3e2]">
+                <span className="">
                     {BigNumber(row?.mindshare * 100).toFixed(4, BigNumber.ROUND_DOWN) +
                         "%"}
                 </span>
@@ -233,26 +234,42 @@ export const LeaderboardPage = () => {
         <>
             <style>
                 {`
-            body tr[data-rank='1'] {
-                background: rgba(255, 185, 48, 0.4);
+            tbody tr[data-rank='1'] {
+                background: linear-gradient(90deg, #8D8059 0%, #D8D0B8 16.35%, #CDB56D 34.62%, #D4C69A 65.38%, #7D6D3B 100%);
             }
-                body tr[data-rank='2'] {
-                background: rgba(218, 223, 232, 0.4);
+            tbody tr[data-rank='1'] .t-cell, tbody tr[data-rank='2'] .t-cell{
+                color: black;
             }
-                body tr[data-rank='3'] {
-                background: rgba(206, 137, 70, 0.4);
+            tbody tr[data-rank='2'] {
+                background: linear-gradient(90deg, #8A8A8A 0%, #D9D9D9 16.35%, #ACACAC 34.62%, #DEDEDE 65.38%, #939393 100%);
+            }
+            tbody tr[data-rank='3'] {
+                background: linear-gradient(90deg, #6F5D4E 0%, #7F736C 16.35%, #6E625C 34.62%, #94877F 65.38%, #6E615C 100%);
+            }
+            tbody tr .t-cell{
+                font-size: 14px;
+                font-family: Teachers;
+            }
+            tbody tr td{
+                padding-block: 0px!important;
+                height: 32px;
+                // margin-botton: 8px!important;
+            }
+            thead tr:nth-of-type(2){
+                display: none;
             }
             `}
             </style>
             <PT12Wrapper className="w-full pb-12 px-3 md:px-[3rem]">
-                <GradientBorderCard borderRadius={8} className="main-container p-6">
+                <div className="unbounded-32-128-200 md:p-12 pb-12 text-center">Leaderboard</div>
+                <GradientBorderCard borderRadius={8} className="main-container px-6 py-4 md:mt-12">
                     <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
-                        <div className="text-2xl font-semibold">TOP CYSIC YAPPERS</div>
+                        <div className="unbounded-20-300">TOP CYSIC YAPPERS</div>
                         <div className="flex items-center gap-2 flex-1 w-full justify-end">
                             <Input
                                 classNames={{
                                     base: "max-w-[260px]",
-                                    inputWrapper: " min-h-8 h-8 rounded-[8px] border-[1px]",
+                                    inputWrapper: " min-h-12 h-12 rounded-[8px] border-[1px]",
                                 }}
                                 variant="bordered"
                                 // isClearable
@@ -270,7 +287,7 @@ export const LeaderboardPage = () => {
                                     content: "min-w-[120px]"
                                 }}>
                                 <DropdownTrigger>
-                                    <Button size="sm" className="uppercase h-8 border-[1px]" variant="bordered" >
+                                    <Button size="sm" className="uppercase h-12 border-[1px] text-white/50" variant="bordered" >
                                         {selectedValue}
                                         <ChevronDown className="size-3" />
                                     </Button>
@@ -295,13 +312,15 @@ export const LeaderboardPage = () => {
                         sortable
                         data={processedData}
                         columns={taskListColumns}
-                        className={cn("[&>div]:!pt-0")}
-                        loading={loading}
+                        className={cn("[&>div]:!pt-0", "[&_table]:border-separate [&_table]:border-spacing-y-2 [&_table]:border-spacing-x-0 ")}
+                        // loading={loading}
                         onColumnClick={handleColumnClick}
                         sortKey={sortConfig?.key}
                         sortDirection={sortConfig?.direction}
                     />
-
+                    {
+                        loading && <div className="flex items-center justify-center h-[300px] w-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"><Spinner /></div>
+                    }
                     {!loading && totalPages > 1 && (
                         <div className="flex justify-center mt-4">
                             <Pagination

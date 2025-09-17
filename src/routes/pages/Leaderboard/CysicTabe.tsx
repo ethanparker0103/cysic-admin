@@ -75,7 +75,7 @@ const CysicTable = <T extends object>({
           >
             <div className={cn("flex items-center gap-1", sortable && column?.sortable && "cursor-pointer")}>
               <span>{column.label}</span> {sortable && column?.sortable && <SortIcon className={cn(
-                'text-[rgba(255,255,255,0.6)]',
+                'text-[rgba(255,255,255,0.6)] size-3',
                 sortKey == column.key && sortDirection == 'asc' && '[&>path:first-of-type]:text-[#34f3e2]',
                 sortKey == column.key && sortDirection == 'desc' && '[&>path:last-of-type]:text-[#34f3e2]',
               )} />}
@@ -94,7 +94,7 @@ const CysicTable = <T extends object>({
             {(columnKey) => {
               const column = columns.find(col => col.key === columnKey);
               return (
-                <TableCell className="text-white py-4 teacher text-sm !normal-case">
+                <TableCell className="text-white py-4 teacher text-sm !normal-case t-cell">
                   {column?.renderCell ? column.renderCell(item) : (item as any)[columnKey]}
                 </TableCell>
               );

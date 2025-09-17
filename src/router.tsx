@@ -130,7 +130,8 @@ export const backgroundImageList = {
     needShadow: true,
   },
   "/leaderboard": {
-    img: "#000",
+    img: getImageUrl("@/assets/images/_global/leaderboard_landing_bg.png"),
+    className: "h-screen bg-position-[center_-20rem]",
   },
   "/404": {
     // img: '#000',

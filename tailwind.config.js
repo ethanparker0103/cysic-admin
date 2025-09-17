@@ -407,6 +407,8 @@ export default {
         { mobile: 48, desktop: 96 },
         { mobile: 48, desktop: 180 },
         { mobile: 72, desktop: 120 },
+        { mobile: 32, desktop: 128 },
+        { mobile: 48, desktop: 128 },
       ];
 
       let components = {};
