@@ -81,6 +81,7 @@ export const isProd = import.meta.env.VITE_APP_ENV == "prod";
 
 export const homeUrl = isProd ? 'https://cysic.xyz' : 'https://qa.prover.xyz'
 export const appUrl = isProd ? 'https://app.cysic.xyz' : 'https://qa-app.prover.xyz'
+export const resqUrl = isProd ? 'https://api-pre.prover.xyz' : 'https://api-dev.prover.xyz'
 
 export const enableSocialTask = true
 export const enableBridge = false && isQa
