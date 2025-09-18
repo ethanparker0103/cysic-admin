@@ -20,7 +20,6 @@ import { resqUrl } from "@/config";
 import { ChevronDown } from "lucide-react";
 import Spinner from "@/components/spinner";
 
-
 const apiKey = import.meta.env.VITE_APP_KAITO_API_KEY;
 
 const apiClient = axios.create({
@@ -89,7 +88,7 @@ export const fetchCommunityMindshare = (params: CommunityMindshareParams) => {
 export const LeaderboardPage = () => {
     const [topYapper, setTopYapper] = useState<Yappers[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [lngSortKey, setLngSortKey] = useState("")
+    const [lngSortKey, setLngSortKey] = useState("");
     const [sortConfig, setSortConfig] = useState<{
         key?: keyof Yappers;
         direction: "asc" | "desc";
@@ -101,15 +100,18 @@ export const LeaderboardPage = () => {
     const { loading, run } = useRequest(
         (window?: string) => {
             let _window = "7d";
-            if (window && window.endsWith('m')) {
-                const monthValue = parseInt(window.replace('m', ''), 10);
-                _window = `${monthValue * 30}d`;
+            if (window) {
+                if (window.endsWith("m")) {
+                    const monthValue = parseInt(window.replace("m", ""), 10);
+                    _window = `${monthValue * 30}d`;
+                } else {
+                    _window = window
+                }
             }
-
             return fetchCommunityMindshare({
                 ticker,
                 window: _window as any,
-            })
+            });
         },
         {
             onSuccess(resp) {
@@ -173,12 +175,17 @@ export const LeaderboardPage = () => {
                     y.displayname?.toLowerCase().includes(lower)
             );
         }
-        if(lngSortKey){
-            console.log('lngSortKey', lngSortKey)
-            if(lngSortKey != "OTHERS"){
-                data = data.filter(i=>i.language?.toUpperCase() == lngSortKey)
-            }else{
-                data = data.filter(i=>!["EN", "ZH", "KO", "ID", "VI", "TR"].includes(i.language?.toUpperCase()))
+        if (lngSortKey) {
+            console.log("lngSortKey", lngSortKey);
+            if (lngSortKey != "OTHERS") {
+                data = data.filter((i) => i.language?.toUpperCase() == lngSortKey);
+            } else {
+                data = data.filter(
+                    (i) =>
+                        !["EN", "ZH", "KO", "ID", "VI", "TR"].includes(
+                            i.language?.toUpperCase()
+                        )
+                );
             }
         }
 
@@ -236,49 +243,47 @@ export const LeaderboardPage = () => {
     );
 
     const handleSelect = (v) => {
-        run(v.currentKey)
-        setSelectedKeys(v)
-    }
-
+        run(v.currentKey);
+        setSelectedKeys(v);
+    };
 
     const [lngKeys, setLngKeys] = useState(new Set(["All"]));
-    const valueOfLngKey = Array.from(lngKeys).toString()
+    const valueOfLngKey = Array.from(lngKeys).toString();
 
-    const selectedLngValue = useMemo(
-        () => {
-            switch (valueOfLngKey) {
-                case 'EN':
-                    setLngSortKey("EN")
-                    return <img className="w-4" src="/leaderboard-assets/usa.png" />
-                case 'ZH':
-                    setLngSortKey("ZH")
-                    return <img className="w-4" src="/leaderboard-assets/china.png" />
-                case 'KO':
-                    setLngSortKey("KO")
-                    return <img className="w-4" src="/leaderboard-assets/south-korea.png" />
-                case 'ID':
-                    setLngSortKey("ID")
-                    return <img className="w-4" src="/leaderboard-assets/indonesia.png" />
-                case 'VI':
-                    setLngSortKey("VI")
-                    return <img className="w-4" src="/leaderboard-assets/vietnam.png" />
-                case 'TR':
-                    setLngSortKey("TR")
-                    return <img className="w-4" src="/leaderboard-assets/turkey.png" />
-                case 'OTHERS':
-                    setLngSortKey("OTHERS")
-                    return <img className="w-4" src="/leaderboard-assets/others.png" />
+    const selectedLngValue = useMemo(() => {
+        switch (valueOfLngKey) {
+            case "EN":
+                setLngSortKey("EN");
+                return <img className="w-4" src="/leaderboard-assets/usa.png" />;
+            case "ZH":
+                setLngSortKey("ZH");
+                return <img className="w-4" src="/leaderboard-assets/china.png" />;
+            case "KO":
+                setLngSortKey("KO");
+                return (
+                    <img className="w-4" src="/leaderboard-assets/south-korea.png" />
+                );
+            case "ID":
+                setLngSortKey("ID");
+                return <img className="w-4" src="/leaderboard-assets/indonesia.png" />;
+            case "VI":
+                setLngSortKey("VI");
+                return <img className="w-4" src="/leaderboard-assets/vietnam.png" />;
+            case "TR":
+                setLngSortKey("TR");
+                return <img className="w-4" src="/leaderboard-assets/turkey.png" />;
+            case "OTHERS":
+                setLngSortKey("OTHERS");
+                return <img className="w-4" src="/leaderboard-assets/others.png" />;
 
-                default:
-                    setLngSortKey("")
-                    return 'All'
-            }
-        },
-        [valueOfLngKey]
-    );
+            default:
+                setLngSortKey("");
+                return "All";
+        }
+    }, [valueOfLngKey]);
     const handleLngSelect = (v) => {
-        setLngKeys(v)
-    }
+        setLngKeys(v);
+    };
 
     return (
         <>
@@ -311,8 +316,13 @@ export const LeaderboardPage = () => {
             `}
             </style>
             <PT12Wrapper className="w-full pb-12 px-3 md:px-[3rem]">
-                <div className="unbounded-32-128-200 md:p-12 pb-12 text-center">Leaderboard</div>
-                <GradientBorderCard borderRadius={8} className="main-container px-6 py-4 md:mt-12">
+                <div className="unbounded-32-128-200 md:p-12 pb-12 text-center">
+                    Leaderboard
+                </div>
+                <GradientBorderCard
+                    borderRadius={8}
+                    className="main-container px-6 py-4 md:mt-12"
+                >
                     <div className="flex flex-col md:flex-row items-center justify-between mb-6 gap-4">
                         <div className="unbounded-20-300">TOP CYSIC YAPPERS</div>
                         <div className="flex items-center gap-2 flex-1 w-full justify-end">
@@ -332,12 +342,18 @@ export const LeaderboardPage = () => {
                                 size="md"
                             />
 
-                            <Dropdown size="sm"
+                            <Dropdown
+                                size="sm"
                                 classNames={{
-                                    content: "min-w-[120px]"
-                                }}>
+                                    content: "min-w-[120px]",
+                                }}
+                            >
                                 <DropdownTrigger>
-                                    <Button size="sm" className="uppercase h-12 border-[1px] text-white/50" variant="bordered" >
+                                    <Button
+                                        size="sm"
+                                        className="uppercase h-12 border-[1px] text-white/50"
+                                        variant="bordered"
+                                    >
                                         {selectedLngValue}
                                         <ChevronDown className="size-3" />
                                     </Button>
@@ -350,7 +366,12 @@ export const LeaderboardPage = () => {
                                     selectionMode="single"
                                     className="[&_img]:w-4"
                                 >
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="All">All</DropdownItem>
+                                    <DropdownItem
+                                        className="uppercase [&_span]:text-xs"
+                                        key="All"
+                                    >
+                                        All
+                                    </DropdownItem>
                                     <DropdownItem className="uppercase [&_span]:text-xs" key="EN">
                                         <img src="/leaderboard-assets/usa.png" />
                                     </DropdownItem>
@@ -369,18 +390,27 @@ export const LeaderboardPage = () => {
                                     <DropdownItem className="uppercase [&_span]:text-xs" key="TR">
                                         <img src="/leaderboard-assets/turkey.png" />
                                     </DropdownItem>
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="OTHERS">
+                                    <DropdownItem
+                                        className="uppercase [&_span]:text-xs"
+                                        key="OTHERS"
+                                    >
                                         <img src="/leaderboard-assets/others.png" />
                                     </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
 
-                            <Dropdown size="sm"
+                            <Dropdown
+                                size="sm"
                                 classNames={{
-                                    content: "min-w-[120px]"
-                                }}>
+                                    content: "min-w-[120px]",
+                                }}
+                            >
                                 <DropdownTrigger>
-                                    <Button size="sm" className="uppercase h-12 border-[1px] text-white/50" variant="bordered" >
+                                    <Button
+                                        size="sm"
+                                        className="uppercase h-12 border-[1px] text-white/50"
+                                        variant="bordered"
+                                    >
                                         {selectedValue}
                                         <ChevronDown className="size-3" />
                                     </Button>
@@ -392,11 +422,27 @@ export const LeaderboardPage = () => {
                                     onSelectionChange={handleSelect}
                                     selectionMode="single"
                                 >
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="7d">7d</DropdownItem>
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="30d">30d</DropdownItem>
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="3m">3m</DropdownItem>
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="6m">6m</DropdownItem>
-                                    <DropdownItem className="uppercase [&_span]:text-xs" key="12m">12m</DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="7d">
+                                        7d
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="uppercase [&_span]:text-xs"
+                                        key="30d"
+                                    >
+                                        30d
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="3m">
+                                        3m
+                                    </DropdownItem>
+                                    <DropdownItem className="uppercase [&_span]:text-xs" key="6m">
+                                        6m
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        className="uppercase [&_span]:text-xs"
+                                        key="12m"
+                                    >
+                                        12m
+                                    </DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
@@ -405,15 +451,20 @@ export const LeaderboardPage = () => {
                         sortable
                         data={processedData}
                         columns={taskListColumns}
-                        className={cn("[&>div]:!pt-0", "[&_table]:border-separate [&_table]:border-spacing-y-2 [&_table]:border-spacing-x-0 ")}
+                        className={cn(
+                            "[&>div]:!pt-0",
+                            "[&_table]:border-separate [&_table]:border-spacing-y-2 [&_table]:border-spacing-x-0 "
+                        )}
                         // loading={loading}
                         onColumnClick={handleColumnClick}
                         sortKey={sortConfig?.key}
                         sortDirection={sortConfig?.direction}
                     />
-                    {
-                        loading && <div className="flex items-center justify-center h-[300px] w-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"><Spinner /></div>
-                    }
+                    {loading && (
+                        <div className="flex items-center justify-center h-[300px] w-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <Spinner />
+                        </div>
+                    )}
                     {!loading && totalPages > 1 && (
                         <div className="flex justify-center mt-4">
                             <Pagination
