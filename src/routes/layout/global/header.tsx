@@ -184,7 +184,7 @@ export default function Header() {
               }
             </div>
 
-            {/* <Notify className="left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(6.6rem)] w-screen" /> */}
+            <Notify className="left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(6.6rem)] w-screen" />
           </div>,
           document.body
         )}

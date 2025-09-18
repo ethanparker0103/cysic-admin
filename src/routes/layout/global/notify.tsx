@@ -50,25 +50,25 @@ export const Notify = ({ className }: any) => {
         } */}
 
 
-        {(Number(state) > 99) ? null : (
+        {/* {(Number(state) > 99) ? null : ( */}
             <>
-                <a
+                {/* <a
                     href="https://cube.cysicfoundation.org/claimPortal"
                     target="_blank"
                     // onClick={() => {
                     //     setState((old) => String(Number(old || "0") + 1));
                     // }}
-                >
+                > */}
                     <div
                         className={cn(
                             "mt-0 py-4 teachers-16-700 text-center bg-gradient-to-r from-[#19FFE0] to-[#7480F5] text-black",
                             className
                         )}
                     >
-                        Cysic ComputeFi Cube is live, check your allowlist eligibility now!
+                        CYSIC TESTNET IS NOW CLOSED. STAY TUNED FOR WHAT'S NEXT!
                     </div>
-                </a>
+                {/* </a> */}
             </>
-        )}
+        {/* )} */}
     </>
 };
