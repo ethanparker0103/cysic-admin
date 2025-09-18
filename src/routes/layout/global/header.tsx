@@ -54,7 +54,7 @@ export default function Header() {
   return (
     <>
       <>
-        <div className="lg:hidden h-[5.625rem] flex items-center relative z-[1]">
+        <div className="lg:hidden h-[5.625rem] flex items-center relative z-[1] flex flex-col">
           <div className="flex flex-wrap gap-3 relative w-full">
             <Button onClick={handleOpen}>
               <Menu width={30} height={30} />
@@ -70,6 +70,9 @@ export default function Header() {
               />
             </Link>
           </div>
+          <Notify className="!px-4 w-screen" />
+
+
           <Drawer isOpen={isOpen} size={size} onClose={onClose} shouldBlockScroll classNames={{ wrapper: 'z-[51]' }}>
             <DrawerContent className="bg-[#090A09]">
               {(onClose) => (
