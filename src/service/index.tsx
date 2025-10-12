@@ -4,7 +4,7 @@ import useUser from '@/models/user';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_BASE_URL || 'https://api-pre.prover.xyz';
+axios.defaults.baseURL = import.meta.env.VITE_APP_BASE_URL || 'https://api.prover.xyz';
 
 axios.interceptors.request.use(function (config) {
     // Do something before request is sent
