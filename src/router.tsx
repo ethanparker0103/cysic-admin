@@ -12,12 +12,17 @@ import ContactUs from "@/routes/pages/ContactUs/page";
 import CareersPage from "@/routes/pages/Careers/page";
 import NotFound from "@/not-found";
 import { LeaderboardPage } from "@/routes/pages/Leaderboard/page";
+import { KRActivity } from "@/routes/pages/Kr/page";
 
 // 定义共享的路由结构
 const routeChildren = [
   {
     index: true,
     element: <Home />,
+  },
+  {
+    path: "krkrkr",
+    element: <KRActivity />,
   },
   {
     path: "careers",
@@ -81,6 +86,9 @@ export const router = createBrowserRouter([
 ]);
 
 export const backgroundImageList = {
+  "/krkrkr": {
+    img: '#000'
+  },
   "/": {
     img: getImageUrl("@/assets/images/_global/home_landing_bg.png"),
     className: "grayscale h-[100vh] min-h-[1200px]",

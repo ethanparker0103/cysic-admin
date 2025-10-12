@@ -1,4 +1,9 @@
 @import url(./bootstrap.css);
+
+:root{
+    --nextui-radius-medium: 8px;
+}
+
 * {
     margin: 0;
     font-family: 'Teachers';
