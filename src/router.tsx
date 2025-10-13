@@ -13,6 +13,7 @@ import CareersPage from "@/routes/pages/Careers/page";
 import NotFound from "@/not-found";
 import { LeaderboardPage } from "@/routes/pages/Leaderboard/page";
 import { KRActivity } from "@/routes/pages/Kr/page";
+import { KrActivityDashboard } from "@/routes/pages/Kr/dashboard/page";
 
 // 定义共享的路由结构
 const routeChildren = [
@@ -23,6 +24,10 @@ const routeChildren = [
   {
     path: "krkrkr",
     element: <KRActivity />,
+  },
+  {
+    path: "krkrkr/dashboard",
+    element: <KrActivityDashboard />
   },
   {
     path: "careers",
@@ -86,6 +91,9 @@ export const router = createBrowserRouter([
 ]);
 
 export const backgroundImageList = {
+  "/krkrkr/dashboard": {
+    img: '#000'
+  },
   "/krkrkr": {
     img: '#000'
   },
