@@ -149,6 +149,13 @@ export const KrLayout = () => {
         }
     }, [user?.id, step]);
 
+    useEffect(() => {
+        if (!user?.id && step != 1) {
+            setState({ step: 1 });
+        }
+    }, [user?.id, step]);
+
+
     return (
         <>
             <Modal
