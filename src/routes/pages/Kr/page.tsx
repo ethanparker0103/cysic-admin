@@ -13,7 +13,7 @@ import Button from "@/components/Button";
 import { useEventListener } from "ahooks";
 import { mediasLink } from "@/config";
 import { getImageUrl } from "@/utils/tools";
-import { ArrowDownToLineIcon, Check } from "lucide-react";
+import { ArrowDownToLineIcon, ArrowUpRight, Check } from "lucide-react";
 
 enum EStepName {
   Step1 = "Enter Your Invite Code",
@@ -169,9 +169,14 @@ const Post = () => {
     <>
       <div className="mt-8 flex justify-center gap-4">
         <div className="relative border rounded-[8px] bg-white p-1 flex-1">
-          <div className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer">
-            <ArrowDownToLineIcon className="size-4" />
+        <div className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer">
+            <ArrowUpRight className="size-3" />
           </div>
+
+        <div className="absolute top-4 right-12 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer">
+            <ArrowDownToLineIcon className="size-3" />
+          </div>
+    
           <div className="rounded-[8px] size-full overflow-hidden">
             <img
               className="object-cover size-full"
