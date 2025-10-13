@@ -144,7 +144,7 @@ export const twitterLink = `https://twitter.com/intent/tweet?${generateQueryStri
 
 export const mediasLink = {
   gitbook: "https://docs.cysic.xyz/",
-  whitePaper: "https://bit.ly/cysicnetworkwhitepaper",
+  whitePaper: "https://hackmd.io/@Cysic/H1XlGr0jle",
   discord: "https://t.co/V7D83oIVWE",
   twitter: "https://x.com/cysic_xyz",
   medium: "https://medium.com/@cysic",
