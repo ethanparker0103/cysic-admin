@@ -29,6 +29,9 @@ export const Notify = ({ className }: any) => {
     //     handleClose()
     //     window.open("https://cube.cysicfoundation.org/cubeSale#purchase")
     // }
+
+    if(window.location.href.includes('/kr')) return null
+
     return <>
 
         {/* {(Number(modalState) > 0) ? null : <Modal

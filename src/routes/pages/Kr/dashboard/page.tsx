@@ -6,6 +6,17 @@ import dayjs from "dayjs";
 import { Badge, cn, Divider } from "@nextui-org/react";
 import { getImageUrl } from "@/utils/tools";
 import Button from "@/components/Button";
+import useKrActivity from "@/models/kr";
+
+export interface ITask{
+    title: string;
+    subTitle: string;
+    label: string;
+    points: string;
+    expireAt: string;
+    type: string;
+    buttonText: string;
+}
 
 const stamps = [
     {
@@ -51,113 +62,6 @@ const stamps = [
         label: "legendary",
     },
 ];
-
-const quizs = {
-    fundamentalsQuiz: [
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 1,
-        },
-        {
-            q: "Which of the following best describes ZK-SNARK?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 2,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 3,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 4,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 5,
-        },
-    ],
-    basicsQuiz: [
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 1,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 2,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 3,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 4,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 5,
-        },
-    ],
-};
 
 const tasks = {
     week1: [
@@ -217,37 +121,30 @@ function getRecent7Days() {
 }
 
 const StampCard = ({ item }: any) => {
+    const { user } = useKrActivity()
+
+
+    const ifActive = user?.id && item?.earned
     return (
-        <GradientBorderCard borderRadius={8} className={cn("p-4 min-h-[8rem]", !item.earned && "opacity-50")}>
-            <div className="flex items-start gap-4 justify-between">
+        <GradientBorderCard gradientFrom={ifActive && "#00F0FF"} gradientTo={ifActive && "#9D47FF"} borderRadius={8} className={cn("p-4 min-h-[8rem]", !ifActive && "opacity-50")}>
+            <div className="flex flex-col items-center ">
+                <img className="size-16 mb-2" src={getImageUrl("@/assets/images/assets/token.png")}/>
                 <div className="flex-1">
-                    <div
-                        className="w-fit mb-1 bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
-                        children={item.label}
-                    />
-                    <div className="flex items-center gap-1">
-                        <p className="unbounded-16-300">{item.title}</p>
+                    <div className="flex items-center gap-1 justify-center">
+                        <p className="unbounded-14-300 text-center">{item.title}</p>
                     </div>
-                    <div className="teachers-14-200 !normal-case text-white/80 mt-1">
+                    <div className="teachers-12-200 !normal-case text-white/80 mt-1 text-center">
                         {item.subTitle}
                     </div>
 
                     {
-                        item.earned ? (
-                            <div className="flex items-center justify-between mt-4">
-                                <div className="flex flex-col items-start gap-1">
-                                    <div>
-                                        <span className="text-white/60">Earned At:</span> {dayjs(item.earned).format('MMM DD, YYYY')}
-                                    </div>
-                                </div>
+                        ifActive ? (
+                            <div className="flex items-center justify-between text-xs absolute top-2 right-2 text-white/80 origin-right scale-80">
+                               {dayjs(item.earned).format('MMM DD, YYYY')}
                             </div>
                         ) : null
                     }
                 </div>
-
-                    <div className="">
-                        <Award className={cn("size-6 stroke-[1px]", item.earned && "fill-white stroke-black")}/>
-                    </div>
 
             </div>
         </GradientBorderCard>
@@ -255,6 +152,7 @@ const StampCard = ({ item }: any) => {
 };
 
 export const KrActivityDashboard = () => {
+    const { user } = useKrActivity()
     const [last7, setLast7] = useState<
         { timestamp: number; format: string; isToday: false }[]
     >([]);
@@ -264,8 +162,10 @@ export const KrActivityDashboard = () => {
         setLast7(res);
     }, []);
 
-    const finishedStamps = stamps.filter((i) => i.earned);
-    const unfinishedStamps = stamps.filter((i) => !i.earned);
+    const finishedStamps = user?.id ? stamps.filter((i) => i.earned) : [];
+    const unfinishedStamps = user?.id ? stamps.filter((i) => !i.earned) : stamps;
+
+    const activeList = user?.id ? [ dayjs().format('DD') ] : []
 
     return (
         <>
@@ -273,23 +173,57 @@ export const KrActivityDashboard = () => {
                 <div className="flex justify-center gap-4">
                     <GradientBorderCard borderRadius={8} className="flex-1 p-4">
                         <>
-                            <div className="unbounded-18-200">Stamp Collection</div>
-                            <div className="text-white/80 mt-1">
-                                {finishedStamps.length} of {stamps.length} stamps earned
+                            <div className="flex items-center gap-1 unbounded-24-200">
+                                Tasks
                             </div>
+                            <div className="relative mt-4 flex flex-col gap-4">
+                                {tasks.week1.map((item, idx) => {
+                                    return (
+                                        <GradientBorderCard
+                                            key={idx}
+                                            borderRadius={8}
+                                            className="px-4 py-4 flex flex-row justify-between items-center"
+                                        >
+                                            <>
+                                                <div>
+                                                    <div className="flex items-center gap-1">
+                                                        <p className="unbounded-18-400">{item.title}</p>
+                                                        <div
+                                                            className="bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
+                                                            children={item.label}
+                                                        />
+                                                    </div>
+                                                    <div className="teachers-14-200 !normal-case text-white/80 mt-1">
+                                                        {item.subTitle}
+                                                    </div>
+                                                    <div className="flex items-center justify-between mt-4 text-sm">
+                                                        <div className="flex flex-col items-start gap-1">
+                                                            <div>
+                                                                <span className="text-white/60">Reward:</span>{" "}
+                                                                {item.points} Points
+                                                            </div>
+                                                            <div>
+                                                                <span className="text-white/60">
+                                                                    Expire At:
+                                                                </span>{" "}
+                                                                {item.expireAt}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                            <div className="flex flex-col gap-4 mt-4">
-                                <div className="grid grid-cols-3 gap-4">
-                                    {finishedStamps?.map((item, idx) => {
-                                        return <StampCard key={idx} item={item} />;
-                                    })}
-                                </div>
-
-                                <div className="grid grid-cols-3 gap-4">
-                                    {unfinishedStamps?.map((item, idx) => {
-                                        return <StampCard key={idx} item={item} />;
-                                    })}
-                                </div>
+                                                <Button
+                                                    disabled={!user?.id}
+                                                    className="min-h-fit h-fit"
+                                                    type="light"
+                                                    onClick={()=>dispatchEvent(new CustomEvent('cysic_kr_tasks_action', {detail: item}))}
+                                                >
+                                                    {item.buttonText}
+                                                </Button>
+                                            </>
+                                        </GradientBorderCard>
+                                    );
+                                })}
                             </div>
                         </>
                     </GradientBorderCard>
@@ -314,11 +248,12 @@ export const KrActivityDashboard = () => {
                                                 <div
                                                     key={idx}
                                                     className={cn(
-                                                        "opacity-30 text-black bg-white flex items-center justify-center rounded-[8px] text-center flex-1 aspect-[1/1.1]",
-                                                        item?.isToday && "opacity-100 bg-white text-black"
+                                                        "relative opacity-30 text-black bg-white flex flex-col gap-1 pt-1 items-center justify-center rounded-[8px] text-center flex-1 aspect-[1/1.1]",
+                                                        activeList.includes(item?.format) && "opacity-100 bg-white text-black"
                                                     )}
                                                 >
-                                                    {item.format}
+                                                    <span>{item.format}</span>
+                                                    <span className={cn(!activeList.includes(item?.format) && "grayscale", "")}>🔥</span>
                                                 </div>
                                             );
                                         })}
@@ -336,69 +271,44 @@ export const KrActivityDashboard = () => {
                                 <div className="flex items-center gap-2 mt-4 [&_p]:font-medium">
                                     <div className="flex-1 items-center flex flex-col gap-2 py-2 rounded-[8px] bg-white text-black">
                                         <p>Total Points</p>
-                                        <span>1</span>
+                                        <span>{user?.id ? 2 : 0}</span>
                                     </div>
                                     <div className="flex-1 items-center flex flex-col gap-2 py-2 rounded-[8px] bg-white text-black">
                                         <p>Tasks Completed</p>
-                                        <span>1</span>
+                                        <span>{user?.id ? 2 : 0}</span>
                                     </div>
                                     <div className="flex-1 items-center flex flex-col gap-2 py-2 rounded-[8px] bg-white text-black">
                                         <p>Stamps Earned</p>
-                                        <span>1</span>
+                                        <span>{user?.id ? 2 : 0}</span>
                                     </div>
                                 </div>
 
                                 <Divider className="my-4" />
 
-                                <div className="flex items-center gap-1 unbounded-18-200">
-                                    Tasks
-                                </div>
-                                <div className="relative mt-4 flex flex-col gap-4">
-                                    {tasks.week1.map((item, idx) => {
-                                        return (
-                                            <GradientBorderCard
-                                                key={idx}
-                                                borderRadius={8}
-                                                className="px-4 py-4"
-                                            >
-                                                <>
-                                                    <div className="flex items-center gap-1">
-                                                        <p className="unbounded-16-300">{item.title}</p>
-                                                        <div
-                                                            className="bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
-                                                            children={item.label}
-                                                        />
-                                                    </div>
-                                                    <div className="teachers-14-200 !normal-case text-white/80 mt-1">
-                                                        {item.subTitle}
-                                                    </div>
 
-                                                    <div className="flex items-center justify-between mt-4">
-                                                        <div className="flex flex-col items-start gap-1">
-                                                            <div>
-                                                                <span className="text-white/60">Reward:</span>{" "}
-                                                                {item.points} Points
-                                                            </div>
-                                                            <div>
-                                                                <span className="text-white/60">
-                                                                    Expire At:
-                                                                </span>{" "}
-                                                                {item.expireAt}
-                                                            </div>
-                                                        </div>
+                                <>
+                                    <div className="unbounded-18-200">Stamp Collection</div>
+                                    <div className="text-white/80 mt-1">
+                                        {finishedStamps.length} of {stamps.length} stamps earned
+                                    </div>
 
-                                                        <Button
-                                                            className="self-end !px-2 !py-1 text-xs min-h-fit"
-                                                            type="light"
-                                                        >
-                                                            {item.buttonText}
-                                                        </Button>
-                                                    </div>
-                                                </>
-                                            </GradientBorderCard>
-                                        );
-                                    })}
-                                </div>
+                                    <div className="flex flex-col gap-4 mt-4">
+                                        {finishedStamps?.length ? <div className="grid grid-cols-2 gap-4">
+                                            {finishedStamps?.map((item, idx) => {
+                                                return <StampCard key={idx} item={item} />;
+                                            })}
+                                        </div> : null}
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {unfinishedStamps?.map((item, idx) => {
+                                                return <StampCard key={idx} item={item} />;
+                                            })}
+                                        </div>
+                                    </div>
+                                </>
+
+
+
                             </>
                         </GradientBorderCard>
                     </div>

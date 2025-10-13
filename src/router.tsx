@@ -14,6 +14,7 @@ import NotFound from "@/not-found";
 import { LeaderboardPage } from "@/routes/pages/Leaderboard/page";
 import { KRActivity } from "@/routes/pages/Kr/page";
 import { KrActivityDashboard } from "@/routes/pages/Kr/dashboard/page";
+import { KrLayout } from "@/routes/pages/Kr/layout";
 
 // 定义共享的路由结构
 const routeChildren = [
@@ -23,11 +24,18 @@ const routeChildren = [
   },
   {
     path: "krkrkr",
-    element: <KRActivity />,
-  },
-  {
-    path: "krkrkr/dashboard",
-    element: <KrActivityDashboard />
+    element: <KrLayout />,
+    children: [
+      {
+        index: true,
+        element: <KRActivity />,
+      },
+      {
+        path: "dashboard",
+        element: <KrActivityDashboard />
+      },
+    ]
+    
   },
   {
     path: "careers",

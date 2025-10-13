@@ -9,20 +9,19 @@ import {
 import { ArrowRight, Menu } from "lucide-react";
 import useNav from "@/hooks/useNav";
 import { Link, useLocation } from "react-router-dom";
-import { cn, Drawer, DrawerContent, useDisclosure } from "@nextui-org/react";
+import { cn, Drawer, DrawerContent, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { createPortal } from "react-dom";
 import { appUrl } from "@/config";
 import { Notify } from "@/routes/layout/global/notify";
+import useKrActivity from "@/models/kr";
 
 const size = "full";
 
-
 export default function Header() {
   const { currentNavs } = useNav();
+  const { user } = useKrActivity();
   const location = useLocation();
-
-
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -40,10 +39,10 @@ export default function Header() {
 
   const handleScrollToTopInHome = () => {
     const path = location.pathname;
-    if (path == '/') {
-      scrollToTop()
+    if (path == "/") {
+      scrollToTop();
     }
-  }
+  };
 
   // useEffect(()=>{
   //   if(isOpen){
@@ -72,8 +71,13 @@ export default function Header() {
           </div>
           <Notify className="!px-4 w-screen" />
 
-
-          <Drawer isOpen={isOpen} size={size} onClose={onClose} shouldBlockScroll classNames={{ wrapper: 'z-[51]' }}>
+          <Drawer
+            isOpen={isOpen}
+            size={size}
+            onClose={onClose}
+            shouldBlockScroll
+            classNames={{ wrapper: "z-[51]" }}
+          >
             <DrawerContent className="bg-[#090A09]">
               {(onClose) => (
                 <>
@@ -154,31 +158,75 @@ export default function Header() {
                     ))}
                   </div>
                   <div className="h-full flex items-center justify-end w-[26.75rem]">
-                    <a
-                      href={appUrl}
-                      target="_blank"
-                      className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
-                    >
-                      <span className="text-sub font-[400] uppercase text-sm">
-                        Get Started
-                      </span>
-                      <ArrowRight width={16} height={16} />
-                    </a>
+                    {window.location.href.includes("/kr") ? (
+                      <>
+                        {
+                          user?.id ? (
+                            <Dropdown>
+                              <DropdownTrigger>
+                                <div className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                  <span className="text-sub font-[400] uppercase text-sm">
+                                    {user?.name}
+                                  </span>
+                                </div>
+                              </DropdownTrigger>
+                              <DropdownMenu className="" onAction={(action)=>{if(action == 'logout'){  useKrActivity.getState().setState({user: {}}) }}}>
+                                <DropdownItem key="logout" className="text-danger" color="danger">
+                                  Delete file
+                                </DropdownItem>
+                              </DropdownMenu>
+                            </Dropdown>
+
+                          ) : (
+                            <div onClick={() => dispatchEvent(new CustomEvent('cysic_kr_login_x'))} className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                              <span className="text-sub font-[400] uppercase text-sm">
+                                Login With X
+                              </span>
+                              <ArrowRight width={16} height={16} />
+                            </div>
+                          )
+                        }
+
+                      </>
+                    ) : (
+                      <a
+                        href={appUrl}
+                        target="_blank"
+                        className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] "
+                      >
+                        <span className="text-sub font-[400] uppercase text-sm">
+                          Get Started
+                        </span>
+                        <ArrowRight width={16} height={16} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </GradientBorderCard>
 
               {
                 // @ts-ignore
-                currentNavs?.[0]?.type == 'subNav' && (
+                currentNavs?.[0]?.type == "subNav" && (
                   <div className="hidden lg:block main-container left-1/2 -translate-x-1/2 !px-4 absolute top-[calc(5rem+18px)] w-full">
-                    <GradientBorderCard gradientTo="rgba(255, 255, 255, 0)" direction="0deg" className="bg-gradient-to-t from-[#212121] to-[transparent] px-6 flex items-center h-[65px]">
+                    <GradientBorderCard
+                      gradientTo="rgba(255, 255, 255, 0)"
+                      direction="0deg"
+                      className="bg-gradient-to-t from-[#212121] to-[transparent] px-6 flex items-center h-[65px]"
+                    >
                       {
                         // @ts-ignore
-                        currentNavs?.[0]?.children?.map(i => {
-                          return <Link to={i.href} key={i.key} className="flex-1 max-w-[11.25rem] p-6 flex items-center justify-center hover:bg-default/40">
-                            <span className="teachers-14-400">{i.content}</span>
-                          </Link>
+                        currentNavs?.[0]?.children?.map((i) => {
+                          return (
+                            <Link
+                              to={i.href}
+                              key={i.key}
+                              className="flex-1 max-w-[11.25rem] p-6 flex items-center justify-center hover:bg-default/40"
+                            >
+                              <span className="teachers-14-400">
+                                {i.content}
+                              </span>
+                            </Link>
+                          );
                         })
                       }
                     </GradientBorderCard>
