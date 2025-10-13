@@ -9,6 +9,7 @@
     "dev:prod": "vite --mode prod",
     "build:qa": "vite build --mode qa",
     "build:prod": "vite build --mode prod",
+    "build:pre": "vite build --mode pre",
     "build": "vite build --mode qa",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
