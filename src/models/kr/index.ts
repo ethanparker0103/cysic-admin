@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-const persistFields: any = ["user"];
+const persistFields: any = ["user", "tweetUnderReview"];
 
 interface IUser {
   id: string;
@@ -13,6 +13,7 @@ interface IUser {
 const defaultInitState = {
     user: {} as IUser,
     step: 1,
+    tweetUnderReview: true,
 }
 
 const useKrActivity = create(

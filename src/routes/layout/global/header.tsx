@@ -170,9 +170,9 @@ export default function Header() {
                                   </span>
                                 </div>
                               </DropdownTrigger>
-                              <DropdownMenu className="" onAction={(action)=>{if(action == 'logout'){  useKrActivity.getState().setState({user: {}}) }}}>
+                              <DropdownMenu className="" onAction={(action)=>{if(action == 'logout'){  useKrActivity.getState().setState({user: {}, tweetUnderReview: true}) }}}>
                                 <DropdownItem key="logout" className="text-danger" color="danger">
-                                  Delete file
+                                  Logout
                                 </DropdownItem>
                               </DropdownMenu>
                             </Dropdown>
