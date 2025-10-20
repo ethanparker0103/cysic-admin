@@ -4,6 +4,7 @@ import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Switch } from '@nextui-org/react';
 import { settingsApi } from '@/routes/pages/Admin/adminApi';
+import { toast } from 'react-toastify';
 
 export const SettingsManagement = () => {
   const [settings, setSettings] = useState({
@@ -11,7 +12,6 @@ export const SettingsManagement = () => {
     firstTaskId: 0,
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
 
   // Load system settings
   const loadSettings = async () => {
@@ -26,7 +26,7 @@ export const SettingsManagement = () => {
       }
     } catch (error) {
       console.error('加载设置失败:', error);
-      setMessage('Failed to load settings');
+      toast.error('Failed to load settings');
     } finally {
       setLoading(false);
     }
@@ -39,13 +39,13 @@ export const SettingsManagement = () => {
       const response = await settingsApi.updateEnableInviteCode(enabled);
       if (response.code === '200') {
         setSettings(prev => ({ ...prev, enableInviteCode: enabled }));
-        setMessage('Invite code settings updated successfully');
+        toast.success('Invite code settings updated successfully');
       } else {
-        setMessage(response.msg || 'Update failed');
+        toast.error(response.msg || 'Update failed');
       }
     } catch (error) {
       console.error('更新邀请码设置失败:', error);
-      setMessage('Failed to update invite code settings');
+      toast.error('Failed to update invite code settings');
     } finally {
       setLoading(false);
     }
@@ -57,13 +57,13 @@ export const SettingsManagement = () => {
       setLoading(true);
       const response = await settingsApi.updateFirstTaskId(settings.firstTaskId);
       if (response.code === '200') {
-        setMessage('First task ID updated successfully');
+        toast.success('First task ID updated successfully');
       } else {
-        setMessage(response.msg || 'Update failed');
+        toast.error(response.msg || 'Update failed');
       }
     } catch (error) {
       console.error('更新第一个任务ID失败:', error);
-      setMessage('Failed to update first task ID');
+      toast.error('Failed to update first task ID');
     } finally {
       setLoading(false);
     }
@@ -118,14 +118,7 @@ export const SettingsManagement = () => {
             </div>
           </div>
 
-          {/* Message Display */}
-          {message && (
-            <div className={`p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
+          {/* Toast-based notifications, no in-page message block */}
         </CardBody>
       </Card>
     </div>

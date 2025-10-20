@@ -6,10 +6,11 @@ import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/tabs';
 import { authApi } from '@/routes/pages/Admin/adminApi';
+import { toast } from 'react-toastify';
 
 export const WalletSignExample = () => {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  // Use toast for transient notifications
   
   // 手动输入模式的状态
   const [manualForm, setManualForm] = useState({
@@ -20,15 +21,15 @@ export const WalletSignExample = () => {
   // 钱包连接模式的状态
   const [walletAddress, setWalletAddress] = useState('');
 
-  // 检查钱包是否可用
+  // Check if wallet is available
   const isWalletAvailable = () => {
     return typeof window !== 'undefined' && window.ethereum;
   };
 
-  // 连接钱包并获取地址
+  // Connect wallet and get address
   const connectWallet = async () => {
     if (!isWalletAvailable()) {
-      setMessage('请安装 MetaMask 钱包');
+      toast.error('Please install MetaMask');
       return null;
     }
 
@@ -37,19 +38,19 @@ export const WalletSignExample = () => {
         method: 'eth_requestAccounts',
       });
       setWalletAddress(accounts[0]);
-      setMessage(`钱包连接成功: ${accounts[0]}`);
+      toast.success(`Wallet connected: ${accounts[0]}`);
       return accounts[0];
     } catch (error) {
-      console.error('连接钱包失败:', error);
-      setMessage('连接钱包失败');
+      console.error('Failed to connect wallet:', error);
+      toast.error('Failed to connect wallet');
       return null;
     }
   };
 
-  // 签名钱包地址
+  // Sign wallet address
   const signAddress = async (address: string) => {
     if (!isWalletAvailable()) {
-      throw new Error('钱包不可用');
+      throw new Error('Wallet not available');
     }
 
     try {
@@ -60,17 +61,16 @@ export const WalletSignExample = () => {
       return signature;
     } catch (error: unknown) {
       if ((error as { code?: number })?.code === 4001) {
-        throw new Error('用户拒绝了签名请求');
+        throw new Error('User rejected signature');
       }
-      throw new Error('签名失败');
+      throw new Error('Signature failed');
     }
   };
 
-  // 钱包登录流程
+  // Wallet login flow
   const handleWalletLogin = async () => {
     try {
       setLoading(true);
-      setMessage('');
 
       // 1. 连接钱包
       const address = await connectWallet();
@@ -78,43 +78,42 @@ export const WalletSignExample = () => {
 
       // 2. 签名地址
       const signature = await signAddress(address);
-      setMessage(`签名成功: ${signature.slice(0, 20)}...`);
+      toast.success(`Signed: ${signature.slice(0, 20)}...`);
 
       // 3. 调用登录接口
       const response = await authApi.login(address, signature);
       
       if (response.code === '200') {
-        setMessage(`钱包登录成功! 用户ID: ${response.userId}`);
+        toast.success(`Wallet login success! UserID: ${response.userId}`);
       } else {
-        setMessage(`登录失败: ${response.msg}`);
+        toast.error(`Login failed: ${response.msg}`);
       }
     } catch (error) {
-      setMessage(`错误: ${error.message}`);
+      toast.error((error as Error)?.message || 'Unknown error');
     } finally {
       setLoading(false);
     }
   };
 
-  // 手动输入登录
+  // Manual login
   const handleManualLogin = async () => {
     try {
       setLoading(true);
-      setMessage('');
 
       if (!manualForm.address || !manualForm.signature) {
-        setMessage('请输入钱包地址和签名');
+        toast.error('Please enter wallet address and signature');
         return;
       }
 
       const response = await authApi.login(manualForm.address, manualForm.signature);
       
       if (response.code === '200') {
-        setMessage(`手动登录成功! 用户ID: ${response.userId}`);
+        toast.success(`Manual login success! UserID: ${response.userId}`);
       } else {
-        setMessage(`登录失败: ${response.msg}`);
+        toast.error(`Login failed: ${response.msg}`);
       }
     } catch (error) {
-      setMessage(`错误: ${error.message}`);
+      toast.error((error as Error)?.message || 'Unknown error');
     } finally {
       setLoading(false);
     }
@@ -122,11 +121,11 @@ export const WalletSignExample = () => {
 
   return (
     <div className="p-4 space-y-4">
-      <h3 className="text-lg font-semibold">钱包签名登录示例</h3>
+      <h3 className="text-lg font-semibold">Wallet Signature Login Example</h3>
       
-      <Tabs aria-label="登录方式" className="w-full">
-        {/* 钱包登录模式 */}
-        <Tab key="wallet" title="钱包登录">
+      <Tabs aria-label="Login Methods" className="w-full">
+        {/* Wallet login */}
+        <Tab key="wallet" title="Wallet Login">
           <div className="space-y-4 py-4">
             <Button
               color="primary"
@@ -135,12 +134,12 @@ export const WalletSignExample = () => {
               isDisabled={!isWalletAvailable()}
               className="w-full"
             >
-              {isWalletAvailable() ? '连接钱包' : '请安装 MetaMask'}
+              {isWalletAvailable() ? 'Connect Wallet' : 'Please install MetaMask'}
             </Button>
 
             {walletAddress && (
               <Input
-                label="钱包地址"
+                label="Wallet Address"
                 value={walletAddress}
                 readOnly
                 className="font-mono text-sm"
@@ -154,17 +153,17 @@ export const WalletSignExample = () => {
               isDisabled={!walletAddress}
               className="w-full"
             >
-              签名并登录
+              Sign and Login
             </Button>
           </div>
         </Tab>
 
-        {/* 手动输入模式 */}
-        <Tab key="manual" title="手动输入">
+        {/* Manual input */}
+        <Tab key="manual" title="Manual Input">
           <div className="space-y-4 py-4">
             <Input
-              label="钱包地址"
-              placeholder="请输入钱包地址"
+              label="Wallet Address"
+              placeholder="Enter wallet address"
               value={manualForm.address}
               onChange={(e) => setManualForm(prev => ({ 
                 ...prev, 
@@ -174,8 +173,8 @@ export const WalletSignExample = () => {
             />
 
             <Input
-              label="签名结果"
-              placeholder="请输入签名结果"
+              label="Signature"
+              placeholder="Enter signature"
               value={manualForm.signature}
               onChange={(e) => setManualForm(prev => ({ 
                 ...prev, 
@@ -191,23 +190,16 @@ export const WalletSignExample = () => {
               isDisabled={!manualForm.address || !manualForm.signature}
               className="w-full"
             >
-              登录
+              Login
             </Button>
           </div>
         </Tab>
       </Tabs>
-
-      {message && (
-        <div className="p-3 bg-gray-100 rounded-md text-sm">
-          {message}
-        </div>
-      )}
-
       <div className="text-xs text-gray-500">
-        <p>• 钱包登录：自动连接钱包并签名</p>
-        <p>• 手动输入：适用于离线环境</p>
-        <p>• 签名内容：钱包地址本身</p>
-        <p>• 确保钱包地址在管理员列表中</p>
+        <p>• Wallet login: automatically connect and sign</p>
+        <p>• Manual input: suitable for offline scenarios</p>
+        <p>• Signature content: the wallet address itself</p>
+        <p>• Ensure the wallet address is in the admin list</p>
       </div>
     </div>
   );
