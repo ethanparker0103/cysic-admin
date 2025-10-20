@@ -5,6 +5,7 @@ import { Input } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 import { inviteCodeApi } from '@/routes/pages/Admin/adminApi';
 
 interface InviteCode {
@@ -18,7 +19,6 @@ interface InviteCode {
 export const InviteCodeManagement = () => {
   const [inviteCodes, setInviteCodes] = useState<InviteCode[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -41,7 +41,7 @@ export const InviteCodeManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load invite code list:', error);
-      setMessage('Failed to load invite code list');
+      toast.error('Failed to load invite code list');
     } finally {
       setLoading(false);
     }
@@ -56,16 +56,16 @@ export const InviteCodeManagement = () => {
         generateForm.code || undefined
       );
       if (response.code === '200') {
-        setMessage(`Successfully generated ${generateForm.num} invite codes`);
+        toast.success(`Successfully generated ${generateForm.num} invite codes`);
         onGenerateOpenChange();
         setGenerateForm({ num: 1, code: '' });
         loadInviteCodes();
       } else {
-        setMessage(response.msg || 'Generation failed');
+        toast.error(response.msg || 'Generation failed');
       }
     } catch (error) {
       console.error('Failed to generate invite codes:', error);
-      setMessage('Failed to generate invite codes');
+      toast.error('Failed to generate invite codes');
     } finally {
       setLoading(false);
     }
@@ -77,14 +77,14 @@ export const InviteCodeManagement = () => {
       setLoading(true);
       const response = await inviteCodeApi.update(id, available);
       if (response.code === '200') {
-        setMessage('Invite code status updated successfully');
+        toast.success('Invite code status updated successfully');
         loadInviteCodes();
       } else {
-        setMessage(response.msg || 'Update failed');
+        toast.error(response.msg || 'Update failed');
       }
     } catch (error) {
       console.error('Failed to update invite code status:', error);
-      setMessage('Failed to update invite code status');
+      toast.error('Failed to update invite code status');
     } finally {
       setLoading(false);
     }
@@ -172,13 +172,6 @@ export const InviteCodeManagement = () => {
           </div>
 
           {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
 

@@ -5,6 +5,7 @@ import { Input } from '@nextui-org/react';
 import { Textarea } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 import { signInRewardApi, stampApi } from '@/routes/pages/Admin/adminApi';
 
 interface SignInReward {
@@ -31,7 +32,6 @@ export const SignInRewardManagement = () => {
   const [rewards, setRewards] = useState<SignInReward[]>([]);
   const [stamps, setStamps] = useState<Stamp[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -57,7 +57,7 @@ export const SignInRewardManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load sign-in reward list:', error);
-      setMessage('Failed to load sign-in reward list');
+      toast.error('Failed to load sign-in reward list');
     } finally {
       setLoading(false);
     }
@@ -84,16 +84,16 @@ export const SignInRewardManagement = () => {
         : await signInRewardApi.create(rewardForm);
       
       if (response.code === '200') {
-        setMessage(editingReward ? 'Sign-in reward updated successfully' : 'Sign-in reward created successfully');
+        toast.success(editingReward ? 'Sign-in reward updated successfully' : 'Sign-in reward created successfully');
         onEditOpenChange();
         resetForm();
         loadRewards();
       } else {
-        setMessage(response.msg || 'Operation failed');
+        toast.error(response.msg || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save sign-in reward:', error);
-      setMessage('Failed to save sign-in reward');
+      toast.error('Failed to save sign-in reward');
     } finally {
       setLoading(false);
     }
@@ -107,14 +107,14 @@ export const SignInRewardManagement = () => {
       setLoading(true);
       const response = await signInRewardApi.delete(id);
       if (response.code === '200') {
-        setMessage('Sign-in reward deleted successfully');
+        toast.success('Sign-in reward deleted successfully');
         loadRewards();
       } else {
-        setMessage(response.msg || 'Delete failed');
+        toast.error(response.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete sign-in reward:', error);
-      setMessage('Failed to delete sign-in reward');
+      toast.error('Failed to delete sign-in reward');
     } finally {
       setLoading(false);
     }
@@ -240,14 +240,6 @@ export const SignInRewardManagement = () => {
             </Button>
           </div>
 
-          {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
 

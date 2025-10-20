@@ -8,6 +8,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from 
 import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { Image } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 import { stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
 
 interface Stamp {
@@ -32,7 +33,6 @@ const STAMP_TYPES = [
 export const StampManagement = () => {
   const [stamps, setStamps] = useState<Stamp[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -61,7 +61,7 @@ export const StampManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load stamp list:', error);
-      setMessage('Failed to load stamp list');
+      toast.error('Failed to load stamp list');
     } finally {
       setLoading(false);
     }
@@ -74,13 +74,13 @@ export const StampManagement = () => {
       const response = await uploadApi.upload(file);
       if (response.code === '200') {
         setStampForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
-        setMessage('Image uploaded successfully');
+        toast.success('Image uploaded successfully');
       } else {
-        setMessage('Image upload failed');
+        toast.error('Image upload failed');
       }
     } catch (error) {
       console.error('Image upload failed:', error);
-      setMessage('Image upload failed');
+      toast.error('Image upload failed');
     } finally {
       setUploading(false);
     }
@@ -95,16 +95,16 @@ export const StampManagement = () => {
         : await stampApi.create(stampForm);
       
       if (response.code === '200') {
-        setMessage(editingStamp ? 'Stamp updated successfully' : 'Stamp created successfully');
+        toast.success(editingStamp ? 'Stamp updated successfully' : 'Stamp created successfully');
         onEditOpenChange();
         resetForm();
         loadStamps();
       } else {
-        setMessage(response.msg || 'Operation failed');
+        toast.error(response.msg || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save stamp:', error);
-      setMessage('Failed to save stamp');
+      toast.error('Failed to save stamp');
     } finally {
       setLoading(false);
     }
@@ -118,14 +118,14 @@ export const StampManagement = () => {
       setLoading(true);
       const response = await stampApi.delete(id);
       if (response.code === '200') {
-        setMessage('Stamp deleted successfully');
+        toast.success('Stamp deleted successfully');
         loadStamps();
       } else {
-        setMessage(response.msg || 'Delete failed');
+        toast.error(response.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete stamp:', error);
-      setMessage('Failed to delete stamp');
+      toast.error('Failed to delete stamp');
     } finally {
       setLoading(false);
     }
@@ -267,14 +267,6 @@ export const StampManagement = () => {
             </Button>
           </div>
 
-          {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
 

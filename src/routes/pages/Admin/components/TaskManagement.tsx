@@ -9,6 +9,7 @@ import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { Image } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 import { taskApi, stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
 
 interface TaskGroup {
@@ -76,11 +77,11 @@ export const TaskManagement = () => {
   const [pendingTasks, setPendingTasks] = useState<PendingTask[]>([]);
   const [stamps, setStamps] = useState<Stamp[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState('taskGroups');
   
   // Edit/Create task modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
@@ -125,7 +126,7 @@ export const TaskManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load task group list:', error);
-      setMessage('Failed to load task group list');
+      toast.error('Failed to load task group list');
     } finally {
       setLoading(false);
     }
@@ -142,11 +143,18 @@ export const TaskManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load task list:', error);
-      setMessage('Failed to load task list');
+      toast.error('Failed to load task list');
     } finally {
       setLoading(false);
     }
   }, [page, pageSize]);
+
+  // Load tasks when selectedGroupId changes
+  useEffect(() => {
+    if (selectedGroupId) {
+      loadTasks(selectedGroupId);
+    }
+  }, [selectedGroupId, loadTasks]);
 
   // Load pending tasks
   const loadPendingTasks = async () => {
@@ -159,7 +167,7 @@ export const TaskManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load pending tasks:', error);
-      setMessage('Failed to load pending tasks');
+      toast.error('Failed to load pending tasks');
     } finally {
       setLoading(false);
     }
@@ -184,13 +192,13 @@ export const TaskManagement = () => {
       const response = await uploadApi.upload(file);
       if (response.code === '200') {
         setTaskForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
-        setMessage('Image uploaded successfully');
+        toast.success('Image uploaded successfully');
       } else {
-        setMessage('Image upload failed');
+        toast.error('Image upload failed');
       }
     } catch (error) {
       console.error('Image upload failed:', error);
-      setMessage('Image upload failed');
+      toast.error('Image upload failed');
     } finally {
       setUploading(false);
     }
@@ -203,13 +211,13 @@ export const TaskManagement = () => {
       const response = await uploadApi.upload(file);
       if (response.code === '200') {
         setTaskGroupForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
-        setMessage('Image uploaded successfully');
+        toast.success('Image uploaded successfully');
       } else {
-        setMessage('Image upload failed');
+        toast.error('Image upload failed');
       }
     } catch (error) {
       console.error('Image upload failed:', error);
-      setMessage('Image upload failed');
+      toast.error('Image upload failed');
     } finally {
       setGroupUploading(false);
     }
@@ -224,18 +232,18 @@ export const TaskManagement = () => {
         : await taskApi.createTask(taskForm);
       
       if (response.code === '200') {
-        setMessage(editingTask ? 'Task updated successfully' : 'Task created successfully');
+        toast.success(editingTask ? 'Task updated successfully' : 'Task created successfully');
         onEditOpenChange();
         resetForm();
         if (selectedGroupId) {
           loadTasks(selectedGroupId);
         }
       } else {
-        setMessage(response.msg || 'Operation failed');
+        toast.error(response.msg || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save task:', error);
-      setMessage('Failed to save task');
+      toast.error('Failed to save task');
     } finally {
       setLoading(false);
     }
@@ -249,16 +257,16 @@ export const TaskManagement = () => {
       setLoading(true);
       const response = await taskApi.deleteTask(id);
       if (response.code === '200') {
-        setMessage('Task deleted successfully');
+        toast.success('Task deleted successfully');
         if (selectedGroupId) {
           loadTasks(selectedGroupId);
         }
       } else {
-        setMessage(response.msg || 'Delete failed');
+        toast.error(response.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete task:', error);
-      setMessage('Failed to delete task');
+      toast.error('Failed to delete task');
     } finally {
       setLoading(false);
     }
@@ -270,14 +278,14 @@ export const TaskManagement = () => {
       setLoading(true);
       const response = await taskApi.approveTask(id);
       if (response.code === '200') {
-        setMessage('Task approved successfully');
+        toast.success('Task approved successfully');
         loadPendingTasks();
       } else {
-        setMessage(response.msg || 'Approval failed');
+        toast.error(response.msg || 'Approval failed');
       }
     } catch (error) {
       console.error('Failed to approve task:', error);
-      setMessage('Failed to approve task');
+      toast.error('Failed to approve task');
     } finally {
       setLoading(false);
     }
@@ -292,16 +300,16 @@ export const TaskManagement = () => {
         : await taskApi.createTaskGroup(taskGroupForm);
       
       if (response.code === '200') {
-        setMessage(editingTaskGroup ? 'Task group updated successfully' : 'Task group created successfully');
+        toast.success(editingTaskGroup ? 'Task group updated successfully' : 'Task group created successfully');
         onGroupEditOpenChange();
         resetGroupForm();
         loadTaskGroups();
       } else {
-        setMessage(response.msg || 'Operation failed');
+        toast.error(response.msg || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save task group:', error);
-      setMessage('Failed to save task group');
+      toast.error('Failed to save task group');
     } finally {
       setLoading(false);
     }
@@ -315,14 +323,14 @@ export const TaskManagement = () => {
       setLoading(true);
       const response = await taskApi.deleteTaskGroup(id);
       if (response.code === '200') {
-        setMessage('Task group deleted successfully');
+        toast.success('Task group deleted successfully');
         loadTaskGroups();
       } else {
-        setMessage(response.msg || 'Delete failed');
+        toast.error(response.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete task group:', error);
-      setMessage('Failed to delete task group');
+      toast.error('Failed to delete task group');
     } finally {
       setLoading(false);
     }
@@ -431,8 +439,12 @@ export const TaskManagement = () => {
           <h3 className="text-lg font-semibold">Task Management</h3>
         </CardHeader>
         <CardBody>
-          <Tabs aria-label="Task Management">
-            <Tab key="taskGroups" title="Task Group Management">
+          <Tabs 
+            aria-label="Task Management" 
+            selectedKey={activeTab} 
+            onSelectionChange={(key) => setActiveTab(key as string)}
+          >
+            <Tab key="taskGroups" title="Task Groups">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h4 className="font-medium">Task Group List</h4>
@@ -466,9 +478,12 @@ export const TaskManagement = () => {
                               size="sm"
                               color="primary"
                               variant="flat"
-                              onClick={() => setSelectedGroupId(group.id)}
+                              onClick={() => {
+                                setSelectedGroupId(group.id);
+                                setActiveTab('tasks');
+                              }}
                             >
-                              View Tasks
+                              Manage Tasks
                             </Button>
                             <Button
                               size="sm"
@@ -496,12 +511,27 @@ export const TaskManagement = () => {
               </div>
             </Tab>
 
-            <Tab key="tasks" title="Task Management">
+            <Tab key="tasks" title="Tasks">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-medium">
-                    Task List {selectedGroupId && `(Group ID: ${selectedGroupId})`}
-                  </h4>
+                  <div className="flex items-center gap-4">
+                    <h4 className="font-medium">Task Management</h4>
+                    <Select
+                      placeholder="Select Task Group"
+                      selectedKeys={selectedGroupId ? [selectedGroupId.toString()] : []}
+                      onSelectionChange={(keys) => {
+                        const groupId = Array.from(keys)[0] as string;
+                        setSelectedGroupId(groupId ? parseInt(groupId) : null);
+                      }}
+                      className="w-64"
+                    >
+                      {taskGroups.map((group) => (
+                        <SelectItem key={group.id.toString()} value={group.id.toString()}>
+                          {group.title}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </div>
                   <Button 
                     color="primary" 
                     size="sm"
@@ -568,7 +598,7 @@ export const TaskManagement = () => {
                   </Table>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
-                    Please select a task group first to view tasks
+                    Please select a task group to manage tasks
                   </div>
                 )}
               </div>
@@ -648,14 +678,6 @@ export const TaskManagement = () => {
             </Button>
           </div>
 
-          {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
 

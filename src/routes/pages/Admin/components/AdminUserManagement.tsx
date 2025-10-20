@@ -5,6 +5,7 @@ import { Input } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import { toast } from 'react-toastify';
 import { adminUserApi } from '@/routes/pages/Admin/adminApi';
 
 interface AdminUser {
@@ -19,7 +20,6 @@ interface AdminUser {
 export const AdminUserManagement = () => {
   const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
@@ -44,7 +44,7 @@ export const AdminUserManagement = () => {
       }
     } catch (error) {
       console.error('Failed to load admin user list:', error);
-      setMessage('Failed to load admin user list');
+      toast.error('Failed to load admin user list');
     } finally {
       setLoading(false);
     }
@@ -57,16 +57,16 @@ export const AdminUserManagement = () => {
       const response = await adminUserApi.create(adminUserForm);
       
       if (response.code === '200') {
-        setMessage('Admin user created successfully');
+        toast.success('Admin user created successfully');
         onEditOpenChange();
         resetForm();
         loadAdminUsers();
       } else {
-        setMessage(response.msg || 'Operation failed');
+        toast.error(response.msg || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save admin user:', error);
-      setMessage('Failed to save admin user');
+      toast.error('Failed to save admin user');
     } finally {
       setLoading(false);
     }
@@ -78,14 +78,14 @@ export const AdminUserManagement = () => {
       setLoading(true);
       const response = await adminUserApi.updateStatus(id, status);
       if (response.code === '200') {
-        setMessage('Admin user status updated successfully');
+        toast.success('Admin user status updated successfully');
         loadAdminUsers();
       } else {
-        setMessage(response.msg || 'Update failed');
+        toast.error(response.msg || 'Update failed');
       }
     } catch (error) {
       console.error('Failed to update admin user status:', error);
-      setMessage('Failed to update admin user status');
+      toast.error('Failed to update admin user status');
     } finally {
       setLoading(false);
     }
@@ -99,14 +99,14 @@ export const AdminUserManagement = () => {
       setLoading(true);
       const response = await adminUserApi.delete(id);
       if (response.code === '200') {
-        setMessage('Admin user deleted successfully');
+        toast.success('Admin user deleted successfully');
         loadAdminUsers();
       } else {
-        setMessage(response.msg || 'Delete failed');
+        toast.error(response.msg || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete admin user:', error);
-      setMessage('Failed to delete admin user');
+      toast.error('Failed to delete admin user');
     } finally {
       setLoading(false);
     }
@@ -230,14 +230,6 @@ export const AdminUserManagement = () => {
             </Button>
           </div>
 
-          {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
 

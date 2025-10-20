@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/tabs';
+import { toast } from 'react-toastify';
 import { authApi } from '@/routes/pages/Admin/adminApi';
 
 interface LoginProps {
@@ -11,7 +12,6 @@ interface LoginProps {
 
 export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
   
   // Manual input mode state
   const [manualForm, setManualForm] = useState({
@@ -30,7 +30,7 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
   // Connect wallet
   const connectWallet = async () => {
     if (!isWalletAvailable()) {
-      setMessage('Please install MetaMask or other Ethereum wallet');
+      toast.error('Please install MetaMask or other Ethereum wallet');
       return;
     }
 
@@ -42,11 +42,11 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
       
       if (accounts.length > 0) {
         setWalletAddress(accounts[0]);
-        setMessage('Wallet connected successfully');
+        toast.success('Wallet connected successfully');
       }
     } catch (error) {
       console.error('Failed to connect wallet:', error);
-      setMessage('Failed to connect wallet, please try again');
+      toast.error('Failed to connect wallet, please try again');
     } finally {
       setLoading(false);
     }
@@ -55,12 +55,12 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
   // Wallet signature login
   const walletSignAndLogin = async () => {
     if (!walletAddress) {
-      setMessage('Please connect wallet first');
+      toast.error('Please connect wallet first');
       return;
     }
 
     if (!isWalletAvailable()) {
-      setMessage('Please install MetaMask or other Ethereum wallet');
+      toast.error('Please install MetaMask or other Ethereum wallet');
       return;
     }
 
@@ -77,17 +77,17 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
       const response = await authApi.login(walletAddress, signature as unknown as string);
       
       if (response.code === '200') {
-        setMessage('Login successful');
+        toast.success('Login successful');
         onLoginSuccess(response.userId);
       } else {
-        setMessage(response.msg || 'Login failed');
+        toast.error(response.msg || 'Login failed');
       }
     } catch (error: unknown) {
       console.error('Login failed:', error);
       if ((error as { code?: number })?.code === 4001) {
-        setMessage('User rejected signature request');
+        toast.error('User rejected signature request');
       } else {
-        setMessage('Login failed, please try again');
+        toast.error('Login failed, please try again');
       }
     } finally {
       setLoading(false);
@@ -97,7 +97,7 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
   // Manual input login
   const manualLogin = async () => {
     if (!manualForm.address || !manualForm.signature) {
-      setMessage('Please enter wallet address and signature');
+      toast.error('Please enter wallet address and signature');
       return;
     }
 
@@ -107,14 +107,14 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
       const response = await authApi.login(manualForm.address, manualForm.signature);
       
       if (response.code === '200') {
-        setMessage('Login successful');
+        toast.success('Login successful');
         onLoginSuccess(response.userId);
       } else {
-        setMessage(response.msg || 'Login failed');
+        toast.error(response.msg || 'Login failed');
       }
     } catch (error) {
       console.error('Login failed:', error);
-      setMessage('Login failed, please check if address and signature are correct');
+      toast.error('Login failed, please check if address and signature are correct');
     } finally {
       setLoading(false);
     }
@@ -213,15 +213,6 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
               </div>
             </Tab>
           </Tabs>
-
-          {/* Message Display */}
-          {message && (
-            <div className={`mt-4 p-3 rounded-md text-sm ${
-              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
-            }`}>
-              {message}
-            </div>
-          )}
         </CardBody>
       </Card>
     </div>
