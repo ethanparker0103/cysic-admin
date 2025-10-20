@@ -15,12 +15,23 @@ import { LeaderboardPage } from "@/routes/pages/Leaderboard/page";
 import { KRActivity } from "@/routes/pages/Kr/page";
 import { KrActivityDashboard } from "@/routes/pages/Kr/dashboard/page";
 import { KrLayout } from "@/routes/pages/Kr/layout";
+import { Admin } from "@/routes/pages/Admin/page";
 
 // 定义共享的路由结构
 const routeChildren = [
   {
     index: true,
     element: <Home />,
+  },
+  {
+    path: "admin",
+    element: <KrLayout />,
+    children: [
+      {
+        index: true,
+        element: <Admin />,
+      },
+    ]
   },
   {
     path: "krkrkr",
@@ -35,7 +46,6 @@ const routeChildren = [
         element: <KrActivityDashboard />
       },
     ]
-    
   },
   {
     path: "careers",
@@ -103,6 +113,9 @@ export const backgroundImageList = {
     img: '#000'
   },
   "/krkrkr": {
+    img: '#000'
+  },
+  "/admin": {
     img: '#000'
   },
   "/": {
