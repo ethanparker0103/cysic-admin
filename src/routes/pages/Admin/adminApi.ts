@@ -136,12 +136,22 @@ export const stampApi = {
     imgUrl: string;
     sorted: number;
     disabled: boolean;
-  }): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/admin/stamp/create', {
+  }): Promise<ApiResponse> => {
+    const token = getStoredToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    
+    // 添加鉴权 token
+    if (token) {
+      headers['x-cysic-auth'] = token;
+    }
+    
+    return request('/socialtask/api/v1/admin/stamp/create', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
-    }),
+      headers,
+      // body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
+      body: JSON.stringify(data)
+    });
+  },
 
   // 更新徽章
   update: (id: number, data: {
@@ -151,12 +161,22 @@ export const stampApi = {
     imgUrl: string;
     sorted: number;
     disabled: boolean;
-  }): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/admin/stamp/update', {
+  }): Promise<ApiResponse> => {
+    const token = getStoredToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    
+    // 添加鉴权 token
+    if (token) {
+      headers['x-cysic-auth'] = token;
+    }
+    
+    return request('/socialtask/api/v1/admin/stamp/update', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
-    }),
+      headers,
+      // body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
+      body: JSON.stringify({ id: id.toString(), ...data })
+    });
+  },
 
   // 删除徽章
   delete: (id: number): Promise<ApiResponse> =>
@@ -189,12 +209,22 @@ export const signInRewardApi = {
     requiredConsecutiveDays: number;
     rewardPoints: number;
     rewardStampId: number;
-  }): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/admin/signInTaskReward/create', {
+  }): Promise<ApiResponse> => {
+    const token = getStoredToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    
+    // 添加鉴权 token
+    if (token) {
+      headers['x-cysic-auth'] = token;
+    }
+    
+    return request('/socialtask/api/v1/admin/signInTaskReward/create', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
-    }),
+      headers,
+      // body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
+      body: JSON.stringify(data)
+    });
+  },
 
   // 更新签到奖励
   update: (id: number, data: {
@@ -202,12 +232,22 @@ export const signInRewardApi = {
     requiredConsecutiveDays: number;
     rewardPoints: number;
     rewardStampId: number;
-  }): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/admin/signInTaskReward/update', {
+  }): Promise<ApiResponse> => {
+    const token = getStoredToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    
+    // 添加鉴权 token
+    if (token) {
+      headers['x-cysic-auth'] = token;
+    }
+    
+    return request('/socialtask/api/v1/admin/signInTaskReward/update', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
-    }),
+      headers,
+      // body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
+      body: JSON.stringify({ id: id.toString(), ...data })
+    });
+  },
 
   // 删除签到奖励
   delete: (id: number): Promise<ApiResponse> =>
