@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
@@ -23,15 +23,15 @@ export const InviteCodeManagement = () => {
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   
-  // 生成邀请码模态框
+  // Generate invite code modal
   const { isOpen: isGenerateOpen, onOpen: onGenerateOpen, onOpenChange: onGenerateOpenChange } = useDisclosure();
   const [generateForm, setGenerateForm] = useState({
     num: 1,
     code: '',
   });
 
-  // 加载邀请码列表
-  const loadInviteCodes = async () => {
+  // Load invite code list
+  const loadInviteCodes = useCallback(async () => {
     try {
       setLoading(true);
       const response = await inviteCodeApi.getList(page, pageSize);
@@ -40,14 +40,14 @@ export const InviteCodeManagement = () => {
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载邀请码列表失败:', error);
-      setMessage('加载邀请码列表失败');
+      console.error('Failed to load invite code list:', error);
+      setMessage('Failed to load invite code list');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize]);
 
-  // 生成邀请码
+  // Generate invite codes
   const generateInviteCodes = async () => {
     try {
       setLoading(true);
@@ -56,48 +56,48 @@ export const InviteCodeManagement = () => {
         generateForm.code || undefined
       );
       if (response.code === '200') {
-        setMessage(`成功生成 ${generateForm.num} 个邀请码`);
+        setMessage(`Successfully generated ${generateForm.num} invite codes`);
         onGenerateOpenChange();
         setGenerateForm({ num: 1, code: '' });
         loadInviteCodes();
       } else {
-        setMessage(response.msg || '生成失败');
+        setMessage(response.msg || 'Generation failed');
       }
     } catch (error) {
-      console.error('生成邀请码失败:', error);
-      setMessage('生成邀请码失败');
+      console.error('Failed to generate invite codes:', error);
+      setMessage('Failed to generate invite codes');
     } finally {
       setLoading(false);
     }
   };
 
-  // 更新邀请码状态
+  // Update invite code status
   const updateInviteCodeStatus = async (id: number, available: boolean) => {
     try {
       setLoading(true);
       const response = await inviteCodeApi.update(id, available);
       if (response.code === '200') {
-        setMessage('邀请码状态更新成功');
+        setMessage('Invite code status updated successfully');
         loadInviteCodes();
       } else {
-        setMessage(response.msg || '更新失败');
+        setMessage(response.msg || 'Update failed');
       }
     } catch (error) {
-      console.error('更新邀请码状态失败:', error);
-      setMessage('更新邀请码状态失败');
+      console.error('Failed to update invite code status:', error);
+      setMessage('Failed to update invite code status');
     } finally {
       setLoading(false);
     }
   };
 
-  // 格式化时间
+  // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('zh-CN');
+    return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
   useEffect(() => {
     loadInviteCodes();
-  }, [page]);
+  }, [page, loadInviteCodes]);
 
   return (
     <div className="space-y-6">
@@ -120,7 +120,7 @@ export const InviteCodeManagement = () => {
               <TableColumn>Actions</TableColumn>
             </TableHeader>
             <TableBody>
-              {inviteCodes.map((inviteCode) => (
+              {inviteCodes?.map((inviteCode) => (
                 <TableRow key={inviteCode.id}>
                   <TableCell>{inviteCode.id}</TableCell>
                   <TableCell className="font-mono">{inviteCode.code}</TableCell>
@@ -171,10 +171,10 @@ export const InviteCodeManagement = () => {
             </Button>
           </div>
 
-          {/* 消息提示 */}
+          {/* Message Display */}
           {message && (
             <div className={`mt-4 p-3 rounded-md ${
-              message.includes('成功') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
             }`}>
               {message}
             </div>
@@ -182,17 +182,17 @@ export const InviteCodeManagement = () => {
         </CardBody>
       </Card>
 
-      {/* 生成邀请码模态框 */}
+      {/* Generate Invite Code Modal */}
       <Modal isOpen={isGenerateOpen} onOpenChange={onGenerateOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">生成邀请码</ModalHeader>
+              <ModalHeader className="flex flex-col gap-1">Generate Invite Code</ModalHeader>
               <ModalBody>
                 <Input
                   type="number"
-                  label="生成数量"
-                  placeholder="请输入要生成的邀请码数量"
+                  label="Quantity"
+                  placeholder="Enter the number of invite codes to generate"
                   value={generateForm.num.toString()}
                   onChange={(e) => setGenerateForm(prev => ({ 
                     ...prev, 
@@ -202,8 +202,8 @@ export const InviteCodeManagement = () => {
                   max={100}
                 />
                 <Input
-                  label="自定义前缀（可选）"
-                  placeholder="请输入邀请码前缀"
+                  label="Custom Invite Code (Optional)"
+                  placeholder="Enter custom invite code"
                   value={generateForm.code}
                   onChange={(e) => setGenerateForm(prev => ({ 
                     ...prev, 
@@ -213,10 +213,10 @@ export const InviteCodeManagement = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  取消
+                  Cancel
                 </Button>
                 <Button color="primary" onPress={generateInviteCodes} isLoading={loading}>
-                  生成
+                  Generate
                 </Button>
               </ModalFooter>
             </>

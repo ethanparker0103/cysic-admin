@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
@@ -23,10 +23,10 @@ interface Stamp {
 }
 
 const STAMP_TYPES = [
-  { key: 'achievement', label: '成就徽章' },
-  { key: 'participation', label: '参与徽章' },
-  { key: 'special', label: '特殊徽章' },
-  { key: 'milestone', label: '里程碑徽章' },
+  { key: 'achievement', label: 'Achievement Badge' },
+  { key: 'participation', label: 'Participation Badge' },
+  { key: 'special', label: 'Special Badge' },
+  { key: 'milestone', label: 'Milestone Badge' },
 ];
 
 export const StampManagement = () => {
@@ -37,7 +37,7 @@ export const StampManagement = () => {
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   
-  // 编辑/创建模态框
+  // Edit/Create modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
   const [editingStamp, setEditingStamp] = useState<Stamp | null>(null);
   const [stampForm, setStampForm] = useState({
@@ -50,8 +50,8 @@ export const StampManagement = () => {
   });
   const [uploading, setUploading] = useState(false);
 
-  // 加载徽章列表
-  const loadStamps = async () => {
+  // Load stamp list
+  const loadStamps = useCallback(async () => {
     try {
       setLoading(true);
       const response = await stampApi.getList(page, pageSize);
@@ -60,33 +60,33 @@ export const StampManagement = () => {
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载徽章列表失败:', error);
-      setMessage('加载徽章列表失败');
+      console.error('Failed to load stamp list:', error);
+      setMessage('Failed to load stamp list');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize]);
 
-  // 文件上传
+  // File upload
   const handleFileUpload = async (file: File) => {
     try {
       setUploading(true);
       const response = await uploadApi.upload(file);
       if (response.code === '200') {
         setStampForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
-        setMessage('图片上传成功');
+        setMessage('Image uploaded successfully');
       } else {
-        setMessage('图片上传失败');
+        setMessage('Image upload failed');
       }
     } catch (error) {
-      console.error('图片上传失败:', error);
-      setMessage('图片上传失败');
+      console.error('Image upload failed:', error);
+      setMessage('Image upload failed');
     } finally {
       setUploading(false);
     }
   };
 
-  // 保存徽章
+  // Save stamp
   const saveStamp = async () => {
     try {
       setLoading(true);
@@ -95,43 +95,43 @@ export const StampManagement = () => {
         : await stampApi.create(stampForm);
       
       if (response.code === '200') {
-        setMessage(editingStamp ? '徽章更新成功' : '徽章创建成功');
+        setMessage(editingStamp ? 'Stamp updated successfully' : 'Stamp created successfully');
         onEditOpenChange();
         resetForm();
         loadStamps();
       } else {
-        setMessage(response.msg || '操作失败');
+        setMessage(response.msg || 'Operation failed');
       }
     } catch (error) {
-      console.error('保存徽章失败:', error);
-      setMessage('保存徽章失败');
+      console.error('Failed to save stamp:', error);
+      setMessage('Failed to save stamp');
     } finally {
       setLoading(false);
     }
   };
 
-  // 删除徽章
+  // Delete stamp
   const deleteStamp = async (id: number) => {
-    if (!confirm('确定要删除这个徽章吗？')) return;
+    if (!confirm('Are you sure you want to delete this stamp?')) return;
     
     try {
       setLoading(true);
       const response = await stampApi.delete(id);
       if (response.code === '200') {
-        setMessage('徽章删除成功');
+        setMessage('Stamp deleted successfully');
         loadStamps();
       } else {
-        setMessage(response.msg || '删除失败');
+        setMessage(response.msg || 'Delete failed');
       }
     } catch (error) {
-      console.error('删除徽章失败:', error);
-      setMessage('删除徽章失败');
+      console.error('Failed to delete stamp:', error);
+      setMessage('Failed to delete stamp');
     } finally {
       setLoading(false);
     }
   };
 
-  // 重置表单
+  // Reset form
   const resetForm = () => {
     setStampForm({
       name: '',
@@ -144,7 +144,7 @@ export const StampManagement = () => {
     setEditingStamp(null);
   };
 
-  // 打开编辑模态框
+  // Open edit modal
   const openEditModal = (stamp?: Stamp) => {
     if (stamp) {
       setEditingStamp(stamp);
@@ -162,39 +162,39 @@ export const StampManagement = () => {
     onEditOpen();
   };
 
-  // 格式化时间
+  // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('zh-CN');
+    return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
   useEffect(() => {
     loadStamps();
-  }, [page]);
+  }, [loadStamps]);
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">徽章管理</h3>
+          <h3 className="text-lg font-semibold">Stamp Management</h3>
           <Button color="primary" onPress={() => openEditModal()}>
-            创建徽章
+            Create Stamp
           </Button>
         </CardHeader>
         <CardBody>
-          {/* 徽章列表 */}
-          <Table aria-label="徽章列表">
+          {/* Stamp List */}
+          <Table aria-label="Stamp List">
             <TableHeader>
               <TableColumn>ID</TableColumn>
-              <TableColumn>图片</TableColumn>
-              <TableColumn>名称</TableColumn>
-              <TableColumn>类型</TableColumn>
-              <TableColumn>排序</TableColumn>
-              <TableColumn>状态</TableColumn>
-              <TableColumn>创建时间</TableColumn>
-              <TableColumn>操作</TableColumn>
+              <TableColumn>Image</TableColumn>
+              <TableColumn>Name</TableColumn>
+              <TableColumn>Type</TableColumn>
+              <TableColumn>Sort</TableColumn>
+              <TableColumn>Status</TableColumn>
+              <TableColumn>Created At</TableColumn>
+              <TableColumn>Actions</TableColumn>
             </TableHeader>
             <TableBody>
-              {stamps.map((stamp) => (
+              {stamps?.map((stamp) => (
                 <TableRow key={stamp.id}>
                   <TableCell>{stamp.id}</TableCell>
                   <TableCell>
@@ -216,7 +216,7 @@ export const StampManagement = () => {
                       color={stamp.disabled ? 'danger' : 'success'}
                       variant="flat"
                     >
-                      {stamp.disabled ? '禁用' : '启用'}
+                      {stamp.disabled ? 'Disabled' : 'Enabled'}
                     </Chip>
                   </TableCell>
                   <TableCell>{formatTime(stamp.createdAt)}</TableCell>
@@ -228,7 +228,7 @@ export const StampManagement = () => {
                         variant="flat"
                         onClick={() => openEditModal(stamp)}
                       >
-                        编辑
+                        Edit
                       </Button>
                       <Button
                         size="sm"
@@ -237,7 +237,7 @@ export const StampManagement = () => {
                         onClick={() => deleteStamp(stamp.id)}
                         isLoading={loading}
                       >
-                        删除
+                        Delete
                       </Button>
                     </div>
                   </TableCell>
@@ -246,31 +246,31 @@ export const StampManagement = () => {
             </TableBody>
           </Table>
 
-          {/* 分页 */}
+          {/* Pagination */}
           <div className="flex justify-center mt-4">
             <Button
               isDisabled={page === 1}
               onClick={() => setPage(page - 1)}
               variant="flat"
             >
-              上一页
+              Previous
             </Button>
             <span className="mx-4 flex items-center">
-              第 {page} 页，共 {Math.ceil(total / pageSize)} 页
+              Page {page} of {Math.ceil(total / pageSize)}
             </span>
             <Button
               isDisabled={page >= Math.ceil(total / pageSize)}
               onClick={() => setPage(page + 1)}
               variant="flat"
             >
-              下一页
+              Next
             </Button>
           </div>
 
-          {/* 消息提示 */}
+          {/* Message Display */}
           {message && (
             <div className={`mt-4 p-3 rounded-md ${
-              message.includes('成功') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
             }`}>
               {message}
             </div>
@@ -278,32 +278,32 @@ export const StampManagement = () => {
         </CardBody>
       </Card>
 
-      {/* 编辑/创建徽章模态框 */}
+      {/* Edit/Create Stamp Modal */}
       <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="2xl">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {editingStamp ? '编辑徽章' : '创建徽章'}
+                {editingStamp ? 'Edit Stamp' : 'Create Stamp'}
               </ModalHeader>
               <ModalBody className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="徽章名称"
-                    placeholder="请输入徽章名称"
+                    label="Stamp Name"
+                    placeholder="Enter stamp name"
                     value={stampForm.name}
                     onChange={(e) => setStampForm(prev => ({ ...prev, name: e.target.value }))}
                   />
                   <Select
-                    label="徽章类型"
-                    placeholder="请选择徽章类型"
+                    label="Stamp Type"
+                    placeholder="Select stamp type"
                     selectedKeys={stampForm.stampType ? [stampForm.stampType] : []}
                     onSelectionChange={(keys) => {
                       const selected = Array.from(keys)[0] as string;
                       setStampForm(prev => ({ ...prev, stampType: selected }));
                     }}
                   >
-                    {STAMP_TYPES.map((type) => (
+                    {STAMP_TYPES?.map((type) => (
                       <SelectItem key={type.key} value={type.key}>
                         {type.label}
                       </SelectItem>
@@ -312,8 +312,8 @@ export const StampManagement = () => {
                 </div>
                 
                 <Textarea
-                  label="徽章描述"
-                  placeholder="请输入徽章描述"
+                  label="Stamp Description"
+                  placeholder="Enter stamp description"
                   value={stampForm.description}
                   onChange={(e) => setStampForm(prev => ({ ...prev, description: e.target.value }))}
                 />
@@ -321,8 +321,8 @@ export const StampManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="number"
-                    label="排序"
-                    placeholder="数字越小越靠前"
+                    label="Sort Order"
+                    placeholder="Lower numbers appear first"
                     value={stampForm.sorted.toString()}
                     onChange={(e) => setStampForm(prev => ({ 
                       ...prev, 
@@ -330,12 +330,12 @@ export const StampManagement = () => {
                     }))}
                   />
                   <div className="flex items-center gap-2">
-                    <label className="text-sm">状态:</label>
+                    <label className="text-sm">Status:</label>
                     <Chip
                       color={stampForm.disabled ? 'danger' : 'success'}
                       variant="flat"
                     >
-                      {stampForm.disabled ? '禁用' : '启用'}
+                      {stampForm.disabled ? 'Disabled' : 'Enabled'}
                     </Chip>
                     <Button
                       size="sm"
@@ -343,18 +343,18 @@ export const StampManagement = () => {
                       variant="flat"
                       onClick={() => setStampForm(prev => ({ ...prev, disabled: !prev.disabled }))}
                     >
-                      {stampForm.disabled ? '启用' : '禁用'}
+                      {stampForm.disabled ? 'Enable' : 'Disable'}
                     </Button>
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">徽章图片</label>
+                  <label className="text-sm font-medium">Stamp Image</label>
                   <div className="flex gap-4 items-center">
                     {stampForm.imgUrl && (
                       <Image
                         src={stampForm.imgUrl}
-                        alt="徽章预览"
+                        alt="Stamp preview"
                         width={80}
                         height={80}
                         className="rounded"
@@ -379,17 +379,17 @@ export const StampManagement = () => {
                       variant="flat"
                       isLoading={uploading}
                     >
-                      上传图片
+                      Upload Image
                     </Button>
                   </div>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  取消
+                  Cancel
                 </Button>
                 <Button color="primary" onPress={saveStamp} isLoading={loading}>
-                  {editingStamp ? '更新' : '创建'}
+                  {editingStamp ? 'Update' : 'Create'}
                 </Button>
               </ModalFooter>
             </>

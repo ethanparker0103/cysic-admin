@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
@@ -36,7 +36,7 @@ export const SignInRewardManagement = () => {
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
   
-  // 编辑/创建模态框
+  // Edit/Create modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
   const [editingReward, setEditingReward] = useState<SignInReward | null>(null);
   const [rewardForm, setRewardForm] = useState({
@@ -46,8 +46,8 @@ export const SignInRewardManagement = () => {
     rewardStampId: 0,
   });
 
-  // 加载签到奖励列表
-  const loadRewards = async () => {
+  // Load sign-in reward list
+  const loadRewards = useCallback(async () => {
     try {
       setLoading(true);
       const response = await signInRewardApi.getList(page, pageSize);
@@ -56,14 +56,14 @@ export const SignInRewardManagement = () => {
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载签到奖励列表失败:', error);
-      setMessage('加载签到奖励列表失败');
+      console.error('Failed to load sign-in reward list:', error);
+      setMessage('Failed to load sign-in reward list');
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize]);
 
-  // 加载徽章列表（用于选择奖励徽章）
+  // Load stamp list (for selecting reward stamps)
   const loadStamps = async () => {
     try {
       const response = await stampApi.getList(1, 100); // 获取所有徽章
@@ -71,11 +71,11 @@ export const SignInRewardManagement = () => {
         setStamps(response.list);
       }
     } catch (error) {
-      console.error('加载徽章列表失败:', error);
+      console.error('Failed to load stamp list:', error);
     }
   };
 
-  // 保存签到奖励
+  // Save sign-in reward
   const saveReward = async () => {
     try {
       setLoading(true);
@@ -84,43 +84,43 @@ export const SignInRewardManagement = () => {
         : await signInRewardApi.create(rewardForm);
       
       if (response.code === '200') {
-        setMessage(editingReward ? '签到奖励更新成功' : '签到奖励创建成功');
+        setMessage(editingReward ? 'Sign-in reward updated successfully' : 'Sign-in reward created successfully');
         onEditOpenChange();
         resetForm();
         loadRewards();
       } else {
-        setMessage(response.msg || '操作失败');
+        setMessage(response.msg || 'Operation failed');
       }
     } catch (error) {
-      console.error('保存签到奖励失败:', error);
-      setMessage('保存签到奖励失败');
+      console.error('Failed to save sign-in reward:', error);
+      setMessage('Failed to save sign-in reward');
     } finally {
       setLoading(false);
     }
   };
 
-  // 删除签到奖励
+  // Delete sign-in reward
   const deleteReward = async (id: number) => {
-    if (!confirm('确定要删除这个签到奖励吗？')) return;
+    if (!confirm('Are you sure you want to delete this sign-in reward?')) return;
     
     try {
       setLoading(true);
       const response = await signInRewardApi.delete(id);
       if (response.code === '200') {
-        setMessage('签到奖励删除成功');
+        setMessage('Sign-in reward deleted successfully');
         loadRewards();
       } else {
-        setMessage(response.msg || '删除失败');
+        setMessage(response.msg || 'Delete failed');
       }
     } catch (error) {
-      console.error('删除签到奖励失败:', error);
-      setMessage('删除签到奖励失败');
+      console.error('Failed to delete sign-in reward:', error);
+      setMessage('Failed to delete sign-in reward');
     } finally {
       setLoading(false);
     }
   };
 
-  // 重置表单
+  // Reset form
   const resetForm = () => {
     setRewardForm({
       description: '',
@@ -131,7 +131,7 @@ export const SignInRewardManagement = () => {
     setEditingReward(null);
   };
 
-  // 打开编辑模态框
+  // Open edit modal
   const openEditModal = (reward?: SignInReward) => {
     if (reward) {
       setEditingReward(reward);
@@ -147,49 +147,49 @@ export const SignInRewardManagement = () => {
     onEditOpen();
   };
 
-  // 格式化时间
+  // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('zh-CN');
+    return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
-  // 获取徽章名称
+  // Get stamp name
   const getStampName = (stampId: number) => {
     const stamp = stamps.find(s => s.id === stampId);
-    return stamp ? stamp.name : `徽章ID: ${stampId}`;
+    return stamp ? stamp.name : `Stamp ID: ${stampId}`;
   };
 
   useEffect(() => {
     loadRewards();
     loadStamps();
-  }, [page]);
+  }, [loadRewards]);
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader className="flex justify-between items-center">
-          <h3 className="text-lg font-semibold">签到奖励管理</h3>
+          <h3 className="text-lg font-semibold">Sign-in Reward Management</h3>
           <Button color="primary" onPress={() => openEditModal()}>
-            创建签到奖励
+            Create Sign-in Reward
           </Button>
         </CardHeader>
         <CardBody>
-          {/* 签到奖励列表 */}
-          <Table aria-label="签到奖励列表">
+          {/* Sign-in Reward List */}
+          <Table aria-label="Sign-in Reward List">
             <TableHeader>
               <TableColumn>ID</TableColumn>
-              <TableColumn>描述</TableColumn>
-              <TableColumn>连续天数</TableColumn>
-              <TableColumn>奖励积分</TableColumn>
-              <TableColumn>奖励徽章</TableColumn>
-              <TableColumn>创建时间</TableColumn>
-              <TableColumn>操作</TableColumn>
+              <TableColumn>Description</TableColumn>
+              <TableColumn>Consecutive Days</TableColumn>
+              <TableColumn>Reward Points</TableColumn>
+              <TableColumn>Reward Stamp</TableColumn>
+              <TableColumn>Created At</TableColumn>
+              <TableColumn>Actions</TableColumn>
             </TableHeader>
             <TableBody>
-              {rewards.map((reward) => (
+              {rewards?.map((reward) => (
                 <TableRow key={reward.id}>
                   <TableCell>{reward.id}</TableCell>
                   <TableCell className="max-w-xs truncate">{reward.description}</TableCell>
-                  <TableCell>{reward.requiredConsecutiveDays} 天</TableCell>
+                  <TableCell>{reward.requiredConsecutiveDays} days</TableCell>
                   <TableCell>{reward.rewardPoints}</TableCell>
                   <TableCell>{getStampName(reward.rewardStampId)}</TableCell>
                   <TableCell>{formatTime(reward.createdAt)}</TableCell>
@@ -201,7 +201,7 @@ export const SignInRewardManagement = () => {
                         variant="flat"
                         onClick={() => openEditModal(reward)}
                       >
-                        编辑
+                        Edit
                       </Button>
                       <Button
                         size="sm"
@@ -210,7 +210,7 @@ export const SignInRewardManagement = () => {
                         onClick={() => deleteReward(reward.id)}
                         isLoading={loading}
                       >
-                        删除
+                        Delete
                       </Button>
                     </div>
                   </TableCell>
@@ -219,31 +219,31 @@ export const SignInRewardManagement = () => {
             </TableBody>
           </Table>
 
-          {/* 分页 */}
+          {/* Pagination */}
           <div className="flex justify-center mt-4">
             <Button
               isDisabled={page === 1}
               onClick={() => setPage(page - 1)}
               variant="flat"
             >
-              上一页
+              Previous
             </Button>
             <span className="mx-4 flex items-center">
-              第 {page} 页，共 {Math.ceil(total / pageSize)} 页
+              Page {page} of {Math.ceil(total / pageSize)}
             </span>
             <Button
               isDisabled={page >= Math.ceil(total / pageSize)}
               onClick={() => setPage(page + 1)}
               variant="flat"
             >
-              下一页
+              Next
             </Button>
           </div>
 
-          {/* 消息提示 */}
+          {/* Message Display */}
           {message && (
             <div className={`mt-4 p-3 rounded-md ${
-              message.includes('成功') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
             }`}>
               {message}
             </div>
@@ -251,18 +251,18 @@ export const SignInRewardManagement = () => {
         </CardBody>
       </Card>
 
-      {/* 编辑/创建签到奖励模态框 */}
+      {/* Edit/Create Sign-in Reward Modal */}
       <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="2xl">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {editingReward ? '编辑签到奖励' : '创建签到奖励'}
+                {editingReward ? 'Edit Sign-in Reward' : 'Create Sign-in Reward'}
               </ModalHeader>
               <ModalBody className="space-y-4">
                 <Textarea
-                  label="奖励描述"
-                  placeholder="请输入奖励描述"
+                  label="Reward Description"
+                  placeholder="Enter reward description"
                   value={rewardForm.description}
                   onChange={(e) => setRewardForm(prev => ({ ...prev, description: e.target.value }))}
                 />
@@ -270,8 +270,8 @@ export const SignInRewardManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="number"
-                    label="连续签到天数"
-                    placeholder="请输入连续签到天数"
+                    label="Consecutive Sign-in Days"
+                    placeholder="Enter consecutive sign-in days"
                     value={rewardForm.requiredConsecutiveDays.toString()}
                     onChange={(e) => setRewardForm(prev => ({ 
                       ...prev, 
@@ -281,8 +281,8 @@ export const SignInRewardManagement = () => {
                   />
                   <Input
                     type="number"
-                    label="奖励积分"
-                    placeholder="请输入奖励积分"
+                    label="Reward Points"
+                    placeholder="Enter reward points"
                     value={rewardForm.rewardPoints.toString()}
                     onChange={(e) => setRewardForm(prev => ({ 
                       ...prev, 
@@ -293,7 +293,7 @@ export const SignInRewardManagement = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">奖励徽章</label>
+                  <label className="text-sm font-medium">Reward Stamp</label>
                   <select
                     className="w-full p-2 border rounded-md"
                     value={rewardForm.rewardStampId}
@@ -302,8 +302,8 @@ export const SignInRewardManagement = () => {
                       rewardStampId: parseInt(e.target.value) || 0 
                     }))}
                   >
-                    <option value={0}>请选择徽章</option>
-                    {stamps.map((stamp) => (
+                    <option value={0}>Select Stamp</option>
+                    {stamps?.map((stamp) => (
                       <option key={stamp.id} value={stamp.id}>
                         {stamp.name} ({stamp.stampType})
                       </option>
@@ -313,10 +313,10 @@ export const SignInRewardManagement = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  取消
+                  Cancel
                 </Button>
                 <Button color="primary" onPress={saveReward} isLoading={loading}>
-                  {editingReward ? '更新' : '创建'}
+                  {editingReward ? 'Update' : 'Create'}
                 </Button>
               </ModalFooter>
             </>

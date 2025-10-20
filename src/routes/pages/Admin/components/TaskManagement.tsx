@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
@@ -25,6 +25,7 @@ interface TaskGroup {
 
 interface Task {
   id: number;
+  groupId?: number;
   title: string;
   description: string;
   imgUrl: string;
@@ -53,17 +54,17 @@ interface PendingTask {
 }
 
 const TASK_TYPES = [
-  { key: 'invite', label: '邀请任务' },
-  { key: 'postTwitter', label: 'Twitter发帖任务' },
-  { key: 'quiz', label: '问答任务' },
-  { key: 'signIn', label: '签到任务' },
+  { key: 'invite', label: 'Invite Task' },
+  { key: 'postTwitter', label: 'Twitter Post Task' },
+  { key: 'quiz', label: 'Quiz Task' },
+  { key: 'signIn', label: 'Sign-in Task' },
 ];
 
 export const TaskManagement = () => {
   const [taskGroups, setTaskGroups] = useState<TaskGroup[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [pendingTasks, setPendingTasks] = useState<PendingTask[]>([]);
-  const [stamps, setStamps] = useState<any[]>([]);
+  const [stamps, setStamps] = useState<Stamp[]>([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [page, setPage] = useState(1);
@@ -71,7 +72,7 @@ export const TaskManagement = () => {
   const [total, setTotal] = useState(0);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   
-  // 编辑/创建模态框
+  // Edit/Create modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [taskForm, setTaskForm] = useState({
@@ -91,89 +92,89 @@ export const TaskManagement = () => {
   });
   const [uploading, setUploading] = useState(false);
 
-  // 加载任务组列表
+  // Load task group list
   const loadTaskGroups = async () => {
     try {
       setLoading(true);
       const response = await taskApi.getTaskGroupList(page, pageSize);
       if (response.code === '200') {
-        setTaskGroups(response.list);
+        setTaskGroups(response.list as TaskGroup[]);
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载任务组列表失败:', error);
-      setMessage('加载任务组列表失败');
+      console.error('Failed to load task group list:', error);
+      setMessage('Failed to load task group list');
     } finally {
       setLoading(false);
     }
   };
 
-  // 加载任务列表
+  // Load task list
   const loadTasks = async (groupId: number) => {
     try {
       setLoading(true);
       const response = await taskApi.getTaskList(groupId, page, pageSize);
       if (response.code === '200') {
-        setTasks(response.list);
+        setTasks(response.list as Task[]);
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载任务列表失败:', error);
-      setMessage('加载任务列表失败');
+      console.error('Failed to load task list:', error);
+      setMessage('Failed to load task list');
     } finally {
       setLoading(false);
     }
   };
 
-  // 加载待审核任务
+  // Load pending tasks
   const loadPendingTasks = async () => {
     try {
       setLoading(true);
       const response = await taskApi.getPendingPostTwitterTasks(page, pageSize);
       if (response.code === '200') {
-        setPendingTasks(response.list);
+        setPendingTasks(response.list as PendingTask[]);
         setTotal(parseInt(response.total));
       }
     } catch (error) {
-      console.error('加载待审核任务失败:', error);
-      setMessage('加载待审核任务失败');
+      console.error('Failed to load pending tasks:', error);
+      setMessage('Failed to load pending tasks');
     } finally {
       setLoading(false);
     }
   };
 
-  // 加载徽章列表
+  // Load stamp list
   const loadStamps = async () => {
     try {
       const response = await stampApi.getList(1, 100);
       if (response.code === '200') {
-        setStamps(response.list);
+        setStamps(response.list as Stamp[]);
       }
     } catch (error) {
-      console.error('加载徽章列表失败:', error);
+      console.error('Failed to load stamp list:', error);
     }
   };
 
-  // 文件上传
+  // File upload
   const handleFileUpload = async (file: File) => {
     try {
       setUploading(true);
       const response = await uploadApi.upload(file);
       if (response.code === '200') {
         setTaskForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
-        setMessage('图片上传成功');
+        setMessage('Image uploaded successfully');
       } else {
-        setMessage('图片上传失败');
+        setMessage('Image upload failed');
       }
     } catch (error) {
-      console.error('图片上传失败:', error);
-      setMessage('图片上传失败');
+      console.error('Image upload failed:', error);
+      setMessage('Image upload failed');
     } finally {
       setUploading(false);
     }
   };
 
-  // 保存任务
+  // Save task
   const saveTask = async () => {
     try {
       setLoading(true);
@@ -182,66 +183,66 @@ export const TaskManagement = () => {
         : await taskApi.createTask(taskForm);
       
       if (response.code === '200') {
-        setMessage(editingTask ? '任务更新成功' : '任务创建成功');
+        setMessage(editingTask ? 'Task updated successfully' : 'Task created successfully');
         onEditOpenChange();
         resetForm();
         if (selectedGroupId) {
           loadTasks(selectedGroupId);
         }
       } else {
-        setMessage(response.msg || '操作失败');
+        setMessage(response.msg || 'Operation failed');
       }
     } catch (error) {
-      console.error('保存任务失败:', error);
-      setMessage('保存任务失败');
+      console.error('Failed to save task:', error);
+      setMessage('Failed to save task');
     } finally {
       setLoading(false);
     }
   };
 
-  // 删除任务
+  // Delete task
   const deleteTask = async (id: number) => {
-    if (!confirm('确定要删除这个任务吗？')) return;
+    if (!confirm('Are you sure you want to delete this task?')) return;
     
     try {
       setLoading(true);
       const response = await taskApi.deleteTask(id);
       if (response.code === '200') {
-        setMessage('任务删除成功');
+        setMessage('Task deleted successfully');
         if (selectedGroupId) {
           loadTasks(selectedGroupId);
         }
       } else {
-        setMessage(response.msg || '删除失败');
+        setMessage(response.msg || 'Delete failed');
       }
     } catch (error) {
-      console.error('删除任务失败:', error);
-      setMessage('删除任务失败');
+      console.error('Failed to delete task:', error);
+      setMessage('Failed to delete task');
     } finally {
       setLoading(false);
     }
   };
 
-  // 审核任务
+  // Approve task
   const approveTask = async (id: number) => {
     try {
       setLoading(true);
       const response = await taskApi.approveTask(id);
       if (response.code === '200') {
-        setMessage('任务审核成功');
+        setMessage('Task approved successfully');
         loadPendingTasks();
       } else {
-        setMessage(response.msg || '审核失败');
+        setMessage(response.msg || 'Approval failed');
       }
     } catch (error) {
-      console.error('审核任务失败:', error);
-      setMessage('审核任务失败');
+      console.error('Failed to approve task:', error);
+      setMessage('Failed to approve task');
     } finally {
       setLoading(false);
     }
   };
 
-  // 重置表单
+  // Reset form
   const resetForm = () => {
     setTaskForm({
       groupId: selectedGroupId || 0,
@@ -261,7 +262,7 @@ export const TaskManagement = () => {
     setEditingTask(null);
   };
 
-  // 打开编辑模态框
+  // Open edit modal
   const openEditModal = (task?: Task) => {
     if (task) {
       setEditingTask(task);
@@ -286,15 +287,15 @@ export const TaskManagement = () => {
     onEditOpen();
   };
 
-  // 格式化时间
+  // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('zh-CN');
+    return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
-  // 获取徽章名称
+  // Get stamp name
   const getStampName = (stampId: number) => {
     const stamp = stamps.find(s => s.id === stampId);
-    return stamp ? stamp.name : `徽章ID: ${stampId}`;
+    return stamp ? stamp.name : `Stamp ID: ${stampId}`;
   };
 
   useEffect(() => {
@@ -312,31 +313,31 @@ export const TaskManagement = () => {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <h3 className="text-lg font-semibold">任务管理</h3>
+          <h3 className="text-lg font-semibold">Task Management</h3>
         </CardHeader>
         <CardBody>
-          <Tabs aria-label="任务管理">
-            <Tab key="taskGroups" title="任务组管理">
+          <Tabs aria-label="Task Management">
+            <Tab key="taskGroups" title="Task Group Management">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-medium">任务组列表</h4>
+                  <h4 className="font-medium">Task Group List</h4>
                   <Button color="primary" size="sm">
-                    创建任务组
+                    Create Task Group
                   </Button>
                 </div>
                 
-                <Table aria-label="任务组列表">
+                <Table aria-label="Task Group List">
                   <TableHeader>
                     <TableColumn>ID</TableColumn>
-                    <TableColumn>标题</TableColumn>
-                    <TableColumn>描述</TableColumn>
-                    <TableColumn>开始时间</TableColumn>
-                    <TableColumn>结束时间</TableColumn>
-                    <TableColumn>任务数量</TableColumn>
-                    <TableColumn>操作</TableColumn>
+                    <TableColumn>Title</TableColumn>
+                    <TableColumn>Description</TableColumn>
+                    <TableColumn>Start Time</TableColumn>
+                    <TableColumn>End Time</TableColumn>
+                    <TableColumn>Task Count</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {taskGroups.map((group) => (
+                    {taskGroups?.map((group) => (
                       <TableRow key={group.id}>
                         <TableCell>{group.id}</TableCell>
                         <TableCell>{group.title}</TableCell>
@@ -352,21 +353,21 @@ export const TaskManagement = () => {
                               variant="flat"
                               onClick={() => setSelectedGroupId(group.id)}
                             >
-                              查看任务
+                              View Tasks
                             </Button>
                             <Button
                               size="sm"
                               color="warning"
                               variant="flat"
                             >
-                              编辑
+                              Edit
                             </Button>
                             <Button
                               size="sm"
                               color="danger"
                               variant="flat"
                             >
-                              删除
+                              Delete
                             </Button>
                           </div>
                         </TableCell>
@@ -377,11 +378,11 @@ export const TaskManagement = () => {
               </div>
             </Tab>
 
-            <Tab key="tasks" title="任务管理">
+            <Tab key="tasks" title="Task Management">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h4 className="font-medium">
-                    任务列表 {selectedGroupId && `(组ID: ${selectedGroupId})`}
+                    Task List {selectedGroupId && `(Group ID: ${selectedGroupId})`}
                   </h4>
                   <Button 
                     color="primary" 
@@ -389,23 +390,23 @@ export const TaskManagement = () => {
                     onPress={() => openEditModal()}
                     isDisabled={!selectedGroupId}
                   >
-                    创建任务
+                    Create Task
                   </Button>
                 </div>
 
                 {selectedGroupId ? (
-                  <Table aria-label="任务列表">
+                  <Table aria-label="Task List">
                     <TableHeader>
                       <TableColumn>ID</TableColumn>
-                      <TableColumn>标题</TableColumn>
-                      <TableColumn>类型</TableColumn>
-                      <TableColumn>奖励积分</TableColumn>
-                      <TableColumn>奖励徽章</TableColumn>
-                      <TableColumn>强制锁定</TableColumn>
-                      <TableColumn>操作</TableColumn>
+                      <TableColumn>Title</TableColumn>
+                      <TableColumn>Type</TableColumn>
+                      <TableColumn>Reward Points</TableColumn>
+                      <TableColumn>Reward Stamp</TableColumn>
+                      <TableColumn>Force Locked</TableColumn>
+                      <TableColumn>Actions</TableColumn>
                     </TableHeader>
                     <TableBody>
-                      {tasks.map((task) => (
+                      {tasks?.map((task) => (
                         <TableRow key={task.id}>
                           <TableCell>{task.id}</TableCell>
                           <TableCell>{task.title}</TableCell>
@@ -419,7 +420,7 @@ export const TaskManagement = () => {
                               color={task.forceLocked ? 'warning' : 'default'}
                               variant="flat"
                             >
-                              {task.forceLocked ? '锁定' : '正常'}
+                              {task.forceLocked ? 'Locked' : 'Normal'}
                             </Chip>
                           </TableCell>
                           <TableCell>
@@ -430,7 +431,7 @@ export const TaskManagement = () => {
                                 variant="flat"
                                 onClick={() => openEditModal(task)}
                               >
-                                编辑
+                                Edit
                               </Button>
                               <Button
                                 size="sm"
@@ -439,7 +440,7 @@ export const TaskManagement = () => {
                                 onClick={() => deleteTask(task.id)}
                                 isLoading={loading}
                               >
-                                删除
+                                Delete
                               </Button>
                             </div>
                           </TableCell>
@@ -449,30 +450,30 @@ export const TaskManagement = () => {
                   </Table>
                 ) : (
                   <div className="text-center py-8 text-gray-500">
-                    请先选择一个任务组查看任务
+                    Please select a task group first to view tasks
                   </div>
                 )}
               </div>
             </Tab>
 
-            <Tab key="pending" title="待审核任务">
+            <Tab key="pending" title="Pending Tasks">
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <h4 className="font-medium">待审核的Twitter发帖任务</h4>
+                  <h4 className="font-medium">Pending Twitter Post Tasks</h4>
                 </div>
 
-                <Table aria-label="待审核任务列表">
+                <Table aria-label="Pending Task List">
                   <TableHeader>
                     <TableColumn>ID</TableColumn>
-                    <TableColumn>用户ID</TableColumn>
-                    <TableColumn>任务标题</TableColumn>
-                    <TableColumn>提交内容</TableColumn>
-                    <TableColumn>状态</TableColumn>
-                    <TableColumn>提交时间</TableColumn>
-                    <TableColumn>操作</TableColumn>
+                    <TableColumn>User ID</TableColumn>
+                    <TableColumn>Task Title</TableColumn>
+                    <TableColumn>Submitted Content</TableColumn>
+                    <TableColumn>Status</TableColumn>
+                    <TableColumn>Submitted At</TableColumn>
+                    <TableColumn>Actions</TableColumn>
                   </TableHeader>
                   <TableBody>
-                    {pendingTasks.map((task) => (
+                    {pendingTasks?.map((task) => (
                       <TableRow key={task.id}>
                         <TableCell>{task.id}</TableCell>
                         <TableCell>{task.userId}</TableCell>
@@ -483,7 +484,7 @@ export const TaskManagement = () => {
                             color={task.status === 1 ? 'warning' : 'success'}
                             variant="flat"
                           >
-                            {task.status === 1 ? '待审核' : '已完成'}
+                            {task.status === 1 ? 'Pending' : 'Completed'}
                           </Chip>
                         </TableCell>
                         <TableCell>{formatTime(task.createdAt)}</TableCell>
@@ -496,7 +497,7 @@ export const TaskManagement = () => {
                               onClick={() => approveTask(task.id)}
                               isLoading={loading}
                             >
-                              审核通过
+                              Approve
                             </Button>
                           )}
                         </TableCell>
@@ -508,31 +509,31 @@ export const TaskManagement = () => {
             </Tab>
           </Tabs>
 
-          {/* 分页 */}
+          {/* Pagination */}
           <div className="flex justify-center mt-4">
             <Button
               isDisabled={page === 1}
               onClick={() => setPage(page - 1)}
               variant="flat"
             >
-              上一页
+              Previous
             </Button>
             <span className="mx-4 flex items-center">
-              第 {page} 页，共 {Math.ceil(total / pageSize)} 页
+              Page {page} of {Math.ceil(total / pageSize)}
             </span>
             <Button
               isDisabled={page >= Math.ceil(total / pageSize)}
               onClick={() => setPage(page + 1)}
               variant="flat"
             >
-              下一页
+              Next
             </Button>
           </div>
 
-          {/* 消息提示 */}
+          {/* Message Display */}
           {message && (
             <div className={`mt-4 p-3 rounded-md ${
-              message.includes('成功') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
+              message.includes('successful') ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'
             }`}>
               {message}
             </div>
@@ -540,32 +541,32 @@ export const TaskManagement = () => {
         </CardBody>
       </Card>
 
-      {/* 编辑/创建任务模态框 */}
+      {/* Edit/Create Task Modal */}
       <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="4xl">
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {editingTask ? '编辑任务' : '创建任务'}
+                {editingTask ? 'Edit Task' : 'Create Task'}
               </ModalHeader>
               <ModalBody className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="任务标题"
-                    placeholder="请输入任务标题"
+                    label="Task Title"
+                    placeholder="Enter task title"
                     value={taskForm.title}
                     onChange={(e) => setTaskForm(prev => ({ ...prev, title: e.target.value }))}
                   />
                   <Select
-                    label="任务类型"
-                    placeholder="请选择任务类型"
+                    label="Task Type"
+                    placeholder="Select task type"
                     selectedKeys={taskForm.taskType ? [taskForm.taskType] : []}
                     onSelectionChange={(keys) => {
                       const selected = Array.from(keys)[0] as string;
                       setTaskForm(prev => ({ ...prev, taskType: selected }));
                     }}
                   >
-                    {TASK_TYPES.map((type) => (
+                    {TASK_TYPES?.map((type) => (
                       <SelectItem key={type.key} value={type.key}>
                         {type.label}
                       </SelectItem>
@@ -574,8 +575,8 @@ export const TaskManagement = () => {
                 </div>
 
                 <Textarea
-                  label="任务描述"
-                  placeholder="请输入任务描述"
+                  label="Task Description"
+                  placeholder="Enter task description"
                   value={taskForm.description}
                   onChange={(e) => setTaskForm(prev => ({ ...prev, description: e.target.value }))}
                 />
@@ -583,8 +584,8 @@ export const TaskManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="number"
-                    label="奖励积分"
-                    placeholder="请输入奖励积分"
+                    label="Reward Points"
+                    placeholder="Enter reward points"
                     value={taskForm.RewardPoints.toString()}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
@@ -592,7 +593,7 @@ export const TaskManagement = () => {
                     }))}
                   />
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">奖励徽章</label>
+                    <label className="text-sm font-medium">Reward Stamp</label>
                     <select
                       className="w-full p-2 border rounded-md"
                       value={taskForm.RewardStampId}
@@ -601,8 +602,8 @@ export const TaskManagement = () => {
                         RewardStampId: parseInt(e.target.value) || 0 
                       }))}
                     >
-                      <option value={0}>请选择徽章</option>
-                      {stamps.map((stamp) => (
+                      <option value={0}>Select Stamp</option>
+                      {stamps?.map((stamp) => (
                         <option key={stamp.id} value={stamp.id}>
                           {stamp.name} ({stamp.stampType})
                         </option>
@@ -614,7 +615,7 @@ export const TaskManagement = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="datetime-local"
-                    label="开始时间"
+                    label="Start Time"
                     value={taskForm.startAt ? new Date(taskForm.startAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
@@ -623,7 +624,7 @@ export const TaskManagement = () => {
                   />
                   <Input
                     type="datetime-local"
-                    label="结束时间"
+                    label="End Time"
                     value={taskForm.endAt ? new Date(taskForm.endAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
@@ -632,12 +633,12 @@ export const TaskManagement = () => {
                   />
                 </div>
 
-                {/* 任务类型特定配置 */}
+                {/* Task type specific configuration */}
                 {taskForm.taskType === 'invite' && (
                   <Input
                     type="number"
-                    label="邀请人数要求"
-                    placeholder="请输入邀请人数要求"
+                    label="Required Invite Count"
+                    placeholder="Enter required invite count"
                     value={taskForm.inviteTaskConfig.requestInviteNum.toString()}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
@@ -651,8 +652,8 @@ export const TaskManagement = () => {
 
                 {taskForm.taskType === 'postTwitter' && (
                   <Textarea
-                    label="Twitter发帖内容要求"
-                    placeholder="请输入Twitter发帖内容要求"
+                    label="Twitter Post Content Requirement"
+                    placeholder="Enter Twitter post content requirement"
                     value={taskForm.postTwitterTaskConfig.content}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
@@ -667,8 +668,8 @@ export const TaskManagement = () => {
                 {taskForm.taskType === 'quiz' && (
                   <div className="space-y-4">
                     <Textarea
-                      label="问题"
-                      placeholder="请输入问题"
+                      label="Question"
+                      placeholder="Enter question"
                       value={taskForm.quizTaskConfig.quiz}
                       onChange={(e) => setTaskForm(prev => ({ 
                         ...prev, 
@@ -679,8 +680,8 @@ export const TaskManagement = () => {
                       }))}
                     />
                     <Input
-                      label="答案"
-                      placeholder="请输入答案"
+                      label="Answer"
+                      placeholder="Enter answer"
                       value={taskForm.quizTaskConfig.answer}
                       onChange={(e) => setTaskForm(prev => ({ 
                         ...prev, 
@@ -694,12 +695,12 @@ export const TaskManagement = () => {
                 )}
 
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">任务图片</label>
+                  <label className="text-sm font-medium">Task Image</label>
                   <div className="flex gap-4 items-center">
                     {taskForm.imgUrl && (
                       <Image
                         src={taskForm.imgUrl}
-                        alt="任务预览"
+                        alt="Task preview"
                         width={80}
                         height={80}
                         className="rounded"
@@ -724,18 +725,18 @@ export const TaskManagement = () => {
                       variant="flat"
                       isLoading={uploading}
                     >
-                      上传图片
+                      Upload Image
                     </Button>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <label className="text-sm">强制锁定:</label>
+                  <label className="text-sm">Force Locked:</label>
                   <Chip
                     color={taskForm.forceLocked ? 'warning' : 'default'}
                     variant="flat"
                   >
-                    {taskForm.forceLocked ? '锁定' : '正常'}
+                    {taskForm.forceLocked ? 'Locked' : 'Normal'}
                   </Chip>
                   <Button
                     size="sm"
@@ -743,16 +744,16 @@ export const TaskManagement = () => {
                     variant="flat"
                     onClick={() => setTaskForm(prev => ({ ...prev, forceLocked: !prev.forceLocked }))}
                   >
-                    {taskForm.forceLocked ? '取消锁定' : '锁定任务'}
+                    {taskForm.forceLocked ? 'Unlock' : 'Lock Task'}
                   </Button>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  取消
+                  Cancel
                 </Button>
                 <Button color="primary" onPress={saveTask} isLoading={loading}>
-                  {editingTask ? '更新' : '创建'}
+                  {editingTask ? 'Update' : 'Create'}
                 </Button>
               </ModalFooter>
             </>
