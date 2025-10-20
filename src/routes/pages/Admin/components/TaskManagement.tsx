@@ -404,7 +404,7 @@ export const TaskManagement = () => {
 
   // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp).toLocaleString('en-US');
+    return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
   // Get stamp name
@@ -734,19 +734,19 @@ export const TaskManagement = () => {
                   <Input
                     type="datetime-local"
                     label="Start Time"
-                    value={taskForm.startAt ? new Date(taskForm.startAt).toISOString().slice(0, 16) : ''}
+                    value={taskForm.startAt ? new Date(taskForm.startAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
-                      startAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                      startAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
                     }))}
                   />
                   <Input
                     type="datetime-local"
                     label="End Time"
-                    value={taskForm.endAt ? new Date(taskForm.endAt).toISOString().slice(0, 16) : ''}
+                    value={taskForm.endAt ? new Date(taskForm.endAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
-                      endAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                      endAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
                     }))}
                   />
                 </div>
@@ -906,19 +906,19 @@ export const TaskManagement = () => {
                   <Input
                     type="datetime-local"
                     label="Start Time"
-                    value={taskGroupForm.startAt ? new Date(taskGroupForm.startAt).toISOString().slice(0, 16) : ''}
+                    value={taskGroupForm.startAt ? new Date(taskGroupForm.startAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      startAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                      startAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
                     }))}
                   />
                   <Input
                     type="datetime-local"
                     label="End Time"
-                    value={taskGroupForm.endAt ? new Date(taskGroupForm.endAt).toISOString().slice(0, 16) : ''}
+                    value={taskGroupForm.endAt ? new Date(taskGroupForm.endAt * 1000).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      endAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                      endAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
                     }))}
                   />
                 </div>
