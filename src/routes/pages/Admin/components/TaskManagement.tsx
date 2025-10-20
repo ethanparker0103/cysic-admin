@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
@@ -53,6 +53,16 @@ interface PendingTask {
   updatedAt: number;
 }
 
+interface Stamp {
+  id: number;
+  name: string;
+  stampType: string;
+  description: string;
+  imgUrl: string;
+  sorted: number;
+  disabled: boolean;
+}
+
 const TASK_TYPES = [
   { key: 'invite', label: 'Invite Task' },
   { key: 'postTwitter', label: 'Twitter Post Task' },
@@ -72,7 +82,7 @@ export const TaskManagement = () => {
   const [total, setTotal] = useState(0);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   
-  // Edit/Create modal
+  // Edit/Create task modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [taskForm, setTaskForm] = useState({
@@ -92,8 +102,20 @@ export const TaskManagement = () => {
   });
   const [uploading, setUploading] = useState(false);
 
+  // Edit/Create task group modal
+  const { isOpen: isGroupEditOpen, onOpen: onGroupEditOpen, onOpenChange: onGroupEditOpenChange } = useDisclosure();
+  const [editingTaskGroup, setEditingTaskGroup] = useState<TaskGroup | null>(null);
+  const [taskGroupForm, setTaskGroupForm] = useState({
+    title: '',
+    description: '',
+    imgUrl: '',
+    startAt: 0,
+    endAt: 0,
+  });
+  const [groupUploading, setGroupUploading] = useState(false);
+
   // Load task group list
-  const loadTaskGroups = async () => {
+  const loadTaskGroups = useCallback(async () => {
     try {
       setLoading(true);
       const response = await taskApi.getTaskGroupList(page, pageSize);
@@ -107,10 +129,10 @@ export const TaskManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize]);
 
   // Load task list
-  const loadTasks = async (groupId: number) => {
+  const loadTasks = useCallback(async (groupId: number) => {
     try {
       setLoading(true);
       const response = await taskApi.getTaskList(groupId, page, pageSize);
@@ -124,7 +146,7 @@ export const TaskManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, pageSize]);
 
   // Load pending tasks
   const loadPendingTasks = async () => {
@@ -171,6 +193,25 @@ export const TaskManagement = () => {
       setMessage('Image upload failed');
     } finally {
       setUploading(false);
+    }
+  };
+
+  // File upload for task group
+  const handleGroupFileUpload = async (file: File) => {
+    try {
+      setGroupUploading(true);
+      const response = await uploadApi.upload(file);
+      if (response.code === '200') {
+        setTaskGroupForm(prev => ({ ...prev, imgUrl: response.fileUrl }));
+        setMessage('Image uploaded successfully');
+      } else {
+        setMessage('Image upload failed');
+      }
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      setMessage('Image upload failed');
+    } finally {
+      setGroupUploading(false);
     }
   };
 
@@ -242,6 +283,80 @@ export const TaskManagement = () => {
     }
   };
 
+  // Save task group
+  const saveTaskGroup = async () => {
+    try {
+      setLoading(true);
+      const response = editingTaskGroup
+        ? await taskApi.updateTaskGroup(editingTaskGroup.id, taskGroupForm)
+        : await taskApi.createTaskGroup(taskGroupForm);
+      
+      if (response.code === '200') {
+        setMessage(editingTaskGroup ? 'Task group updated successfully' : 'Task group created successfully');
+        onGroupEditOpenChange();
+        resetGroupForm();
+        loadTaskGroups();
+      } else {
+        setMessage(response.msg || 'Operation failed');
+      }
+    } catch (error) {
+      console.error('Failed to save task group:', error);
+      setMessage('Failed to save task group');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete task group
+  const deleteTaskGroup = async (id: number) => {
+    if (!confirm('Are you sure you want to delete this task group?')) return;
+    
+    try {
+      setLoading(true);
+      const response = await taskApi.deleteTaskGroup(id);
+      if (response.code === '200') {
+        setMessage('Task group deleted successfully');
+        loadTaskGroups();
+      } else {
+        setMessage(response.msg || 'Delete failed');
+      }
+    } catch (error) {
+      console.error('Failed to delete task group:', error);
+      setMessage('Failed to delete task group');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reset task group form
+  const resetGroupForm = () => {
+    setTaskGroupForm({
+      title: '',
+      description: '',
+      imgUrl: '',
+      startAt: 0,
+      endAt: 0,
+    });
+    setEditingTaskGroup(null);
+  };
+
+  // Open task group edit modal
+  const openGroupEditModal = (taskGroup?: TaskGroup) => {
+    if (taskGroup) {
+      setEditingTaskGroup(taskGroup);
+      setTaskGroupForm({
+        title: taskGroup.title,
+        description: taskGroup.description,
+        imgUrl: taskGroup.imgUrl,
+        startAt: taskGroup.startAt,
+        endAt: taskGroup.endAt,
+      });
+    } else {
+      resetGroupForm();
+    }
+    onGroupEditOpen();
+  };
+
   // Reset form
   const resetForm = () => {
     setTaskForm({
@@ -289,7 +404,7 @@ export const TaskManagement = () => {
 
   // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('en-US');
+    return new Date(timestamp).toLocaleString('en-US');
   };
 
   // Get stamp name
@@ -301,13 +416,13 @@ export const TaskManagement = () => {
   useEffect(() => {
     loadTaskGroups();
     loadStamps();
-  }, [page]);
+  }, [loadTaskGroups]);
 
   useEffect(() => {
     if (selectedGroupId) {
       loadTasks(selectedGroupId);
     }
-  }, [selectedGroupId, page]);
+  }, [selectedGroupId, loadTasks]);
 
   return (
     <div className="space-y-6">
@@ -321,7 +436,7 @@ export const TaskManagement = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <h4 className="font-medium">Task Group List</h4>
-                  <Button color="primary" size="sm">
+                  <Button color="primary" size="sm" onPress={() => openGroupEditModal()}>
                     Create Task Group
                   </Button>
                 </div>
@@ -359,6 +474,7 @@ export const TaskManagement = () => {
                               size="sm"
                               color="warning"
                               variant="flat"
+                              onClick={() => openGroupEditModal(group)}
                             >
                               Edit
                             </Button>
@@ -366,6 +482,8 @@ export const TaskManagement = () => {
                               size="sm"
                               color="danger"
                               variant="flat"
+                              onClick={() => deleteTaskGroup(group.id)}
+                              isLoading={loading}
                             >
                               Delete
                             </Button>
@@ -616,19 +734,19 @@ export const TaskManagement = () => {
                   <Input
                     type="datetime-local"
                     label="Start Time"
-                    value={taskForm.startAt ? new Date(taskForm.startAt * 1000).toISOString().slice(0, 16) : ''}
+                    value={taskForm.startAt ? new Date(taskForm.startAt).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
-                      startAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      startAt: e.target.value ? new Date(e.target.value).getTime() : 0 
                     }))}
                   />
                   <Input
                     type="datetime-local"
                     label="End Time"
-                    value={taskForm.endAt ? new Date(taskForm.endAt * 1000).toISOString().slice(0, 16) : ''}
+                    value={taskForm.endAt ? new Date(taskForm.endAt).toISOString().slice(0, 16) : ''}
                     onChange={(e) => setTaskForm(prev => ({ 
                       ...prev, 
-                      endAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      endAt: e.target.value ? new Date(e.target.value).getTime() : 0 
                     }))}
                   />
                 </div>
@@ -754,6 +872,99 @@ export const TaskManagement = () => {
                 </Button>
                 <Button color="primary" onPress={saveTask} isLoading={loading}>
                   {editingTask ? 'Update' : 'Create'}
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      {/* Edit/Create Task Group Modal */}
+      <Modal isOpen={isGroupEditOpen} onOpenChange={onGroupEditOpenChange} size="2xl">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                {editingTaskGroup ? 'Edit Task Group' : 'Create Task Group'}
+              </ModalHeader>
+              <ModalBody className="space-y-4">
+                <Input
+                  label="Group Title"
+                  placeholder="Enter group title"
+                  value={taskGroupForm.title}
+                  onChange={(e) => setTaskGroupForm(prev => ({ ...prev, title: e.target.value }))}
+                />
+
+                <Textarea
+                  label="Group Description"
+                  placeholder="Enter group description"
+                  value={taskGroupForm.description}
+                  onChange={(e) => setTaskGroupForm(prev => ({ ...prev, description: e.target.value }))}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <Input
+                    type="datetime-local"
+                    label="Start Time"
+                    value={taskGroupForm.startAt ? new Date(taskGroupForm.startAt).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => setTaskGroupForm(prev => ({ 
+                      ...prev, 
+                      startAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                    }))}
+                  />
+                  <Input
+                    type="datetime-local"
+                    label="End Time"
+                    value={taskGroupForm.endAt ? new Date(taskGroupForm.endAt).toISOString().slice(0, 16) : ''}
+                    onChange={(e) => setTaskGroupForm(prev => ({ 
+                      ...prev, 
+                      endAt: e.target.value ? new Date(e.target.value).getTime() : 0 
+                    }))}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Group Image</label>
+                  <div className="flex gap-4 items-center">
+                    {taskGroupForm.imgUrl && (
+                      <Image
+                        src={taskGroupForm.imgUrl}
+                        alt="Group preview"
+                        width={80}
+                        height={80}
+                        className="rounded"
+                      />
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          handleGroupFileUpload(file);
+                        }
+                      }}
+                      className="hidden"
+                      id="group-image-upload"
+                    />
+                    <Button
+                      as="label"
+                      htmlFor="group-image-upload"
+                      color="primary"
+                      variant="flat"
+                      isLoading={groupUploading}
+                    >
+                      Upload Image
+                    </Button>
+                  </div>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Cancel
+                </Button>
+                <Button color="primary" onPress={saveTaskGroup} isLoading={loading}>
+                  {editingTaskGroup ? 'Update' : 'Create'}
                 </Button>
               </ModalFooter>
             </>

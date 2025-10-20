@@ -130,7 +130,7 @@ export const AdminUserManagement = () => {
 
   // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('en-US');
+    return new Date(timestamp).toLocaleString('en-US');
   };
 
   // Format address (show first 6 and last 4 characters)

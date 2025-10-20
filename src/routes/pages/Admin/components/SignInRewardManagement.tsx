@@ -149,7 +149,7 @@ export const SignInRewardManagement = () => {
 
   // Format time
   const formatTime = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString('en-US');
+    return new Date(timestamp).toLocaleString('en-US');
   };
 
   // Get stamp name
