@@ -3,11 +3,14 @@ import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Textarea } from '@nextui-org/react';
+import { Select, SelectItem } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import { Image } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { signInRewardApi, stampApi } from '@/routes/pages/Admin/adminApi';
+import React from 'react';
 
 interface SignInReward {
   id: number;
@@ -197,8 +200,17 @@ export const SignInRewardManagement = () => {
                   <TableCell className="max-w-xs truncate">{reward.description}</TableCell>
                   <TableCell>{reward.requiredConsecutiveDays} days</TableCell>
                   <TableCell>{reward.rewardPoints}</TableCell>
-                  <TableCell>{getStampName(reward.rewardStampId)}</TableCell>
-                  <TableCell>{formatTime(reward.createdAt)}</TableCell>
+                  <TableCell className='flex items-center gap-1'>
+                    <Image
+                      src={stamps.find(s => s.id === reward.rewardStampId)?.imgUrl}
+                      alt={stamps.find(s => s.id === reward.rewardStampId)?.name}
+                      width={20}
+                      height={20}
+                      className="rounded"
+                    />
+                    {getStampName(reward.rewardStampId)}
+                  </TableCell>
+                  <TableCell>{formatTime(reward.createdAt * 1000)}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
@@ -290,24 +302,63 @@ export const SignInRewardManagement = () => {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Reward Stamp</label>
-                  <select
-                    className="w-full p-2 border rounded-md"
-                    value={rewardForm.rewardStampId}
-                    onChange={(e) => setRewardForm(prev => ({ 
+                <Select
+                  label="Reward Stamp"
+                  placeholder="Select Stamp"
+                  selectedKeys={rewardForm.rewardStampId ? [rewardForm.rewardStampId.toString()] : []}
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0] as string;
+                    setRewardForm(prev => ({ 
                       ...prev, 
-                      rewardStampId: parseInt(e.target.value) || 0 
-                    }))}
-                  >
-                    <option value={0}>Select Stamp</option>
-                    {stamps?.map((stamp) => (
-                      <option key={stamp.id} value={stamp.id}>
-                        {stamp.name} ({stamp.stampType})
-                      </option>
+                      rewardStampId: selected ? parseInt(selected) : 0 
+                    }));
+                  }}
+                  renderValue={(items) => {
+                    return items.map((item) => {
+                      const stamp = stamps.find(s => s.id.toString() === item.key);
+                      if (!stamp) return item.textValue;
+                      return (
+                        <div key={item.key} className="flex items-center gap-2">
+                          <Image
+                            src={stamp.imgUrl}
+                            alt={stamp.name}
+                            width={20}
+                            height={20}
+                            className="rounded"
+                          />
+                          <span>{stamp.name}</span>
+                        </div>
+                      );
+                    });
+                  }}
+                >
+                  <SelectItem key="0" value="0">
+                    Select Stamp
+                  </SelectItem>
+                  <React.Fragment>
+                    {stamps.map((stamp) => (
+                      <SelectItem 
+                        key={stamp.id.toString()} 
+                        value={stamp.id.toString()}
+                        textValue={`${stamp.name} (${stamp.stampType})`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Image
+                            src={stamp.imgUrl}
+                            alt={stamp.name}
+                            width={24}
+                            height={24}
+                            className="rounded"
+                          />
+                          <div>
+                            <div className="font-medium">{stamp.name}</div>
+                            <div className="text-xs text-gray-500">{stamp.stampType}</div>
+                          </div>
+                        </div>
+                      </SelectItem>
                     ))}
-                  </select>
-                </div>
+                  </React.Fragment>
+                </Select>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

@@ -138,8 +138,8 @@ export const InviteCodeManagement = () => {
                       {inviteCode.available ? 'Available' : 'Disabled'}
                     </Chip>
                   </TableCell>
-                  <TableCell>{formatTime(inviteCode.createdAt)}</TableCell>
-                  <TableCell>{formatTime(inviteCode.updatedAt)}</TableCell>
+                  <TableCell>{formatTime(inviteCode.createdAt * 1000)}</TableCell>
+                  <TableCell>{formatTime(inviteCode.updatedAt * 1000)}</TableCell>
                   <TableCell>
                     <Button
                       size="sm"

@@ -25,11 +25,8 @@ interface Stamp {
   updatedAt: number;
 }
 
-const STAMP_TYPES = [
-  { key: 'achievement', label: 'Achievement Badge' },
-  { key: 'participation', label: 'Participation Badge' },
-  { key: 'special', label: 'Special Badge' },
-  { key: 'milestone', label: 'Milestone Badge' },
+const STAMP_LABELS = [
+  { key: 'common', label: 'Common' },
 ];
 
 export const StampManagement = () => {
@@ -215,7 +212,7 @@ export const StampManagement = () => {
                   </TableCell>
                   <TableCell>{stamp.name}</TableCell>
                   <TableCell>
-                    {STAMP_TYPES.find(type => type.key === stamp.stampType)?.label || stamp.stampType}
+                    {STAMP_LABELS.find(type => type.key === stamp.stampType)?.label || stamp.stampType}
                   </TableCell>
                   <TableCell>{stamp.sorted}</TableCell>
                   <TableCell>
@@ -226,7 +223,7 @@ export const StampManagement = () => {
                       {stamp.disabled === EStampStatus.StampStatusEnabled ? 'Disabled' : 'Enabled'}
                     </Chip>
                   </TableCell>
-                  <TableCell>{formatTime(stamp.createdAt)}</TableCell>
+                  <TableCell>{formatTime(stamp.createdAt * 1000)}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
@@ -294,15 +291,15 @@ export const StampManagement = () => {
                     onChange={(e) => setStampForm(prev => ({ ...prev, name: e.target.value }))}
                   />
                   <Select
-                    label="Stamp Type"
-                    placeholder="Select stamp type"
+                    label="Stamp Label"
+                    placeholder="Select stamp label"
                     selectedKeys={stampForm.stampType ? [stampForm.stampType] : []}
                     onSelectionChange={(keys) => {
                       const selected = Array.from(keys)[0] as string;
                       setStampForm(prev => ({ ...prev, stampType: selected }));
                     }}
                   >
-                    {STAMP_TYPES?.map((type) => (
+                    {STAMP_LABELS?.map((type) => (
                       <SelectItem key={type.key} value={type.key}>
                         {type.label}
                       </SelectItem>

@@ -545,7 +545,15 @@ export const TaskManagement = () => {
                             {TASK_TYPES.find(type => type.key === task.taskType)?.label || task.taskType}
                           </TableCell>
                           <TableCell>{task.RewardPoints}</TableCell>
-                          <TableCell>{getStampName(task.RewardStampId)}</TableCell>
+                          <TableCell className='flex items-center gap-1'>
+                            <Image
+                              src={stamps.find(s => s.id === task.RewardStampId)?.imgUrl}
+                              alt={stamps.find(s => s.id === task.RewardStampId)?.name}
+                              width={20}
+                              height={20}
+                              className="rounded"
+                            />
+                            {getStampName(task.RewardStampId)}</TableCell>
                           <TableCell>
                             <Chip
                               color={task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
@@ -676,6 +684,24 @@ export const TaskManagement = () => {
                           ...prev, 
                           RewardStampId: selected ? parseInt(selected) : 0 
                         }));
+                      }}
+                      renderValue={(items) => {
+                        return items.map((item) => {
+                          const stamp = stamps.find(s => s.id.toString() === item.key);
+                          if (!stamp) return item.textValue;
+                          return (
+                            <div key={item.key} className="flex items-center gap-2">
+                              <Image
+                                src={stamp.imgUrl}
+                                alt={stamp.name}
+                                width={20}
+                                height={20}
+                                className="rounded"
+                              />
+                              <span>{stamp.name}</span>
+                            </div>
+                          );
+                        });
                       }}
                     >
                       <SelectItem key="0" value="0">
