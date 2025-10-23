@@ -40,7 +40,7 @@ interface Task {
   RewardStampId: number;
   startAt: number;
   endAt: number;
-  forceLocked: number;
+  forceLocked: boolean;
   inviteTaskConfig?: { requestInviteNum: number };
   postTwitterTaskConfig?: { content: string };
   quizTaskConfig?: { quiz: string; answer: string };
