@@ -11,6 +11,7 @@ import { Image } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
+import { EStampStatus } from '@/routes/pages/Admin/interface';
 
 interface Stamp {
   id: number;
@@ -19,7 +20,7 @@ interface Stamp {
   description: string;
   imgUrl: string;
   sorted: number;
-  disabled: boolean;
+  disabled: number;
   createdAt: number;
   updatedAt: number;
 }
@@ -47,7 +48,7 @@ export const StampManagement = () => {
     description: '',
     imgUrl: '',
     sorted: 0,
-    disabled: false,
+    disabled: EStampStatus.StampStatusEnabled,
   });
   const [uploading, setUploading] = useState(false);
 
@@ -57,7 +58,7 @@ export const StampManagement = () => {
       setLoading(true);
       const response = await stampApi.getList(page, pageSize);
       if (response.code === '200') {
-        setStamps(response.list);
+        setStamps(response.list as unknown as Stamp[]);
         setTotal(parseInt(response.total));
       }
     } catch (error) {
@@ -140,7 +141,7 @@ export const StampManagement = () => {
       description: '',
       imgUrl: '',
       sorted: 0,
-      disabled: false,
+      disabled: EStampStatus.StampStatusEnabled,
     });
     setEditingStamp(null);
   };
@@ -219,10 +220,10 @@ export const StampManagement = () => {
                   <TableCell>{stamp.sorted}</TableCell>
                   <TableCell>
                     <Chip
-                      color={stamp.disabled ? 'danger' : 'success'}
+                      color={stamp.disabled === EStampStatus.StampStatusEnabled ? 'danger' : 'success'}
                       variant="flat"
                     >
-                      {stamp.disabled ? 'Disabled' : 'Enabled'}
+                      {stamp.disabled === EStampStatus.StampStatusEnabled ? 'Disabled' : 'Enabled'}
                     </Chip>
                   </TableCell>
                   <TableCell>{formatTime(stamp.createdAt)}</TableCell>
@@ -330,18 +331,18 @@ export const StampManagement = () => {
                   <div className="flex items-center gap-2">
                     <label className="text-sm">Status:</label>
                     <Chip
-                      color={stampForm.disabled ? 'danger' : 'success'}
+                      color={stampForm.disabled === EStampStatus.StampStatusEnabled ? 'danger' : 'success'}
                       variant="flat"
                     >
-                      {stampForm.disabled ? 'Disabled' : 'Enabled'}
+                      {stampForm.disabled === EStampStatus.StampStatusEnabled ? 'Disabled' : 'Enabled'}
                     </Chip>
                     <Button
                       size="sm"
-                      color={stampForm.disabled ? 'success' : 'danger'}
+                      color={stampForm.disabled === EStampStatus.StampStatusEnabled ? 'success' : 'danger'}
                       variant="flat"
-                      onClick={() => setStampForm(prev => ({ ...prev, disabled: !prev.disabled }))}
+                      onClick={() => setStampForm(prev => ({ ...prev, disabled: prev.disabled === EStampStatus.StampStatusEnabled ? EStampStatus.StampStatusDisabled : EStampStatus.StampStatusEnabled }))}
                     >
-                      {stampForm.disabled ? 'Enable' : 'Disable'}
+                      {stampForm.disabled === EStampStatus.StampStatusEnabled ? 'Enable' : 'Disable'}
                     </Button>
                   </div>
                 </div>

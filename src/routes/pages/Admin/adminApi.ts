@@ -135,7 +135,7 @@ export const stampApi = {
     description: string;
     imgUrl: string;
     sorted: number;
-    disabled: boolean;
+    disabled: number;
   }): Promise<ApiResponse> => {
     const token = getStoredToken();
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -160,7 +160,7 @@ export const stampApi = {
     description: string;
     imgUrl: string;
     sorted: number;
-    disabled: boolean;
+    disabled: number;
   }): Promise<ApiResponse> => {
     const token = getStoredToken();
     const headers: Record<string, string> = { 'Content-Type': 'application/json' };

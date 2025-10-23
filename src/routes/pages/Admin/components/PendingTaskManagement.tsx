@@ -6,6 +6,7 @@ import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { taskApi } from '@/routes/pages/Admin/adminApi';
+import { EUserTaskCompletionStatus } from '@/routes/pages/Admin/interface';
 
 interface PendingTask {
   id: number;
@@ -117,10 +118,10 @@ export const PendingTaskManagement = () => {
                     <TableCell className="max-w-xs truncate">{task.taskResult}</TableCell>
                     <TableCell>
                       <Chip
-                        color={task.status === 1 ? 'warning' : 'success'}
+                        color={task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'warning' : 'success'}
                         variant="flat"
                       >
-                        {task.status === 1 ? 'Pending' : 'Completed'}
+                        {task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'Pending' : 'Completed'}
                       </Chip>
                     </TableCell>
                     <TableCell>{formatTime(task.createdAt)}</TableCell>
@@ -134,7 +135,7 @@ export const PendingTaskManagement = () => {
                         >
                           View Details
                         </Button>
-                        {task.status === 1 && (
+                        {task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending && (
                           <Button
                             size="sm"
                             color="success"
@@ -215,11 +216,11 @@ export const PendingTaskManagement = () => {
                         <label className="text-sm font-medium text-gray-500">Status</label>
                         <div className="mt-1">
                           <Chip
-                            color={selectedPendingTask.status === 1 ? 'warning' : 'success'}
+                            color={selectedPendingTask.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'warning' : 'success'}
                             variant="flat"
                             size="sm"
                           >
-                            {selectedPendingTask.status === 1 ? 'Pending' : 'Completed'}
+                            {selectedPendingTask.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'Pending' : 'Completed'}
                           </Chip>
                         </div>
                       </div>
@@ -235,7 +236,7 @@ export const PendingTaskManagement = () => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                {selectedPendingTask?.status === 1 && (
+                {selectedPendingTask?.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending && (
                   <Button 
                     color="success" 
                     onPress={() => selectedPendingTask && approveTask(selectedPendingTask.id)}

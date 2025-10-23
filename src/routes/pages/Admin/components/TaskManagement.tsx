@@ -12,6 +12,7 @@ import { Tabs, Tab } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { taskApi, stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
+import { ETaskType, ETaskForceLocked } from '@/routes/pages/Admin/interface';
 
 interface TaskGroup {
   id: number;
@@ -36,7 +37,7 @@ interface Task {
   RewardStampId: number;
   startAt: number;
   endAt: number;
-  forceLocked: boolean;
+  forceLocked: number;
   inviteTaskConfig?: { requestInviteNum: number };
   postTwitterTaskConfig?: { content: string };
   quizTaskConfig?: { quiz: string; answer: string };
@@ -56,10 +57,11 @@ interface Stamp {
 }
 
 const TASK_TYPES = [
-  { key: 'invite', label: 'Invite Task' },
-  { key: 'postTwitter', label: 'Twitter Post Task' },
-  { key: 'quiz', label: 'Quiz Task' },
-  { key: 'signIn', label: 'Sign-in Task' },
+  { key: ETaskType.TaskTypeInvite, label: 'Invite Task' },
+  { key: ETaskType.TaskTypeQuiz, label: 'Quiz Task' },
+  // { key: 'signIn', label: 'Sign-in Task' }, // 签到任务暂时保持原样，因为枚举中没有定义
+  { key: ETaskType.TaskTypePostTwitter, label: 'Twitter Post Task' },
+  { key: ETaskType.TaskTypeQuoteTwitter, label: 'Twitter Quote Task' },
 ];
 
 export const TaskManagement = () => {
@@ -86,7 +88,7 @@ export const TaskManagement = () => {
     RewardStampId: 0,
     startAt: 0,
     endAt: 0,
-    forceLocked: false,
+    forceLocked: ETaskForceLocked.TaskForceLockedNo,
     inviteTaskConfig: { requestInviteNum: 1 },
     postTwitterTaskConfig: { content: '' },
     quizTaskConfig: { quiz: '', answer: '' },
@@ -334,7 +336,7 @@ export const TaskManagement = () => {
       RewardStampId: 0,
       startAt: 0,
       endAt: 0,
-      forceLocked: false,
+      forceLocked: ETaskForceLocked.TaskForceLockedNo,
       inviteTaskConfig: { requestInviteNum: 1 },
       postTwitterTaskConfig: { content: '' },
       quizTaskConfig: { quiz: '', answer: '' },
@@ -527,10 +529,10 @@ export const TaskManagement = () => {
                           <TableCell>{getStampName(task.RewardStampId)}</TableCell>
                           <TableCell>
                             <Chip
-                              color={task.forceLocked ? 'warning' : 'default'}
+                              color={task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
                               variant="flat"
                             >
-                              {task.forceLocked ? 'Locked' : 'Normal'}
+                              {task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Locked' : 'Normal'}
                             </Chip>
                           </TableCell>
                           <TableCell>
@@ -784,18 +786,18 @@ export const TaskManagement = () => {
                 <div className="flex items-center gap-2">
                   <label className="text-sm">Force Locked:</label>
                   <Chip
-                    color={taskForm.forceLocked ? 'warning' : 'default'}
+                    color={taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
                     variant="flat"
                   >
-                    {taskForm.forceLocked ? 'Locked' : 'Normal'}
+                    {taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Locked' : 'Normal'}
                   </Chip>
                   <Button
                     size="sm"
-                    color={taskForm.forceLocked ? 'default' : 'warning'}
+                    color={taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'default' : 'warning'}
                     variant="flat"
-                    onClick={() => setTaskForm(prev => ({ ...prev, forceLocked: !prev.forceLocked }))}
+                    onClick={() => setTaskForm(prev => ({ ...prev, forceLocked: prev.forceLocked === ETaskForceLocked.TaskForceLockedYes ? ETaskForceLocked.TaskForceLockedNo : ETaskForceLocked.TaskForceLockedYes }))}
                   >
-                    {taskForm.forceLocked ? 'Unlock' : 'Lock Task'}
+                    {taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Unlock' : 'Lock Task'}
                   </Button>
                 </div>
               </ModalBody>

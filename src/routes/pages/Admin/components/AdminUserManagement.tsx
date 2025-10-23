@@ -8,6 +8,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { adminUserApi } from '@/routes/pages/Admin/adminApi';
+import { EAdminUserStatus } from '@/routes/pages/Admin/interface';
 
 interface AdminUser {
   id: number;
@@ -30,7 +31,7 @@ export const AdminUserManagement = () => {
   const [adminUserForm, setAdminUserForm] = useState({
     address: '',
     name: '',
-    status: 1,
+    status: EAdminUserStatus.AdminUserStatusEnabled,
     sign: '',
   });
 
@@ -118,7 +119,7 @@ export const AdminUserManagement = () => {
     setAdminUserForm({
       address: '',
       name: '',
-      status: 1,
+      status: EAdminUserStatus.AdminUserStatusEnabled,
       sign: '',
     });
   };
@@ -180,10 +181,10 @@ export const AdminUserManagement = () => {
                   <TableCell>{adminUser.name}</TableCell>
                   <TableCell>
                     <Chip
-                      color={adminUser.status === 1 ? 'success' : 'danger'}
+                      color={adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
                       variant="flat"
                     >
-                      {adminUser.status === 1 ? 'Enabled' : 'Disabled'}
+                      {adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
                     </Chip>
                   </TableCell>
                   <TableCell>{formatTime(adminUser.createdAt)}</TableCell>
@@ -192,12 +193,12 @@ export const AdminUserManagement = () => {
                     <div className="flex gap-2">
                       <Button
                         size="sm"
-                        color={adminUser.status === 1 ? 'danger' : 'success'}
+                        color={adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'danger' : 'success'}
                         variant="flat"
-                        onClick={() => updateAdminUserStatus(adminUser.id, adminUser.status === 1 ? 0 : 1)}
+                        onClick={() => updateAdminUserStatus(adminUser.id, adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? EAdminUserStatus.AdminUserStatusDisabled : EAdminUserStatus.AdminUserStatusEnabled)}
                         isLoading={loading}
                       >
-                        {adminUser.status === 1 ? 'Disable' : 'Enable'}
+                        {adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Disable' : 'Enable'}
                       </Button>
                       <Button
                         size="sm"
@@ -266,21 +267,21 @@ export const AdminUserManagement = () => {
                   <label className="text-sm font-medium">Status</label>
                   <div className="flex gap-2">
                     <Chip
-                      color={adminUserForm.status === 1 ? 'success' : 'danger'}
+                      color={adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
                       variant="flat"
                     >
-                      {adminUserForm.status === 1 ? 'Enabled' : 'Disabled'}
+                      {adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
                     </Chip>
                     <Button
                       size="sm"
-                      color={adminUserForm.status === 1 ? 'danger' : 'success'}
+                      color={adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'danger' : 'success'}
                       variant="flat"
                       onClick={() => setAdminUserForm(prev => ({ 
                         ...prev, 
-                        status: prev.status === 1 ? 0 : 1 
+                        status: prev.status === EAdminUserStatus.AdminUserStatusEnabled ? EAdminUserStatus.AdminUserStatusDisabled : EAdminUserStatus.AdminUserStatusEnabled 
                       }))}
                     >
-                      {adminUserForm.status === 1 ? 'Disable' : 'Enable'}
+                      {adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Disable' : 'Enable'}
                     </Button>
                   </div>
                 </div>

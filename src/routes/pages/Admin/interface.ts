@@ -4,7 +4,8 @@
 export enum ETaskType {
     TaskTypeQuiz = "quiz",        // 问答任务
     TaskTypeInvite = "invite",      // 邀请任务
-    TaskTypePostTwitter = "postTwitter" // 发布Twitter任务
+    TaskTypePostTwitter = "postTwitter", // 发布Twitter任务
+    TaskTypeQuoteTwitter = "quoteTwitter" // 引用Twitter任务
 }
 
 // 任务状态常量
