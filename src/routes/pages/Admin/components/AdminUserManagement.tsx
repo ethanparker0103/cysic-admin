@@ -181,10 +181,10 @@ export const AdminUserManagement = () => {
                   <TableCell>{adminUser.name}</TableCell>
                   <TableCell>
                     <Chip
-                      color={adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
+                      color={adminUser.status == EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
                       variant="light"
                     >
-                      {adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
+                      {adminUser.status == EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
                     </Chip>
                   </TableCell>
                   <TableCell>{formatTime(adminUser.createdAt * 1000)}</TableCell>

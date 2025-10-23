@@ -360,7 +360,7 @@ export const TaskManagement = () => {
         RewardStampId: task.RewardStampId,
         startAt: task.startAt,
         endAt: task.endAt,
-        forceLocked: task.forceLocked,
+        forceLocked: task.forceLocked ? ETaskForceLocked.TaskForceLockedYes : ETaskForceLocked.TaskForceLockedNo,
         inviteTaskConfig: task.inviteTaskConfig || { requestInviteNum: 1 },
         postTwitterTaskConfig: task.postTwitterTaskConfig || { content: '' },
         quizTaskConfig: task.quizTaskConfig || { quiz: '', answer: '' },
@@ -541,10 +541,10 @@ export const TaskManagement = () => {
                             {getStampName(task.RewardStampId)}</TableCell>
                           <TableCell>
                             <Chip
-                              color={task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
+                              color={task.forceLocked ? 'warning' : 'default'}
                               variant="light"
                             >
-                              {task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Locked' : 'Normal'}
+                              {task.forceLocked ? 'Locked' : 'Normal'}
                             </Chip>
                           </TableCell>
                           <TableCell>
