@@ -10,8 +10,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { Image } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
-import { DatePicker } from '@nextui-org/date-picker';
-import { parseZonedDateTime, getLocalTimeZone } from '@internationalized/date';
+import { CustomDatePicker } from './Datepicker';
 import { toast } from 'react-toastify';
 import { taskApi, stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
 import { ETaskType, ETaskForceLocked } from '@/routes/pages/Admin/interface';
@@ -377,20 +376,6 @@ export const TaskManagement = () => {
     return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
-  // Convert timestamp to ZonedDateTime for DatePicker
-  const timestampToZonedDateTime = (timestamp: number) => {
-    if (!timestamp) return null;
-    const date = new Date(timestamp * 1000);
-    const dateStr = date.toISOString().split('T')[0];
-    const timeStr = date.toTimeString().split(' ')[0];
-    return parseZonedDateTime(`${dateStr}T${timeStr}[${getLocalTimeZone()}]`);
-  };
-
-  // Convert ZonedDateTime to timestamp
-  const zonedDateTimeToTimestamp = (dateValue: { toDate: (timeZone: string) => Date } | null) => {
-    if (!dateValue) return 0;
-    return Math.floor(dateValue.toDate(getLocalTimeZone()).getTime() / 1000);
-  };
 
 
   // Get stamp name
@@ -735,23 +720,21 @@ export const TaskManagement = () => {
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <DatePicker
+                  <CustomDatePicker
                     label="Start Time"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={timestampToZonedDateTime(taskForm.startAt) as any}
-                    onChange={(date) => setTaskForm(prev => ({ 
+                    value={taskForm.startAt}
+                    onChange={(timestamp) => setTaskForm(prev => ({ 
                       ...prev, 
-                      startAt: zonedDateTimeToTimestamp(date)
+                      startAt: timestamp
                     }))}
                     granularity="minute"
                   />
-                  <DatePicker
+                  <CustomDatePicker
                     label="End Time"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={timestampToZonedDateTime(taskForm.endAt) as any}
-                    onChange={(date) => setTaskForm(prev => ({ 
+                    value={taskForm.endAt}
+                    onChange={(timestamp) => setTaskForm(prev => ({ 
                       ...prev, 
-                      endAt: zonedDateTimeToTimestamp(date)
+                      endAt: timestamp
                     }))}
                     granularity="minute"
                   />
@@ -909,23 +892,21 @@ export const TaskManagement = () => {
                 />
 
                 <div className="grid grid-cols-2 gap-4">
-                  <DatePicker
+                  <CustomDatePicker
                     label="Start Time"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={timestampToZonedDateTime(taskGroupForm.startAt) as any}
-                    onChange={(date) => setTaskGroupForm(prev => ({ 
+                    value={taskGroupForm.startAt}
+                    onChange={(timestamp) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      startAt: zonedDateTimeToTimestamp(date)
+                      startAt: timestamp
                     }))}
                     granularity="minute"
                   />
-                  <DatePicker
+                  <CustomDatePicker
                     label="End Time"
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    value={timestampToZonedDateTime(taskGroupForm.endAt) as any}
-                    onChange={(date) => setTaskGroupForm(prev => ({ 
+                    value={taskGroupForm.endAt}
+                    onChange={(timestamp) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      endAt: zonedDateTimeToTimestamp(date)
+                      endAt: timestamp
                     }))}
                     granularity="minute"
                   />
