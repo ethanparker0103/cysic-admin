@@ -24,7 +24,7 @@ const routeChildren = [
     element: <Home />,
   },
   {
-    path: "admin",
+    path: "ahidhfoiwneofadmin",
     element: <KrLayout />,
     children: [
       {
@@ -115,7 +115,7 @@ export const backgroundImageList = {
   "/krkrkr": {
     img: '#000'
   },
-  "/admin": {
+  "/ahidhfoiwneofadmin": {
     img: '#000'
   },
   "/": {
