@@ -3,6 +3,7 @@ import { Card, CardBody, CardHeader } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Switch } from '@nextui-org/react';
+import { Spinner } from '@nextui-org/react';
 import { settingsApi } from '@/routes/pages/Admin/adminApi';
 import { toast } from 'react-toastify';
 
@@ -75,11 +76,21 @@ export const SettingsManagement = () => {
 
   return (
     <div className="space-y-6">
+      {loading && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <Spinner color="primary" size="lg" />
+        </div>
+      )}
       <Card>
         <CardHeader>
           <h3 className="text-lg font-semibold">System Settings</h3>
         </CardHeader>
         <CardBody className="space-y-4">
+          {loading && (
+            <div className="w-full flex justify-center py-2">
+              <Spinner color="primary" size="sm" />
+            </div>
+          )}
           {/* Invite Code Settings */}
           <div className="flex items-center justify-between">
             <div>

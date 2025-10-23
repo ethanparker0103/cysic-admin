@@ -5,6 +5,7 @@ import { Input } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
+import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { adminUserApi } from '@/routes/pages/Admin/adminApi';
 
@@ -145,6 +146,11 @@ export const AdminUserManagement = () => {
 
   return (
     <div className="space-y-6">
+      {loading && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <Spinner color="primary" size="lg" />
+        </div>
+      )}
       <Card>
         <CardHeader className="flex justify-between items-center">
           <h3 className="text-lg font-semibold">Admin User Management</h3>

@@ -174,7 +174,7 @@ export const stampApi = {
       method: 'POST',
       headers,
       // body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
-      body: JSON.stringify({ id: id.toString(), ...data })
+      body: JSON.stringify({ id: Number(id), ...data })
     });
   },
 

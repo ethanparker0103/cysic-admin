@@ -6,6 +6,7 @@ import { InviteCodeManagement } from "./components/InviteCodeManagement";
 import { StampManagement } from "./components/StampManagement";
 import { SignInRewardManagement } from "./components/SignInRewardManagement";
 import { TaskManagement } from "./components/TaskManagement";
+import { PendingTaskManagement } from "./components/PendingTaskManagement";
 import { AdminUserManagement } from "./components/AdminUserManagement";
 import { AdminLogin } from "./components/AdminLogin";
 import { AuthProvider, useAuth } from "./components/AuthProvider";
@@ -49,6 +50,9 @@ const AdminContent = () => {
                 </Tab>
                 <Tab key="task" title="Tasks">
                     <TaskManagement />
+                </Tab>
+                <Tab key="pendingTask" title="Pending Tasks">
+                    <PendingTaskManagement />
                 </Tab>
                 <Tab key="adminUser" title="Admin Users">
                     <AdminUserManagement />

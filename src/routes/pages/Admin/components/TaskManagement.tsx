@@ -9,6 +9,7 @@ import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { Image } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/react';
+import { Spinner } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { taskApi, stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
 
@@ -43,16 +44,6 @@ interface Task {
   updatedAt: number;
 }
 
-interface PendingTask {
-  id: number;
-  userId: number;
-  taskId: number;
-  taskTitle: string;
-  taskResult: string;
-  status: number;
-  createdAt: number;
-  updatedAt: number;
-}
 
 interface Stamp {
   id: number;
@@ -74,7 +65,6 @@ const TASK_TYPES = [
 export const TaskManagement = () => {
   const [taskGroups, setTaskGroups] = useState<TaskGroup[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [pendingTasks, setPendingTasks] = useState<PendingTask[]>([]);
   const [stamps, setStamps] = useState<Stamp[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -114,6 +104,7 @@ export const TaskManagement = () => {
     endAt: 0,
   });
   const [groupUploading, setGroupUploading] = useState(false);
+  
 
   // Load task group list
   const loadTaskGroups = useCallback(async () => {
@@ -156,22 +147,6 @@ export const TaskManagement = () => {
     }
   }, [selectedGroupId, loadTasks]);
 
-  // Load pending tasks
-  const loadPendingTasks = async () => {
-    try {
-      setLoading(true);
-      const response = await taskApi.getPendingPostTwitterTasks(page, pageSize);
-      if (response.code === '200') {
-        setPendingTasks(response.list as PendingTask[]);
-        setTotal(parseInt(response.total));
-      }
-    } catch (error) {
-      console.error('Failed to load pending tasks:', error);
-      toast.error('Failed to load pending tasks');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Load stamp list
   const loadStamps = async () => {
@@ -272,24 +247,6 @@ export const TaskManagement = () => {
     }
   };
 
-  // Approve task
-  const approveTask = async (id: number) => {
-    try {
-      setLoading(true);
-      const response = await taskApi.approveTask(id);
-      if (response.code === '200') {
-        toast.success('Task approved successfully');
-        loadPendingTasks();
-      } else {
-        toast.error(response.msg || 'Approval failed');
-      }
-    } catch (error) {
-      console.error('Failed to approve task:', error);
-      toast.error('Failed to approve task');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   // Save task group
   const saveTaskGroup = async () => {
@@ -434,6 +391,11 @@ export const TaskManagement = () => {
 
   return (
     <div className="space-y-6">
+      {loading && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <Spinner color="primary" size="lg" />
+        </div>
+      )}
       <Card>
         <CardHeader>
           <h3 className="text-lg font-semibold">Task Management</h3>
@@ -604,57 +566,6 @@ export const TaskManagement = () => {
               </div>
             </Tab>
 
-            <Tab key="pending" title="Pending Tasks">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <h4 className="font-medium">Pending Twitter Post Tasks</h4>
-                </div>
-
-                <Table aria-label="Pending Task List">
-                  <TableHeader>
-                    <TableColumn>ID</TableColumn>
-                    <TableColumn>User ID</TableColumn>
-                    <TableColumn>Task Title</TableColumn>
-                    <TableColumn>Submitted Content</TableColumn>
-                    <TableColumn>Status</TableColumn>
-                    <TableColumn>Submitted At</TableColumn>
-                    <TableColumn>Actions</TableColumn>
-                  </TableHeader>
-                  <TableBody>
-                    {pendingTasks?.map((task) => (
-                      <TableRow key={task.id}>
-                        <TableCell>{task.id}</TableCell>
-                        <TableCell>{task.userId}</TableCell>
-                        <TableCell>{task.taskTitle}</TableCell>
-                        <TableCell className="max-w-xs truncate">{task.taskResult}</TableCell>
-                        <TableCell>
-                          <Chip
-                            color={task.status === 1 ? 'warning' : 'success'}
-                            variant="flat"
-                          >
-                            {task.status === 1 ? 'Pending' : 'Completed'}
-                          </Chip>
-                        </TableCell>
-                        <TableCell>{formatTime(task.createdAt)}</TableCell>
-                        <TableCell>
-                          {task.status === 1 && (
-                            <Button
-                              size="sm"
-                              color="success"
-                              variant="flat"
-                              onClick={() => approveTask(task.id)}
-                              isLoading={loading}
-                            >
-                              Approve
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </Tab>
           </Tabs>
 
           {/* Pagination */}
@@ -993,6 +904,7 @@ export const TaskManagement = () => {
           )}
         </ModalContent>
       </Modal>
+
     </div>
   );
 };
