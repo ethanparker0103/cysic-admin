@@ -10,9 +10,12 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { Image } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/react';
 import { Spinner } from '@nextui-org/react';
+import { DatePicker } from '@nextui-org/date-picker';
+import { parseZonedDateTime, getLocalTimeZone } from '@internationalized/date';
 import { toast } from 'react-toastify';
 import { taskApi, stampApi, uploadApi } from '@/routes/pages/Admin/adminApi';
 import { ETaskType, ETaskForceLocked } from '@/routes/pages/Admin/interface';
+import React from 'react';
 
 interface TaskGroup {
   id: number;
@@ -374,6 +377,22 @@ export const TaskManagement = () => {
     return new Date(timestamp * 1000).toLocaleString('en-US');
   };
 
+  // Convert timestamp to ZonedDateTime for DatePicker
+  const timestampToZonedDateTime = (timestamp: number) => {
+    if (!timestamp) return null;
+    const date = new Date(timestamp * 1000);
+    const dateStr = date.toISOString().split('T')[0];
+    const timeStr = date.toTimeString().split(' ')[0];
+    return parseZonedDateTime(`${dateStr}T${timeStr}[${getLocalTimeZone()}]`);
+  };
+
+  // Convert ZonedDateTime to timestamp
+  const zonedDateTimeToTimestamp = (dateValue: { toDate: (timeZone: string) => Date } | null) => {
+    if (!dateValue) return 0;
+    return Math.floor(dateValue.toDate(getLocalTimeZone()).getTime() / 1000);
+  };
+
+
   // Get stamp name
   const getStampName = (stampId: number) => {
     const stamp = stamps.find(s => s.id === stampId);
@@ -530,7 +549,7 @@ export const TaskManagement = () => {
                           <TableCell>
                             <Chip
                               color={task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
-                              variant="flat"
+                              variant="light"
                             >
                               {task.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Locked' : 'Normal'}
                             </Chip>
@@ -646,43 +665,69 @@ export const TaskManagement = () => {
                     }))}
                   />
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Reward Stamp</label>
-                    <select
-                      className="w-full p-2 border rounded-md"
-                      value={taskForm.RewardStampId}
-                      onChange={(e) => setTaskForm(prev => ({ 
-                        ...prev, 
-                        RewardStampId: parseInt(e.target.value) || 0 
-                      }))}
+                    {/* <label className="text-sm font-medium">Reward Stamp</label> */}
+                    <Select
+                      label="Reward Stamp"
+                      placeholder="Select Stamp"
+                      selectedKeys={taskForm.RewardStampId ? [taskForm.RewardStampId.toString()] : []}
+                      onSelectionChange={(keys) => {
+                        const selected = Array.from(keys)[0] as string;
+                        setTaskForm(prev => ({ 
+                          ...prev, 
+                          RewardStampId: selected ? parseInt(selected) : 0 
+                        }));
+                      }}
                     >
-                      <option value={0}>Select Stamp</option>
-                      {stamps?.map((stamp) => (
-                        <option key={stamp.id} value={stamp.id}>
-                          {stamp.name} ({stamp.stampType})
-                        </option>
-                      ))}
-                    </select>
+                      <SelectItem key="0" value="0">
+                        Select Stamp
+                      </SelectItem>
+                      <React.Fragment>
+                        {stamps.map((stamp) => (
+                          <SelectItem 
+                            key={stamp.id.toString()} 
+                            value={stamp.id.toString()}
+                            textValue={`${stamp.name} (${stamp.stampType})`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <Image
+                                src={stamp.imgUrl}
+                                alt={stamp.name}
+                                width={24}
+                                height={24}
+                                className="rounded"
+                              />
+                              <div>
+                                <div className="font-medium">{stamp.name}</div>
+                                <div className="text-xs text-gray-500">{stamp.stampType}</div>
+                              </div>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </React.Fragment>
+                    </Select>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    type="datetime-local"
+                  <DatePicker
                     label="Start Time"
-                    value={taskForm.startAt ? new Date(taskForm.startAt * 1000).toISOString().slice(0, 16) : ''}
-                    onChange={(e) => setTaskForm(prev => ({ 
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    value={timestampToZonedDateTime(taskForm.startAt) as any}
+                    onChange={(date) => setTaskForm(prev => ({ 
                       ...prev, 
-                      startAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      startAt: zonedDateTimeToTimestamp(date)
                     }))}
+                    granularity="minute"
                   />
-                  <Input
-                    type="datetime-local"
+                  <DatePicker
                     label="End Time"
-                    value={taskForm.endAt ? new Date(taskForm.endAt * 1000).toISOString().slice(0, 16) : ''}
-                    onChange={(e) => setTaskForm(prev => ({ 
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    value={timestampToZonedDateTime(taskForm.endAt) as any}
+                    onChange={(date) => setTaskForm(prev => ({ 
                       ...prev, 
-                      endAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      endAt: zonedDateTimeToTimestamp(date)
                     }))}
+                    granularity="minute"
                   />
                 </div>
 
@@ -787,7 +832,7 @@ export const TaskManagement = () => {
                   <label className="text-sm">Force Locked:</label>
                   <Chip
                     color={taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
-                    variant="flat"
+                    variant="light"
                   >
                     {taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Locked' : 'Normal'}
                   </Chip>
@@ -838,23 +883,25 @@ export const TaskManagement = () => {
                 />
 
                 <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    type="datetime-local"
+                  <DatePicker
                     label="Start Time"
-                    value={taskGroupForm.startAt ? new Date(taskGroupForm.startAt * 1000).toISOString().slice(0, 16) : ''}
-                    onChange={(e) => setTaskGroupForm(prev => ({ 
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    value={timestampToZonedDateTime(taskGroupForm.startAt) as any}
+                    onChange={(date) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      startAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      startAt: zonedDateTimeToTimestamp(date)
                     }))}
+                    granularity="minute"
                   />
-                  <Input
-                    type="datetime-local"
+                  <DatePicker
                     label="End Time"
-                    value={taskGroupForm.endAt ? new Date(taskGroupForm.endAt * 1000).toISOString().slice(0, 16) : ''}
-                    onChange={(e) => setTaskGroupForm(prev => ({ 
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    value={timestampToZonedDateTime(taskGroupForm.endAt) as any}
+                    onChange={(date) => setTaskGroupForm(prev => ({ 
                       ...prev, 
-                      endAt: e.target.value ? Math.floor(new Date(e.target.value).getTime() / 1000) : 0 
+                      endAt: zonedDateTimeToTimestamp(date)
                     }))}
+                    granularity="minute"
                   />
                 </div>
 

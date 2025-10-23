@@ -119,7 +119,7 @@ export const PendingTaskManagement = () => {
                     <TableCell>
                       <Chip
                         color={task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'warning' : 'success'}
-                        variant="flat"
+                        variant="light"
                       >
                         {task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'Pending' : 'Completed'}
                       </Chip>
@@ -217,7 +217,7 @@ export const PendingTaskManagement = () => {
                         <div className="mt-1">
                           <Chip
                             color={selectedPendingTask.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'warning' : 'success'}
-                            variant="flat"
+                            variant="light"
                             size="sm"
                           >
                             {selectedPendingTask.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'Pending' : 'Completed'}

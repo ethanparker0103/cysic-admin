@@ -133,7 +133,7 @@ export const InviteCodeManagement = () => {
                   <TableCell>
                     <Chip
                       color={inviteCode.available ? 'success' : 'danger'}
-                      variant="flat"
+                      variant="light"
                     >
                       {inviteCode.available ? 'Available' : 'Disabled'}
                     </Chip>

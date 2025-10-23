@@ -221,7 +221,7 @@ export const StampManagement = () => {
                   <TableCell>
                     <Chip
                       color={stamp.disabled === EStampStatus.StampStatusEnabled ? 'danger' : 'success'}
-                      variant="flat"
+                      variant="light"
                     >
                       {stamp.disabled === EStampStatus.StampStatusEnabled ? 'Disabled' : 'Enabled'}
                     </Chip>
@@ -332,7 +332,7 @@ export const StampManagement = () => {
                     <label className="text-sm">Status:</label>
                     <Chip
                       color={stampForm.disabled === EStampStatus.StampStatusEnabled ? 'danger' : 'success'}
-                      variant="flat"
+                      variant="light"
                     >
                       {stampForm.disabled === EStampStatus.StampStatusEnabled ? 'Disabled' : 'Enabled'}
                     </Chip>

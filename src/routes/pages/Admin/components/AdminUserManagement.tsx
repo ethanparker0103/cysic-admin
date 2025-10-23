@@ -182,13 +182,13 @@ export const AdminUserManagement = () => {
                   <TableCell>
                     <Chip
                       color={adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
-                      variant="flat"
+                      variant="light"
                     >
                       {adminUser.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
                     </Chip>
                   </TableCell>
-                  <TableCell>{formatTime(adminUser.createdAt)}</TableCell>
-                  <TableCell>{formatTime(adminUser.updatedAt)}</TableCell>
+                  <TableCell>{formatTime(adminUser.createdAt * 1000)}</TableCell>
+                  <TableCell>{formatTime(adminUser.updatedAt * 1000)}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Button
@@ -268,7 +268,7 @@ export const AdminUserManagement = () => {
                   <div className="flex gap-2">
                     <Chip
                       color={adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'success' : 'danger'}
-                      variant="flat"
+                      variant="light"
                     >
                       {adminUserForm.status === EAdminUserStatus.AdminUserStatusEnabled ? 'Enabled' : 'Disabled'}
                     </Chip>
