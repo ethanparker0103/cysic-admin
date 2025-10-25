@@ -161,7 +161,6 @@ export const KrActivityDashboard = () => {
             {user?.id && tweetUnderReview ? (
                 <div className="flex items-center justify-between gap-4 teachers-14-300 px-8 py-2 rounded-[8px] mb-6 w-fit mx-auto bg-[#00eeff]/20 border border-[#00eeff]">
                     <span className="text-white">Your tweet is now under reviewing, please wait...</span>
-                    <Button onClick={()=>{setState({tweetUnderReview: false})}} className="" type="light">Confirm(Debug)</Button>
                 </div>
             ) : null}
 
@@ -257,7 +256,7 @@ export const KrActivityDashboard = () => {
                             <>
                                <div className="flex items-center justify-between gap-4">
 
-                               <div className="flex items-center gap-1 unbounded-18-200">
+                               <div className="flex items-start gap-1 unbounded-18-200">
                                     <Calendar1Icon className="stroke-[1px] size-6" />
                                     <div className="flex flex-col ">
                                         <Tooltip delay={0} disableAnimation closeDelay={0} content={<div className="py-2 flex flex-col gap-1 text-white/80">

@@ -1,6 +1,19 @@
 // Kr模块API服务层
-const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL || 'https://api.prover.xyz';
+import useKrActivity from "@/models/kr";
+import { ETaskStatus } from "@/routes/pages/Admin/interface";
 
+const API_BASE_URL =
+  import.meta.env.VITE_APP_BASE_URL || "https://api.prover.xyz";
+
+export interface SignInReward {
+  createdAt: number;
+  description: string;
+  id: number;
+  requiredConsecutiveDays: number;
+  rewardPoints: number;
+  rewardStampId: number;
+  updatedAt: number;
+}
 // 通用响应类型
 interface ApiResponse {
   code: string;
@@ -17,13 +30,20 @@ interface SystemSetting {
 // 用户概览类型
 interface UserOverview {
   id: number;
-  name: string;
+  twitterName: string;
+  relatedURL: string;
+  avatarURL: string;
   points: number;
-  checkInDays: number;
-  completedTasks: number;
-  earnedStamps: number;
-  twitterName?: string;
-  avatarUrl?: string;
+  createdAt: number;
+  updatedAt: number;
+}
+
+interface InviteCode {
+  id: number;
+  code: string;
+  available: boolean;
+  createdAt: number;
+  updatedAt: number;
 }
 
 // 第一个任务类型
@@ -32,26 +52,43 @@ interface FirstTask {
   title: string;
   description: string;
   imgUrl: string;
+  taskType: string;
+  quizTaskConfig: {
+    quiz: string;
+    answer: string;
+  };
+  inviteTaskConfig: {
+    requestInviteNum: number;
+  };
+  postTwitterTaskConfig: {
+    content: string;
+  };
+  quoteTwitterTaskConfig: {
+    content: string;
+  };
+  RewardPoints: number;
+  RewardStampId: number;
   startAt: number;
   endAt: number;
-  taskList: unknown[];
+  forceLocked: boolean;
   createdAt: number;
   updatedAt: number;
+  taskResult: ETaskStatus;
 }
 
 // 获取存储的认证token
 const getAuthToken = (): string | null => {
-  return localStorage.getItem('cysic_kr_activity_auth');
+  return useKrActivity.getState().getAuthToken();
 };
 
 // 设置认证token
 const setAuthToken = (token: string): void => {
-  localStorage.setItem('cysic_kr_activity_auth', token);
+  useKrActivity.getState().setAuthToken(token);
 };
 
 // 清除认证token
 const clearAuthToken = (): void => {
-  localStorage.removeItem('cysic_kr_activity_auth');
+  useKrActivity.getState().clearAuthToken();
 };
 
 // 通用请求函数
@@ -60,15 +97,15 @@ async function request<T = unknown>(
   options: RequestInit = {}
 ): Promise<T> {
   const token = getAuthToken();
-  
+
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
   };
 
   // 如果有 token，添加到 header
   if (token) {
-    headers['x-cysic-auth'] = token;
+    headers["x-cysic-auth"] = token;
   }
 
   const response = await fetch(`${API_BASE_URL}${url}`, {
@@ -83,38 +120,57 @@ async function request<T = unknown>(
   return response.json();
 }
 
+// 签到相关接口
+export const signInApi = {
+  // 签到
+  signIn: (): Promise<ApiResponse> =>
+    request("/socialtask/api/v1/signIn/sign", {
+      method: "POST",
+    }),
+
+  // /socialtask/api/v1/signIn/rewardList
+  getSignInRewardList: (page?: number, pageSize?: number): Promise<ApiResponse & { list: SignInReward[] }> =>
+    request(`/socialtask/api/v1/signIn/rewardList?${new URLSearchParams({
+      ...(page && { page: page.toString() }),
+      ...(pageSize && { pageSize: pageSize.toString() }),
+    })}`),
+};
+
 // 系统设置相关接口
 export const systemApi = {
   // 获取系统设置
   getSettings: (): Promise<ApiResponse & { data: SystemSetting }> =>
-    request('/socialtask/api/v1/systemSetting'),
+    request("/socialtask/api/v1/systemSetting"),
 };
 
 // 社交媒体相关接口
 export const socialMediaApi = {
   // 绑定Twitter
   bindTwitter: (): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/socialMedia/bindTwitter', {
-      method: 'POST',
-      body: JSON.stringify({ redirectURL: window.location.origin + window.location.pathname }),
+    request("/socialtask/api/v1/socialMedia/bindTwitter", {
+      method: "POST",
+      body: JSON.stringify({
+        redirectURL: window.location.origin + window.location.pathname,
+      }),
     }),
 };
 
 // 邀请码相关接口
 export const inviteCodeApi = {
   // 绑定邀请码
-  bindInviteCode: (inviteCode: string, socialName: string): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/inviteCode/bind', {
-      method: 'POST',
-      body: JSON.stringify({ inviteCode, socialName }),
+  bindInviteCode: (code: string, socialName: string): Promise<ApiResponse> =>
+    request("/socialtask/api/v1/inviteCode/bind", {
+      method: "POST",
+      body: JSON.stringify({ code, socialName }),
     }),
 };
 
 // 用户相关接口
 export const userApi = {
   // 获取用户概览
-  getOverview: (): Promise<ApiResponse & { data: UserOverview }> =>
-    request('/socialtask/api/v1/user/overview'),
+  getOverview: (): Promise<
+    ApiResponse & { user: UserOverview; inviteCodes: InviteCode[] }
+  > => request("/socialtask/api/v1/user/overview"),
 };
 
 // 任务类型定义
@@ -152,16 +208,23 @@ interface Task {
 export const taskApi = {
   // 获取第一个任务
   getFirstTask: (): Promise<ApiResponse & { task: FirstTask }> =>
-    request('/socialtask/api/v1/firstTask'),
-  
+    request("/socialtask/api/v1/firstTask"),
+
   // 获取任务列表
-  getTaskList: (): Promise<ApiResponse & { list: Task[]; total: number; totalWithoutForceLocked: number }> =>
-    request('/socialtask/api/v1/task/list'),
-  
+  getTaskList: (id?: number): Promise<
+    ApiResponse & {
+      list: Task[];
+      total: number;
+      totalWithoutForceLocked: number;
+    }
+  > => request(`/socialtask/api/v1/task/list?${new URLSearchParams({
+    ...(id && { id: id.toString() }),
+  })}`),
+
   // 提交任务
   submitTask: (taskId: number, result: string): Promise<ApiResponse> =>
-    request('/socialtask/api/v1/task/submit', {
-      method: 'POST',
+    request("/socialtask/api/v1/task/submit", {
+      method: "POST",
       body: JSON.stringify({ taskId, result }),
     }),
 };
@@ -171,7 +234,7 @@ export const authUtils = {
   getAuthToken,
   setAuthToken,
   clearAuthToken,
-  isAuthenticated: (): boolean => getAuthToken() !== null,
+  isAuthenticated: (): boolean => useKrActivity.getState().isAuthenticated(),
 };
 
 export default {

@@ -148,25 +148,6 @@ const Post = () => {
     const [firstTask, setFirstTask] = useState<{ id?: number; imgUrl?: string; title?: string } | null>(null);
     const [loading, setLoading] = useState(true);
 
-    const loadFirstTask = async () => {
-        try {
-            setLoading(true);
-            const response = await taskApi.getFirstTask();
-            if (response.code === '200') {
-                setFirstTask(response?.task);
-            } else {
-                toast.error(response.msg || 'Failed to load task');
-            }
-        } catch (error) {
-            toast.error('Failed to load task');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        loadFirstTask();
-    }, []);
 
     const handleClick = async () => {
         if (!postLink || !postLink.includes('https') || !postLink.includes('x.com/')) {

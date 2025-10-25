@@ -1,9 +1,9 @@
 
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { systemApi, userApi, taskApi, authUtils } from "@/routes/pages/Kr/krApi";
+import { systemApi, userApi, taskApi, SignInReward } from "@/routes/pages/Kr/krApi";
 
-const persistFields: any = ["user", "tweetUnderReview", "systemSetting", "userOverview"];
+const persistFields: any = ["user",  "userOverview", "authToken"];
 
 interface IUser {
   id: string;
@@ -58,15 +58,22 @@ interface Task {
   };
 }
 
+// 从 localStorage 读取现有的认证 token
+const getInitialAuthToken = (): string | null => {
+  return localStorage.getItem('cysic_kr_activity_auth');
+};
+
 const defaultInitState = {
     user: {} as IUser,
     step: 1,
-    tweetUnderReview: false,
+    tweetUnderReview: true,
     systemSetting: {} as SystemSetting,
     userOverview: {} as UserOverview,
     taskList: [] as Task[],
+    authToken: getInitialAuthToken(),
     loading: false,
     error: null as string | null,
+    signInList: [] as SignInReward[],
 }
 
 const useKrActivity = create(
@@ -75,6 +82,32 @@ const useKrActivity = create(
         ...defaultInitState,
         
         setState: (newValues: any) => set((state: any) => ({ ...state, ...newValues })),
+        
+        // 认证相关方法
+        setAuthToken: (token: string | null) => {
+          set((state: any) => ({ ...state, authToken: token }));
+          // 同时更新 localStorage 以保持兼容性
+          if (token) {
+            localStorage.setItem('cysic_kr_activity_auth', token);
+          } else {
+            localStorage.removeItem('cysic_kr_activity_auth');
+          }
+        },
+        
+        getAuthToken: () => {
+          const state = get();
+          return state.authToken;
+        },
+        
+        isAuthenticated: () => {
+          const state = get();
+          return !!state.authToken;
+        },
+        
+        clearAuthToken: () => {
+          set((state: any) => ({ ...state, authToken: null }));
+          localStorage.removeItem('cysic_kr_activity_auth');
+        },
         
         // 初始化系统设置
         initSystemSetting: async () => {
@@ -94,23 +127,16 @@ const useKrActivity = create(
         
         // 初始化用户概览
         initUserOverview: async () => {
-          if (!authUtils.isAuthenticated()) return;
+          if (!get().isAuthenticated()) return;
           
           try {
             set((state: any) => ({ ...state, loading: true, error: null }));
             const response = await userApi.getOverview();
             if (response.code === '200') {
-              // 将用户信息写入user字段
-              const userData = {
-                id: response.data.id.toString(),
-                name: response.data.name,
-                twitterName: response.data.twitterName,
-                avatarUrl: response.data.avatarUrl,
-              };
+
               set((state: any) => ({ 
                 ...state, 
-                user: userData,
-                userOverview: response.data, 
+                ...response,
                 loading: false 
               }));
             } else {
@@ -123,7 +149,7 @@ const useKrActivity = create(
         
         // 初始化任务列表
         initTaskList: async () => {
-          if (!authUtils.isAuthenticated()) return;
+          if (!get().isAuthenticated()) return;
           
           try {
             set((state: any) => ({ ...state, loading: true, error: null }));
@@ -140,7 +166,7 @@ const useKrActivity = create(
         
         // 检查认证状态
         checkAuthStatus: () => {
-          const isAuthenticated = authUtils.isAuthenticated();
+          const isAuthenticated = get().isAuthenticated();
           if (isAuthenticated) {
             // 如果已认证，获取用户概览和任务列表
             get().initUserOverview();
@@ -151,7 +177,7 @@ const useKrActivity = create(
         
         // 清除所有状态
         clearAll: () => {
-          authUtils.clearAuthToken();
+          get().clearAuthToken();
           set(() => ({ ...defaultInitState }));
         },
     }),

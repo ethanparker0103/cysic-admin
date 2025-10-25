@@ -5,8 +5,9 @@ import { ITask } from "@/routes/pages/Kr/dashboard/page";
 import { useEventListener } from "ahooks";
 import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { authUtils, inviteCodeApi } from "./krApi";
+import { inviteCodeApi, signInApi, taskApi } from "./krApi";
 import { toast } from "react-toastify";
+import { ETaskStatus } from "@/routes/pages/Admin/interface";
 
 
 const quizs = {
@@ -120,9 +121,7 @@ export const KrLayout = () => {
     const [fundamentalsQuizVisible, setFundamentalsQuizVisible] =
         useState<boolean>(false);
     const [basicsQuizVisible, setBasicsQuizVisible] = useState(false);
-    const { user, setState, initUserOverview, initSystemSetting } = useKrActivity();
-
-    console.log("user", user);
+    const { authToken, tweetUnderReview, setState, initUserOverview, initSystemSetting, setAuthToken } = useKrActivity();
 
     useEventListener("cysic_kr_next_step", (e: Event) => {
         const customEvent = e as CustomEvent;
@@ -181,7 +180,7 @@ export const KrLayout = () => {
         
         if (token) {
             // 存储token
-            authUtils.setAuthToken(token);
+            setAuthToken(token);
             
             // 立即从URL中移除_t参数
             removeTokenFromUrl();
@@ -197,16 +196,56 @@ export const KrLayout = () => {
             // 触发登录成功事件
             dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
-    }, [bindInviteCodeAfterLogin]);
+    }, [bindInviteCodeAfterLogin, setAuthToken]);
 
     useEffect(() => {
         initSystemSetting()
     }, [initSystemSetting]);
 
-    // 初始化用户概览（独立查询，只要有auth token就可以调用）
+
+    const loadFirstTask = async () => {
+        try {
+            const response = await taskApi.getFirstTask();
+            if (response.code === '200') {
+                setState({ tweetUnderReview: response?.task?.taskResult != ETaskStatus.TaskStatusCompleted });
+            } else {
+                toast.error(response.msg || 'Failed to load task');
+            }
+        } catch (error) {
+            toast.error('Failed to load task');
+        }
+    };
+
+    const signIn = async () => {
+        try {
+            const response = await signInApi.signIn();
+
+
+            const signInList = await signInApi.getSignInRewardList(1, 30);
+            if (signInList.code === '200') {
+                setState({ signInList: signInList.list });
+            } else {
+                toast.error(signInList.msg || 'Failed to get sign in list');
+            }
+        } catch (error) {
+            toast.error('Failed to sign in');
+        }
+    };
+
+
     useEffect(() => {
-        initUserOverview();
-    }, [initUserOverview]);
+        if(authToken){
+            initUserOverview();
+            loadFirstTask();
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        if(authToken && !tweetUnderReview){
+            signIn();
+        }
+    }, [authToken, tweetUnderReview]);
+
     return (
         <>
             <Modal
