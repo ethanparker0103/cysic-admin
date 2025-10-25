@@ -5,7 +5,7 @@ import { Input } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/tabs';
 import { toast } from 'react-toastify';
 import { authApi } from '@/routes/pages/Admin/adminApi';
-import { useSignMessage } from '@/hooks/useSignMessage';
+import { Buffer } from 'buffer';
 
 interface LoginProps {
   onLoginSuccess: (userId: number) => void;
@@ -53,8 +53,6 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
     }
   };
 
-
-  const { signMessageAsync } = useSignMessage();
   // Wallet signature login
   const walletSignAndLogin = async () => {
     if (!walletAddress) {
@@ -70,13 +68,14 @@ export const AdminLogin = ({ onLoginSuccess }: LoginProps) => {
     try {
       setLoading(true);
       
-      // // Use personal_sign to sign wallet address
-      // const signature = await window.ethereum!.request({
-      //   method: 'personal_sign',
-      //   params: [walletAddress, walletAddress], // Sign own address
-      // });
+      // Use personal_sign to sign wallet address
 
-      const signature = await signMessageAsync(walletAddress);
+      const msg = `0x${Buffer.from(walletAddress, "utf8").toString("hex")}`
+
+      const signature = await window.ethereum!.request({
+        method: 'personal_sign',
+        params: [msg, walletAddress], // Sign own address
+      });
 
       // Call login API
       const response = await authApi.login(walletAddress, signature as unknown as string);
