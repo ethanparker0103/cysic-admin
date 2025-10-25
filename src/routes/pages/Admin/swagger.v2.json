@@ -1268,7 +1268,7 @@
     },
     "/socialtask/api/v1/admin/task/approve": {
       "post": {
-        "description": "审核任务，将待审核状态改为已完成",
+        "description": "审核任务，将待审核状态改为待领取",
         "consumes": [
           "application/json"
         ],
@@ -1411,6 +1411,18 @@
                       "type": "string"
                     },
                     "quiz": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "quoteTwitterTaskConfig": {
+                  "description": "任务配置，根据TaskType不同而不同",
+                  "type": "object",
+                  "required": [
+                    "content"
+                  ],
+                  "properties": {
+                    "content": {
                       "type": "string"
                     }
                   }
@@ -1622,6 +1634,18 @@
                           }
                         }
                       },
+                      "quoteTwitterTaskConfig": {
+                        "description": "任务配置，根据TaskType不同而不同",
+                        "type": "object",
+                        "required": [
+                          "content"
+                        ],
+                        "properties": {
+                          "content": {
+                            "type": "string"
+                          }
+                        }
+                      },
                       "startAt": {
                         "type": "integer"
                       },
@@ -1699,15 +1723,23 @@
                       "taskTitle",
                       "taskResult",
                       "status",
+                      "checkCount",
+                      "lastCheckTime",
                       "createdAt",
                       "updatedAt"
                     ],
                     "properties": {
+                      "checkCount": {
+                        "type": "integer"
+                      },
                       "createdAt": {
                         "type": "integer"
                       },
                       "id": {
                         "type": "integer"
+                      },
+                      "lastCheckTime": {
+                        "type": "string"
                       },
                       "status": {
                         "description": "1: 待审核, 2: 已完成",
@@ -1841,6 +1873,18 @@
                       "type": "string"
                     },
                     "quiz": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "quoteTwitterTaskConfig": {
+                  "description": "任务配置，根据TaskType不同而不同",
+                  "type": "object",
+                  "required": [
+                    "content"
+                  ],
+                  "properties": {
+                    "content": {
                       "type": "string"
                     }
                   }
@@ -2145,6 +2189,18 @@
                                 }
                               }
                             },
+                            "quoteTwitterTaskConfig": {
+                              "description": "任务配置，根据TaskType不同而不同",
+                              "type": "object",
+                              "required": [
+                                "content"
+                              ],
+                              "properties": {
+                                "content": {
+                                  "type": "string"
+                                }
+                              }
+                            },
                             "startAt": {
                               "type": "integer"
                             },
@@ -2304,6 +2360,9 @@
                       "updatedAt"
                     ],
                     "properties": {
+                      "avatarURL": {
+                        "type": "string"
+                      },
                       "createdAt": {
                         "type": "integer"
                       },
@@ -2437,6 +2496,18 @@
                           "type": "string"
                         },
                         "quiz": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "quoteTwitterTaskConfig": {
+                      "description": "任务配置，根据TaskType不同而不同",
+                      "type": "object",
+                      "required": [
+                        "content"
+                      ],
+                      "properties": {
+                        "content": {
                           "type": "string"
                         }
                       }
@@ -2973,6 +3044,58 @@
         }
       }
     },
+    "/socialtask/api/v1/task/claim": {
+      "post": {
+        "description": "用户领取任务奖励，将待领取状态改为已完成",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "管理员任务服务"
+        ],
+        "summary": "claimTaskReward",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "id"
+              ],
+              "properties": {
+                "id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "msg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/socialtask/api/v1/task/list": {
       "get": {
         "description": "获取任务列表",
@@ -3023,7 +3146,7 @@
                         "type": "integer"
                       },
                       "currentStatus": {
-                        "description": "0: 未完成, 1: 待审核, 2: 已完成",
+                        "description": "0: 未完成, 1: 待审核, 2: 待领取, 3: 已完成",
                         "type": "integer"
                       },
                       "description": {
@@ -3077,6 +3200,18 @@
                             "type": "string"
                           },
                           "quiz": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "quoteTwitterTaskConfig": {
+                        "description": "任务配置，根据TaskType不同而不同",
+                        "type": "object",
+                        "required": [
+                          "content"
+                        ],
+                        "properties": {
+                          "content": {
                             "type": "string"
                           }
                         }
@@ -3232,6 +3367,34 @@
                 "code": {
                   "type": "string"
                 },
+                "inviteCodes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "code",
+                      "available"
+                    ],
+                    "properties": {
+                      "available": {
+                        "type": "boolean"
+                      },
+                      "code": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
                 "msg": {
                   "type": "string"
                 },
@@ -3248,6 +3411,9 @@
                     "updatedAt"
                   ],
                   "properties": {
+                    "avatarURL": {
+                      "type": "string"
+                    },
                     "createdAt": {
                       "type": "integer"
                     },
@@ -3275,7 +3441,7 @@
       }
     }
   },
-  "x-date": "2025-10-22 10:21:06",
+  "x-date": "2025-10-23 11:06:37",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

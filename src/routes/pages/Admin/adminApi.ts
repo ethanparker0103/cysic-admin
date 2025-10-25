@@ -149,7 +149,7 @@ export const stampApi = {
       method: 'POST',
       headers,
       // body: new URLSearchParams(data as unknown as Record<string, string>).toString(),
-      body: JSON.stringify(data)
+      body: JSON.stringify({...data, disabled: Boolean(data.disabled)})
     });
   },
 

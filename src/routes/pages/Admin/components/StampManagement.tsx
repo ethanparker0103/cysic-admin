@@ -313,7 +313,7 @@ export const StampManagement = () => {
                   value={stampForm.description}
                   onChange={(e) => setStampForm(prev => ({ ...prev, description: e.target.value }))}
                 />
-                
+{/*                 
                 <div className="grid grid-cols-2 gap-4">
                   <Input
                     type="number"
@@ -342,7 +342,7 @@ export const StampManagement = () => {
                       {stampForm.disabled === EStampStatus.StampStatusEnabled ? 'Enable' : 'Disable'}
                     </Button>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Stamp Image</label>
