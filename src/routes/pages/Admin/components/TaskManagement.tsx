@@ -518,7 +518,7 @@ export const TaskManagement = () => {
                       <TableColumn>Type</TableColumn>
                       <TableColumn>Reward Points</TableColumn>
                       <TableColumn>Reward Stamp</TableColumn>
-                      <TableColumn>Force Locked</TableColumn>
+                      {/* <TableColumn>Force Locked</TableColumn> */}
                       <TableColumn>Actions</TableColumn>
                     </TableHeader>
                     <TableBody>
@@ -539,14 +539,14 @@ export const TaskManagement = () => {
                               className="rounded"
                             />
                             {task.RewardStampId ? getStampName(task.RewardStampId) : '-'}</TableCell>
-                          <TableCell>
+                          {/* <TableCell>
                             <Chip
                               color={task.forceLocked ? 'warning' : 'default'}
                               variant="light"
                             >
                               {task.forceLocked ? 'Locked' : 'Normal'}
                             </Chip>
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell>
                             <div className="flex gap-2">
                               <Button
