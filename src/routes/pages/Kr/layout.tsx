@@ -3,7 +3,7 @@ import useKrActivity from "@/models/kr";
 import Quizs from "@/routes/pages/Kr/components/quiz";
 import { ITask } from "@/routes/pages/Kr/dashboard/page";
 import { useEventListener } from "ahooks";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { authUtils, inviteCodeApi } from "./krApi";
 import { toast } from "react-toastify";
@@ -126,6 +126,7 @@ export const KrLayout = () => {
 
     useEventListener("cysic_kr_next_step", (e: Event) => {
         const customEvent = e as CustomEvent;
+
         setState({ step: customEvent?.detail });
     });
 
@@ -147,35 +148,18 @@ export const KrLayout = () => {
         }
     });
 
-    // 检查URL中的认证token
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('_t');
+    // 安全地移除URL中的_t参数，保留其他参数
+    const removeTokenFromUrl = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('_t');
         
-        if (token) {
-            // 存储token
-            authUtils.setAuthToken(token);
-            
-            // 检查是否有邀请码需要绑定
-            const storedInviteCode = localStorage.getItem('cysic_kr_invite_code');
-            if (storedInviteCode) {
-                // 如果有邀请码，先绑定邀请码
-                bindInviteCodeAfterLogin(storedInviteCode);
-            } else {
-                // 没有邀请码，直接获取用户概览
-                initUserOverview();
-            }
-            
-            // 清除URL参数
-            window.history.replaceState({}, document.title, window.location.pathname);
-            toast.success('Login successful!');
-            // 触发登录成功事件
-            dispatchEvent(new CustomEvent("cysic_kr_login_success"));
-        }
-    }, [initUserOverview]);
+        // 构建新的URL
+        const newUrl = url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : '');
+        window.history.replaceState({}, document.title, newUrl);
+    };
 
     // 登录后绑定邀请码
-    const bindInviteCodeAfterLogin = async (inviteCode: string) => {
+    const bindInviteCodeAfterLogin = useCallback(async (inviteCode: string) => {
         try {
             const response = await inviteCodeApi.bindInviteCode(inviteCode, 'twitter');
             if (response.code === '200') {
@@ -191,25 +175,39 @@ export const KrLayout = () => {
             // 无论成功失败，都获取用户概览
             initUserOverview();
         }
-    };
+    }, [initUserOverview]);
 
+    // 检查URL中的认证token
     useEffect(() => {
-        if (user?.id && step == 1) {
-            setState({ step: 2 });
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('_t');
+        
+        if (token) {
+            // 存储token
+            authUtils.setAuthToken(token);
+            
+            // 立即从URL中移除_t参数
+            removeTokenFromUrl();
+            
+            // 检查是否有邀请码需要绑定
+            const storedInviteCode = localStorage.getItem('cysic_kr_invite_code');
+            if (storedInviteCode) {
+                // 如果有邀请码，先绑定邀请码
+                bindInviteCodeAfterLogin(storedInviteCode);
+            } else {
+                // 没有邀请码，直接获取用户概览
+                initUserOverview();
+            }
+            
+            toast.success('Login successful!');
+            // 触发登录成功事件
+            dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
-    }, [user?.id, step, setState]);
-
-    useEffect(() => {
-        if (!user?.id && step != 1) {
-            setState({ step: 1 });
-        }
-    }, [user?.id, step, setState]);
-
-
+    }, [initUserOverview, bindInviteCodeAfterLogin]);
 
     useEffect(() => {
         initSystemSetting()
-    }, []);
+    }, [initSystemSetting]);
     return (
         <>
             <Modal

@@ -5,14 +5,13 @@ const API_BASE_URL = import.meta.env.VITE_APP_BASE_URL || 'https://api.prover.xy
 interface ApiResponse {
   code: string;
   msg: string;
-  // data?: any;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // 系统设置类型
 interface SystemSetting {
   enableInviteCode: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 // 用户概览类型
@@ -35,19 +34,13 @@ interface FirstTask {
   imgUrl: string;
   startAt: number;
   endAt: number;
-  taskList: any[];
+  taskList: unknown[];
   createdAt: number;
   updatedAt: number;
 }
 
 // 获取存储的认证token
 const getAuthToken = (): string | null => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('_t');
-  if (token) {
-    localStorage.setItem('cysic_kr_activity_auth', token);
-    return token;
-  }
   return localStorage.getItem('cysic_kr_activity_auth');
 };
 
@@ -127,8 +120,15 @@ export const userApi = {
 // 任务相关接口
 export const taskApi = {
   // 获取第一个任务
-  getFirstTask: (): Promise<ApiResponse & { data: FirstTask }> =>
+  getFirstTask: (): Promise<ApiResponse & { task: FirstTask }> =>
     request('/socialtask/api/v1/firstTask'),
+  
+  // 提交任务
+  submitTask: (taskId: number, result: string): Promise<ApiResponse> =>
+    request('/socialtask/api/v1/task/submit', {
+      method: 'POST',
+      body: JSON.stringify({ taskId, result }),
+    }),
 };
 
 // 认证相关工具函数

@@ -120,41 +120,6 @@ export const KrLayout = () => {
     const [basicsQuizVisible, setBasicsQuizVisible] = useState(false);
     const { step, user, setState } = useKrActivity();
 
-    console.log("user", user);
-
-    useEventListener("cysic_kr_next_step", (e: any) => {
-        setState({ step: e?.detail });
-    });
-
-    useEventListener("cysic_kr_login_x", () => {
-        if (window.confirm("Click Confirm to Login")) {
-            setState({ user: { id: "0001", name: "Test User" } });
-        }
-    });
-
-    useEventListener("cysic_kr_tasks_action", (e: any) => {
-        const state = e?.detail as ITask;
-
-        if (state.type == "fundamentalsQuiz") {
-            setFundamentalsQuizVisible(true);
-        }
-        if (state.type == "basicsQuiz") {
-            setBasicsQuizVisible(true);
-        }
-    });
-
-    useEffect(() => {
-        if (user?.id && step == 1) {
-            setState({ step: 2 });
-        }
-    }, [user?.id, step]);
-
-    useEffect(() => {
-        if (!user?.id && step != 1) {
-            setState({ step: 1 });
-        }
-    }, [user?.id, step]);
-
 
     return (
         <>
