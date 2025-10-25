@@ -120,7 +120,7 @@ export const KrLayout = () => {
     const [fundamentalsQuizVisible, setFundamentalsQuizVisible] =
         useState<boolean>(false);
     const [basicsQuizVisible, setBasicsQuizVisible] = useState(false);
-    const { step, user, setState, initUserOverview, initSystemSetting } = useKrActivity();
+    const { user, setState, initUserOverview, initSystemSetting } = useKrActivity();
 
     console.log("user", user);
 
@@ -171,11 +171,8 @@ export const KrLayout = () => {
             }
         } catch (error) {
             toast.error('Failed to bind invite code');
-        } finally {
-            // 无论成功失败，都获取用户概览
-            initUserOverview();
         }
-    }, [initUserOverview]);
+    }, []);
 
     // 检查URL中的认证token
     useEffect(() => {
@@ -194,20 +191,22 @@ export const KrLayout = () => {
             if (storedInviteCode) {
                 // 如果有邀请码，先绑定邀请码
                 bindInviteCodeAfterLogin(storedInviteCode);
-            } else {
-                // 没有邀请码，直接获取用户概览
-                initUserOverview();
             }
             
             toast.success('Login successful!');
             // 触发登录成功事件
             dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
-    }, [initUserOverview, bindInviteCodeAfterLogin]);
+    }, [bindInviteCodeAfterLogin]);
 
     useEffect(() => {
         initSystemSetting()
     }, [initSystemSetting]);
+
+    // 初始化用户概览（独立查询，只要有auth token就可以调用）
+    useEffect(() => {
+        initUserOverview();
+    }, [initUserOverview]);
     return (
         <>
             <Modal

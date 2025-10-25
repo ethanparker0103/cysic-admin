@@ -117,11 +117,46 @@ export const userApi = {
     request('/socialtask/api/v1/user/overview'),
 };
 
+// 任务类型定义
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  imgUrl: string;
+  taskType: string;
+  RewardPoints: number;
+  RewardStampId: number;
+  startAt: number;
+  endAt: number;
+  forceLocked: boolean;
+  currentStatus: number; // 0: 未完成, 1: 待审核, 2: 待领取, 3: 已完成
+  taskResult: string;
+  createdAt: number;
+  updatedAt: number;
+  inviteTaskConfig?: {
+    requestInviteNum: number;
+  };
+  postTwitterTaskConfig?: {
+    content: string;
+  };
+  quizTaskConfig?: {
+    quiz: string;
+    answer: string;
+  };
+  quoteTwitterTaskConfig?: {
+    content: string;
+  };
+}
+
 // 任务相关接口
 export const taskApi = {
   // 获取第一个任务
   getFirstTask: (): Promise<ApiResponse & { task: FirstTask }> =>
     request('/socialtask/api/v1/firstTask'),
+  
+  // 获取任务列表
+  getTaskList: (): Promise<ApiResponse & { list: Task[]; total: number; totalWithoutForceLocked: number }> =>
+    request('/socialtask/api/v1/task/list'),
   
   // 提交任务
   submitTask: (taskId: number, result: string): Promise<ApiResponse> =>

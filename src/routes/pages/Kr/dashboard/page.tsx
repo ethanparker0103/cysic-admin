@@ -1,12 +1,30 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { PT12Wrapper } from "@/components/Wrappers";
-import { Award, Calendar1Icon, Diamond, Info } from "lucide-react";
+import { Calendar1Icon, Diamond, Info } from "lucide-react";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { Badge, cn, Divider, Tooltip } from "@nextui-org/react";
+import { cn, Divider, Tooltip, Spinner } from "@nextui-org/react";
 import { getImageUrl } from "@/utils/tools";
 import Button from "@/components/Button";
 import useKrActivity from "@/models/kr";
+
+// 任务类型定义（与krApi.ts中的Task接口保持一致）
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  imgUrl: string;
+  taskType: string;
+  RewardPoints: number;
+  RewardStampId: number;
+  startAt: number;
+  endAt: number;
+  forceLocked: boolean;
+  currentStatus: number; // 0: 未完成, 1: 待审核, 2: 待领取, 3: 已完成
+  taskResult: string;
+  createdAt: number;
+  updatedAt: number;
+}
 
 export interface ITask {
     title: string;
@@ -63,46 +81,6 @@ const stamps = [
     },
 ];
 
-const tasks = {
-    week1: [
-        {
-            title: "Cysic Fundamentals Quiz",
-            subTitle: "Test your knowledge about Cysic's core technology",
-            label: "quiz",
-            points: "100",
-            expireAt: dayjs().add(7, "day").format("MMM DD, YYYY"),
-            type: "fundamentalsQuiz",
-            buttonText: "Start",
-        },
-        {
-            title: "Community Basics Quiz",
-            subTitle: "Learn about the Cysic community and ecosystem",
-            label: "quiz",
-            points: "75",
-            expireAt: dayjs().add(7, "day").format("MMM DD, YYYY"),
-            type: "basicsQuiz",
-            buttonText: "Start",
-        },
-        {
-            title: "Share Your Journey",
-            subTitle: "Post about your Cysic experience on Twitter",
-            label: "social",
-            points: "50",
-            expireAt: dayjs().add(7, "day").format("MMM DD, YYYY"),
-            type: "link",
-            buttonText: "Share",
-        },
-        {
-            title: "Invite Friends",
-            subTitle: "Invite 3 friends to join the community",
-            label: "social",
-            points: "150",
-            expireAt: dayjs().add(7, "day").format("MMM DD, YYYY"),
-            type: "action",
-            buttonText: "Check",
-        },
-    ],
-};
 
 function getRecent7Days() {
     const today = dayjs();
@@ -120,7 +98,7 @@ function getRecent7Days() {
     return days;
 }
 
-const StampCard = ({ item }: any) => {
+const StampCard = ({ item }: { item: { title: string; subTitle: string; earned: number | boolean; label: string } }) => {
     const { tweetUnderReview, user } = useKrActivity()
 
 
@@ -138,7 +116,7 @@ const StampCard = ({ item }: any) => {
                     </div>
 
                     {
-                        ifActive ? (
+                        ifActive && typeof item.earned === 'number' ? (
                             <div className="flex items-center justify-between text-xs absolute top-2 right-2 text-white/80 origin-right scale-80">
                                 {dayjs(item.earned).format('MMM DD, YYYY')}
                             </div>
@@ -152,18 +130,26 @@ const StampCard = ({ item }: any) => {
 };
 
 export const KrActivityDashboard = () => {
-    const { tweetUnderReview, user, setState } = useKrActivity()
+    const { tweetUnderReview, user, setState, taskList, loading, initTaskList } = useKrActivity()
     const [last7, setLast7] = useState<
-        { timestamp: number; format: string; isToday: false }[]
+        { timestamp: number; format: string; isToday: boolean }[]
     >([]);
-
 
     const ifActive = user?.id && !tweetUnderReview
 
+    console.log('user', user);
+
     useEffect(() => {
-        const res: any = getRecent7Days();
+        const res = getRecent7Days();
         setLast7(res);
     }, []);
+
+    useEffect(() => {
+        // 初始化任务列表（需要用户ID存在）
+        if (user?.id) {
+            initTaskList();
+        }
+    }, [user?.id, initTaskList]);
 
     const finishedStamps = ifActive ? stamps.filter((i) => i.earned) : [];
     const unfinishedStamps = ifActive ? stamps.filter((i) => !i.earned) : stamps;
@@ -188,53 +174,81 @@ export const KrActivityDashboard = () => {
                                 Tasks
                             </div>
                             <div className="relative mt-4 flex flex-col gap-4">
-                                {tasks.week1.map((item, idx) => {
-                                    return (
-                                        <GradientBorderCard
-                                            key={idx}
-                                            borderRadius={8}
-                                            className="px-4 py-4 flex flex-row justify-between items-center"
-                                        >
-                                            <>
-                                                <div>
-                                                    <div className="flex items-center gap-1">
-                                                        <p className="unbounded-18-400">{item.title}</p>
-                                                        <div
-                                                            className="bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
-                                                            children={item.label}
+                                {loading ? (
+                                    <div className="flex justify-center py-8">
+                                        <Spinner size="lg" />
+                                    </div>
+                                ) : taskList.length > 0 ? (
+                                    taskList.map((task: Task) => {
+                                        const getTaskStatusText = (status: number) => {
+                                            switch (status) {
+                                                case 0: return "Start";
+                                                case 1: return "Pending";
+                                                case 2: return "Claim";
+                                                case 3: return "Completed";
+                                                default: return "Start";
+                                            }
+                                        };
+
+
+                                        return (
+                                            <GradientBorderCard
+                                                key={task.id}
+                                                borderRadius={8}
+                                                className="px-4 py-4 flex flex-row justify-between items-center"
+                                            >
+                                                <>
+                                                    <div className="flex items-start gap-3">
+                                                        <img 
+                                                            src={task.imgUrl || getImageUrl("@/assets/images/_global/stake_landing_bg.png")} 
+                                                            alt={task.title}
+                                                            className="w-12 h-12 rounded-lg object-cover"
                                                         />
-                                                    </div>
-                                                    <div className="teachers-14-200 !normal-case text-white/80 mt-1">
-                                                        {item.subTitle}
-                                                    </div>
-                                                    <div className="flex items-center justify-between mt-4 text-sm">
-                                                        <div className="flex flex-col items-start gap-1">
-                                                            <div>
-                                                                <span className="text-white/60">Reward:</span>{" "}
-                                                                {item.points} Points
+                                                        <div>
+                                                            <div className="flex items-center gap-1">
+                                                                <p className="unbounded-18-400">{task.title}</p>
+                                                                <div
+                                                                    className="bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
+                                                                    children={task.taskType}
+                                                                />
                                                             </div>
-                                                            <div>
-                                                                <span className="text-white/60">
-                                                                    Expire At:
-                                                                </span>{" "}
-                                                                {item.expireAt}
+                                                            <div className="teachers-14-200 !normal-case text-white/80 mt-1">
+                                                                {task.description}
+                                                            </div>
+                                                            <div className="flex items-center justify-between mt-4 text-sm">
+                                                                <div className="flex flex-col items-start gap-1">
+                                                                    <div>
+                                                                        <span className="text-white/60">Reward:</span>{" "}
+                                                                        {task.RewardPoints} Points
+                                                                    </div>
+                                                                    <div>
+                                                                        <span className="text-white/60">
+                                                                            Expire At:
+                                                                        </span>{" "}
+                                                                        {dayjs(task.endAt * 1000).format("MMM DD, YYYY")}
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <Button
-                                                    disabled={!ifActive}
-                                                    className="min-h-fit h-fit"
-                                                    type="light"
-                                                    onClick={() => dispatchEvent(new CustomEvent('cysic_kr_tasks_action', { detail: item }))}
-                                                >
-                                                    {item.buttonText}
-                                                </Button>
-                                            </>
-                                        </GradientBorderCard>
-                                    );
-                                })}
+                                                    <Button
+                                                        disabled={!ifActive || task.currentStatus === 3}
+                                                        className="min-h-fit h-fit"
+                                                        type="light"
+                                                        onClick={() => dispatchEvent(new CustomEvent('cysic_kr_tasks_action', { detail: task }))}
+                                                    >
+                                                        {getTaskStatusText(task.currentStatus)}
+                                                    </Button>
+                                                </>
+                                            </GradientBorderCard>
+                                        );
+                                    })
+                                ) : (
+                                    <div className="text-center py-8 text-white/60">
+                                        No tasks available
+                                    </div>
+                                )}
                             </div>
                         </>
                     </GradientBorderCard>
