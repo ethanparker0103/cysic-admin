@@ -174,7 +174,7 @@ export const stampApi = {
       method: 'POST',
       headers,
       // body: new URLSearchParams({ id: id.toString(), ...data } as unknown as Record<string, string>).toString(),
-      body: JSON.stringify({ id: Number(id), ...data })
+      body: JSON.stringify({ id: Number(id), ...data, disabled: Boolean(data.disabled)})
     });
   },
 
@@ -318,17 +318,17 @@ export const taskApi = {
     })}`),
 
   // 创建任务
-  createTask: (data: unknown): Promise<ApiResponse> =>
+  createTask: (data: any): Promise<ApiResponse> =>
     request('/socialtask/api/v1/admin/task/create', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({...data, forceLocked: Boolean(data.forceLocked)}),
     }),
 
   // 更新任务
-  updateTask: (data: unknown): Promise<ApiResponse> =>
+  updateTask: (data: any): Promise<ApiResponse> =>
     request('/socialtask/api/v1/admin/task/update', {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify({...data, forceLocked: Boolean(data.forceLocked)}),
     }),
 
   // 删除任务

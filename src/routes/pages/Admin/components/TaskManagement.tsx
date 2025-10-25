@@ -91,7 +91,7 @@ export const TaskManagement = () => {
     startAt: 0,
     endAt: 0,
     forceLocked: ETaskForceLocked.TaskForceLockedNo,
-    inviteTaskConfig: { requestInviteNum: 1 },
+    inviteTaskConfig: { requestInviteNum: 0 },
     postTwitterTaskConfig: { content: '' },
     quizTaskConfig: { quiz: '', answer: '' },
   });
@@ -339,7 +339,7 @@ export const TaskManagement = () => {
       startAt: 0,
       endAt: 0,
       forceLocked: ETaskForceLocked.TaskForceLockedNo,
-      inviteTaskConfig: { requestInviteNum: 1 },
+      inviteTaskConfig: { requestInviteNum: 0 },
       postTwitterTaskConfig: { content: '' },
       quizTaskConfig: { quiz: '', answer: '' },
     });
@@ -361,7 +361,7 @@ export const TaskManagement = () => {
         startAt: task.startAt,
         endAt: task.endAt,
         forceLocked: task.forceLocked ? ETaskForceLocked.TaskForceLockedYes : ETaskForceLocked.TaskForceLockedNo,
-        inviteTaskConfig: task.inviteTaskConfig || { requestInviteNum: 1 },
+        inviteTaskConfig: task.inviteTaskConfig || { requestInviteNum: 0 },
         postTwitterTaskConfig: task.postTwitterTaskConfig || { content: '' },
         quizTaskConfig: task.quizTaskConfig || { quiz: '', answer: '' },
       });
@@ -493,7 +493,7 @@ export const TaskManagement = () => {
                       }}
                       className="w-64"
                     >
-                      {taskGroups.map((group) => (
+                      {taskGroups?.map((group) => (
                         <SelectItem key={group.id.toString()} value={group.id.toString()}>
                           {group.title}
                         </SelectItem>
@@ -538,7 +538,7 @@ export const TaskManagement = () => {
                               height={20}
                               className="rounded"
                             />
-                            {getStampName(task.RewardStampId)}</TableCell>
+                            {task.RewardStampId ? getStampName(task.RewardStampId) : '-'}</TableCell>
                           <TableCell>
                             <Chip
                               color={task.forceLocked ? 'warning' : 'default'}
@@ -607,7 +607,7 @@ export const TaskManagement = () => {
       </Card>
 
       {/* Edit/Create Task Modal */}
-      <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="4xl">
+      <Modal isOpen={isEditOpen} onOpenChange={onEditOpenChange} size="4xl" className='max-h-[80vh] overflow-y-auto'>
         <ModalContent>
           {(onClose) => (
             <>
@@ -751,7 +751,7 @@ export const TaskManagement = () => {
                       ...prev, 
                       inviteTaskConfig: { 
                         ...prev.inviteTaskConfig, 
-                        requestInviteNum: parseInt(e.target.value) || 1 
+                        requestInviteNum: parseInt(e.target.value) || 0
                       }
                     }))}
                   />
@@ -837,7 +837,7 @@ export const TaskManagement = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                {/* <div className="flex items-center gap-2">
                   <label className="text-sm">Force Locked:</label>
                   <Chip
                     color={taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'warning' : 'default'}
@@ -853,7 +853,7 @@ export const TaskManagement = () => {
                   >
                     {taskForm.forceLocked === ETaskForceLocked.TaskForceLockedYes ? 'Unlock' : 'Lock Task'}
                   </Button>
-                </div>
+                </div> */}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>

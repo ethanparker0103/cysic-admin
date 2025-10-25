@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Card, CardBody, CardHeader } from '@nextui-org/react';
+import { Card, CardBody, CardHeader, Divider } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Input } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
@@ -189,17 +189,21 @@ export const InviteCodeManagement = () => {
               <ModalHeader className="flex flex-col gap-1">Generate Invite Code</ModalHeader>
               <ModalBody>
                 <Input
-                  type="number"
+                  // type="number"
                   label="Quantity"
                   placeholder="Enter the number of invite codes to generate"
                   value={generateForm.num.toString()}
                   onChange={(e) => setGenerateForm(prev => ({ 
                     ...prev, 
-                    num: parseInt(e.target.value) || 1 
+                    num: parseInt(e.target.value) || 0
                   }))}
                   min={1}
                   max={100}
                 />
+                <div className='my-4 relative'>
+                <Divider className=""/>
+                <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-2 text-sm'>Or</div>
+                </div>
                 <Input
                   label="Custom Invite Code (Optional)"
                   placeholder="Enter custom invite code"

@@ -45,7 +45,7 @@ export const SignInRewardManagement = () => {
   const [editingReward, setEditingReward] = useState<SignInReward | null>(null);
   const [rewardForm, setRewardForm] = useState({
     description: '',
-    requiredConsecutiveDays: 1,
+    requiredConsecutiveDays: 0,
     rewardPoints: 0,
     rewardStampId: 0,
   });
@@ -128,7 +128,7 @@ export const SignInRewardManagement = () => {
   const resetForm = () => {
     setRewardForm({
       description: '',
-      requiredConsecutiveDays: 1,
+      requiredConsecutiveDays: 0,
       rewardPoints: 0,
       rewardStampId: 0,
     });
@@ -208,7 +208,7 @@ export const SignInRewardManagement = () => {
                       height={20}
                       className="rounded"
                     />
-                    {getStampName(reward.rewardStampId)}
+                    {reward.rewardStampId ? getStampName(reward.rewardStampId) : '-'}
                   </TableCell>
                   <TableCell>{formatTime(reward.createdAt * 1000)}</TableCell>
                   <TableCell>
@@ -279,18 +279,18 @@ export const SignInRewardManagement = () => {
                 
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    type="number"
+                    // type="number"
                     label="Consecutive Sign-in Days"
                     placeholder="Enter consecutive sign-in days"
                     value={rewardForm.requiredConsecutiveDays.toString()}
                     onChange={(e) => setRewardForm(prev => ({ 
                       ...prev, 
-                      requiredConsecutiveDays: parseInt(e.target.value) || 1 
+                      requiredConsecutiveDays: parseInt(e.target.value) || 0 
                     }))}
-                    min={1}
+                    min={0}
                   />
                   <Input
-                    type="number"
+                    // type="number"
                     label="Reward Points"
                     placeholder="Enter reward points"
                     value={rewardForm.rewardPoints.toString()}
