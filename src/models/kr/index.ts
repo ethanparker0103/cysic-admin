@@ -99,7 +99,6 @@ const useKrActivity = create(
           try {
             set((state: any) => ({ ...state, loading: true, error: null }));
             const response = await userApi.getOverview();
-            console.log('getOverview', response);
             if (response.code === '200') {
               // 将用户信息写入user字段
               const userData = {
