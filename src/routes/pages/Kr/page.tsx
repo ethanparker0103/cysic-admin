@@ -1,6 +1,6 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { PT12Wrapper } from "@/components/Wrappers";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     Card,
     CardBody,
@@ -8,13 +8,17 @@ import {
     Checkbox,
     cn,
     Input,
+    Spinner,
 } from "@nextui-org/react";
 import Button from "@/components/Button";
-import { useEventListener } from "ahooks";
 import { mediasLink } from "@/config";
 import { getImageUrl } from "@/utils/tools";
 import { ArrowDownToLineIcon, ArrowUpRight, Check } from "lucide-react";
 import useKrActivity from "@/models/kr";
+import { taskApi } from "./krApi";
+import { toast } from "react-toastify";
+import { LoginPage } from "./components/LoginPage";
+import { useEventListener } from "ahooks";
 
 enum EStepName {
     Step1 = "Connect X",
@@ -24,57 +28,11 @@ enum EStepName {
     Step5 = "Verification Pending",
 }
 
-const ConnectX = () => {
-    const handleClick = () => {
-        // cysic_kr_next_step
-        dispatchEvent(new CustomEvent("cysic_kr_login_x"));
-    };
+// 这些组件现在在LoginPage中，这里保留空的占位符
+const ConnectX = () => null;
+const InviteCode = () => null;
 
-    return (
-        <>
-            <>
-                <div className="mt-8">
-                    Log in with X(Twitter) to start your journey
-                </div>
-
-                <Button className="mt-8" type="light" onClick={handleClick}>
-                    Connect X
-                </Button>
-            </>
-        </>
-    );
-};
-
-const InviteCode = ({ step }) => {
-    const [inviteCode, setInviteCode] = useState("");
-
-    const handleClick = () => {
-        dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
-    };
-
-    return (
-        <>
-            <>
-                <div className="mt-8">
-                    <Input
-                        classNames={{ input: "text-center" }}
-                        placeholder='Enter Invite Code ("DEMO123")'
-                        variant="bordered"
-                        value={inviteCode}
-                        onValueChange={setInviteCode}
-                        isInvalid={!!inviteCode && inviteCode != "DEMO123"}
-                    />
-                </div>
-
-                <Button disabled={!inviteCode || inviteCode != "DEMO123"} className="mt-8" type="light" onClick={handleClick}>
-                    Verify & Continue
-                </Button>
-            </>
-        </>
-    );
-};
-
-const ConnectUs = ({ step }) => {
+const ConnectUs = () => {
     const [hasConnected, setHasConnected] = useState(false)
     const handleClick = () => {
         dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
@@ -191,10 +149,53 @@ const ConnectUs = ({ step }) => {
 
 const Post = () => {
     const [postLink, setPostLink] = useState("");
+    const [firstTask, setFirstTask] = useState<{ imgUrl?: string; title?: string } | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    const loadFirstTask = async () => {
+        try {
+            setLoading(true);
+            const response = await taskApi.getFirstTask();
+            if (response.code === '200') {
+                setFirstTask(response.data);
+            } else {
+                toast.error(response.msg || 'Failed to load task');
+            }
+        } catch (error) {
+            toast.error('Failed to load task');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadFirstTask();
+    }, []);
 
     const handleClick = () => {
+        if (!postLink || !postLink.includes('https') || !postLink.includes('x.com/')) {
+            toast.error('Please enter a valid Twitter post link');
+            return;
+        }
         dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 5 }));
     };
+
+    const handleDownloadImage = () => {
+        if (firstTask?.imgUrl) {
+            const link = document.createElement('a');
+            link.href = firstTask.imgUrl;
+            link.download = 'cysic-task-image.png';
+            link.click();
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="mt-8 flex justify-center">
+                <Spinner size="lg" />
+            </div>
+        );
+    }
 
     return (
         <>
@@ -204,14 +205,18 @@ const Post = () => {
                         <ArrowUpRight className="size-3" />
                     </div>
 
-                    <div className="absolute top-4 right-12 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer">
+                    <div 
+                        className="absolute top-4 right-12 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
+                        onClick={handleDownloadImage}
+                    >
                         <ArrowDownToLineIcon className="size-3" />
                     </div>
 
                     <div className="rounded-[8px] size-full overflow-hidden">
                         <img
                             className="object-cover size-full"
-                            src={getImageUrl("@/assets/images/_global/stake_landing_bg.png")}
+                            src={firstTask?.imgUrl || getImageUrl("@/assets/images/_global/stake_landing_bg.png")}
+                            alt={firstTask?.title || "Task Image"}
                         />
                     </div>
                 </div>
@@ -221,7 +226,7 @@ const Post = () => {
                         <li>Download the image using the button</li>
                         <li>Go to Twitter and create a new post</li>
                         <li>Upload the downloaded image</li>
-                        <li>Post with the title "Cysic is inevitable"</li>
+                        <li>Post with the title "{firstTask?.title || 'Cysic is inevitable'}"</li>
                         <li>Copy the post link and paste it below</li>
                     </ul>
 
@@ -232,9 +237,14 @@ const Post = () => {
                         variant="bordered"
                         value={postLink}
                         onValueChange={setPostLink}
-                        isInvalid={ !!postLink && (!postLink?.includes('https') || !postLink?.includes('x.com/')) }
+                        isInvalid={!!postLink && (!postLink?.includes('https') || !postLink?.includes('x.com/'))}
                     />
-                    <Button disabled={!postLink || !postLink?.includes('https') || !postLink?.includes('x.com/')} className="mt-4 w-full" type="light" onClick={handleClick}>
+                    <Button 
+                        disabled={!postLink || !postLink?.includes('https') || !postLink?.includes('x.com/')} 
+                        className="mt-4 w-full" 
+                        type="light" 
+                        onClick={handleClick}
+                    >
                         Verify & Continue
                     </Button>
                 </div>
@@ -281,8 +291,58 @@ const Verification = () => {
     );
 };
 
+// 主组件：根据认证状态显示a模块或b模块
 export const KRActivity = () => {
-    const { step } = useKrActivity();
+    const { step, systemSetting, loading, initSystemSetting, checkAuthStatus } = useKrActivity();
+    const [showLogin, setShowLogin] = useState(false);
+
+    useEffect(() => {
+        // 初始化系统设置
+        initSystemSetting();
+        
+        // 检查认证状态
+        const isAuthenticated = checkAuthStatus();
+        if (!isAuthenticated) {
+            // 如果未认证，显示登录页面（a模块）
+            setShowLogin(true);
+        } else {
+            // 如果已认证，显示step line流程（b模块）
+            setShowLogin(false);
+        }
+    }, [initSystemSetting, checkAuthStatus]);
+
+    // 登录成功后的回调
+    const handleLoginSuccess = () => {
+        setShowLogin(false);
+        // 可以在这里触发其他逻辑
+    };
+
+    // 监听登录成功事件
+    useEventListener("cysic_kr_login_success", () => {
+        handleLoginSuccess();
+    });
+
+    // 如果显示登录页面（a模块）
+    if (showLogin) {
+        return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+    }
+
+    // 根据系统设置决定是否显示邀请码步骤
+    const shouldShowInviteCode = systemSetting?.enableInviteCode === false;
+    const currentStep = shouldShowInviteCode ? step : step === 2 ? 3 : step;
+
+    if (loading) {
+        return (
+            <PT12Wrapper className="w-full">
+                <GradientBorderCard borderRadius={8} className="py-8 px-8 text-center">
+                    <div className="flex justify-center">
+                        <Spinner size="lg" />
+                    </div>
+                </GradientBorderCard>
+            </PT12Wrapper>
+        );
+    }
+
     return (
         <>
             <PT12Wrapper className="w-full">
@@ -297,17 +357,17 @@ export const KRActivity = () => {
                             <div
                                 className={cn(
                                     "flex-1 flex items-center justify-center",
-                                    step == 1 ? "opacity-100" : "opacity-60"
+                                    currentStep == 1 ? "opacity-100" : "opacity-60"
                                 )}
                             >
                                 <div className="flex flex-col items-center gap-1">
                                     <div
                                         className={cn(
                                             "border size-6 rounded-full p-[2px]",
-                                            step > 1 && "border-green-500/40"
+                                            currentStep > 1 && "border-green-500/40"
                                         )}
                                     >
-                                        {step > 1 ? (
+                                        {currentStep > 1 ? (
                                             <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
                                                 <Check className="size-3" />
                                             </div>
@@ -323,55 +383,59 @@ export const KRActivity = () => {
 
                             <div className="h-px flex-1 bg-sub"></div>
 
-                            <div
-                                className={cn(
-                                    "flex-1 flex items-center justify-center",
-                                    step == 2 ? "opacity-100" : "opacity-60"
-                                )}
-                            >
-                                <div className="flex flex-col items-center gap-1">
+                            {shouldShowInviteCode && (
+                                <>
                                     <div
                                         className={cn(
-                                            "border size-6 rounded-full p-[2px]",
-                                            step > 2 && "border-green-500/40"
+                                            "flex-1 flex items-center justify-center",
+                                            currentStep == 2 ? "opacity-100" : "opacity-60"
                                         )}
                                     >
-                                        {step > 2 ? (
-                                            <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
-                                                <Check className="size-3" />
+                                        <div className="flex flex-col items-center gap-1">
+                                            <div
+                                                className={cn(
+                                                    "border size-6 rounded-full p-[2px]",
+                                                    currentStep > 2 && "border-green-500/40"
+                                                )}
+                                            >
+                                                {currentStep > 2 ? (
+                                                    <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
+                                                        <Check className="size-3" />
+                                                    </div>
+                                                ) : (
+                                                    <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
+                                                        2
+                                                    </div>
+                                                )}
                                             </div>
-                                        ) : (
-                                            <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
-                                                2
-                                            </div>
-                                        )}
+                                            <span className="whitespace-nowrap">Enter Invite Code</span>
+                                        </div>
                                     </div>
-                                    <span className="whitespace-nowrap">Enter Invite Code</span>
-                                </div>
-                            </div>
 
-                            <div className="h-px flex-1 bg-sub"></div>
+                                    <div className="h-px flex-1 bg-sub"></div>
+                                </>
+                            )}
 
                             <div
                                 className={cn(
                                     "flex-1 flex items-center justify-center",
-                                    step == 3 ? "opacity-100" : "opacity-60"
+                                    currentStep == (shouldShowInviteCode ? 3 : 2) ? "opacity-100" : "opacity-60"
                                 )}
                             >
                                 <div className="flex flex-col items-center gap-1">
                                     <div
                                         className={cn(
                                             "border size-6 rounded-full p-[2px]",
-                                            step > 3 && "border-green-500/40"
+                                            currentStep > (shouldShowInviteCode ? 3 : 2) && "border-green-500/40"
                                         )}
                                     >
-                                        {step > 3 ? (
+                                        {currentStep > (shouldShowInviteCode ? 3 : 2) ? (
                                             <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
                                                 <Check className="size-3" />
                                             </div>
                                         ) : (
                                             <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
-                                                3
+                                                {shouldShowInviteCode ? 3 : 2}
                                             </div>
                                         )}
                                     </div>
@@ -386,23 +450,23 @@ export const KRActivity = () => {
                             <div
                                 className={cn(
                                     "flex-1 flex items-center justify-center",
-                                    step == 4 ? "opacity-100" : "opacity-60"
+                                    currentStep == (shouldShowInviteCode ? 4 : 3) ? "opacity-100" : "opacity-60"
                                 )}
                             >
                                 <div className="flex flex-col items-center gap-1">
                                     <div
                                         className={cn(
                                             "border size-6 rounded-full p-[2px]",
-                                            step > 4 && "border-green-500/40"
+                                            currentStep > (shouldShowInviteCode ? 4 : 3) && "border-green-500/40"
                                         )}
                                     >
-                                        {step > 4 ? (
+                                        {currentStep > (shouldShowInviteCode ? 4 : 3) ? (
                                             <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
                                                 <Check className="size-3" />
                                             </div>
                                         ) : (
                                             <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
-                                                4
+                                                {shouldShowInviteCode ? 4 : 3}
                                             </div>
                                         )}
                                     </div>
@@ -415,23 +479,23 @@ export const KRActivity = () => {
                             <div
                                 className={cn(
                                     "flex-1 flex items-center justify-center",
-                                    step == 5 ? "opacity-100" : "opacity-60"
+                                    currentStep == (shouldShowInviteCode ? 5 : 4) ? "opacity-100" : "opacity-60"
                                 )}
                             >
                                 <div className="flex flex-col items-center gap-1">
                                     <div
                                         className={cn(
                                             "border size-6 rounded-full p-[2px]",
-                                            step > 5 && "border-green-500/40"
+                                            currentStep > (shouldShowInviteCode ? 5 : 4) && "border-green-500/40"
                                         )}
                                     >
-                                        {step > 5 ? (
+                                        {currentStep > (shouldShowInviteCode ? 5 : 4) ? (
                                             <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
                                                 <Check className="size-3" />
                                             </div>
                                         ) : (
                                             <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
-                                                5
+                                                {shouldShowInviteCode ? 5 : 4}
                                             </div>
                                         )}
                                     </div>
@@ -439,21 +503,21 @@ export const KRActivity = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="mt-8 rounded-[8px] bg-white text-black py-3 teachers-14-400 !normal-case">
+                        <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case">
                             🎉{" "}
                             <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
                             First 72 hours get an exclusive stamp!
                         </div>
                         <div className="text-left mb-2 mt-8">
-                            Step {step}: {EStepName[`Step${step}` as keyof typeof EStepName]}
+                            Step {currentStep}: {EStepName[`Step${currentStep}` as keyof typeof EStepName]}
                         </div>
-                        {step == 1 ? (
+                        {currentStep == 1 ? (
                             <ConnectX />
-                        ) : step == 2 ? (
-                            <InviteCode step={step} />
-                        ) : step == 3 ? (
-                            <ConnectUs step={step} />
-                        ) : step == 4 ? (
+                        ) : currentStep == 2 ? (
+                            <InviteCode />
+                        ) : currentStep == 3 ? (
+                            <ConnectUs />
+                        ) : currentStep == 4 ? (
                             <Post />
                         ) : (
                             <Verification />
@@ -464,3 +528,4 @@ export const KRActivity = () => {
         </>
     );
 };
+

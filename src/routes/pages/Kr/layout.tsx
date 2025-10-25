@@ -5,6 +5,8 @@ import { ITask } from "@/routes/pages/Kr/dashboard/page";
 import { useEventListener } from "ahooks";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
+import { authUtils, inviteCodeApi } from "./krApi";
+import { toast } from "react-toastify";
 
 
 const quizs = {
@@ -118,12 +120,13 @@ export const KrLayout = () => {
     const [fundamentalsQuizVisible, setFundamentalsQuizVisible] =
         useState<boolean>(false);
     const [basicsQuizVisible, setBasicsQuizVisible] = useState(false);
-    const { step, user, setState } = useKrActivity();
+    const { step, user, setState, initUserOverview, initSystemSetting } = useKrActivity();
 
     console.log("user", user);
 
-    useEventListener("cysic_kr_next_step", (e: any) => {
-        setState({ step: e?.detail });
+    useEventListener("cysic_kr_next_step", (e: Event) => {
+        const customEvent = e as CustomEvent;
+        setState({ step: customEvent?.detail });
     });
 
     useEventListener("cysic_kr_login_x", () => {
@@ -132,8 +135,9 @@ export const KrLayout = () => {
         }
     });
 
-    useEventListener("cysic_kr_tasks_action", (e: any) => {
-        const state = e?.detail as ITask;
+    useEventListener("cysic_kr_tasks_action", (e: Event) => {
+        const customEvent = e as CustomEvent;
+        const state = customEvent?.detail as ITask;
 
         if (state.type == "fundamentalsQuiz") {
             setFundamentalsQuizVisible(true);
@@ -143,19 +147,69 @@ export const KrLayout = () => {
         }
     });
 
+    // 检查URL中的认证token
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('_t');
+        
+        if (token) {
+            // 存储token
+            authUtils.setAuthToken(token);
+            
+            // 检查是否有邀请码需要绑定
+            const storedInviteCode = localStorage.getItem('cysic_kr_invite_code');
+            if (storedInviteCode) {
+                // 如果有邀请码，先绑定邀请码
+                bindInviteCodeAfterLogin(storedInviteCode);
+            } else {
+                // 没有邀请码，直接获取用户概览
+                initUserOverview();
+            }
+            
+            // 清除URL参数
+            window.history.replaceState({}, document.title, window.location.pathname);
+            toast.success('Login successful!');
+            // 触发登录成功事件
+            dispatchEvent(new CustomEvent("cysic_kr_login_success"));
+        }
+    }, [initUserOverview]);
+
+    // 登录后绑定邀请码
+    const bindInviteCodeAfterLogin = async (inviteCode: string) => {
+        try {
+            const response = await inviteCodeApi.bindInviteCode(inviteCode, 'twitter');
+            if (response.code === '200') {
+                toast.success('Invite code bound successfully!');
+                // 清除存储的邀请码
+                localStorage.removeItem('cysic_kr_invite_code');
+            } else {
+                toast.error(response.msg || 'Failed to bind invite code');
+            }
+        } catch (error) {
+            toast.error('Failed to bind invite code');
+        } finally {
+            // 无论成功失败，都获取用户概览
+            initUserOverview();
+        }
+    };
+
     useEffect(() => {
         if (user?.id && step == 1) {
             setState({ step: 2 });
         }
-    }, [user?.id, step]);
+    }, [user?.id, step, setState]);
 
     useEffect(() => {
         if (!user?.id && step != 1) {
             setState({ step: 1 });
         }
-    }, [user?.id, step]);
+    }, [user?.id, step, setState]);
 
 
+
+    useEffect(() => {
+        initSystemSetting()
+    }, []);
     return (
         <>
             <Modal
