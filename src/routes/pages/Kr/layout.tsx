@@ -114,6 +114,7 @@ export const KrLayout = () => {
 
     // 登录后绑定邀请码
     const bindInviteCodeAfterLogin = useCallback(async (inviteCode: string) => {
+        if(!inviteCode) return;
         try {
             const response = await inviteCodeApi.bindInviteCode(
                 inviteCode,
