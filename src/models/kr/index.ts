@@ -71,7 +71,7 @@ const defaultInitState = {
     systemSetting: {} as SystemSetting,
     userOverview: {} as UserOverview,
     taskList: [] as Task[],
-    authToken: getInitialAuthToken(),
+    authToken: '',
     loading: false,
     error: null as string | null,
     signInList: [] as SignInReward[],
