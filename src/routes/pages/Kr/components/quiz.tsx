@@ -9,12 +9,13 @@ interface QuizItem {
 }
 
 interface QuizsProps {
+    quizId: number;
     quiz: QuizItem[];
-    onFinish?: () => void;
+    onFinish?: (answer: string) => void;
     autoAdvanceDelay?: number; // ms to wait after correct before advancing (default 600)
 }
 
-const Quizs: React.FC<QuizsProps> = ({ quiz, onFinish, autoAdvanceDelay = 300 }) => {
+const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, onFinish, autoAdvanceDelay = 300 }) => {
     const [current, setCurrent] = useState(0);
 
     // status: 'idle' - 未答 / 可选
@@ -37,13 +38,15 @@ const Quizs: React.FC<QuizsProps> = ({ quiz, onFinish, autoAdvanceDelay = 300 })
             setSelectedWrongIdx(null);
         } else {
 
+            const answer = quiz.map(q=>q.a);
+
             confetti({
                 particleCount: 150,
                 spread: 70,
                 origin: { y: 0.6 },
             })
-            await sleep(1000)
-            onFinish?.();
+            
+            await onFinish?.(JSON.stringify(answer));
         }
     };
 

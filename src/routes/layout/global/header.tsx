@@ -164,13 +164,14 @@ export default function Header() {
                           user?.id ? (
                             <Dropdown>
                               <DropdownTrigger>
-                                <div className="px-10 w-fit h-full flex items-center justify-end gap-1 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                <div className="px-10 w-fit h-full flex items-center justify-end gap-2 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
+                                  <img src={user?.avatarURL || getImageUrl("@/assets/images/_global/stake_landing_bg.png")} className="w-6 h-6 rounded-full object-cover"/>
                                   <span className="text-sub font-[400] uppercase text-sm">
-                                    {user?.name}
+                                    {user?.twitterName}
                                   </span>
                                 </div>
                               </DropdownTrigger>
-                              <DropdownMenu className="" onAction={(action)=>{if(action == 'logout'){  useKrActivity.getState().setState({user: {}, tweetUnderReview: true}) }}}>
+                              <DropdownMenu className="" onAction={(action)=>{if(action == 'logout'){  useKrActivity.getState().clearAll() }}}>
                                 <DropdownItem key="logout" className="text-danger" color="danger">
                                   Logout
                                 </DropdownItem>

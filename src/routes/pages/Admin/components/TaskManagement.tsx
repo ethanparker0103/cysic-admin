@@ -5,7 +5,6 @@ import { Input } from '@nextui-org/react';
 import { Textarea } from '@nextui-org/react';
 import { Select, SelectItem } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
-import { Chip } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { Image } from '@nextui-org/react';
 import { Tabs, Tab } from '@nextui-org/react';
@@ -206,9 +205,21 @@ export const TaskManagement = () => {
   const saveTask = async () => {
     try {
       setLoading(true);
+      
+      // 构建任务数据，只对quiz类型进行JSON转换
+      const taskData = {
+        ...taskForm,
+        ...(taskForm.taskType === 'quiz' ? {
+          quizTaskConfig: {
+            quiz: taskForm.quizTaskConfig.quiz,
+            answer: taskForm.quizTaskConfig.answer
+          }
+        } : {}),
+      };
+      
       const response = editingTask
-        ? await taskApi.updateTask({ ...taskForm, id: editingTask.id })
-        : await taskApi.createTask(taskForm);
+        ? await taskApi.updateTask({ ...taskData, id: editingTask.id })
+        : await taskApi.createTask(taskData);
       
       if (response.code === '200') {
         toast.success(editingTask ? 'Task updated successfully' : 'Task created successfully');
@@ -350,6 +361,13 @@ export const TaskManagement = () => {
   const openEditModal = (task?: Task) => {
     if (task) {
       setEditingTask(task);
+      
+      // 只处理quiz类型的配置解析
+      const quizConfig = task.taskType === 'quiz' && task.quizTaskConfig ? {
+        quiz: task.quizTaskConfig.quiz || '',
+        answer: task.quizTaskConfig.answer || ''
+      } : { quiz: '', answer: '' };
+      
       setTaskForm({
         groupId: task.groupId || selectedGroupId || 0,
         title: task.title,
@@ -363,7 +381,7 @@ export const TaskManagement = () => {
         forceLocked: task.forceLocked ? ETaskForceLocked.TaskForceLockedYes : ETaskForceLocked.TaskForceLockedNo,
         inviteTaskConfig: task.inviteTaskConfig || { requestInviteNum: 0 },
         postTwitterTaskConfig: task.postTwitterTaskConfig || { content: '' },
-        quizTaskConfig: task.quizTaskConfig || { quiz: '', answer: '' },
+        quizTaskConfig: quizConfig,
       });
     } else {
       resetForm();

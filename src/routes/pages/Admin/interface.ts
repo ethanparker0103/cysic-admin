@@ -1,5 +1,12 @@
 
 
+export enum EUserTaskStatus {
+    UserTaskCompletionStatusIncomplete = 0, // 未完成
+    UserTaskCompletionStatusPending    = 1, // 待审核
+    UserTaskCompletionStatusWaitClaim  = 2, // 待领取
+    UserTaskCompletionStatusCompleted  = 3 // 已完成
+}
+
 // 任务类型常量
 export enum ETaskType {
     TaskTypeQuiz = "quiz",        // 问答任务

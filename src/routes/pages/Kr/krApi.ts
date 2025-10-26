@@ -1,10 +1,10 @@
 // Kr模块API服务层
 import useKrActivity from "@/models/kr";
 import { ETaskStatus } from "@/routes/pages/Admin/interface";
+import dayjs from "dayjs";
 
 const API_BASE_URL =
   import.meta.env.VITE_APP_BASE_URL || "https://api.prover.xyz";
-
 export interface SignInReward {
   createdAt: number;
   description: string;
@@ -12,6 +12,20 @@ export interface SignInReward {
   requiredConsecutiveDays: number;
   rewardPoints: number;
   rewardStampId: number;
+  updatedAt: number;
+}
+
+// 用户徽章类型
+export interface Stamp {
+  id: number;
+  name: string;
+  stampType: string;
+  description: string;
+  imgUrl: string;
+  sorted: number;
+  disabled: boolean;
+  earnedAt: number; // 获得时间
+  createdAt: number;
   updatedAt: number;
 }
 // 通用响应类型
@@ -128,6 +142,15 @@ export const signInApi = {
       method: "POST",
     }),
 
+
+    // YYYY-MM-DD
+  getSignInHistory: (startDate: number, endDate: number): Promise<ApiResponse & { signInDates: string[] }> =>
+    request(`/socialtask/api/v1/signIn/history?${new URLSearchParams({
+      ...(startDate && { startDate: dayjs(startDate).format('YYYY-MM-DD') }),
+      ...(endDate && { endDate: dayjs(endDate).format('YYYY-MM-DD') }),
+    })}`),
+
+
   // /socialtask/api/v1/signIn/rewardList
   getSignInRewardList: (page?: number, pageSize?: number): Promise<ApiResponse & { list: SignInReward[] }> =>
     request(`/socialtask/api/v1/signIn/rewardList?${new URLSearchParams({
@@ -174,7 +197,7 @@ export const userApi = {
 };
 
 // 任务类型定义
-interface Task {
+export interface Task {
   id: number;
   title: string;
   description: string;
@@ -218,7 +241,7 @@ export const taskApi = {
       totalWithoutForceLocked: number;
     }
   > => request(`/socialtask/api/v1/task/list?${new URLSearchParams({
-    ...(id && { id: id.toString() }),
+    ...(id && { taskId: id.toString() }),
   })}`),
 
   // 提交任务
@@ -227,6 +250,23 @@ export const taskApi = {
       method: "POST",
       body: JSON.stringify({ taskId, result }),
     }),
+
+  // 领取任务奖励
+  claimTask: (taskId: number): Promise<ApiResponse> =>
+    request("/socialtask/api/v1/task/claim", {
+      method: "POST",
+      body: JSON.stringify({ id: taskId }),
+    }),
+};
+
+// 徽章相关接口
+export const stampApi = {
+  // 获取用户徽章列表
+  getStampList: (page?: number, pageSize?: number): Promise<ApiResponse & { list: UserStamp[]; total: string }> =>
+    request(`/socialtask/api/v1/stamp/list?${new URLSearchParams({
+      ...(page && { page: page.toString() }),
+      ...(pageSize && { pageSize: pageSize.toString() }),
+    })}`),
 };
 
 // 认证相关工具函数
@@ -243,5 +283,7 @@ export default {
   inviteCodeApi,
   userApi,
   taskApi,
+  stampApi,
+  signInApi,
   authUtils,
 };

@@ -1,7 +1,7 @@
 
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { systemApi, userApi, taskApi, SignInReward } from "@/routes/pages/Kr/krApi";
+import { systemApi, userApi, taskApi, SignInReward, Stamp } from "@/routes/pages/Kr/krApi";
 
 const persistFields: any = ["user",  "userOverview", "authToken"];
 
@@ -74,6 +74,7 @@ const defaultInitState = {
     loading: false,
     error: null as string | null,
     signInList: [] as SignInReward[],
+    stampList: [] as Stamp[],
 }
 
 const useKrActivity = create(

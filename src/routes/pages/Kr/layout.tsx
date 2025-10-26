@@ -1,127 +1,29 @@
 import Modal from "@/components/Modal";
 import useKrActivity from "@/models/kr";
 import Quizs from "@/routes/pages/Kr/components/quiz";
-import { ITask } from "@/routes/pages/Kr/dashboard/page";
 import { useEventListener } from "ahooks";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { inviteCodeApi, signInApi, taskApi } from "./krApi";
+import { inviteCodeApi, signInApi, stampApi, Task, taskApi } from "./krApi";
 import { toast } from "react-toastify";
-import { ETaskStatus } from "@/routes/pages/Admin/interface";
-
-
-const quizs = {
-    fundamentalsQuiz: [
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 1,
-        },
-        {
-            q: "Which of the following best describes ZK-SNARK?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 2,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 3,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 4,
-        },
-        {
-            q: "What is the main focus of Cysic's technology?",
-            choice: [
-                "Social media platform",
-                "Zero-knowledge proof acceleration",
-                "E-commerce solutions",
-                "Mobile gaming",
-            ],
-            a: 5,
-        },
-    ],
-    basicsQuiz: [
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 1,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 2,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 3,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 4,
-        },
-        {
-            q: "What is the purpose of the daily check-in system?",
-            choice: [
-                "To collect user data",
-                "To maintain engagement and reward consistency",
-                "To prevent spam",
-                "To limit access to features",
-            ],
-            a: 5,
-        },
-    ],
-};
+import { ETaskStatus, EUserTaskStatus } from "@/routes/pages/Admin/interface";
+import { FIRST_TASK_ID } from "@/routes/pages/Kr/config";
+import dayjs from "dayjs";
+import { sleep } from "@/utils/tools";
 
 export const KrLayout = () => {
-    const [fundamentalsQuizVisible, setFundamentalsQuizVisible] =
-        useState<boolean>(false);
-    const [basicsQuizVisible, setBasicsQuizVisible] = useState(false);
-    const { authToken, tweetUnderReview, setState, initUserOverview, initSystemSetting, setAuthToken } = useKrActivity();
+    const quizId = useRef<number>(0);
+    const quizRef = useRef<any>(null);
+    const [quizVisible, setQuizVisible] = useState<boolean>(false);
+    const {
+        authToken,
+        setState,
+        initUserOverview,
+        initSystemSetting,
+        setAuthToken,
+        initTaskList,
+        tweetUnderReview
+    } = useKrActivity();
 
     useEventListener("cysic_kr_next_step", (e: Event) => {
         const customEvent = e as CustomEvent;
@@ -135,84 +37,133 @@ export const KrLayout = () => {
         }
     });
 
-    useEventListener("cysic_kr_tasks_action", (e: Event) => {
+    useEventListener("cysic_kr_tasks_action", async (e: Event) => {
         const customEvent = e as CustomEvent;
-        const state = customEvent?.detail as ITask;
+        const state = customEvent?.detail as Task;
 
-        if (state.type == "fundamentalsQuiz") {
-            setFundamentalsQuizVisible(true);
+        if(state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusCompleted) {
+            return;
         }
-        if (state.type == "basicsQuiz") {
-            setBasicsQuizVisible(true);
+
+        if (state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusWaitClaim) {
+            await taskApi.claimTask(state.id);
+            dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+            return;
+        }
+
+        if(state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusPending) {
+            return;
+        }
+
+        switch (state.taskType) {
+            case "quiz":
+                try {
+                    const quizStr = state.quizTaskConfig?.quiz || '';
+                    const answerStr = state.quizTaskConfig?.answer || '';
+                    
+                    let questions = [];
+                    let answer = [];
+                    
+                    try {
+                        questions = quizStr ? JSON.parse(quizStr) : [];
+                        answer = answerStr ? JSON.parse(answerStr) : [];
+                    } catch (parseError) {
+                        console.error('JSON parse error:', parseError);
+                        const cleanedQuiz = quizStr.trim().replace(/^"(.*)"$/, '$1');
+                        const cleanedAnswer = answerStr.trim().replace(/^"(.*)"$/, '$1');
+                        questions = cleanedQuiz ? JSON.parse(cleanedQuiz) : [];
+                        answer = cleanedAnswer ? JSON.parse(cleanedAnswer) : [];
+                    }
+
+                    quizId.current = state.id;
+                    quizRef.current = questions?.map((question: any, idx: number) => ({
+                        q: question.q || question.question,
+                        choice: question.choice || question.options,
+                        a: answer[idx],
+                    }));
+
+                    setQuizVisible(true);
+                } catch (error) {
+                    toast.error("Failed to load quiz questions");
+                }
+                break;
         }
     });
 
-    // 安全地移除URL中的_t参数，保留其他参数
+    // 移除URL中的token参数
     const removeTokenFromUrl = () => {
-        const url = new URL(window.location.href);
-        url.searchParams.delete('_t');
-        
-        // 构建新的URL
-        const newUrl = url.pathname + (url.search ? url.search : '') + (url.hash ? url.hash : '');
-        window.history.replaceState({}, document.title, newUrl);
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("_t")) {
+            urlParams.delete("_t");
+            const newUrl =
+                window.location.pathname +
+                (urlParams.toString() ? `?${urlParams.toString()}` : "") +
+                window.location.hash;
+            window.history.replaceState({}, document.title, newUrl);
+        }
     };
 
     // 登录后绑定邀请码
     const bindInviteCodeAfterLogin = useCallback(async (inviteCode: string) => {
         try {
-            const response = await inviteCodeApi.bindInviteCode(inviteCode, 'twitter');
-            if (response.code === '200') {
-                toast.success('Invite code bound successfully!');
+            const response = await inviteCodeApi.bindInviteCode(
+                inviteCode,
+                "twitter"
+            );
+            if (response.code === "200") {
+                toast.success("Invite code bound successfully!");
                 // 清除存储的邀请码
-                localStorage.removeItem('cysic_kr_invite_code');
+                localStorage.removeItem("cysic_kr_invite_code");
             } else {
-                toast.error(response.msg || 'Failed to bind invite code');
+                toast.error(response.msg || "Failed to bind invite code");
             }
         } catch (error) {
-            toast.error('Failed to bind invite code');
+            toast.error("Failed to bind invite code");
         }
     }, []);
 
     // 检查URL中的认证token
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('_t');
-        
+        const token = urlParams.get("_t");
+
         if (token) {
             // 存储token
             setAuthToken(token);
-            
+
             // 立即从URL中移除_t参数
             removeTokenFromUrl();
-            
+
             // 检查是否有邀请码需要绑定
-            const storedInviteCode = localStorage.getItem('cysic_kr_invite_code');
+            const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
             if (storedInviteCode) {
                 // 如果有邀请码，先绑定邀请码
                 bindInviteCodeAfterLogin(storedInviteCode);
             }
-            
-            toast.success('Login successful!');
+
+            toast.success("Login successful!");
             // 触发登录成功事件
             dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
     }, [bindInviteCodeAfterLogin, setAuthToken]);
 
     useEffect(() => {
-        initSystemSetting()
+        initSystemSetting();
     }, [initSystemSetting]);
-
 
     const loadFirstTask = async () => {
         try {
-            const response = await taskApi.getFirstTask();
-            if (response.code === '200') {
-                setState({ tweetUnderReview: response?.task?.taskResult != ETaskStatus.TaskStatusCompleted });
+            // const response = await taskApi.getFirstTask();
+            const response = await taskApi.getTaskList(FIRST_TASK_ID);
+            if (response.code === "200") {
+                setState({
+                    tweetUnderReview: ![EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus),
+                });
             } else {
-                toast.error(response.msg || 'Failed to load task');
+                toast.error(response.msg || "Failed to load task");
             }
         } catch (error) {
-            toast.error('Failed to load task');
+            toast.error("Failed to load task");
         }
     };
 
@@ -220,61 +171,75 @@ export const KrLayout = () => {
         try {
             const response = await signInApi.signIn();
 
-
-            const signInList = await signInApi.getSignInRewardList(1, 30);
-            if (signInList.code === '200') {
-                setState({ signInList: signInList.list });
+            const signInList = await signInApi.getSignInHistory(
+                dayjs().subtract(30, "day").startOf("day").valueOf(),
+                dayjs().endOf("day").valueOf()
+            );
+            if (signInList.code === "200") {
+                setState({ signInList: signInList.signInDates });
             } else {
-                toast.error(signInList.msg || 'Failed to get sign in list');
+                toast.error(signInList.msg || "Failed to get sign in list");
             }
         } catch (error) {
-            toast.error('Failed to sign in');
+            toast.error("Failed to sign in");
         }
     };
 
+    const getUserStampList = async () => {
+        try {
+            const response = await stampApi.getStampList();
+            if (response.code === "200") {
+                setState({ stampList: response.list });
+            } else {
+                toast.error(response.msg || "Failed to get user stamp list");
+            }
+        } catch (error) {
+            toast.error("Failed to get user stamp list");
+        }
+    };
 
     useEffect(() => {
-        if(authToken){
+        if (authToken) {
             initUserOverview();
             loadFirstTask();
+            getUserStampList();
+            initTaskList();
         }
     }, [authToken]);
 
     useEffect(() => {
-        if(authToken && !tweetUnderReview){
+        if (authToken && !tweetUnderReview) {
             signIn();
         }
     }, [authToken, tweetUnderReview]);
 
+    useEventListener("cysic_kr_tasks_refresh", () => {
+        initUserOverview();
+        initTaskList();
+        getUserStampList();
+    });
+
     return (
         <>
             <Modal
-                isOpen={fundamentalsQuizVisible}
-                onClose={() => setFundamentalsQuizVisible(false)}
+                isOpen={quizVisible}
+                onClose={() => setQuizVisible(false)}
                 title="Quiz"
                 className="max-w-[600px]"
             >
                 <>
                     <Quizs
-                        quiz={quizs.fundamentalsQuiz}
-                        onFinish={() => {
-                            setFundamentalsQuizVisible(false);
-                        }}
-                    />
-                </>
-            </Modal>
+                        quizId={quizId.current}
+                        quiz={quizRef.current}
+                        onFinish={async (answer: string) => {
+                            await taskApi.submitTask(quizId.current, answer);
+                            await taskApi.claimTask(quizId.current);
 
-            <Modal
-                isOpen={basicsQuizVisible}
-                onClose={() => setBasicsQuizVisible(false)}
-                title="Quiz"
-                className="max-w-[600px]"
-            >
-                <>
-                    <Quizs
-                        quiz={quizs.basicsQuiz}
-                        onFinish={() => {
-                            setBasicsQuizVisible(false);
+                            await sleep(1000);
+                            setQuizVisible(false);
+
+                            dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+
                         }}
                     />
                 </>
