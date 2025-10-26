@@ -167,7 +167,7 @@ export default function Header() {
                                 <div className="px-10 w-fit h-full flex items-center justify-end gap-2 cursor-pointer hover:bg-gradient-to-r from-[#17D1B2] to-[#4C1F99] ">
                                   <img src={user?.avatarURL || getImageUrl("@/assets/images/_global/stake_landing_bg.png")} className="w-6 h-6 rounded-full object-cover"/>
                                   <span className="text-sub font-[400] uppercase text-sm">
-                                    {user?.twitterName}
+                                    {user?.userName}
                                   </span>
                                 </div>
                               </DropdownTrigger>

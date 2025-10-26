@@ -33,7 +33,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                         />
                         <div className="flex flex-col gap-1">
                             <span className="unbounded-18-200 text-white">
-                                @{user?.twitterName || "User"}
+                                {user?.userName || "-"}
                             </span>
                             <a
                                 href={user?.relatedURL}

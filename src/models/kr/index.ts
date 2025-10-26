@@ -10,6 +10,7 @@ interface IUser {
   name: string;
   twitterName?: string;
   avatarUrl?: string;
+  userName?: string;
 }
 
 interface SystemSetting {
@@ -57,11 +58,6 @@ interface Task {
     content: string;
   };
 }
-
-// 从 localStorage 读取现有的认证 token
-const getInitialAuthToken = (): string | null => {
-  return localStorage.getItem('cysic_kr_activity_auth');
-};
 
 const defaultInitState = {
     showLogin: false,
