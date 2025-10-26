@@ -64,6 +64,7 @@ const getInitialAuthToken = (): string | null => {
 };
 
 const defaultInitState = {
+    showLogin: false,
     user: {} as IUser,
     step: 1,
     tweetUnderReview: true,

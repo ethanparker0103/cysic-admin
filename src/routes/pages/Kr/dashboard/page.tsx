@@ -3,23 +3,12 @@ import useKrActivity from "@/models/kr";
 import { TasksSection } from "@/routes/pages/Kr/components/TasksSection";
 import { CheckInSection } from "@/routes/pages/Kr/components/CheckInSection";
 import { ProfileSection } from "@/routes/pages/Kr/components/ProfileSection";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const KrActivityDashboard = () => {
     const { authToken, tweetUnderReview, user, signInList, taskList, loading, stampList } =
         useKrActivity();
 
     const ifActive = user?.id && !tweetUnderReview;
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!authToken) {
-            navigate("/krkrkr");
-        }
-    }, [authToken]);
-
     return (
         <>
             {user?.id && tweetUnderReview ? (

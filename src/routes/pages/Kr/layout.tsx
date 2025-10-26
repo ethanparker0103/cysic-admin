@@ -3,7 +3,7 @@ import useKrActivity from "@/models/kr";
 import Quizs from "@/routes/pages/Kr/components/quiz";
 import { useEventListener } from "ahooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { inviteCodeApi, signInApi, stampApi, Task, taskApi } from "./krApi";
 import { toast } from "react-toastify";
 import { ETaskStatus, EUserTaskStatus } from "@/routes/pages/Admin/interface";
@@ -24,17 +24,18 @@ export const KrLayout = () => {
         initTaskList,
         tweetUnderReview
     } = useKrActivity();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!authToken && window.location.pathname !== "/krkrkr") {
+            navigate("/krkrkr");
+        }
+    }, [authToken]);
 
     useEventListener("cysic_kr_next_step", (e: Event) => {
         const customEvent = e as CustomEvent;
 
         setState({ step: customEvent?.detail });
-    });
-
-    useEventListener("cysic_kr_login_x", () => {
-        if (window.confirm("Click Confirm to Login")) {
-            setState({ user: { id: "0001", name: "Test User" } });
-        }
     });
 
     useEventListener("cysic_kr_tasks_action", async (e: Event) => {

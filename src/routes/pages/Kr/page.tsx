@@ -286,41 +286,37 @@ const Verification = () => {
 
 // 主组件：根据认证状态显示a模块或b模块
 export const KRActivity = () => {
-    const { step, loading, initSystemSetting, checkAuthStatus } = useKrActivity();
-    const [showLogin, setShowLogin] = useState(false);
+    const { showLogin, step, loading, initSystemSetting, checkAuthStatus } = useKrActivity();
+
+    const setShowLogin = (show: boolean) => {
+        useKrActivity.getState().setState({ showLogin: show });
+    }
+
+
 
     useEffect(() => {
-        // 初始化系统设置
         initSystemSetting();
         
-        // 检查认证状态
         const isAuthenticated = checkAuthStatus();
         if (!isAuthenticated) {
-            // 如果未认证，显示登录页面（a模块）
             setShowLogin(true);
         } else {
-            // 如果已认证，显示step line流程（b模块）
             setShowLogin(false);
         }
     }, [initSystemSetting, checkAuthStatus]);
 
-    // 登录成功后的回调
     const handleLoginSuccess = () => {
         setShowLogin(false);
-        // 可以在这里触发其他逻辑
     };
 
-    // 监听登录成功事件
     useEventListener("cysic_kr_login_success", () => {
         handleLoginSuccess();
     });
 
-    // 如果显示登录页面（a模块）
     if (showLogin) {
         return <LoginPage onLoginSuccess={handleLoginSuccess} />;
     }
 
-    // 步骤逻辑：邀请码在LoginPage中处理，这里直接从Follow Social Media开始
     const currentStep = step;
 
     if (loading) {

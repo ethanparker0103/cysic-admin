@@ -6,6 +6,7 @@ import { PT12Wrapper } from "@/components/Wrappers";
 import useKrActivity from "@/models/kr";
 import { socialMediaApi } from "../krApi";
 import { toast } from "react-toastify";
+import { ChevronRight } from "lucide-react";
 
 // a模块：登录权限校验页面
 export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
@@ -138,7 +139,8 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
                                     onClick={handleDirectLogin}
                                     disabled={isConnecting}
                                 >
-                                    {isConnecting ? 'Connecting...' : 'Connect X Directly'}
+                                    {isConnecting ? 'Connecting...' : 'Already Joined? Connect X Directly'}
+                                    <ChevronRight className="size-4" />
                                 </Button>
                             </CardBody>
                         </Card>
