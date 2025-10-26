@@ -180,7 +180,9 @@ const useKrActivity = create(
         // 清除所有状态
         clearAll: () => {
           get().clearAuthToken();
-          set(() => ({ ...defaultInitState }));
+
+          const oldSystemSetting = get().systemSetting;
+          set(() => ({ ...defaultInitState, systemSetting: oldSystemSetting }));
         },
     }),
     {

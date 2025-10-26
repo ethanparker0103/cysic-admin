@@ -292,19 +292,6 @@ export const KRActivity = () => {
         useKrActivity.getState().setState({ showLogin: show });
     }
 
-
-
-    useEffect(() => {
-        initSystemSetting();
-        
-        const isAuthenticated = checkAuthStatus();
-        if (!isAuthenticated) {
-            setShowLogin(true);
-        } else {
-            setShowLogin(false);
-        }
-    }, [initSystemSetting, checkAuthStatus]);
-
     const handleLoginSuccess = () => {
         setShowLogin(false);
     };

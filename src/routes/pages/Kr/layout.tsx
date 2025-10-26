@@ -22,13 +22,21 @@ export const KrLayout = () => {
         initSystemSetting,
         setAuthToken,
         initTaskList,
-        tweetUnderReview
+        tweetUnderReview,
     } = useKrActivity();
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!authToken && window.location.pathname !== "/krkrkr") {
             navigate("/krkrkr");
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        if (authToken && window.location.pathname == "/krkrkr") {
+            setState({ showLogin: false });
+        } else {
+            setState({ showLogin: true });
         }
     }, [authToken]);
 
@@ -148,10 +156,6 @@ export const KrLayout = () => {
         }
     }, [bindInviteCodeAfterLogin, setAuthToken]);
 
-    useEffect(() => {
-        initSystemSetting();
-    }, [initSystemSetting]);
-
     const loadFirstTask = async () => {
         try {
             // const response = await taskApi.getFirstTask();
@@ -199,6 +203,11 @@ export const KrLayout = () => {
         }
     };
 
+
+    useEffect(() => {
+        initSystemSetting();
+    }, []);
+    
     useEffect(() => {
         if (authToken) {
             initUserOverview();
