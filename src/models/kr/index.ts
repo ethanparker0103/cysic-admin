@@ -76,6 +76,7 @@ const defaultInitState = {
     error: null as string | null,
     signInList: [] as SignInReward[],
     stampList: [] as Stamp[],
+    firstTask: null as Task | null,
 }
 
 const useKrActivity = create(

@@ -145,8 +145,8 @@ const ConnectUs = () => {
 
 const Post = () => {
     const [postLink, setPostLink] = useState("");
-    const [firstTask, setFirstTask] = useState<{ id?: number; imgUrl?: string; title?: string } | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { firstTask } = useKrActivity()
+
 
 
     const handleClick = async () => {
@@ -181,14 +181,6 @@ const Post = () => {
             link.click();
         }
     };
-
-    if (loading) {
-        return (
-            <div className="mt-8 flex justify-center">
-                <Spinner size="lg" />
-            </div>
-        );
-    }
 
     return (
         <>

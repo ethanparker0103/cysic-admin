@@ -138,33 +138,32 @@ export const KrLayout = () => {
         const token = urlParams.get("_t");
 
         if (token) {
-            // 存储token
             setAuthToken(token);
 
-            // 立即从URL中移除_t参数
             removeTokenFromUrl();
 
-            // 检查是否有邀请码需要绑定
             const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
             if (storedInviteCode) {
-                // 如果有邀请码，先绑定邀请码
                 bindInviteCodeAfterLogin(storedInviteCode);
             }
 
             toast.success("Login successful!");
-            // 触发登录成功事件
             dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
     }, [bindInviteCodeAfterLogin, setAuthToken]);
 
     const loadFirstTask = async () => {
         try {
-            // const response = await taskApi.getFirstTask();
             const response = await taskApi.getTaskList(FIRST_TASK_ID);
             if (response.code === "200") {
                 setState({
                     tweetUnderReview: ![EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus),
+                    firstTask: response?.list?.[0] || null,
                 });
+
+                if(window.location.pathname == "/krkrkr" && [EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus)){
+                    navigate("/krkrkr/dashboard");
+                }
             } else {
                 toast.error(response.msg || "Failed to load task");
             }
