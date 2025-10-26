@@ -27,7 +27,7 @@ export const KrLayout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!authToken && window.location.pathname !== "/krkrkr") {
+        if (!authToken && window.location.pathname == "/krkrkr/dashboard") {
             navigate("/krkrkr");
         }
     }, [authToken]);
