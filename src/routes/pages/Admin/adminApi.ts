@@ -394,6 +394,12 @@ export const adminUserApi = {
       method: 'POST',
       body: JSON.stringify({ id }),
     }),
+
+    deleteUser: (id: number): Promise<ApiResponse> =>
+    request('/socialtask/api/v1/admin/user/delete', {
+      method: 'POST',
+      body: JSON.stringify({ userId: id }),
+    }),
 };
 
 // 用户管理相关接口

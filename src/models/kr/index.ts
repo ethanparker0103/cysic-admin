@@ -68,7 +68,7 @@ interface Task {
 }
 
 const defaultInitState = {
-    showLogin: false,
+    showLogin: true,
     user: {} as IUser,
     step: 1,
     tweetUnderReview: true,
@@ -82,6 +82,7 @@ const defaultInitState = {
     signInList: [] as SignInReward[],
     stampList: [] as Stamp[],
     firstTask: null as Task | null,
+    inviterId: 0,
 }
 
 const useKrActivity = create(

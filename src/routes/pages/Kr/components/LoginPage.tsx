@@ -1,28 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardBody, CardHeader, Input, Spinner } from "@nextui-org/react";
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
 import { PT12Wrapper } from "@/components/Wrappers";
 import useKrActivity from "@/models/kr";
-import { socialMediaApi } from "../krApi";
+import { inviteCodeApi, socialMediaApi } from "../krApi";
 import { toast } from "react-toastify";
 import { ChevronRight } from "lucide-react";
 
+
+const codeLength = 5;
 // a模块：登录权限校验页面
-export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) => {
-    const { systemSetting, loading, checkAuthStatus } = useKrActivity();
+export const LoginPage = () => {
+    const { systemSetting, loading, inviterId, authToken } = useKrActivity();
     const [inviteCode, setInviteCode] = useState(window.localStorage.getItem('cysic_kr_invite_code') || "");
     const [isConnecting, setIsConnecting] = useState(false);
     const [isVerifying, setIsVerifying] = useState(false);
-
-    useEffect(() => {
-        // 检查是否已经认证
-        const isAuthenticated = checkAuthStatus();
-        if (isAuthenticated) {
-            // 如果已认证，触发登录成功回调
-            onLoginSuccess?.();
-        }
-    }, [checkAuthStatus, onLoginSuccess]);
 
     // Twitter登录处理
     const handleConnectTwitter = async () => {
@@ -32,7 +25,7 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
 
             if (response.code === '200') {
                 // 跳转到Twitter授权页面
-                window.location.href = response.authURL;
+                window.location.href = response.authURL as string;
             } else {
                 toast.error(response.msg || 'Failed to connect Twitter');
             }
@@ -43,7 +36,7 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
         }
     };
 
-    // 邀请码验证处理（只存储邀请码，然后跳转到Twitter登录）
+    // 邀请码验证处理
     const handleVerifyInviteCode = async () => {
         if (!inviteCode.trim()) {
             toast.error('Please enter an invite code');
@@ -52,13 +45,28 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
 
         try {
             setIsVerifying(true);
-            // 存储邀请码到localStorage
-            localStorage.setItem('cysic_kr_invite_code', inviteCode.trim());
-            toast.success('Invite code saved! Redirecting to Twitter...');
-            // 跳转到Twitter登录
-            handleConnectTwitter();
+            
+            // 如果已登录（有authToken），直接绑定邀请码
+            if (authToken) {
+                const response = await inviteCodeApi.bindInviteCode(inviteCode.trim(), 'twitter');
+                if (response.code === '200') {
+                    toast.success('Invite code bound successfully!');
+                    // 清除localStorage中的邀请码
+                    localStorage.removeItem('cysic_kr_invite_code');
+                    // 刷新页面数据
+                    window.location.reload();
+                } else {
+                    toast.error(response.msg || 'Failed to bind invite code');
+                }
+            } else {
+                // 未登录：存储邀请码到localStorage，然后跳转到Twitter登录
+                localStorage.setItem('cysic_kr_invite_code', inviteCode.trim());
+                toast.success('Invite code saved! Redirecting to Twitter...');
+                // 跳转到Twitter登录
+                handleConnectTwitter();
+            }
         } catch (error) {
-            toast.error('Failed to save invite code');
+            toast.error('Failed to process invite code');
         } finally {
             setIsVerifying(false);
         }
@@ -91,13 +99,42 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
                 </h3>
 
                 <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case w-fit">
-                        🎉{" "}
-                        <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
-                        First 72 hours get an exclusive stamp!
-                    </div>
-                    
+                    🎉{" "}
+                    <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
+                    First 72 hours get an exclusive stamp!
+                </div>
+
                 <div className="max-w-[500px] mx-auto mt-8">
-                    {systemSetting?.enableInviteCode ? (
+                    {((systemSetting?.enableInviteCode) && (Number(inviterId) <= 0) && authToken) ? (
+                        // 已登录但未绑定邀请码的情况
+                        <Card className="bg-white/5">
+                            <CardHeader className="text-center flex flex-col items-center">
+                                <h2 className="unbounded-24-300">Bind Your Invite Code</h2>
+                                <p className="mt-2 text-sub/80">
+                                    You need to bind an invite code to continue
+                                </p>
+                            </CardHeader>
+                            <CardBody className="space-y-6">
+                                <Input
+                                    classNames={{ input: "text-center" }}
+                                    placeholder="Enter Invite Code"
+                                    variant="bordered"
+                                    value={inviteCode}
+                                    onValueChange={setInviteCode}
+                                    isInvalid={!!inviteCode && inviteCode.length < codeLength}
+                                />
+
+                                <Button
+                                    disabled={!inviteCode || inviteCode.length < codeLength || isVerifying}
+                                    className="w-full"
+                                    type="light"
+                                    onClick={handleVerifyInviteCode}
+                                >
+                                    {isVerifying ? 'Binding...' : 'Bind & Continue'}
+                                </Button>
+                            </CardBody>
+                        </Card>
+                    ) : systemSetting?.enableInviteCode ? (
                         // 需要邀请码的流程
                         <Card className="bg-white/5">
                             <CardHeader className="text-center flex flex-col items-center">
@@ -113,13 +150,13 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
                                     variant="bordered"
                                     value={inviteCode}
                                     onValueChange={setInviteCode}
-                                    isInvalid={!!inviteCode && inviteCode.length < 3}
+                                    isInvalid={!!inviteCode && inviteCode.length < codeLength}
                                 />
-                                
-                                <Button 
-                                    disabled={!inviteCode || inviteCode.length < 3 || isVerifying} 
-                                    className="w-full" 
-                                    type="light" 
+
+                                <Button
+                                    disabled={!inviteCode || inviteCode.length < codeLength || isVerifying}
+                                    className="w-full"
+                                    type="light"
                                     onClick={handleVerifyInviteCode}
                                 >
                                     {isVerifying ? 'Verifying...' : 'Verify & Continue'}
@@ -133,9 +170,9 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
                                 </div>
 
                                 {/* 直接连接X选项 */}
-                                <Button 
-                                    className="w-full" 
-                                    type="bordered" 
+                                <Button
+                                    className="w-full"
+                                    type="bordered"
                                     onClick={handleDirectLogin}
                                     disabled={isConnecting}
                                 >
@@ -154,9 +191,9 @@ export const LoginPage = ({ onLoginSuccess }: { onLoginSuccess?: () => void }) =
                                 </p>
                             </CardHeader>
                             <CardBody>
-                                <Button 
-                                    className="w-full" 
-                                    type="light" 
+                                <Button
+                                    className="w-full"
+                                    type="light"
                                     onClick={handleDirectLogin}
                                     disabled={isConnecting}
                                 >

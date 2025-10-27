@@ -10,6 +10,7 @@ import { PendingTaskManagement } from "./components/PendingTaskManagement";
 import { AdminUserManagement } from "./components/AdminUserManagement";
 import { AdminLogin } from "./components/AdminLogin";
 import { AuthProvider, useAuth } from "./components/AuthProvider";
+import { UserManagement } from "@/routes/pages/Admin/components/UserManagement";
 
 const AdminContent = () => {
     const { isAuthenticated, logout, userId, login } = useAuth();
@@ -56,6 +57,9 @@ const AdminContent = () => {
                 </Tab>
                 <Tab key="adminUser" title="Admin Users">
                     <AdminUserManagement />
+                </Tab>
+                <Tab key="users" title="Users">
+                    <UserManagement />
                 </Tab>
             </Tabs>
         </PT12Wrapper>

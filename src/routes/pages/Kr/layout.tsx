@@ -27,22 +27,10 @@ export const KrLayout = () => {
         setAuthToken,
         initTaskList,
         tweetUnderReview,
+        systemSetting,
+        inviterId
     } = useKrActivity();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!authToken && window.location.pathname == "/krkrkr/dashboard") {
-            navigate("/krkrkr");
-        }
-    }, [authToken]);
-
-    useEffect(() => {
-        if (authToken && window.location.pathname == "/krkrkr") {
-            setState({ showLogin: false });
-        } else {
-            setState({ showLogin: true });
-        }
-    }, [authToken]);
 
     useEventListener("cysic_kr_next_step", (e: Event) => {
         const customEvent = e as CustomEvent;
@@ -165,7 +153,6 @@ export const KrLayout = () => {
             }
 
             toast.success("Login successful!");
-            dispatchEvent(new CustomEvent("cysic_kr_login_success"));
         }
     }, [bindInviteCodeAfterLogin, setAuthToken]);
 
@@ -228,11 +215,46 @@ export const KrLayout = () => {
     useEffect(() => {
         if (authToken) {
             initUserOverview();
-            loadFirstTask();
-            getUserStampList();
-            initTaskList();
         }
     }, [authToken]);
+
+    useEffect(() => {
+        if (authToken && systemSetting?.enableInviteCode !== undefined) {
+            if(systemSetting?.enableInviteCode){
+                if(Number(inviterId) > 0){
+                    loadFirstTask();
+                    getUserStampList();
+                    initTaskList();
+                }
+            } else {
+                loadFirstTask();
+                getUserStampList();
+                initTaskList();
+            }
+        }
+    }, [authToken, inviterId, systemSetting?.enableInviteCode]);
+
+
+    useEffect(() => {
+        if (!authToken && window.location.pathname == "/krkrkr/dashboard") {
+            navigate("/krkrkr");
+        }
+    }, [authToken]);
+
+    useEffect(() => {
+        if (!authToken) {
+            setState({ showLogin: true });
+        } else if (window.location.pathname == "/krkrkr") {
+            if (systemSetting?.enableInviteCode && Number(inviterId) <= 0) {
+                setState({ showLogin: true });
+            } else {
+                setState({ showLogin: false });
+            }
+        } else {
+            setState({ showLogin: true });
+        }
+    }, [authToken, systemSetting?.enableInviteCode, inviterId, setState]);
+
 
     useEffect(() => {
         if (authToken && !tweetUnderReview) {

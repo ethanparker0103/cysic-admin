@@ -278,22 +278,10 @@ const Verification = () => {
 
 // 主组件：根据认证状态显示a模块或b模块
 export const KRActivity = () => {
-    const { showLogin, step, loading, initSystemSetting, checkAuthStatus } = useKrActivity();
-
-    const setShowLogin = (show: boolean) => {
-        useKrActivity.getState().setState({ showLogin: show });
-    }
-
-    const handleLoginSuccess = () => {
-        setShowLogin(false);
-    };
-
-    useEventListener("cysic_kr_login_success", () => {
-        handleLoginSuccess();
-    });
+    const { showLogin, step, loading } = useKrActivity();
 
     if (showLogin) {
-        return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+        return <LoginPage />;
     }
 
     const currentStep = step;

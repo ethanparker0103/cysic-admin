@@ -186,6 +186,13 @@ export const inviteCodeApi = {
       method: "POST",
       body: JSON.stringify({ code, socialName }),
     }),
+
+  // 检查邀请码是否有效
+  checkInviteCode: (code: string): Promise<ApiResponse & { valid: boolean }> =>
+    request("/socialtask/api/v1/inviteCode/check", {
+      method: "POST",
+      body: JSON.stringify({ code }),
+    }),
 };
 
 // 用户相关接口
