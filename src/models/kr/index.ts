@@ -5,6 +5,14 @@ import { systemApi, userApi, taskApi, SignInReward, Stamp } from "@/routes/pages
 
 const persistFields: any = ["user",  "userOverview", "authToken"];
 
+
+interface InviteCode {
+    id: number;
+    code: string;
+    available: boolean;
+    createdAt: number;
+    updatedAt: number;
+}
 interface IUser {
   id: string;
   name: string;
@@ -66,6 +74,7 @@ const defaultInitState = {
     tweetUnderReview: true,
     systemSetting: {} as SystemSetting,
     userOverview: {} as UserOverview,
+    inviteCodes: [] as InviteCode[],
     taskList: [] as Task[],
     authToken: '',
     loading: false,

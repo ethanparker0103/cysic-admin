@@ -10,12 +10,16 @@ import { ETaskStatus, EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { FIRST_TASK_ID } from "@/routes/pages/Kr/config";
 import dayjs from "dayjs";
 import { sleep } from "@/utils/tools";
+import Copy from "@/components/Copy";
 
 export const KrLayout = () => {
     const quizId = useRef<number>(0);
     const quizRef = useRef<any>(null);
+    const inviteCodesRef = useRef<string[]>([]);
     const [quizVisible, setQuizVisible] = useState<boolean>(false);
+    const [inviteVisible, setInviteVisible] = useState<boolean>(false);
     const {
+        inviteCodes,
         authToken,
         setState,
         initUserOverview,
@@ -50,7 +54,7 @@ export const KrLayout = () => {
         const customEvent = e as CustomEvent;
         const state = customEvent?.detail as Task;
 
-        if(state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusCompleted) {
+        if (state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusCompleted) {
             return;
         }
 
@@ -60,7 +64,7 @@ export const KrLayout = () => {
             return;
         }
 
-        if(state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusPending) {
+        if (state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusPending) {
             return;
         }
 
@@ -69,10 +73,10 @@ export const KrLayout = () => {
                 try {
                     const quizStr = state.quizTaskConfig?.quiz || '';
                     const answerStr = state.quizTaskConfig?.answer || '';
-                    
+
                     let questions = [];
                     let answer = [];
-                    
+
                     try {
                         questions = quizStr ? JSON.parse(quizStr) : [];
                         answer = answerStr ? JSON.parse(answerStr) : [];
@@ -96,6 +100,10 @@ export const KrLayout = () => {
                     toast.error("Failed to load quiz questions");
                 }
                 break;
+            case "invite":
+                inviteCodesRef.current = inviteCodes?.filter((inviteCode: any) => inviteCode.available)?.map((inviteCode: any) => inviteCode.code) || [];
+                setInviteVisible(true);
+                break;
         }
     });
 
@@ -114,7 +122,7 @@ export const KrLayout = () => {
 
     // 登录后绑定邀请码
     const bindInviteCodeAfterLogin = useCallback(async (inviteCode: string) => {
-        if(!inviteCode) return;
+        if (!inviteCode) return;
         try {
             const response = await inviteCodeApi.bindInviteCode(
                 inviteCode,
@@ -161,7 +169,7 @@ export const KrLayout = () => {
                     firstTask: response?.list?.[0] || null,
                 });
 
-                if(window.location.pathname == "/krkrkr" && [EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus)){
+                if (window.location.pathname == "/krkrkr" && [EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus)) {
                     navigate("/krkrkr/dashboard");
                 }
             } else {
@@ -207,7 +215,7 @@ export const KrLayout = () => {
     useEffect(() => {
         initSystemSetting();
     }, []);
-    
+
     useEffect(() => {
         if (authToken) {
             initUserOverview();
@@ -252,6 +260,37 @@ export const KrLayout = () => {
 
                         }}
                     />
+                </>
+            </Modal>
+
+            <Modal
+                isOpen={inviteVisible}
+                onClose={() => setInviteVisible(false)}
+                title="Get Your Invite Codes"
+                className="max-w-[360px]"
+            >
+                <>
+                    <div className="flex flex-col gap-6">
+                        <p className="text-white/80 text-sm">
+                            Share your invite codes with friends to earn rewards!
+                        </p>
+                        
+                        {inviteCodesRef.current.length > 0 ? (
+                            <div className="grid grid-cols-2 gap-3">
+                                {inviteCodesRef.current.map((inviteCode: string) => (
+                                    <Copy key={inviteCode} value={inviteCode} className="justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/15 transition-colors">
+                                            <span className="font-mono text-white font-semibold tracking-wider">
+                                                {inviteCode}
+                                            </span>
+                                    </Copy>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-8 text-white/50">
+                                No invite codes available
+                            </div>
+                        )}
+                    </div>
                 </>
             </Modal>
 

@@ -61,9 +61,17 @@ const TASK_TYPES = [
   { key: ETaskType.TaskTypeInvite, label: 'Invite Task' },
   { key: ETaskType.TaskTypeQuiz, label: 'Quiz Task' },
   // { key: 'signIn', label: 'Sign-in Task' }, // 签到任务暂时保持原样，因为枚举中没有定义
-  { key: ETaskType.TaskTypePostTwitter, label: 'Twitter Post Task' },
-  { key: ETaskType.TaskTypeQuoteTwitter, label: 'Twitter Quote Task' },
+  { key: ETaskType.TaskTypePostTwitter, label: 'Post Twitter Task' },
+  { key: ETaskType.TaskTypeQuoteTwitter, label: 'Quote Twitter Task' },
 ];
+
+export const TASK_TYPE_LABELS = {
+  [ETaskType.TaskTypeInvite]: 'Invite',
+  [ETaskType.TaskTypeQuiz]: 'Quiz',
+  [ETaskType.TaskTypePostTwitter]: 'Post',
+  [ETaskType.TaskTypeQuoteTwitter]: 'Quote',
+};
+
 
 export const TaskManagement = () => {
   const [taskGroups, setTaskGroups] = useState<TaskGroup[]>([]);

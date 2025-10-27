@@ -92,10 +92,10 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                                         <div
                                             key={stamp.id}
                                             className={cn(
-                                                "relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all",
+                                                "relative size-8 rounded-lg overflow-hidden transition-all",
                                                 isEarned
-                                                    ? "border-white/50 shadow-lg shadow-purple-500/20"
-                                                    : "border-white/10 grayscale opacity-50"
+                                                    ? ""
+                                                    : "grayscale"
                                             )}
                                         >
                                             <img
@@ -103,9 +103,6 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                                                 className="w-full h-full object-cover"
                                                 alt={stamp.name}
                                             />
-                                            {isEarned && (
-                                                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20" />
-                                            )}
                                         </div>
                                     );
                                 })}

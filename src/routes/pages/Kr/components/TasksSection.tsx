@@ -4,6 +4,7 @@ import { getImageUrl } from "@/utils/tools";
 import { Spinner } from "@nextui-org/react";
 import dayjs from "dayjs";
 import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
+import { TASK_TYPE_LABELS, TASK_TYPES } from "@/routes/pages/Admin/components/TaskManagement";
 
 interface Task {
     id: number;
@@ -106,7 +107,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                                         </p>
                                                         <div
                                                             className="bg-white text-black px-1 uppercase scale-75 font-semibold origin-left rounded-[4px]"
-                                                            children={task.taskType}
+                                                            children={TASK_TYPE_LABELS[task.taskType as keyof typeof TASK_TYPE_LABELS]}
                                                         />
                                                     </div>
                                                     <div className="teachers-14-200 !normal-case text-white/80 mt-1">
