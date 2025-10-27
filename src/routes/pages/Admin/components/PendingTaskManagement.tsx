@@ -60,7 +60,7 @@ export const PendingTaskManagement = () => {
       if (response.code === '200') {
         toast.success('Task approved successfully');
         loadPendingTasks();
-        onPendingDetailsOpenChange();
+        // onPendingDetailsOpenChange();
       } else {
         toast.error(response.msg || 'Approval failed');
       }

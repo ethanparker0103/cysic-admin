@@ -18,6 +18,7 @@ interface ProfileSectionProps {
 export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
     const totalPoints = user?.points || 0;
 
+    const earnedLength = stampList?.filter(i=>i?.earnedAt > 0)?.length
     return (
         <GradientBorderCard borderRadius={8} className="w-full p-4">
             <>
@@ -71,7 +72,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                                 Stamps
                             </span>
                             <span className="unbounded-18-400 text-white">
-                                {stampList.length}
+                                {earnedLength}
                             </span>
                         </div>
                     </div>

@@ -224,11 +224,13 @@ export const KrLayout = () => {
                     loadFirstTask();
                     getUserStampList();
                     initTaskList();
+                    signIn();
                 }
             } else {
                 loadFirstTask();
                 getUserStampList();
                 initTaskList();
+                signIn();
             }
         }
     }, [authToken, inviterId, systemSetting?.enableInviteCode]);
@@ -253,21 +255,10 @@ export const KrLayout = () => {
             setState({ showLogin: true });
         }
     }, [authToken, systemSetting?.enableInviteCode, inviterId, setState]);
-
-
-    useEffect(() => {
-        if (authToken && !tweetUnderReview) {
-            signIn();
-        }
-    }, [authToken, tweetUnderReview]);
-
-
     
     useEventListener("cysic_kr_tasks_refresh_user_overview", () => {
         initUserOverview();
     });
-
-
 
     useEventListener("cysic_kr_tasks_refresh", () => {
         initUserOverview();
