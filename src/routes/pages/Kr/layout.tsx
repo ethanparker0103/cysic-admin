@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { inviteCodeApi, signInApi, stampApi, Task, taskApi } from "./krApi";
 import { toast } from "react-toastify";
-import { ETaskStatus, EUserTaskStatus } from "@/routes/pages/Admin/interface";
+import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { FIRST_TASK_ID } from "@/routes/pages/Kr/config";
 import dayjs from "dayjs";
 import { sleep } from "@/utils/tools";
@@ -107,11 +107,11 @@ export const KrLayout = () => {
         }
     });
 
-    // 移除URL中的token参数
-    const removeTokenFromUrl = () => {
+    // 移除URL中的参数
+    const removeParamFromUrl = (paramName: string) => {
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has("_t")) {
-            urlParams.delete("_t");
+        if (urlParams.has(paramName)) {
+            urlParams.delete(paramName);
             const newUrl =
                 window.location.pathname +
                 (urlParams.toString() ? `?${urlParams.toString()}` : "") +
@@ -140,16 +140,25 @@ export const KrLayout = () => {
         }
     }, []);
 
-    // 检查URL中的认证token
+    // 检查URL中的认证token和邀请码
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get("_t");
+        const inviteCode = urlParams.get("_c");
 
+        // 处理邀请码参数
+        if (inviteCode) {
+            localStorage.setItem("cysic_kr_invite_code", inviteCode);
+            removeParamFromUrl("_c");
+            toast.success("Invite code received!");
+        }
+
+        // 处理认证token
         if (token) {
             setAuthToken(token);
+            removeParamFromUrl("_t");
 
-            removeTokenFromUrl();
-
+            // 检查是否有邀请码需要绑定
             const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
             if (storedInviteCode) {
                 bindInviteCodeAfterLogin(storedInviteCode);
@@ -182,7 +191,7 @@ export const KrLayout = () => {
 
     const signIn = async () => {
         try {
-            const response = await signInApi.signIn();
+            await signInApi.signIn();
 
             const signInList = await signInApi.getSignInHistory(
                 dayjs().subtract(30, "day").startOf("day").valueOf(),
@@ -267,7 +276,7 @@ export const KrLayout = () => {
                 isOpen={inviteVisible}
                 onClose={() => setInviteVisible(false)}
                 title="Get Your Invite Codes"
-                className="max-w-[360px]"
+                className="max-w-[400px]"
             >
                 <>
                     <div className="flex flex-col gap-6">
@@ -278,7 +287,7 @@ export const KrLayout = () => {
                         {inviteCodesRef.current.length > 0 ? (
                             <div className="grid grid-cols-2 gap-3">
                                 {inviteCodesRef.current.map((inviteCode: string) => (
-                                    <Copy key={inviteCode} value={inviteCode} className="justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/15 transition-colors">
+                                    <Copy key={inviteCode} value={window.location.origin + '/krkrkr?_c=' + inviteCode} className="justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/15 transition-colors">
                                             <span className="font-mono text-white font-semibold tracking-wider">
                                                 {inviteCode}
                                             </span>
