@@ -56,7 +56,7 @@ const basicNav = [
       {
         content: "Explorer",
         key: "explorer",
-        href: mediasLink.cosmosExplorer,
+        href: 'https://app.cysic.xyz/explorer',
       },
     ].filter(Boolean)
   },

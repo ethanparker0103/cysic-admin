@@ -46,23 +46,17 @@ export const LoginPage = () => {
         try {
             setIsVerifying(true);
             
-            // 如果已登录（有authToken），直接绑定邀请码
             if (authToken) {
                 const response = await inviteCodeApi.bindInviteCode(inviteCode.trim(), 'twitter');
                 if (response.code === '200') {
                     toast.success('Invite code bound successfully!');
-                    // 清除localStorage中的邀请码
-                    localStorage.removeItem('cysic_kr_invite_code');
-                    // 刷新页面数据
-                    window.location.reload();
+                    dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
                 } else {
                     toast.error(response.msg || 'Failed to bind invite code');
                 }
             } else {
-                // 未登录：存储邀请码到localStorage，然后跳转到Twitter登录
                 localStorage.setItem('cysic_kr_invite_code', inviteCode.trim());
                 toast.success('Invite code saved! Redirecting to Twitter...');
-                // 跳转到Twitter登录
                 handleConnectTwitter();
             }
         } catch (error) {

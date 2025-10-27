@@ -118,8 +118,7 @@ export const KrLayout = () => {
             );
             if (response.code === "200") {
                 toast.success("Invite code bound successfully!");
-                // 清除存储的邀请码
-                localStorage.removeItem("cysic_kr_invite_code");
+                dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
             } else {
                 toast.error(response.msg || "Failed to bind invite code");
             }
@@ -261,6 +260,14 @@ export const KrLayout = () => {
             signIn();
         }
     }, [authToken, tweetUnderReview]);
+
+
+    
+    useEventListener("cysic_kr_tasks_refresh_user_overview", () => {
+        initUserOverview();
+    });
+
+
 
     useEventListener("cysic_kr_tasks_refresh", () => {
         initUserOverview();
