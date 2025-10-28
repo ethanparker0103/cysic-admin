@@ -142,21 +142,29 @@ export const signInApi = {
       method: "POST",
     }),
 
-
-    // YYYY-MM-DD
-  getSignInHistory: (startDate: number, endDate: number): Promise<ApiResponse & { signInDates: string[] }> =>
-    request(`/socialtask/api/v1/signIn/history?${new URLSearchParams({
-      ...(startDate && { startDate: dayjs(startDate).format('YYYY-MM-DD') }),
-      ...(endDate && { endDate: dayjs(endDate).format('YYYY-MM-DD') }),
-    })}`),
-
+  // YYYY-MM-DD
+  getSignInHistory: (
+    startDate: number,
+    endDate: number
+  ): Promise<ApiResponse & { signInDates: string[] }> =>
+    request(
+      `/socialtask/api/v1/signIn/history?${new URLSearchParams({
+        ...(startDate && { startDate: dayjs(startDate).format("YYYY-MM-DD") }),
+        ...(endDate && { endDate: dayjs(endDate).format("YYYY-MM-DD") }),
+      })}`
+    ),
 
   // /socialtask/api/v1/signIn/rewardList
-  getSignInRewardList: (page?: number, pageSize?: number): Promise<ApiResponse & { list: SignInReward[] }> =>
-    request(`/socialtask/api/v1/signIn/rewardList?${new URLSearchParams({
-      ...(page && { page: page.toString() }),
-      ...(pageSize && { pageSize: pageSize.toString() }),
-    })}`),
+  getSignInRewardList: (
+    page?: number,
+    pageSize?: number
+  ): Promise<ApiResponse & { list: SignInReward[] }> =>
+    request(
+      `/socialtask/api/v1/signIn/rewardList?${new URLSearchParams({
+        ...(page && { page: page.toString() }),
+        ...(pageSize && { pageSize: pageSize.toString() }),
+      })}`
+    ),
 };
 
 // 系统设置相关接口
@@ -203,8 +211,13 @@ export const userApi = {
   > => request("/socialtask/api/v1/user/overview"),
 
   // 获取用户列表
-  getUserList: (num: number): Promise<ApiResponse & { list: {avatar: string, username: string, relatedUrl: string}[] }> =>
-    request(`/socialtask/api/v1/user/list?num=${num}`),
+  getUserList: (
+    num: number
+  ): Promise<
+    ApiResponse & {
+      list: { avatar: string; username: string; relatedUrl: string }[];
+    }
+  > => request(`/socialtask/api/v1/user/list?num=${num}`),
 };
 
 // 任务类型定义
@@ -245,15 +258,24 @@ export const taskApi = {
     request("/socialtask/api/v1/firstTask"),
 
   // 获取任务列表
-  getTaskList: (id?: number): Promise<
+  getTaskList: (
+    id?: number,
+    groupId?: string
+  ): Promise<
     ApiResponse & {
       list: Task[];
       total: number;
       totalWithoutForceLocked: number;
     }
-  > => request(`/socialtask/api/v1/task/list?${new URLSearchParams({
-    ...(id && { taskId: id.toString() }),
-  })}`),
+  > =>
+    request(
+      `/socialtask/api/v1/task/list?${new URLSearchParams({
+        ...(id && { taskId: id.toString() }),
+        ...(groupId && {
+          groupId: (+groupId + 2).toString()
+        }),
+      })}`
+    ),
 
   // 提交任务
   submitTask: (taskId: number, result: string): Promise<ApiResponse> =>
@@ -273,11 +295,16 @@ export const taskApi = {
 // 徽章相关接口
 export const stampApi = {
   // 获取用户徽章列表
-  getStampList: (page?: number, pageSize?: number): Promise<ApiResponse & { list: UserStamp[]; total: string }> =>
-    request(`/socialtask/api/v1/stamp/list?${new URLSearchParams({
-      ...(page && { page: page.toString() }),
-      ...(pageSize && { pageSize: pageSize.toString() }),
-    })}`),
+  getStampList: (
+    page?: number,
+    pageSize?: number
+  ): Promise<ApiResponse & { list: UserStamp[]; total: string }> =>
+    request(
+      `/socialtask/api/v1/stamp/list?${new URLSearchParams({
+        ...(page && { page: page.toString() }),
+        ...(pageSize && { pageSize: pageSize.toString() }),
+      })}`
+    ),
 };
 
 // 认证相关工具函数

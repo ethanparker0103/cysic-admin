@@ -41,6 +41,7 @@ interface Task {
   forceLocked: boolean;
   inviteTaskConfig?: { requestInviteNum: number };
   postTwitterTaskConfig?: { content: string };
+  quoteTwitterTaskConfig?: { content: string };
   quizTaskConfig?: { quiz: string; answer: string };
   createdAt: number;
   updatedAt: number;
@@ -83,7 +84,7 @@ export const TaskManagement = () => {
   const [total, setTotal] = useState(0);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState('taskGroups');
-  
+
   // Edit/Create task modal
   const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange } = useDisclosure();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
@@ -100,6 +101,7 @@ export const TaskManagement = () => {
     forceLocked: ETaskForceLocked.TaskForceLockedNo,
     inviteTaskConfig: { requestInviteNum: 0 },
     postTwitterTaskConfig: { content: '' },
+    quoteTwitterTaskConfig: { content: '' },
     quizTaskConfig: { quiz: '', answer: '' },
   });
   const [uploading, setUploading] = useState(false);
@@ -115,7 +117,7 @@ export const TaskManagement = () => {
     endAt: 0,
   });
   const [groupUploading, setGroupUploading] = useState(false);
-  
+
 
   // Load task group list
   const loadTaskGroups = useCallback(async () => {
@@ -213,7 +215,7 @@ export const TaskManagement = () => {
   const saveTask = async () => {
     try {
       setLoading(true);
-      
+
       // 构建任务数据，只对quiz类型进行JSON转换
       const taskData = {
         ...taskForm,
@@ -224,11 +226,11 @@ export const TaskManagement = () => {
           }
         } : {}),
       };
-      
+
       const response = editingTask
         ? await taskApi.updateTask({ ...taskData, id: editingTask.id })
         : await taskApi.createTask(taskData);
-      
+
       if (response.code === '200') {
         toast.success(editingTask ? 'Task updated successfully' : 'Task created successfully');
         onEditOpenChange();
@@ -250,7 +252,7 @@ export const TaskManagement = () => {
   // Delete task
   const deleteTask = async (id: number) => {
     if (!confirm('Are you sure you want to delete this task?')) return;
-    
+
     try {
       setLoading(true);
       const response = await taskApi.deleteTask(id);
@@ -278,7 +280,7 @@ export const TaskManagement = () => {
       const response = editingTaskGroup
         ? await taskApi.updateTaskGroup(editingTaskGroup.id, taskGroupForm)
         : await taskApi.createTaskGroup(taskGroupForm);
-      
+
       if (response.code === '200') {
         toast.success(editingTaskGroup ? 'Task group updated successfully' : 'Task group created successfully');
         onGroupEditOpenChange();
@@ -298,7 +300,7 @@ export const TaskManagement = () => {
   // Delete task group
   const deleteTaskGroup = async (id: number) => {
     if (!confirm('Are you sure you want to delete this task group?')) return;
-    
+
     try {
       setLoading(true);
       const response = await taskApi.deleteTaskGroup(id);
@@ -360,6 +362,7 @@ export const TaskManagement = () => {
       forceLocked: ETaskForceLocked.TaskForceLockedNo,
       inviteTaskConfig: { requestInviteNum: 0 },
       postTwitterTaskConfig: { content: '' },
+      quoteTwitterTaskConfig: { content: '' },
       quizTaskConfig: { quiz: '', answer: '' },
     });
     setEditingTask(null);
@@ -369,13 +372,13 @@ export const TaskManagement = () => {
   const openEditModal = (task?: Task) => {
     if (task) {
       setEditingTask(task);
-      
+
       // 只处理quiz类型的配置解析
       const quizConfig = task.taskType === 'quiz' && task.quizTaskConfig ? {
         quiz: task.quizTaskConfig.quiz || '',
         answer: task.quizTaskConfig.answer || ''
       } : { quiz: '', answer: '' };
-      
+
       setTaskForm({
         groupId: task.groupId || selectedGroupId || 0,
         title: task.title,
@@ -389,6 +392,7 @@ export const TaskManagement = () => {
         forceLocked: task.forceLocked ? ETaskForceLocked.TaskForceLockedYes : ETaskForceLocked.TaskForceLockedNo,
         inviteTaskConfig: task.inviteTaskConfig || { requestInviteNum: 0 },
         postTwitterTaskConfig: task.postTwitterTaskConfig || { content: '' },
+        quoteTwitterTaskConfig: task.quoteTwitterTaskConfig || { content: '' },
         quizTaskConfig: quizConfig,
       });
     } else {
@@ -433,9 +437,9 @@ export const TaskManagement = () => {
           <h3 className="text-lg font-semibold">Task Management</h3>
         </CardHeader>
         <CardBody>
-          <Tabs 
-            aria-label="Task Management" 
-            selectedKey={activeTab} 
+          <Tabs
+            aria-label="Task Management"
+            selectedKey={activeTab}
             onSelectionChange={(key) => setActiveTab(key as string)}
           >
             <Tab key="taskGroups" title="Task Groups">
@@ -446,7 +450,7 @@ export const TaskManagement = () => {
                     Create Task Group
                   </Button>
                 </div>
-                
+
                 <Table aria-label="Task Group List">
                   <TableHeader>
                     <TableColumn>ID</TableColumn>
@@ -526,8 +530,8 @@ export const TaskManagement = () => {
                       ))}
                     </Select>
                   </div>
-                  <Button 
-                    color="primary" 
+                  <Button
+                    color="primary"
                     size="sm"
                     onPress={() => openEditModal()}
                     isDisabled={!selectedGroupId}
@@ -678,9 +682,9 @@ export const TaskManagement = () => {
                     label="Reward Points"
                     placeholder="Enter reward points"
                     value={taskForm.RewardPoints.toString()}
-                    onChange={(e) => setTaskForm(prev => ({ 
-                      ...prev, 
-                      RewardPoints: parseInt(e.target.value) || 0 
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      RewardPoints: parseInt(e.target.value) || 0
                     }))}
                   />
                   <div className="space-y-2">
@@ -691,9 +695,9 @@ export const TaskManagement = () => {
                       selectedKeys={taskForm.RewardStampId ? [taskForm.RewardStampId.toString()] : []}
                       onSelectionChange={(keys) => {
                         const selected = Array.from(keys)[0] as string;
-                        setTaskForm(prev => ({ 
-                          ...prev, 
-                          RewardStampId: selected ? parseInt(selected) : 0 
+                        setTaskForm(prev => ({
+                          ...prev,
+                          RewardStampId: selected ? parseInt(selected) : 0
                         }));
                       }}
                       renderValue={(items) => {
@@ -720,8 +724,8 @@ export const TaskManagement = () => {
                       </SelectItem>
                       <React.Fragment>
                         {stamps.map((stamp) => (
-                          <SelectItem 
-                            key={stamp.id.toString()} 
+                          <SelectItem
+                            key={stamp.id.toString()}
                             value={stamp.id.toString()}
                             textValue={`${stamp.name} (${stamp.stampType})`}
                           >
@@ -749,8 +753,8 @@ export const TaskManagement = () => {
                   <CustomDatePicker
                     label="Start Time"
                     value={taskForm.startAt}
-                    onChange={(timestamp) => setTaskForm(prev => ({ 
-                      ...prev, 
+                    onChange={(timestamp) => setTaskForm(prev => ({
+                      ...prev,
                       startAt: timestamp
                     }))}
                     granularity="minute"
@@ -758,8 +762,8 @@ export const TaskManagement = () => {
                   <CustomDatePicker
                     label="End Time"
                     value={taskForm.endAt}
-                    onChange={(timestamp) => setTaskForm(prev => ({ 
-                      ...prev, 
+                    onChange={(timestamp) => setTaskForm(prev => ({
+                      ...prev,
                       endAt: timestamp
                     }))}
                     granularity="minute"
@@ -773,26 +777,41 @@ export const TaskManagement = () => {
                     label="Required Invite Count"
                     placeholder="Enter required invite count"
                     value={taskForm.inviteTaskConfig.requestInviteNum.toString()}
-                    onChange={(e) => setTaskForm(prev => ({ 
-                      ...prev, 
-                      inviteTaskConfig: { 
-                        ...prev.inviteTaskConfig, 
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      inviteTaskConfig: {
+                        ...prev.inviteTaskConfig,
                         requestInviteNum: parseInt(e.target.value) || 0
                       }
                     }))}
                   />
                 )}
 
-                {taskForm.taskType === 'postTwitter' && (
+                {(taskForm.taskType === 'postTwitter') && (
                   <Textarea
                     label="Twitter Post Content Requirement"
                     placeholder="Enter Twitter post content requirement"
                     value={taskForm.postTwitterTaskConfig.content}
-                    onChange={(e) => setTaskForm(prev => ({ 
-                      ...prev, 
-                      postTwitterTaskConfig: { 
-                        ...prev.postTwitterTaskConfig, 
-                        content: e.target.value 
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      postTwitterTaskConfig: {
+                        ...prev.postTwitterTaskConfig,
+                        content: e.target.value
+                      }
+                    }))}
+                  />
+                )}
+
+                {(taskForm.taskType === 'quoteTwitter') && (
+                  <Textarea
+                    label="Twitter Quote URL"
+                    placeholder="Enter Twitter URL"
+                    value={taskForm.quoteTwitterTaskConfig.content}
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      quoteTwitterTaskConfig: {
+                        ...prev.quoteTwitterTaskConfig,
+                        content: e.target.value
                       }
                     }))}
                   />
@@ -804,11 +823,11 @@ export const TaskManagement = () => {
                       label="Question"
                       placeholder="Enter question"
                       value={taskForm.quizTaskConfig.quiz}
-                      onChange={(e) => setTaskForm(prev => ({ 
-                        ...prev, 
-                        quizTaskConfig: { 
-                          ...prev.quizTaskConfig, 
-                          quiz: e.target.value 
+                      onChange={(e) => setTaskForm(prev => ({
+                        ...prev,
+                        quizTaskConfig: {
+                          ...prev.quizTaskConfig,
+                          quiz: e.target.value
                         }
                       }))}
                     />
@@ -816,11 +835,11 @@ export const TaskManagement = () => {
                       label="Answer"
                       placeholder="Enter answer"
                       value={taskForm.quizTaskConfig.answer}
-                      onChange={(e) => setTaskForm(prev => ({ 
-                        ...prev, 
-                        quizTaskConfig: { 
-                          ...prev.quizTaskConfig, 
-                          answer: e.target.value 
+                      onChange={(e) => setTaskForm(prev => ({
+                        ...prev,
+                        quizTaskConfig: {
+                          ...prev.quizTaskConfig,
+                          answer: e.target.value
                         }
                       }))}
                     />
@@ -921,8 +940,8 @@ export const TaskManagement = () => {
                   <CustomDatePicker
                     label="Start Time"
                     value={taskGroupForm.startAt}
-                    onChange={(timestamp) => setTaskGroupForm(prev => ({ 
-                      ...prev, 
+                    onChange={(timestamp) => setTaskGroupForm(prev => ({
+                      ...prev,
                       startAt: timestamp
                     }))}
                     granularity="minute"
@@ -930,8 +949,8 @@ export const TaskManagement = () => {
                   <CustomDatePicker
                     label="End Time"
                     value={taskGroupForm.endAt}
-                    onChange={(timestamp) => setTaskGroupForm(prev => ({ 
-                      ...prev, 
+                    onChange={(timestamp) => setTaskGroupForm(prev => ({
+                      ...prev,
                       endAt: timestamp
                     }))}
                     granularity="minute"

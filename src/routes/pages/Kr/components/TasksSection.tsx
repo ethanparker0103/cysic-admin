@@ -1,11 +1,12 @@
 import GradientBorderCard from "@/components/GradientBorderCard";
 import Button from "@/components/Button";
 import { getImageUrl } from "@/utils/tools";
-import { Spinner } from "@nextui-org/react";
+import { Select, SelectItem, Spinner } from "@nextui-org/react";
 import dayjs from "dayjs";
-import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
+import { ETaskType, EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { TASK_TYPE_LABELS, TASK_TYPES } from "@/routes/pages/Admin/components/TaskManagement";
 import { useState } from "react";
+import useKrActivity from "@/models/kr";
 
 interface Task {
     id: number;
@@ -30,10 +31,10 @@ interface TasksSectionProps {
     ifActive: boolean;
 }
 
-const getTaskStatusText = (status: number) => {
+const getTaskStatusText = (status: number, startString?: string) => {
     switch (status) {
         case EUserTaskStatus.UserTaskCompletionStatusIncomplete:
-            return "Start";
+            return startString || "Start";
         case EUserTaskStatus.UserTaskCompletionStatusPending:
             return "Pending";
         case EUserTaskStatus.UserTaskCompletionStatusWaitClaim:
@@ -47,7 +48,11 @@ const getTaskStatusText = (status: number) => {
 
 export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps) => {
 
-    const [week, setWeek] = useState<number>(1);
+    const { totalWeeks, week, setState } = useKrActivity();
+
+    // [{key, label}]
+    const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `Week ${index + 1}` }))
+
     // 根据startAt分类
     const formattedTaskMap = taskList.reduce(
         (acc: Record<string, Task[]>, task: Task) => {
@@ -65,9 +70,24 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
 
     return (
         <div className="flex-1 py-4">
-            <div className="flex items-center gap-1 unbounded-24-200">
-                Tasks Week {week}
+
+            <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1 unbounded-24-200">
+                    Tasks
+                </div>
+
+
+                <Select
+                    items={weekSelects}
+                    classNames={{value: '!unbounded-24-200 ', innerWrapper: 'w-fit', trigger: 'w-fit !pr-10'}}
+                    className="[&_button]:p-0 w-[160px] flex items-center gap-1 [&_button]:!bg-transparent" defaultSelectedKeys={[week?.toString()]} value={[week?.toString()]} onChange={(e) => {
+                        setState({ week: e.target.value.toString() })
+                        dispatchEvent(new CustomEvent('cysic_kr_tasks_change_week'))
+                    }}>
+                    {(week) => <SelectItem>{week.label}</SelectItem>}
+                </Select>
             </div>
+
             <div className="relative mt-4 flex flex-col gap-6">
                 {loading ? (
                     <div className="flex justify-center py-8">
@@ -149,7 +169,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                                     )
                                                 }
                                             >
-                                                {getTaskStatusText(task.currentStatus)}
+                                                {getTaskStatusText(task.currentStatus, task.taskType === ETaskType.TaskTypeQuoteTwitter ? "Quote" : task.taskType === ETaskType.TaskTypePostTwitter ? "Post" : undefined)}
                                             </Button>
                                         </>
                                     </GradientBorderCard>

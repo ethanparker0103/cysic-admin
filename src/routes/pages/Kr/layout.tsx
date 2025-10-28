@@ -9,16 +9,30 @@ import { toast } from "react-toastify";
 import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { FIRST_TASK_ID } from "@/routes/pages/Kr/config";
 import dayjs from "dayjs";
-import { sleep } from "@/utils/tools";
+import { generateQueryString, sleep } from "@/utils/tools";
 import Copy from "@/components/Copy";
+import { Card, Input } from "@nextui-org/react";
+import Button from "@/components/Button";
 
 export const KrLayout = () => {
+    const taskId = useRef<number>(0);
     const quizId = useRef<number>(0);
     const quizRef = useRef<any>(null);
+    const postTwitterContentRef = useRef<any>('');
+    const quoteTwitterIdRef = useRef<any>('');
     const inviteCodesRef = useRef<string[]>([]);
     const [quizVisible, setQuizVisible] = useState<boolean>(false);
     const [inviteVisible, setInviteVisible] = useState<boolean>(false);
+
+    const [quoteTwitterVisible, setQuoteTwitterVisible] = useState(false);
+    const [postTwitterVisible, setPostTwitterVisible] = useState(false);
+
+    const [postTwitterUrl, setPostTwitterUrl] = useState('')
+    const [quoteTwitterUrl, setQuoteTwitterUrl] = useState('')
+
+
     const {
+        week,
         inviteCodes,
         authToken,
         setState,
@@ -26,7 +40,7 @@ export const KrLayout = () => {
         initSystemSetting,
         setAuthToken,
         initTaskList,
-        tweetUnderReview,
+        initTaskListByGroup,
         systemSetting,
         inviterId
     } = useKrActivity();
@@ -56,7 +70,18 @@ export const KrLayout = () => {
             return;
         }
 
+        taskId.current = state.id
         switch (state.taskType) {
+            case "postTwitter": {
+                postTwitterContentRef.current = state.postTwitterTaskConfig?.content
+                setPostTwitterVisible(true)
+                break;
+            }
+            case "quoteTwitter": {
+                quoteTwitterIdRef.current = state.quoteTwitterTaskConfig?.content
+                setQuoteTwitterVisible(true)
+                break;
+            }
             case "quiz":
                 try {
                     const quizStr = state.quizTaskConfig?.quiz || '';
@@ -219,21 +244,23 @@ export const KrLayout = () => {
 
     useEffect(() => {
         if (authToken && systemSetting?.enableInviteCode !== undefined) {
-            if(systemSetting?.enableInviteCode){
-                if(Number(inviterId) > 0){
+            const week = useKrActivity.getState().week
+            if (systemSetting?.enableInviteCode) {
+                if (Number(inviterId) > 0) {
                     loadFirstTask();
                     getUserStampList();
-                    initTaskList();
+                    initTaskListByGroup(+week);
                     signIn();
                 }
             } else {
                 loadFirstTask();
                 getUserStampList();
-                initTaskList();
+                initTaskListByGroup(+week);
                 signIn();
             }
         }
     }, [authToken, inviterId, systemSetting?.enableInviteCode]);
+
 
 
     useEffect(() => {
@@ -255,16 +282,80 @@ export const KrLayout = () => {
             setState({ showLogin: true });
         }
     }, [authToken, systemSetting?.enableInviteCode, inviterId, setState]);
-    
+
+    useEventListener("cysic_kr_tasks_change_week", () => {
+        const week = useKrActivity.getState().week
+        initTaskListByGroup(+week);
+    })
+
     useEventListener("cysic_kr_tasks_refresh_user_overview", () => {
         initUserOverview();
     });
 
     useEventListener("cysic_kr_tasks_refresh", () => {
+        const week = useKrActivity.getState().week
         initUserOverview();
-        initTaskList();
+        initTaskListByGroup(+week);
         getUserStampList();
     });
+
+
+
+    const handleSubmitPost = async () => {
+        await taskApi.submitTask(taskId.current, postTwitterUrl);
+        toast.success('Your tweet is now under-reviewing')
+
+        await sleep(1000);
+        dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+    }
+
+    const handlePost = (content: string) => {
+        const link = `https://x.com/intent/post?${generateQueryString({
+            text: content
+        })}`
+
+        window.open(link, '_blank')
+    }
+
+    const handleSubmitQuote = async () => {
+        await taskApi.submitTask(taskId.current, quoteTwitterUrl);
+        toast.success('Your tweet is now under-reviewing')
+
+        await sleep(1000);
+        dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+    }
+
+    const extractTweetId = (url: string): string | null => {
+        if (!url) return null;
+        
+        const patterns = [
+            /(?:x\.com|twitter\.com)\/\w+\/status\/(\d+)/,
+            /status\/(\d+)/,
+            /\/tweet\/(\d+)/,
+            /tweet_id=(\d+)/,
+        ];
+        
+        for (const pattern of patterns) {
+            const match = url.match(pattern);
+            if (match && match[1]) {
+                return match[1];
+            }
+        }
+        
+        return null;
+    };
+
+    const handleQuote = (tweetUrlOrContent: string) => {
+        const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
+        
+        if (!tweetId) {
+            toast.error('Invalid Twitter URL or ID');
+            return;
+        }
+
+        const replyUrl = `https://twitter.com/intent/tweet?in_reply_to=${tweetId}`;
+        window.open(replyUrl, '_blank');
+    }
 
     return (
         <>
@@ -303,14 +394,14 @@ export const KrLayout = () => {
                         <p className="text-white/80 text-sm">
                             Share your invite codes with friends to earn rewards!
                         </p>
-                        
+
                         {inviteCodesRef.current.length > 0 ? (
                             <div className="grid grid-cols-2 gap-3">
                                 {inviteCodesRef.current.map((inviteCode: string) => (
                                     <Copy key={inviteCode} value={window.location.origin + '/krkrkr?_c=' + inviteCode} className="justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/15 transition-colors">
-                                            <span className="font-mono text-white font-semibold tracking-wider">
-                                                {inviteCode}
-                                            </span>
+                                        <span className="font-mono text-white font-semibold tracking-wider">
+                                            {inviteCode}
+                                        </span>
                                     </Copy>
                                 ))}
                             </div>
@@ -322,6 +413,82 @@ export const KrLayout = () => {
                     </div>
                 </>
             </Modal>
+
+            <Modal
+                isOpen={postTwitterVisible}
+                onClose={() => { setPostTwitterVisible(false); setPostTwitterUrl(''); }}
+                title="Post"
+                className="max-w-[400px]"
+            >
+                <>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white/80 text-sm">
+                            1. Post the following section
+                        </p>
+
+                        <Card className="p-4 rounded-[8px]">
+                            {postTwitterContentRef.current}
+                        </Card>
+
+                        <Button className="mb-4" type="light" onClick={() => handlePost(postTwitterContentRef.current)} >Post</Button>
+
+
+                        <p className="text-white/80 text-sm">
+                            2. Enter your Tweet url. (You can only submit once, please be careful)
+                        </p>
+
+                        <Input placeholder="https://x.com/..." value={postTwitterUrl} onValueChange={setPostTwitterUrl} />
+
+                        <Button className="" disabled={!postTwitterUrl} onClick={handleSubmitPost} type="light">Submit</Button>
+                    </div>
+                </>
+            </Modal>
+
+            <Modal
+                isOpen={quoteTwitterVisible}
+                onClose={() => { setQuoteTwitterVisible(false); setQuoteTwitterUrl(''); }}
+                title="Reply"
+                className="max-w-[400px]"
+            >
+                <>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white/80 text-sm">
+                            1. Reply to the following tweet
+                        </p>
+
+                        <Card className="p-4 rounded-[8px] overflow-auto">
+                            <div className="flex flex-col gap-2">
+                                {quoteTwitterIdRef.current && (
+                                    <a 
+                                        href={quoteTwitterIdRef.current.startsWith('http') 
+                                            ? quoteTwitterIdRef.current 
+                                            : `https://x.com/${quoteTwitterIdRef.current}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-400 hover:text-blue-300 text-sm break-all"
+                                    >
+                                        {quoteTwitterIdRef.current.startsWith('http') 
+                                            ? quoteTwitterIdRef.current 
+                                            : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
+                                    </a>
+                                )}
+                            </div>
+                        </Card>
+
+                        <Button className="mb-4" type="light" onClick={() => handleQuote(quoteTwitterIdRef.current)} >Open Reply</Button>
+
+
+                        <p className="text-white/80 text-sm">
+                            2. Enter your Tweet url. (You can only submit once, please be careful)
+                        </p>
+
+                        <Input placeholder="https://x.com/..." value={quoteTwitterUrl} onValueChange={setQuoteTwitterUrl} />
+
+                        <Button className="" disabled={!quoteTwitterUrl} onClick={handleSubmitQuote} type="light">Submit</Button>
+                    </div>
+                </>
+            </Modal>
+
 
             <Outlet />
         </>
