@@ -201,6 +201,10 @@ export const userApi = {
   getOverview: (): Promise<
     ApiResponse & { user: UserOverview; inviteCodes: InviteCode[] }
   > => request("/socialtask/api/v1/user/overview"),
+
+  // 获取用户列表
+  getUserList: (num: number): Promise<ApiResponse & { list: {avatar: string, username: string, relatedUrl: string}[] }> =>
+    request(`/socialtask/api/v1/user/list?num=${num}`),
 };
 
 // 任务类型定义
