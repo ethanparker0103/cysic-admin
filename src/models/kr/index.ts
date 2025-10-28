@@ -2,9 +2,48 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { systemApi, userApi, taskApi, SignInReward, Stamp } from "@/routes/pages/Kr/krApi";
+import dayjs from "dayjs";
 
 const persistFields: any = ["user",  "userOverview", "authToken"];
 
+const getMonthWeeksInfo = (date?: dayjs.Dayjs) => {
+  const targetDate = date || dayjs();
+  
+  // 获取月份的第一天和最后一天
+  const startOfMonth = targetDate.startOf('month');
+  const endOfMonth = targetDate.endOf('month');
+  
+  // 获取第一天和最后一天所在的周（ISO 周）
+  // 注意：dayjs 的 week() 方法返回的是 ISO 周数（1-53）
+  const firstWeek = startOfMonth.week();
+  const lastWeek = endOfMonth.week();
+  
+  // 计算总周数（处理跨年情况）
+  let totalWeeks;
+  if (firstWeek <= lastWeek) {
+      totalWeeks = lastWeek - firstWeek + 1;
+  } else {
+      // 跨年情况：第一周可能属于上一年的最后几周
+      // 例如：1月1日是第53周（上一年的），1月31日是第5周
+      const weeksInYear = lastWeek;
+      const weeksFromPreviousYear = 53 - firstWeek + 1;
+      totalWeeks = weeksFromPreviousYear + weeksInYear;
+  }
+  
+  // 计算当前日期是该月的第几周（从1开始）
+  const currentWeek = targetDate.week();
+  const currentWeekInMonth = currentWeek >= firstWeek 
+      ? currentWeek - firstWeek + 1 
+      : totalWeeks - firstWeek + currentWeek + 1;
+  
+  return {
+      totalWeeks,              // 该月的星期总数
+      currentWeekInMonth,      // 当前日期是该月的第几个星期（从1开始）
+      firstWeek,
+      lastWeek,
+      currentWeek
+  };
+};
 
 interface InviteCode {
     id: number;
@@ -67,7 +106,9 @@ interface Task {
   };
 }
 
+
 const defaultInitState = {
+    week: getMonthWeeksInfo()?.currentWeekInMonth,
     showLogin: true,
     user: {} as IUser,
     step: 1,

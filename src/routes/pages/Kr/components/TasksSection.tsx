@@ -5,6 +5,7 @@ import { Spinner } from "@nextui-org/react";
 import dayjs from "dayjs";
 import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { TASK_TYPE_LABELS, TASK_TYPES } from "@/routes/pages/Admin/components/TaskManagement";
+import { useState } from "react";
 
 interface Task {
     id: number;
@@ -45,6 +46,8 @@ const getTaskStatusText = (status: number) => {
 };
 
 export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps) => {
+
+    const [week, setWeek] = useState<number>(1);
     // 根据startAt分类
     const formattedTaskMap = taskList.reduce(
         (acc: Record<string, Task[]>, task: Task) => {
@@ -63,7 +66,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
     return (
         <div className="flex-1 py-4">
             <div className="flex items-center gap-1 unbounded-24-200">
-                Tasks
+                Tasks Week {week}
             </div>
             <div className="relative mt-4 flex flex-col gap-6">
                 {loading ? (
