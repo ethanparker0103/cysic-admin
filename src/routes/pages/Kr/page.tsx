@@ -14,7 +14,7 @@ import {
 } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { mediasLink } from "@/config";
-import { getImageUrl } from "@/utils/tools";
+import { generateQueryString, getImageUrl } from "@/utils/tools";
 import { ArrowDownToLineIcon, ArrowUpRight, Check } from "lucide-react";
 import useKrActivity from "@/models/kr";
 import { taskApi, userApi } from "./krApi";
@@ -182,19 +182,28 @@ const Post = () => {
   };
 
   const handleDownloadImage = () => {
-    if (firstTask?.imgUrl) {
-      const link = document.createElement("a");
-      link.href = firstTask.imgUrl;
-      link.download = "cysic-task-image.png";
-      link.click();
-    }
+    const link = document.createElement("a");
+    link.href = firstTask?.imgUrl;
+    link.download = "cysic_x_poster.png";
+    link.click();
   };
 
+  const handleOpenPost = () => {
+    if(!firstTask?.postTwitterTaskConfig?.content) return;
+
+    const link = `https://x.com/intent/post?${generateQueryString({
+        text: firstTask?.postTwitterTaskConfig?.content
+    })}`
+
+    window.open(link, '_blank')
+}
   return (
     <>
       <div className="mt-8 flex justify-center gap-4">
         <div className="relative border rounded-[8px] bg-white p-1 flex-1">
-          <div className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer">
+          <div className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
+          onClick={handleOpenPost}
+          >
             <ArrowUpRight className="size-3" />
           </div>
 
@@ -208,10 +217,7 @@ const Post = () => {
           <div className="rounded-[8px] size-full overflow-hidden">
             <img
               className="object-cover size-full"
-              src={
-                firstTask?.imgUrl ||
-                getImageUrl("@/assets/images/_global/stake_landing_bg.png")
-              }
+              src={firstTask?.imgUrl}
               alt={firstTask?.title || "Task Image"}
             />
           </div>
@@ -280,7 +286,7 @@ const Verification = () => {
   const inviteCodes =
     _inviteCodes?.filter((i) => i?.available)?.map((i) => i?.code) || [];
 
-    const totalUserList = userList;
+  const totalUserList = userList;
   return (
     <>
       <div className="mt-8 teachers-18-200 !normal-case mb-8">
@@ -311,7 +317,7 @@ const Verification = () => {
 
         <div
           className={cn("grid justify-center items-center")}
-          style={{gridTemplateColumns: `repeat(${Math.min(10, totalUserList?.length)}, minmax(0, 1fr))`}}
+          style={{ gridTemplateColumns: `repeat(${Math.min(10, totalUserList?.length)}, minmax(0, 1fr))` }}
         >
           {totalUserList.map((user, idx) => (
             <Tooltip content={<>{user.username}</>}>
