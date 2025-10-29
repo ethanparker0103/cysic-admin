@@ -249,6 +249,9 @@ export interface Task {
   quoteTwitterTaskConfig?: {
     content: string;
   };
+  retweetAndLikeTwitterTaskConfig?: {
+    content: string;
+  };
 }
 
 // 任务相关接口

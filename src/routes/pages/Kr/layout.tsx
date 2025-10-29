@@ -18,17 +18,19 @@ export const KrLayout = () => {
     const taskId = useRef<number>(0);
     const quizId = useRef<number>(0);
     const quizRef = useRef<any>(null);
+    const retweetAndLikeTwitterContentRef = useRef<any>('');
     const postTwitterContentRef = useRef<any>('');
     const quoteTwitterIdRef = useRef<any>('');
     const inviteCodesRef = useRef<string[]>([]);
     const [quizVisible, setQuizVisible] = useState<boolean>(false);
     const [inviteVisible, setInviteVisible] = useState<boolean>(false);
-
+    const [retweetAndLikeTwitterVisible, setRetweetAndLikeTwitterVisible] = useState(false);
     const [quoteTwitterVisible, setQuoteTwitterVisible] = useState(false);
     const [postTwitterVisible, setPostTwitterVisible] = useState(false);
 
     const [postTwitterUrl, setPostTwitterUrl] = useState('')
     const [quoteTwitterUrl, setQuoteTwitterUrl] = useState('')
+    const [retweetAndLikeTwitterUrl, setRetweetAndLikeTwitterUrl] = useState('')
 
 
     const {
@@ -80,6 +82,11 @@ export const KrLayout = () => {
             case "quoteTwitter": {
                 quoteTwitterIdRef.current = state.quoteTwitterTaskConfig?.content
                 setQuoteTwitterVisible(true)
+                break;
+            }
+            case "retweetAndLike": {
+                retweetAndLikeTwitterContentRef.current = state.retweetAndLikeTwitterTaskConfig?.content
+                setRetweetAndLikeTwitterVisible(true)
                 break;
             }
             case "quiz":
@@ -327,27 +334,27 @@ export const KrLayout = () => {
 
     const extractTweetId = (url: string): string | null => {
         if (!url) return null;
-        
+
         const patterns = [
             /(?:x\.com|twitter\.com)\/\w+\/status\/(\d+)/,
             /status\/(\d+)/,
             /\/tweet\/(\d+)/,
             /tweet_id=(\d+)/,
         ];
-        
+
         for (const pattern of patterns) {
             const match = url.match(pattern);
             if (match && match[1]) {
                 return match[1];
             }
         }
-        
+
         return null;
     };
 
     const handleQuote = (tweetUrlOrContent: string) => {
         const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
-        
+
         if (!tweetId) {
             toast.error('Invalid Twitter URL or ID');
             return;
@@ -355,6 +362,28 @@ export const KrLayout = () => {
 
         const replyUrl = `https://twitter.com/intent/tweet?in_reply_to=${tweetId}`;
         window.open(replyUrl, '_blank');
+    }
+
+    const handleRetweetAndLike = (tweetUrlOrContent: string) => {
+        const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
+
+        if (!tweetId) {
+            toast.error('Invalid Twitter URL or ID');
+            return;
+        }
+
+        const retweetUrl = `https://twitter.com/intent/retweet?tweet_id=${tweetId}`;
+        window.open(retweetUrl, '_blank');
+
+        setRetweetAndLikeTwitterUrl('opened');
+    }
+
+    const handleSubmitRetweet = async () => {
+        await taskApi.submitTask(taskId.current, retweetAndLikeTwitterContentRef.current);
+        toast.success('Your action is now under-reviewing')
+
+        await sleep(1000);
+        dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
     }
 
     return (
@@ -459,16 +488,16 @@ export const KrLayout = () => {
                         <Card className="p-4 rounded-[8px] overflow-auto">
                             <div className="flex flex-col gap-2">
                                 {quoteTwitterIdRef.current && (
-                                    <a 
-                                        href={quoteTwitterIdRef.current.startsWith('http') 
-                                            ? quoteTwitterIdRef.current 
+                                    <a
+                                        href={quoteTwitterIdRef.current.startsWith('http')
+                                            ? quoteTwitterIdRef.current
                                             : `https://x.com/${quoteTwitterIdRef.current}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="text-blue-400 hover:text-blue-300 text-sm break-all"
                                     >
-                                        {quoteTwitterIdRef.current.startsWith('http') 
-                                            ? quoteTwitterIdRef.current 
+                                        {quoteTwitterIdRef.current.startsWith('http')
+                                            ? quoteTwitterIdRef.current
                                             : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
                                     </a>
                                 )}
@@ -489,6 +518,60 @@ export const KrLayout = () => {
                 </>
             </Modal>
 
+
+            <Modal
+                isOpen={retweetAndLikeTwitterVisible}
+                onClose={() => { 
+                    setRetweetAndLikeTwitterVisible(false); 
+                    setRetweetAndLikeTwitterUrl(''); 
+                }}
+                title="Retweet and Like"
+                className="max-w-[400px]"
+            >
+                <>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-white/80 text-sm">
+                            1. Retweet and Like the following tweet
+                        </p>
+
+                        <Card className="p-4 rounded-[8px] overflow-auto">
+                            <div className="flex flex-col gap-2">
+                                {retweetAndLikeTwitterContentRef.current && (
+                                    <a
+                                        href={retweetAndLikeTwitterContentRef.current.startsWith('http')
+                                            ? retweetAndLikeTwitterContentRef.current
+                                            : `https://x.com/${retweetAndLikeTwitterContentRef.current}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-400 hover:text-blue-300 text-sm break-all"
+                                    >
+                                        {retweetAndLikeTwitterContentRef.current.startsWith('http')
+                                            ? retweetAndLikeTwitterContentRef.current
+                                            : `View tweet: https://x.com/${retweetAndLikeTwitterContentRef.current}`}
+                                    </a>
+                                )}
+                            </div>
+                        </Card>
+
+                        <Button 
+                            className="mb-4" 
+                            type="light" 
+                            onClick={() => handleRetweetAndLike(retweetAndLikeTwitterContentRef.current)}
+                        >
+                            Retweet & Like
+                        </Button>
+
+                        <Button 
+                            className="w-full" 
+                            disabled={retweetAndLikeTwitterUrl !== 'opened'} 
+                            onClick={handleSubmitRetweet} 
+                            type="light"
+                        >
+                            Submit
+                        </Button>
+                    </div>
+                </>
+            </Modal>
 
             <Outlet />
         </>

@@ -9,10 +9,11 @@ export enum EUserTaskStatus {
 
 // 任务类型常量
 export enum ETaskType {
-    TaskTypeQuiz = "quiz",        // 问答任务
-    TaskTypeInvite = "invite",      // 邀请任务
-    TaskTypePostTwitter = "postTwitter", // 发布Twitter任务
-    TaskTypeQuoteTwitter = "quoteTwitter" // 引用Twitter任务
+    TaskTypeQuiz = "quiz",
+    TaskTypeInvite = "invite",
+    TaskTypePostTwitter = "postTwitter",
+    TaskTypeQuoteTwitter = "quoteTwitter",
+    TaskTypeRetweetAndLike = "retweetAndLike"
 }
 
 // 任务状态常量

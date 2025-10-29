@@ -43,6 +43,7 @@ interface Task {
   postTwitterTaskConfig?: { content: string };
   quoteTwitterTaskConfig?: { content: string };
   quizTaskConfig?: { quiz: string; answer: string };
+  retweetAndLikeTwitterTaskConfig?: { content: string };
   createdAt: number;
   updatedAt: number;
 }
@@ -64,6 +65,7 @@ const TASK_TYPES = [
   // { key: 'signIn', label: 'Sign-in Task' }, // 签到任务暂时保持原样，因为枚举中没有定义
   { key: ETaskType.TaskTypePostTwitter, label: 'Post Twitter Task' },
   { key: ETaskType.TaskTypeQuoteTwitter, label: 'Quote Twitter Task' },
+  { key: ETaskType.TaskTypeRetweetAndLike, label: 'Retweet and Like Task' },
 ];
 
 export const TASK_TYPE_LABELS = {
@@ -71,6 +73,7 @@ export const TASK_TYPE_LABELS = {
   [ETaskType.TaskTypeQuiz]: 'Quiz',
   [ETaskType.TaskTypePostTwitter]: 'Post',
   [ETaskType.TaskTypeQuoteTwitter]: 'Quote',
+  [ETaskType.TaskTypeRetweetAndLike]: 'Retweet&Like',
 };
 
 
@@ -102,6 +105,7 @@ export const TaskManagement = () => {
     inviteTaskConfig: { requestInviteNum: 0 },
     postTwitterTaskConfig: { content: '' },
     quoteTwitterTaskConfig: { content: '' },
+    retweetAndLikeTwitterTaskConfig: { content: '' },
     quizTaskConfig: { quiz: '', answer: '' },
   });
   const [uploading, setUploading] = useState(false);
@@ -363,6 +367,7 @@ export const TaskManagement = () => {
       inviteTaskConfig: { requestInviteNum: 0 },
       postTwitterTaskConfig: { content: '' },
       quoteTwitterTaskConfig: { content: '' },
+      retweetAndLikeTwitterTaskConfig: { content: '' },
       quizTaskConfig: { quiz: '', answer: '' },
     });
     setEditingTask(null);
@@ -394,6 +399,7 @@ export const TaskManagement = () => {
         postTwitterTaskConfig: task.postTwitterTaskConfig || { content: '' },
         quoteTwitterTaskConfig: task.quoteTwitterTaskConfig || { content: '' },
         quizTaskConfig: quizConfig,
+        retweetAndLikeTwitterTaskConfig: task.retweetAndLikeTwitterTaskConfig || { content: '' },
       });
     } else {
       resetForm();
@@ -816,6 +822,22 @@ export const TaskManagement = () => {
                     }))}
                   />
                 )}
+
+{(taskForm.taskType === 'retweetAndLike') && (
+                  <Textarea
+                    label="Twitter Quote URL"
+                    placeholder="Enter Twitter URL"
+                    value={taskForm.retweetAndLikeTwitterTaskConfig.content}
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      retweetAndLikeTwitterTaskConfig: {
+                        ...prev.retweetAndLikeTwitterTaskConfig,
+                        content: e.target.value
+                      }
+                    }))}
+                  />
+                )}
+
 
                 {taskForm.taskType === 'quiz' && (
                   <div className="space-y-4">

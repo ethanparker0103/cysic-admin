@@ -17,6 +17,7 @@ interface PendingTask {
   status: number;
   createdAt: number;
   updatedAt: number;
+  taskType: string;
 }
 
 export const PendingTaskManagement = () => {
@@ -102,6 +103,7 @@ export const PendingTaskManagement = () => {
             <Table aria-label="Pending Task List">
               <TableHeader>
                 <TableColumn>ID</TableColumn>
+                <TableColumn>Task Type</TableColumn>
                 <TableColumn>User ID</TableColumn>
                 <TableColumn>Task Title</TableColumn>
                 <TableColumn>Submitted Content</TableColumn>
@@ -113,6 +115,7 @@ export const PendingTaskManagement = () => {
                 {pendingTasks?.map((task) => (
                   <TableRow key={task.id}>
                     <TableCell>{task.id}</TableCell>
+                    <TableCell>{task.taskType}</TableCell>
                     <TableCell>{task.userId}</TableCell>
                     <TableCell>{task.taskTitle}</TableCell>
                     <TableCell className="max-w-xs truncate">{task.taskResult}</TableCell>
@@ -124,7 +127,7 @@ export const PendingTaskManagement = () => {
                         {task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'Pending' : 'Completed'}
                       </Chip>
                     </TableCell>
-                    <TableCell>{formatTime(task.createdAt)}</TableCell>
+                    <TableCell>{formatTime(task.createdAt * 1000)}</TableCell>
                     <TableCell>
                       <div className="flex gap-2">
                         <Button
