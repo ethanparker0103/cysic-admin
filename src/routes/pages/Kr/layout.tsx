@@ -376,11 +376,13 @@ export const KrLayout = () => {
         window.open(retweetUrl, '_blank');
 
         setRetweetAndLikeTwitterUrl('opened');
+
+        handleSubmitRetweet()
     }
 
     const handleSubmitRetweet = async () => {
         await taskApi.submitTask(taskId.current, retweetAndLikeTwitterContentRef.current);
-        toast.success('Your action is now under-reviewing')
+        // toast.success('Your action is now under-reviewing')
 
         await sleep(1000);
         dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
@@ -561,14 +563,6 @@ export const KrLayout = () => {
                             Retweet & Like
                         </Button>
 
-                        <Button 
-                            className="w-full" 
-                            disabled={retweetAndLikeTwitterUrl !== 'opened'} 
-                            onClick={handleSubmitRetweet} 
-                            type="light"
-                        >
-                            Submit
-                        </Button>
                     </div>
                 </>
             </Modal>
