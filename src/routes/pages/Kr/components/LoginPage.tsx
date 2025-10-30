@@ -92,11 +92,15 @@ export const LoginPage = () => {
                     Join our community and start your journey
                 </h3>
 
-                <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case w-fit">
-                    🎉{" "}
-                    <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
-                    First 72 hours get an exclusive stamp!
-                </div>
+                {
+                    systemSetting?.enableInviteCode && (
+                        <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case w-fit">
+                            🎉{" "}
+                            <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
+                            First 72 hours get an exclusive stamp!
+                        </div>
+                    )
+                }
 
                 <div className="max-w-[500px] mx-auto mt-8">
                     {((systemSetting?.enableInviteCode) && (Number(inviterId) <= 0) && authToken) ? (

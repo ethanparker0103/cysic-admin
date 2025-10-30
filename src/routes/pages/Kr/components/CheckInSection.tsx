@@ -4,6 +4,8 @@ import { cn, Tooltip } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 
+
+const min = dayjs('2025-10-29');
 interface DayItem {
     timestamp: number;
     format: string;
@@ -34,6 +36,42 @@ function getRecentMonthDays(): DayItem[] {
     return days;
 }
 
+function getRecentWeekDays(): DayItem[] {
+    const firstDayOfWeek = dayjs().startOf("week");
+    const lastDayOfWeek = dayjs().endOf("week");
+    const today = dayjs();
+    const days: DayItem[] = [];
+
+    for (let i = firstDayOfWeek; i <= lastDayOfWeek; i = i.add(1, "day")) {
+        days.push({
+            timestamp: i.valueOf(),
+            format: i.format("DD"),
+            formatWithMonth: i.format("YYYY-MM-DD"),
+            isToday: i.isSame(today, "day"),
+        });
+    }
+
+    return days;
+}
+
+function getNextMonthDays(): DayItem[] {
+    const firstDayOfWeek = dayjs(Math.max(dayjs().subtract(7, 'day').valueOf(), min.valueOf())).startOf("day");
+    const lastDayOfWeek = dayjs().add(1, "month").endOf("day");
+    const today = dayjs();
+    const days: DayItem[] = [];
+
+    for (let i = firstDayOfWeek; i <= lastDayOfWeek; i = i.add(1, "day")) {
+        days.push({
+            timestamp: i.valueOf(),
+            format: i.format("DD"),
+            formatWithMonth: i.format("YYYY-MM-DD"),
+            isToday: i.isSame(today, "day"),
+        });
+    }
+
+    return days;
+}
+
 export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) => {
     const [last7, setLast7] = useState<DayItem[]>([]);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -41,7 +79,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
     const [scrollContainer, setScrollContainer] = useState<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        const res = getRecentMonthDays();
+        const res = getNextMonthDays();
         setLast7(res);
     }, []);
 
@@ -80,7 +118,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
         };
     }, [scrollContainer]);
 
-    const activeList = ifActive ? signInList : [];
+    const activeList = signInList || [];
 
     // 滚动函数
     const scrollLeft = () => {
@@ -143,7 +181,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                 </div>
 
                 <div className="flex flex-col gap-2 mt-4">
-                    <div className="text-left">Last {last7.length} days</div>
+                    <div className="text-left">Check-In Calendar</div>
                     <div className="relative w-full">
                         {/* 左侧渐变阴影遮罩 */}
                         {showLeftArrow && (

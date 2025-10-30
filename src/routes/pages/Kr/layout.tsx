@@ -196,7 +196,7 @@ export const KrLayout = () => {
                     firstTask: response?.list?.[0] || null,
                 });
 
-                if (window.location.pathname == "/krkrkr" && [EUserTaskStatus.UserTaskCompletionStatusWaitClaim, EUserTaskStatus.UserTaskCompletionStatusCompleted].includes(response?.list?.[0]?.currentStatus)) {
+                if (window.location.pathname == "/krkrkr" && ![EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(response?.list?.[0]?.currentStatus)) {
                     navigate("/krkrkr/dashboard");
                 }
             } else {
@@ -506,7 +506,7 @@ export const KrLayout = () => {
                             </div>
                         </Card>
 
-                        <Button className="mb-4" type="light" onClick={() => handleQuote(quoteTwitterIdRef.current)} >Open Reply</Button>
+                        <Button className="mb-4" type="light" onClick={() => handleQuote(quoteTwitterIdRef.current)} >Go to Tweet</Button>
 
 
                         <p className="text-white/80 text-sm">

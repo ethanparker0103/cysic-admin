@@ -54,7 +54,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
     const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `Week ${index + 1}` }))
 
     // 根据startAt分类
-    const formattedTaskMap = taskList.reduce(
+    const formattedTaskMap = taskList?.sort((a,b)=>{return a.startAt - b.startAt}).reduce(
         (acc: Record<string, Task[]>, task: Task) => {
             const startAt = (task.startAt * 1000).toString();
             if (!acc[startAt]) {
@@ -75,7 +75,6 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                 <div className="flex items-center gap-1 unbounded-24-200">
                     Tasks
                 </div>
-
 
                 <Select
                     items={weekSelects}
@@ -158,7 +157,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                             </div>
 
                                             <Button
-                                                disabled={!ifActive || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusCompleted || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusPending}
+                                                disabled={!ifActive || dayjs(task.endAt * 1000).isBefore(dayjs()) || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusCompleted || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusPending}
                                                 className="min-h-fit h-fit"
                                                 type="light"
                                                 onClick={() =>

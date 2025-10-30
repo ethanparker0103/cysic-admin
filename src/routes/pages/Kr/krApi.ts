@@ -218,6 +218,13 @@ export const userApi = {
       list: { avatar: string; username: string; relatedUrl: string }[];
     }
   > => request(`/socialtask/api/v1/user/list?num=${num}`),
+
+
+  bindAddress: (address: string): Promise<ApiResponse> =>
+    request("/socialtask/api/v1/user/bindAddress", {
+      method: "POST",
+      body: JSON.stringify({ address }),
+    }),
 };
 
 // 任务类型定义

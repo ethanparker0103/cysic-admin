@@ -26,7 +26,8 @@ import Copy from "@/components/Copy";
 enum EStepName {
   Step1 = "Follow Social Media",
   Step2 = "Post on X",
-  Step3 = "Verification Pending",
+  Step3 = "Submit Address",
+  Step4 = "Enter Dashboard",
 }
 
 // 邀请码逻辑现在在LoginPage中处理
@@ -153,6 +154,8 @@ const Post = () => {
   const [postLink, setPostLink] = useState("");
   const { firstTask } = useKrActivity();
 
+  const [pendingVisible, setPendingVisible] = useState(false);
+
   const handleClick = async () => {
     if (
       !postLink ||
@@ -172,7 +175,7 @@ const Post = () => {
       const response = await taskApi.submitTask(firstTask.id, postLink);
       if (response.code === "200" || response.code == "501") {
         toast.success("Task submitted successfully!");
-        dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
+        setPendingVisible(true);
       } else {
         toast.error(response.msg || "Failed to submit task");
       }
@@ -181,97 +184,143 @@ const Post = () => {
     }
   };
 
-  const handleDownloadImage = () => {
-    const link = document.createElement("a");
-    link.href = firstTask?.imgUrl;
-    link.download = "cysic_x_poster.png";
-    link.click();
-  };
-
   const handleOpenPost = () => {
-    if(!firstTask?.postTwitterTaskConfig?.content) return;
+    if (!firstTask?.postTwitterTaskConfig?.content) return;
 
     const link = `https://x.com/intent/post?${generateQueryString({
-        text: firstTask?.postTwitterTaskConfig?.content
-    })}`
+      text: firstTask?.postTwitterTaskConfig?.content,
+    })}`;
 
-    window.open(link, '_blank')
-}
+    window.open(link, "_blank");
+  };
+
+  const downloadImage = async (url: string, filename: string) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      window.open(url, "_blank");
+    }
+  };
+
+  const handleNextStep = () => {
+    dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
+  };
+
   return (
     <>
-      <div className="mt-8 flex justify-center gap-4">
-        <div className="relative border rounded-[8px] bg-white p-1 flex-1">
-          <div className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
-          onClick={handleOpenPost}
-          >
-            <ArrowUpRight className="size-3" />
+      {pendingVisible ? (
+        <>
+          <div className="mt-8 teachers-18-200 !normal-case mb-8">
+            Your Twitter post is being verified. This usually takes a few
+            minutes to a few hours.
           </div>
 
-          <div
-            className="absolute top-4 right-12 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
-            onClick={handleDownloadImage}
-          >
-            <ArrowDownToLineIcon className="size-3" />
+          <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
+            <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
+              <Check className="size-3" />
+            </div>
+            Invite code verified
+          </div>
+          <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
+            <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
+              <Check className="size-3" />
+            </div>
+            Social connections completed
+          </div>
+          <div className="mb-4 text-orange-500 bg-orange-500/10 p-4 rounded-[8px] flex items-center justify-center">
+            <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-orange-500 mr-2 size-5"></div>
+            Twitter post verification in progress
           </div>
 
-          <div className="rounded-[8px] size-full overflow-hidden">
-            <img
-              className="object-cover size-full"
-              src={firstTask?.imgUrl}
-              alt={firstTask?.title || "Task Image"}
-            />
-          </div>
-        </div>
-        <div className="text-left flex-1">
-          <p className="mb-2 text-lg">Instructions:</p>
-          <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-            <li>Download the image using the button</li>
-            <li>Go to Twitter and create a new post</li>
-            <li>Upload the downloaded image</li>
-            <li>
-              Post with the title "{firstTask?.title || "Cysic is inevitable"}"
-            </li>
-            <li>Copy the post link and paste it below</li>
-          </ul>
-
-          <div className="mt-4 mb-2">Twitter Post Link</div>
-          <Input
-            classNames={{ input: "text-center" }}
-            placeholder="https://x.com/..."
-            variant="bordered"
-            value={postLink}
-            onValueChange={setPostLink}
-            isInvalid={
-              !!postLink &&
-              (!postLink?.includes("https") || !postLink?.includes("x.com/"))
-            }
-          />
-          <Button
-            disabled={
-              !postLink ||
-              !postLink?.includes("https") ||
-              !postLink?.includes("x.com/")
-            }
-            className="mt-4 w-full"
-            type="light"
-            onClick={handleClick}
-          >
-            Verify & Continue
+          <Button className="mt-4 w-fit" type="light" onClick={handleNextStep}>
+            Next Step
           </Button>
+        </>
+      ) : (
+        <div className="mt-8 flex justify-center gap-4">
+          <div className="relative border rounded-[8px] bg-white p-1 flex-1">
+            <div
+              className="absolute top-4 right-4 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
+              onClick={handleOpenPost}
+            >
+              <ArrowUpRight className="size-3" />
+            </div>
+
+            <div
+              onClick={() =>
+                downloadImage(firstTask?.imgUrl, "cysic_x_poster.png")
+              }
+              className="absolute top-4 right-12 p-1 border rounded-[6px] hover:bg-white hover:text-black cursor-pointer"
+            >
+              <ArrowDownToLineIcon className="size-3" />
+            </div>
+
+            <div className="rounded-[8px] size-full overflow-hidden">
+              <img
+                className="object-cover size-full"
+                src={firstTask?.imgUrl}
+                alt={firstTask?.title || "Task Image"}
+              />
+            </div>
+          </div>
+          <div className="text-left flex-1">
+            <p className="mb-2 text-lg">Instructions:</p>
+            <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
+              <li>Download the image using the button</li>
+              <li>Go to Twitter and create a new post</li>
+              <li>Upload the downloaded image</li>
+              <li>
+                Post with the title "{firstTask?.title || "Cysic is inevitable"}
+                "
+              </li>
+              <li>Copy the post link and paste it below</li>
+            </ul>
+
+            <div className="mt-4 mb-2">Twitter Post Link</div>
+            <Input
+              classNames={{ input: "text-center" }}
+              placeholder="https://x.com/..."
+              variant="bordered"
+              value={postLink}
+              onValueChange={setPostLink}
+              isInvalid={
+                !!postLink &&
+                (!postLink?.includes("https") || !postLink?.includes("x.com/"))
+              }
+            />
+            <Button
+              disabled={
+                !postLink ||
+                !postLink?.includes("https") ||
+                !postLink?.includes("x.com/")
+              }
+              className="mt-4 w-full"
+              type="light"
+              onClick={handleClick}
+            >
+              Verify & Continue
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
 
-const Verification = () => {
+const Guidlines = () => {
   const [userList, setUserList] = useState<
     { avatar: string; username: string; relatedUrl: string }[]
   >([]);
-
-  const handleClick = () => {
-    dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
-  };
 
   //   /socialtask/api/v1/user/list?num=123
   useEffect(() => {
@@ -289,35 +338,17 @@ const Verification = () => {
   const totalUserList = userList;
   return (
     <>
-      <div className="mt-8 teachers-18-200 !normal-case mb-8">
-        Your Twitter post is being verified. This usually takes a few minutes to
-        a few hours.
-      </div>
-
-      <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
-        <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
-          <Check className="size-3" />
-        </div>
-        Invite code verified
-      </div>
-      <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
-        <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
-          <Check className="size-3" />
-        </div>
-        Social connections completed
-      </div>
-      <div className="mb-4 text-orange-500 bg-orange-500/10 p-4 rounded-[8px] flex items-center justify-center">
-        <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-orange-500 mr-2 size-5"></div>
-        Twitter post verification in progress
-      </div>
-
-      <Divider className="my-8" />
       <div className="flex flex-col gap-8 w-fit mx-auto">
         <p className="teachers-18-200 !normal-case">Cysic Community Members</p>
 
         <div
           className={cn("grid justify-center items-center")}
-          style={{ gridTemplateColumns: `repeat(${Math.min(10, totalUserList?.length)}, minmax(0, 1fr))` }}
+          style={{
+            gridTemplateColumns: `repeat(${Math.min(
+              10,
+              totalUserList?.length
+            )}, minmax(0, 1fr))`,
+          }}
         >
           {totalUserList.map((user, idx) => (
             <Tooltip content={<>{user.username}</>}>
@@ -389,17 +420,61 @@ const Verification = () => {
       </div>
 
       <a href="/krkrkr/dashboard">
-        <Button className="mt-8" type="light" onClick={handleClick}>
-          Get To Dashboard First
+        <Button className="mt-8" type="light">
+          Welcome to Dashboard 🎉
         </Button>
       </a>
     </>
   );
 };
 
+const BindAddress = () => {
+  const re = /^0x[a-f0-9]{40}$/i;
+  const [address, setAddress] = useState("");
+
+  const handleClick = async () => {
+    const response = await userApi.bindAddress(address);
+    if (response.code === '200' || response.msg == "Address has already been bound and cannot be updated") {
+      toast.success('Address bound successfully');
+      dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
+    } else {
+      toast.error(response.msg || 'Failed to bind address');
+    }
+  };
+
+  const isValid = address && address.trim().startsWith("0x") && re.test(address.trim());
+
+  return (
+    <>
+      <div className="flex flex-col gap-8 w-full">
+        <p className="teachers-18-200 !normal-case">Bind Your EVM Address</p>
+
+        <Input
+          classNames={{base: '!bg-default-100 rounded-[8px] overflow-hidden'}}
+          placeholder="Enter your EVM address"
+          value={address}
+          onValueChange={setAddress}
+          isInvalid={!isValid}
+        />
+        <div className="text-left mx-auto w-fit">
+          <p className="mb-2">Notice:</p>
+          <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
+            <li>The address must be an EVM address</li>
+            <li>The address must be a valid address</li>
+          </ul>
+        </div>
+      </div>
+
+      <Button className="mt-8" type="light" onClick={handleClick} disabled={!isValid}>
+        Next Step
+      </Button>
+    </>
+  );
+};
+
 // 主组件：根据认证状态显示a模块或b模块
 export const KRActivity = () => {
-  const { showLogin, step, loading } = useKrActivity();
+  const { showLogin, step, loading, systemSetting } = useKrActivity();
 
   if (showLogin) {
     return <LoginPage />;
@@ -511,15 +586,46 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className={cn("")}>Verification</span>
+                  <span className={cn("")}>Bind Address</span>
+                </div>
+              </div>
+
+              <div className="h-px flex-1 bg-sub"></div>
+
+              <div
+                className={cn(
+                  "flex-1 flex items-center justify-center",
+                  currentStep == 4 ? "opacity-100" : "opacity-60"
+                )}
+              >
+                <div className="flex flex-col items-center gap-1">
+                  <div
+                    className={cn(
+                      "border size-6 rounded-full p-[2px]",
+                      currentStep > 4 && "border-green-500/40"
+                    )}
+                  >
+                    {currentStep > 4 ? (
+                      <div className="rounded-full font-semibold size-full bg-green-500/40 text-green-500 flex items-center justify-center ">
+                        <Check className="size-3" />
+                      </div>
+                    ) : (
+                      <div className="rounded-full font-semibold size-full bg-white text-black flex items-center justify-center ">
+                        4
+                      </div>
+                    )}
+                  </div>
+                  <span className={cn("")}>Enter Dashboard</span>
                 </div>
               </div>
             </div>
-            <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case">
-              🎉{" "}
-              <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
-              First 72 hours get an exclusive stamp!
-            </div>
+            {systemSetting?.enableInviteCode && (
+              <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case">
+                🎉{" "}
+                <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
+                First 72 hours get an exclusive stamp!
+              </div>
+            )}
             <div className="text-left mb-2 mt-8">
               Step {currentStep}:{" "}
               {EStepName[`Step${currentStep}` as keyof typeof EStepName]}
@@ -528,8 +634,10 @@ export const KRActivity = () => {
               <ConnectUs />
             ) : currentStep == 2 ? (
               <Post />
+            ) : currentStep == 3 ? (
+              <BindAddress />
             ) : (
-              <Verification />
+              <Guidlines />
             )}
           </div>
         </GradientBorderCard>
