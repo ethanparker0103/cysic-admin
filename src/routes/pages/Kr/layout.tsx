@@ -307,6 +307,10 @@ export const KrLayout = () => {
             dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 1 }));
         }else if(!user?.address){
             dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
+        } 
+
+        if(![EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) && user?.address){
+            dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
         }
     }
   }, [authToken, user?.address, firstTask?.currentStatus]);
