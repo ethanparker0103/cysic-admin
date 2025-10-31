@@ -128,7 +128,7 @@ export const AmbassadorPage = () => {
     
     return (
         <PT12Wrapper className="max-w-4xl mx-auto px-4">
-            <div className="prose prose-invert max-w-none">
+            <div className="prose prose-invert max-w-none text-base">
                 {parsedContent.map((item, index) => {
                     // 主标题 - 最大的标题
                     if (item.type === 'mainTitle') {
