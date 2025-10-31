@@ -16,12 +16,17 @@ import { KRActivity } from "@/routes/pages/Kr/page";
 import { KrActivityDashboard } from "@/routes/pages/Kr/dashboard/page";
 import { KrLayout } from "@/routes/pages/Kr/layout";
 import { Admin } from "@/routes/pages/Admin/page";
+import { AmbassadorPage } from "@/routes/pages/Ambassador/page";
 
 // 定义共享的路由结构
 const routeChildren = [
   {
     index: true,
     element: <Home />,
+  },
+  {
+    path: "ambassador",
+    element: <AmbassadorPage />,
   },
   {
     path: "ahidhfoiwneofadmin",
@@ -109,6 +114,9 @@ export const router = createBrowserRouter([
 ]);
 
 export const backgroundImageList = {
+  "/ambassador": {
+    img: '#000'
+  },
   "/krkrkr/dashboard": {
     img: '#000'
   },

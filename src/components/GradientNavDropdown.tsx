@@ -1,12 +1,12 @@
 // https://github.com/heroui-inc/heroui/issues/2269
 import { DropdownMenu, DropdownItem, Button, cn } from "@nextui-org/react";
+import CButton from "@/components/Button";
 import { Link, Link as RouterLink, useNavigate } from "react-router-dom";
 import { Link as NextUILink } from "@nextui-org/react";
 import HoverDropdown from "@/components/HoverDropdown";
-import GradientBorderCard from "@/components/GradientBorderCard";
-import { createPortal } from "react-dom";
 
 interface NavItem {
+    label: any;
     key: string;
     content: string;
     type?: string;
@@ -48,13 +48,13 @@ export default function GradientNavDropdown({
                     href={item.href}
                     variant="light"
                     className={cn(
-                        "uppercase font-[400] !text-sub h-full rounded-none",
+                        "uppercase font-[400] !text-sub h-full rounded-none relative",
                         className
                     )}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    {item.content}
+                    {item.content} {item?.label && <CButton className="w-fit !px-2 text-xs absolute top-3/5 -translate-y-full right-0 origin-right scale-75 !py-1" type="light">{item?.label}</CButton>}
                 </Button>
             );
         } else {
@@ -64,11 +64,11 @@ export default function GradientNavDropdown({
                     to={item.href || "/"}
                     variant="light"
                     className={cn(
-                        "uppercase font-[400] !text-sub h-full rounded-none",
+                        "uppercase font-[400] !text-sub h-full rounded-none relative",
                         className
                     )}
                 >
-                    {item.content}
+                    {item.content} {item?.label && <CButton className="w-fit !px-2 text-xs absolute top-3/5 -translate-y-full right-0 origin-right scale-75 !py-1" type="light">{item?.label}</CButton>}
                 </Button>
             );
         }

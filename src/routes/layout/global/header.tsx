@@ -107,7 +107,7 @@ export default function Header() {
                                   j?.disabled && "blur-[5px]"
                                 )}
                               >
-                                {j.content}
+                                {j.content} {i?.label && <Button type="light" className="scale-80 origin-center text-xs">{i.label}</Button>}
                               </Link>
                             );
                           });
@@ -121,7 +121,7 @@ export default function Header() {
                                 i?.disabled && "blur-[5px]"
                               )}
                             >
-                              {i.content}
+                              {i.content} {i?.label && <Button type="light" className="scale-80 origin-center text-xs">{i.label}</Button>}
                             </Link>
                           );
                         }
@@ -219,7 +219,7 @@ export default function Header() {
                               className="flex-1 max-w-[11.25rem] p-6 flex items-center justify-center hover:bg-default/40"
                             >
                               <span className="teachers-14-400">
-                                {i.content}
+                                {i.content} {i?.label && <Button type="light">{i.label}</Button>}
                               </span>
                             </Link>
                           );

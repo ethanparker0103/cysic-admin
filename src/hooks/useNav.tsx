@@ -94,6 +94,12 @@ const basicNav = [
     content: "Leaderboard",
     href: '/leaderboard'
   },
+  {
+    content: "Ambassador",
+    href: "/ambassador",
+    key: "ambassador",
+    label: 'NEW'
+  },
 ];
 
 const navs = [
