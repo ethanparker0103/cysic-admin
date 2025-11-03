@@ -96,7 +96,7 @@ const basicNav = [
   },
   {
     content: "Ambassador",
-    href: "/ambassador",
+    href: "https://medium.com/@cysic/cyrunners-ambassador-program-62e5e36908ad",
     key: "ambassador",
     label: 'NEW'
   },
