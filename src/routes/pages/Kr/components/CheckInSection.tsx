@@ -3,6 +3,7 @@ import { Calendar1Icon, ChevronLeft, ChevronRight, Info } from "lucide-react";
 import { cn, Tooltip } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
+import { useTranslation } from "react-i18next";
 
 
 const min = dayjs('2025-10-29');
@@ -73,6 +74,7 @@ function getNextMonthDays(): DayItem[] {
 }
 
 export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) => {
+    const { t } = useTranslation();
     const [last7, setLast7] = useState<DayItem[]>([]);
     const [showLeftArrow, setShowLeftArrow] = useState(false);
     const [showRightArrow, setShowRightArrow] = useState(false);
@@ -146,33 +148,33 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                                 closeDelay={0}
                                 content={
                                     <div className="py-2 flex flex-col gap-1 text-white/80">
-                                        <span>✅ 1st check-in: "First Check-In" badge</span>
+                                        <span>{t('firstCheckInBadge')}</span>
                                         <span>
-                                            🔥 7 consecutive days: "7-Day Warrior" badge
+                                            {t('sevenDayWarriorBadge')}
                                         </span>
                                         <span>
-                                            🏆 30 consecutive days: "30-Day Champion" badge
+                                            {t('thirtyDayChampionBadge')}
                                         </span>
                                         <span>
-                                            👑 100 consecutive days: "100-Day Legend" badge
+                                            {t('hundredDayLegendBadge')}
                                         </span>
                                     </div>
                                 }
                             >
                                 <p className="flex items-center gap-1">
-                                    Daily Check-In <Info className="size-3" />{" "}
+                                    {t('dailyCheckIn')} <Info className="size-3" />{" "}
                                 </p>
                             </Tooltip>
 
                             <span className="text-white/80 text-xs !normal-case">
-                                Check in every day to maintain your streak
+                                {t('checkInEveryDayToMaintainStreak')}
                             </span>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center gap-1 px-4 py-2 rounded-[8px] bg-white/10 border border-white/20">
                         <span className="text-white/60 text-xs uppercase tracking-wide">
-                            Streak
+                            {t('streak')}
                         </span>
                         <span className="unbounded-18-400 text-white">
                             {signInList?.length || 0}
@@ -181,7 +183,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                 </div>
 
                 <div className="flex flex-col gap-2 mt-4">
-                    <div className="text-left">Check-In Calendar</div>
+                    <div className="text-left">{t('checkInCalendar')}</div>
                     <div className="relative w-full">
                         {/* 左侧渐变阴影遮罩 */}
                         {showLeftArrow && (

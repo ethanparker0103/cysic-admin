@@ -3,6 +3,7 @@ import { Divider } from "@nextui-org/react";
 import { cn } from "@nextui-org/react";
 import { getImageUrl } from "@/utils/tools";
 import { Stamp } from "@/routes/pages/Kr/krApi";
+import { useTranslation } from "react-i18next";
 
 interface ProfileSectionProps {
     user: {
@@ -16,6 +17,7 @@ interface ProfileSectionProps {
 }
 
 export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
+    const { t } = useTranslation();
     const totalPoints = user?.points || 0;
 
     const earnedLength = stampList?.filter(i=>i?.earnedAt > 0)?.length
@@ -61,7 +63,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                         {/* Total Points */}
                         <div className="flex flex-col items-center gap-1 px-4 py-2 rounded-[8px] bg-white/10 border border-white/20">
                             <span className="text-white/60 text-xs uppercase tracking-wide">
-                                Points
+                                {t('points')}
                             </span>
                             <span className="unbounded-18-400 text-white">{totalPoints}</span>
                         </div>
@@ -69,7 +71,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                         {/* Stamp Count */}
                         <div className="flex flex-col items-center gap-1 px-4 py-2 rounded-[8px] bg-white/10 border border-white/20">
                             <span className="text-white/60 text-xs uppercase tracking-wide">
-                                Stamps
+                                {t('stamps')}
                             </span>
                             <span className="unbounded-18-400 text-white">
                                 {earnedLength}
@@ -84,7 +86,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                         <Divider className="my-4" />
                         <div className="flex flex-col gap-2">
                             <span className="unbounded-14-300 text-white/80 uppercase tracking-wide">
-                                Cysic Emblems
+                                {t('cysicEmblems')}
                             </span>
                             <div className="flex flex-wrap gap-2">
                                 {stampList.map((stamp: Stamp) => {

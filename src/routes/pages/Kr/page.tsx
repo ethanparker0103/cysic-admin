@@ -14,25 +14,21 @@ import {
 } from "@nextui-org/react";
 import Button from "@/components/Button";
 import { mediasLink } from "@/config";
-import { generateQueryString, getImageUrl } from "@/utils/tools";
+import { generateQueryString } from "@/utils/tools";
 import { ArrowDownToLineIcon, ArrowUpRight, Check } from "lucide-react";
 import useKrActivity from "@/models/kr";
 import { taskApi, userApi } from "./krApi";
 import { toast } from "react-toastify";
 import { LoginPage } from "./components/LoginPage";
-import { useEventListener } from "ahooks";
 import Copy from "@/components/Copy";
-
-enum EStepName {
-  Step1 = "Follow Social Media",
-  Step2 = "Post on X",
-  Step3 = "Submit Address",
-  Step4 = "Enter Dashboard",
-}
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+import i18n from "i18next";
 
 // 邀请码逻辑现在在LoginPage中处理
 
 const ConnectUs = () => {
+  const { t } = useTranslation();
   const [hasConnected, setHasConnected] = useState(false);
   const handleClick = () => {
     dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 2 }));
@@ -66,10 +62,10 @@ const ConnectUs = () => {
 
               <div className="text-left ml-1">
                 <p className="text-white teachers-16-200 !normal-case">
-                  Join Telegram Group
+                  {t('joinTelegramGroup')}
                 </p>
                 <p className="mt-1 text-sub/40 teachers-14-200 !normal-case">
-                  Connect with the community and get real-time updates
+                  {t('connectWithCommunity')}
                 </p>
               </div>
             </>
@@ -81,7 +77,7 @@ const ConnectUs = () => {
               className="mx-auto w-full"
             >
               <Button className="w-full " type="light">
-                Open Telegram
+                {t('openTelegram')}
               </Button>
             </a>
           </CardBody>
@@ -112,10 +108,10 @@ const ConnectUs = () => {
 
               <div className="text-left ml-1">
                 <p className="text-white teachers-16-200 !normal-case">
-                  Follow on Twitter
+                  {t('followOnTwitter')}
                 </p>
                 <p className="mt-1 text-sub/40 teachers-14-200 !normal-case">
-                  Stay updated with our latest announcements
+                  {t('stayUpdated')}
                 </p>
               </div>
             </>
@@ -127,7 +123,7 @@ const ConnectUs = () => {
               className="mx-auto w-full"
             >
               <Button className="w-full " type="light">
-                Follow X
+                {t('followX')}
               </Button>
             </a>
           </CardBody>
@@ -139,10 +135,10 @@ const ConnectUs = () => {
             onValueChange={setHasConnected}
             size="sm"
           >
-            I have already Followed!
+            {t('iHaveAlreadyFollowed')}
           </Checkbox>
           <Button disabled={!hasConnected} type="light" onClick={handleClick}>
-            Verify & Continue
+            {t('verifyContinue')}
           </Button>
         </div>
       </>
@@ -151,6 +147,7 @@ const ConnectUs = () => {
 };
 
 const Post = () => {
+  const { t } = useTranslation();
   const [postLink, setPostLink] = useState("");
   const { firstTask } = useKrActivity();
 
@@ -162,25 +159,25 @@ const Post = () => {
       !postLink.includes("https") ||
       !postLink.includes("x.com/")
     ) {
-      toast.error("Please enter a valid Twitter post link");
+      toast.error(t('pleaseEnterValidTwitterPostLink'));
       return;
     }
 
     if (!firstTask?.id) {
-      toast.error("Task information not available");
+      toast.error(t('taskInformationNotAvailable'));
       return;
     }
 
     try {
       const response = await taskApi.submitTask(firstTask.id, postLink);
       if (response.code === "200" || response.code == "501") {
-        toast.success("Task submitted successfully!");
+        toast.success(t('taskSubmittedSuccessfully'));
         setPendingVisible(true);
       } else {
-        toast.error(response.msg || "Failed to submit task");
+        toast.error(response.msg || t('failedToSubmitTask'));
       }
     } catch (error) {
-      toast.error("Failed to submit task");
+      toast.error(t('failedToSubmitTask'));
     }
   };
 
@@ -221,29 +218,28 @@ const Post = () => {
       {pendingVisible ? (
         <>
           <div className="mt-8 teachers-18-200 !normal-case mb-8">
-            Your Twitter post is being verified. This usually takes a few
-            minutes to a few hours.
+            {t('twitterPostBeingVerified')}
           </div>
 
           <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
               <Check className="size-3" />
             </div>
-            Invite code verified
+            {t('inviteCodeVerified')}
           </div>
           <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
               <Check className="size-3" />
             </div>
-            Social connections completed
+            {t('socialConnectionsCompleted')}
           </div>
           <div className="mb-4 text-orange-500 bg-orange-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-orange-500 mr-2 size-5"></div>
-            Twitter post verification in progress
+            {t('twitterPostVerificationInProgress')}
           </div>
 
           <Button className="mt-4 w-fit" type="light" onClick={handleNextStep}>
-            Next Step
+            {t('nextStep')}
           </Button>
         </>
       ) : (
@@ -274,19 +270,18 @@ const Post = () => {
             </div>
           </div>
           <div className="text-left flex-1">
-            <p className="mb-2 text-lg">Instructions:</p>
+            <p className="mb-2 text-lg">{t('instructions')}</p>
             <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-              <li>Download the image using the button</li>
-              <li>Go to Twitter and create a new post</li>
-              <li>Upload the downloaded image</li>
+              <li>{t('downloadImageUsingButton')}</li>
+              <li>{t('goToTwitterAndCreateNewPost')}</li>
+              <li>{t('uploadDownloadedImage')}</li>
               <li>
-                Post with the title "{firstTask?.title || "Cysic is inevitable"}
-                "
+                {t('postWithTitle', { title: firstTask?.title || "Cysic is inevitable" })}
               </li>
-              <li>Copy the post link and paste it below</li>
+              <li>{t('copyPostLinkAndPasteBelow')}</li>
             </ul>
 
-            <div className="mt-4 mb-2">Twitter Post Link</div>
+            <div className="mt-4 mb-2">{t('twitterPostLink')}</div>
             <Input
               classNames={{ input: "text-center" }}
               placeholder="https://x.com/..."
@@ -308,7 +303,7 @@ const Post = () => {
               type="light"
               onClick={handleClick}
             >
-              Verify & Continue
+              {t('verifyContinue')}
             </Button>
           </div>
         </div>
@@ -318,6 +313,7 @@ const Post = () => {
 };
 
 const Guidlines = () => {
+  const { t } = useTranslation();
   const [userList, setUserList] = useState<
     { avatar: string; username: string; relatedUrl: string }[]
   >([]);
@@ -333,13 +329,13 @@ const Guidlines = () => {
   const isInviteCodeEnabled = systemSetting?.enableInviteCode;
 
   const inviteCodes =
-    _inviteCodes?.filter((i) => i?.available)?.map((i) => i?.code) || [];
+    _inviteCodes?.filter((i: any) => i?.available)?.map((i: any) => i?.code) || [];
 
   const totalUserList = userList;
   return (
     <>
       <div className="flex flex-col gap-8 w-fit mx-auto">
-        <p className="teachers-18-200 !normal-case">Cysic Community Members</p>
+        <p className="teachers-18-200 !normal-case">{t('cysicCommunityMembers')}</p>
 
         <div
           className={cn("grid justify-center items-center")}
@@ -374,7 +370,7 @@ const Guidlines = () => {
           <Divider className="my-8" />
           <div className="flex flex-col gap-8 w-fit mx-auto">
             <p className="teachers-18-200 !normal-case">
-              Share your invite codes with friends to earn rewards!
+              {t('shareInviteCodesWithFriends')}
             </p>
 
             {inviteCodes?.length > 0 ? (
@@ -391,7 +387,7 @@ const Guidlines = () => {
               </div>
             ) : (
               <div className="text-center py-8 text-white/50">
-                No invite codes available
+                {t('noInviteCodesAvailable')}
               </div>
             )}
           </div>
@@ -401,27 +397,24 @@ const Guidlines = () => {
       <Divider className="my-8" />
       <div className="flex flex-col gap-8 w-fit mx-auto">
         <p className="teachers-18-200 !normal-case">
-          Campaign description and guidelines
+          {t('campaignDescriptionAndGuidelines')}
         </p>
 
         <ul className="max-w-[400px] text-left text-sm list-disc list-inside [&_li]:mb-2">
-          <li>This campaign is only open to Korean users</li>
-          <li>Pre-registered users will receive an exclusive stamp.</li>
+          <li>{t('campaignOnlyOpenToKoreanUsers')}</li>
+          <li>{t('preregisteredUsersReceiveExclusiveStamp')}</li>
           <li>
-            Once the countdown ends, the onboarding campaign for Korean Cysic
-            users will begin.
+            {t('onceCountdownEnds')}
           </li>
           <li>
-            By participating in the campaign missions, users can earn stamps and
-            points, which will later be connected to exclusive benefits for
-            participants
+            {t('byParticipatingInCampaignMissions')}
           </li>
         </ul>
       </div>
 
       <a href="/krkrkr/dashboard">
         <Button className="mt-8" type="light">
-          Welcome to Dashboard 🎉
+          {t('welcomeToDashboard')}
         </Button>
       </a>
     </>
@@ -429,16 +422,17 @@ const Guidlines = () => {
 };
 
 const BindAddress = () => {
+  const { t } = useTranslation();
   const re = /^0x[a-f0-9]{40}$/i;
   const [address, setAddress] = useState("");
 
   const handleClick = async () => {
     const response = await userApi.bindAddress(address);
     if (response.code === '200' || response.msg == "Address has already been bound and cannot be updated") {
-      toast.success('Address bound successfully');
+      toast.success(t('addressBoundSuccessfully'));
       dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
     } else {
-      toast.error(response.msg || 'Failed to bind address');
+      toast.error(response.msg || t('failedToBindAddress'));
     }
   };
 
@@ -447,26 +441,26 @@ const BindAddress = () => {
   return (
     <>
       <div className="flex flex-col gap-8 w-full">
-        <p className="teachers-18-200 !normal-case">Bind Your EVM Address</p>
+        <p className="teachers-18-200 !normal-case">{t('bindYourEVMAddress')}</p>
 
         <Input
           classNames={{base: '!bg-default-100 rounded-[8px] overflow-hidden'}}
-          placeholder="Enter your EVM address"
+          placeholder={t('enterYourEVMAddress')}
           value={address}
           onValueChange={setAddress}
           isInvalid={!isValid}
         />
         <div className="text-left mx-auto w-fit">
-          <p className="mb-2">Notice:</p>
+          <p className="mb-2">{t('notice')}</p>
           <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-            <li>The address must be an EVM address</li>
-            <li>The address must be a valid address</li>
+            <li>{t('addressMustBeEVMAddress')}</li>
+            <li>{t('addressMustBeValidAddress')}</li>
           </ul>
         </div>
       </div>
 
       <Button className="mt-8" type="light" onClick={handleClick} disabled={!isValid}>
-        Next Step
+        {t('nextStep')}
       </Button>
     </>
   );
@@ -474,6 +468,19 @@ const BindAddress = () => {
 
 // 主组件：根据认证状态显示a模块或b模块
 export const KRActivity = () => {
+  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const lng = searchParams.get('lng') || 'kr';
+  
+  // 监听URL参数变化，切换语言
+  useEffect(() => {
+    if (lng === 'en') {
+      i18n.changeLanguage('kr_en');
+    } else {
+      i18n.changeLanguage('kr');
+    }
+  }, [lng]);
+
   const { showLogin, step, loading, systemSetting } = useKrActivity();
 
   if (showLogin) {
@@ -481,6 +488,13 @@ export const KRActivity = () => {
   }
 
   const currentStep = step;
+  
+  const EStepName: Record<string, string> = {
+    Step1: t('step1'),
+    Step2: t('step2'),
+    Step3: t('step3'),
+    Step4: t('step4'),
+  };
 
   if (loading) {
     return (
@@ -498,9 +512,9 @@ export const KRActivity = () => {
     <>
       <PT12Wrapper className="w-full">
         <GradientBorderCard borderRadius={8} className="py-8 px-8 text-center">
-          <h1 className="unbounded-40-300">Welcome to Cysic Community</h1>
+          <h1 className="unbounded-40-300">{t('welcomeTitle')}</h1>
           <h3 className="mt-4 unbounded-18-200 text-sub">
-            Complete all steps to join our community
+            {t('welcomeSubtitle')}
           </h3>
 
           <div className="max-w-[800px] mx-auto">
@@ -528,7 +542,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">Follow Social Media</span>
+                  <span className="whitespace-nowrap">{t('step1')}</span>
                 </div>
               </div>
 
@@ -557,7 +571,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">Post on X</span>
+                  <span className="whitespace-nowrap">{t('step2')}</span>
                 </div>
               </div>
 
@@ -586,7 +600,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className={cn("")}>Bind Address</span>
+                  <span className={cn("")}>{t('step3')}</span>
                 </div>
               </div>
 
@@ -615,20 +629,19 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className={cn("")}>Enter Dashboard</span>
+                  <span className={cn("")}>{t('step4')}</span>
                 </div>
               </div>
             </div>
             {systemSetting?.enableInviteCode && (
               <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case">
                 🎉{" "}
-                <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
-                First 72 hours get an exclusive stamp!
+                <span className="text-[#9D47FF]">{t('preRegistrationPeriod')}</span>{" "}
+                {t('first72HoursGetExclusiveStamp')}
               </div>
             )}
             <div className="text-left mb-2 mt-8">
-              Step {currentStep}:{" "}
-              {EStepName[`Step${currentStep}` as keyof typeof EStepName]}
+              Step {currentStep}: {EStepName[`Step${currentStep}`]}
             </div>
             {currentStep == 1 ? (
               <ConnectUs />

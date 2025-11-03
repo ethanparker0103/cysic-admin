@@ -7,6 +7,7 @@ import { ETaskType, EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { TASK_TYPE_LABELS, TASK_TYPES } from "@/routes/pages/Admin/components/TaskManagement";
 import { useState } from "react";
 import useKrActivity from "@/models/kr";
+import { useTranslation } from "react-i18next";
 
 interface Task {
     id: number;
@@ -31,27 +32,27 @@ interface TasksSectionProps {
     ifActive: boolean;
 }
 
-const getTaskStatusText = (status: number, startString?: string) => {
+const getTaskStatusText = (status: number, startString?: string, t?: any) => {
     switch (status) {
         case EUserTaskStatus.UserTaskCompletionStatusIncomplete:
-            return startString || "Start";
+            return startString || t('start');
         case EUserTaskStatus.UserTaskCompletionStatusPending:
-            return "Pending";
+            return t('pending');
         case EUserTaskStatus.UserTaskCompletionStatusWaitClaim:
-            return "Claim";
+            return t('claim');
         case EUserTaskStatus.UserTaskCompletionStatusCompleted:
-            return "Completed";
+            return t('completed');
         default:
-            return "Start";
+            return t('start');
     }
 };
 
 export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps) => {
-
+    const { t } = useTranslation();
     const { totalWeeks, week, setState } = useKrActivity();
 
     // [{key, label}]
-    const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `Week ${index + 1}` }))
+    const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `${t('week')} ${index + 1}` }))
 
     // 根据startAt分类
     const formattedTaskMap = taskList?.sort((a,b)=>{return a.startAt - b.startAt}).reduce(
@@ -73,7 +74,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
 
             <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1 unbounded-24-200">
-                    Tasks
+                    {t('tasks')}
                 </div>
 
                 <Select
@@ -139,13 +140,13 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                                         <div className="flex flex-col items-start gap-1">
                                                             <div>
                                                                 <span className="text-white/60">
-                                                                    Reward:
+                                                                    {t('reward')}
                                                                 </span>{" "}
-                                                                {task.RewardPoints} Points
+                                                                {task.RewardPoints} {t('points')}
                                                             </div>
                                                             <div>
                                                                 <span className="text-white/60">
-                                                                    Expire At:
+                                                                    {t('expireAt')}
                                                                 </span>{" "}
                                                                 {dayjs(task.endAt * 1000).format(
                                                                     "MMM DD, YYYY"
@@ -168,7 +169,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                                     )
                                                 }
                                             >
-                                                {getTaskStatusText(task.currentStatus, task.taskType === ETaskType.TaskTypeQuoteTwitter ? "Quote" : task.taskType === ETaskType.TaskTypePostTwitter ? "Post" : undefined)}
+                                                {getTaskStatusText(task.currentStatus, task.taskType === ETaskType.TaskTypeQuoteTwitter ? t('quote') : task.taskType === ETaskType.TaskTypePostTwitter ? t('post') : undefined, t)}
                                             </Button>
                                         </>
                                     </GradientBorderCard>
@@ -178,7 +179,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                     })
                 ) : (
                     <div className="text-center py-8 text-white/60">
-                        No tasks available
+                        {t('noTasksAvailable')}
                     </div>
                 )}
             </div>

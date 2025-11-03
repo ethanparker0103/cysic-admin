@@ -14,12 +14,18 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 
 import en from '@/lng/en.json'
+import kr from '@/lng/kr.json'
+import kr_en from '@/lng/kr_en.json'
 import BigNumber from "bignumber.js";
 // import ReownProvider from "@/config/reownProvider";
 // import PrivyProvider from "@/config/privyProvider";
 
 
 BigNumber.config({ EXPONENTIAL_AT: 99 });
+
+// 从URL参数获取语言设置，默认为kr
+const urlParams = new URLSearchParams(window.location.search);
+const defaultLang = urlParams.get('lng') === 'en' ? 'kr_en' : 'kr';
 
 i18n
     .use(initReactI18next) // passes i18n down to react-i18next
@@ -30,10 +36,16 @@ i18n
         resources: {
             en: {
                 translation: en
+            },
+            kr: {
+                translation: kr
+            },
+            kr_en: {
+                translation: kr_en
             }
         },
-        lng: "en", // if you're using a language detector, do not define the lng option
-        fallbackLng: "en",
+        lng: defaultLang, // if you're using a language detector, do not define the lng option
+        fallbackLng: "kr",
 
         interpolation: {
             escapeValue: false // react already safes from xss => https://www.i18next.com/translation-function/interpolation#unescape

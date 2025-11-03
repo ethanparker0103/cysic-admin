@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardBody, CardHeader, Input, Spinner } from "@nextui-org/react";
 import Button from "@/components/Button";
 import GradientBorderCard from "@/components/GradientBorderCard";
@@ -7,11 +7,27 @@ import useKrActivity from "@/models/kr";
 import { inviteCodeApi, socialMediaApi } from "../krApi";
 import { toast } from "react-toastify";
 import { ChevronRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+import i18n from "i18next";
 
 
 const codeLength = 5;
 // a模块：登录权限校验页面
 export const LoginPage = () => {
+    const { t } = useTranslation();
+    const [searchParams] = useSearchParams();
+    const lng = searchParams.get('lng') || 'kr';
+    
+    // 监听URL参数变化，切换语言
+    useEffect(() => {
+        if (lng === 'en') {
+            i18n.changeLanguage('kr_en');
+        } else {
+            i18n.changeLanguage('kr');
+        }
+    }, [lng]);
+
     const { systemSetting, loading, inviterId, authToken } = useKrActivity();
     const [inviteCode, setInviteCode] = useState(window.localStorage.getItem('cysic_kr_invite_code') || "");
     const [isConnecting, setIsConnecting] = useState(false);
@@ -27,10 +43,10 @@ export const LoginPage = () => {
                 // 跳转到Twitter授权页面
                 window.location.href = response.authURL as string;
             } else {
-                toast.error(response.msg || 'Failed to connect Twitter');
+                toast.error(response.msg || t('failedToConnectTwitter'));
             }
         } catch (error) {
-            toast.error('Failed to connect Twitter');
+            toast.error(t('failedToConnectTwitter'));
         } finally {
             setIsConnecting(false);
         }
@@ -39,7 +55,7 @@ export const LoginPage = () => {
     // 邀请码验证处理
     const handleVerifyInviteCode = async () => {
         if (!inviteCode.trim()) {
-            toast.error('Please enter an invite code');
+            toast.error(t('pleaseEnterInviteCode'));
             return;
         }
 
@@ -49,18 +65,18 @@ export const LoginPage = () => {
             if (authToken) {
                 const response = await inviteCodeApi.bindInviteCode(inviteCode.trim(), 'twitter');
                 if (response.code === '200') {
-                    toast.success('Invite code bound successfully!');
+                    toast.success(t('inviteCodeBoundSuccessfully'));
                     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
                 } else {
-                    toast.error(response.msg || 'Failed to bind invite code');
+                    toast.error(response.msg || t('failedToBindInviteCode'));
                 }
             } else {
                 localStorage.setItem('cysic_kr_invite_code', inviteCode.trim());
-                toast.success('Invite code saved! Redirecting to Twitter...');
+                toast.success(t('inviteCodeSavedRedirectingToTwitter'));
                 handleConnectTwitter();
             }
         } catch (error) {
-            toast.error('Failed to process invite code');
+            toast.error(t('failedToProcessInviteCode'));
         } finally {
             setIsVerifying(false);
         }
@@ -87,17 +103,17 @@ export const LoginPage = () => {
     return (
         <PT12Wrapper className="w-full">
             <GradientBorderCard borderRadius={8} className="py-8 px-8 text-center">
-                <h1 className="unbounded-40-300">Welcome to Cysic Community</h1>
+                <h1 className="unbounded-40-300">{t('welcomeTitle')}</h1>
                 <h3 className="mt-4 unbounded-18-200 text-sub">
-                    Join our community and start your journey
+                    {t('joinOurCommunityAndStartJourney')}
                 </h3>
 
                 {
                     systemSetting?.enableInviteCode && (
                         <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case w-fit">
                             🎉{" "}
-                            <span className="text-[#9D47FF]">Pre-registration period:</span>{" "}
-                            First 72 hours get an exclusive stamp!
+                            <span className="text-[#9D47FF]">{t('preRegistrationPeriod')}</span>{" "}
+                            {t('first72HoursGetExclusiveStamp')}
                         </div>
                     )
                 }
@@ -107,15 +123,15 @@ export const LoginPage = () => {
                         // 已登录但未绑定邀请码的情况
                         <Card className="bg-white/5">
                             <CardHeader className="text-center flex flex-col items-center">
-                                <h2 className="unbounded-24-300">Bind Your Invite Code</h2>
+                                <h2 className="unbounded-24-300">{t('bindYourInviteCode')}</h2>
                                 <p className="mt-2 text-sub/80">
-                                    You need to bind an invite code to continue
+                                    {t('youNeedToBindInviteCode')}
                                 </p>
                             </CardHeader>
                             <CardBody className="space-y-6">
                                 <Input
                                     classNames={{ input: "text-center" }}
-                                    placeholder="Enter Invite Code"
+                                    placeholder={t('enterInviteCode')}
                                     variant="bordered"
                                     value={inviteCode}
                                     onValueChange={setInviteCode}
@@ -128,7 +144,7 @@ export const LoginPage = () => {
                                     type="light"
                                     onClick={handleVerifyInviteCode}
                                 >
-                                    {isVerifying ? 'Binding...' : 'Bind & Continue'}
+                                    {isVerifying ? t('binding') : t('bindContinue')}
                                 </Button>
                             </CardBody>
                         </Card>
@@ -136,15 +152,15 @@ export const LoginPage = () => {
                         // 需要邀请码的流程
                         <Card className="bg-white/5">
                             <CardHeader className="text-center flex flex-col items-center">
-                                <h2 className="unbounded-24-300">Enter Your Invite Code</h2>
+                                <h2 className="unbounded-24-300">{t('enterYourInviteCode')}</h2>
                                 <p className="mt-2 text-sub/80">
-                                    Please enter your invite code to continue
+                                    {t('pleaseEnterInviteCodeToContinue')}
                                 </p>
                             </CardHeader>
                             <CardBody className="space-y-6">
                                 <Input
                                     classNames={{ input: "text-center" }}
-                                    placeholder="Enter Invite Code"
+                                    placeholder={t('enterInviteCode')}
                                     variant="bordered"
                                     value={inviteCode}
                                     onValueChange={setInviteCode}
@@ -157,13 +173,13 @@ export const LoginPage = () => {
                                     type="light"
                                     onClick={handleVerifyInviteCode}
                                 >
-                                    {isVerifying ? 'Verifying...' : 'Verify & Continue'}
+                                    {isVerifying ? t('verifying') : t('verifyContinue2')}
                                 </Button>
 
                                 {/* OR 分隔线 */}
                                 <div className="flex items-center my-4">
                                     <div className="flex-1 h-px bg-sub/30"></div>
-                                    <span className="px-4 text-sub/60 text-sm">OR</span>
+                                    <span className="px-4 text-sub/60 text-sm">{t('or')}</span>
                                     <div className="flex-1 h-px bg-sub/30"></div>
                                 </div>
 
@@ -174,7 +190,7 @@ export const LoginPage = () => {
                                     onClick={handleDirectLogin}
                                     disabled={isConnecting}
                                 >
-                                    {isConnecting ? 'Connecting...' : 'Already Joined? Connect X Directly'}
+                                    {isConnecting ? t('connecting') : t('alreadyJoinedConnectXDirectly')}
                                     <ChevronRight className="size-4" />
                                 </Button>
                             </CardBody>
@@ -183,9 +199,9 @@ export const LoginPage = () => {
                         // 直接登录流程
                         <Card className="bg-white/5">
                             <CardHeader className="text-center flex flex-col items-center">
-                                <h2 className="unbounded-24-300">Connect with X (Twitter)</h2>
+                                <h2 className="unbounded-24-300">{t('connectWithX')}</h2>
                                 <p className="mt-2 text-sub/80">
-                                    Log in with your X account to start your journey
+                                    {t('loginWithXAccount')}
                                 </p>
                             </CardHeader>
                             <CardBody>
@@ -195,7 +211,7 @@ export const LoginPage = () => {
                                     onClick={handleDirectLogin}
                                     disabled={isConnecting}
                                 >
-                                    {isConnecting ? 'Connecting...' : 'Connect X'}
+                                    {isConnecting ? t('connecting') : t('connectX')}
                                 </Button>
                             </CardBody>
                         </Card>

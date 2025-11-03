@@ -3,7 +3,7 @@ import useKrActivity from "@/models/kr";
 import Quizs from "@/routes/pages/Kr/components/quiz";
 import { useEventListener } from "ahooks";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { inviteCodeApi, signInApi, stampApi, Task, taskApi } from "./krApi";
 import { toast } from "react-toastify";
 import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
@@ -13,8 +13,23 @@ import { generateQueryString, sleep } from "@/utils/tools";
 import Copy from "@/components/Copy";
 import { Card, Input } from "@nextui-org/react";
 import Button from "@/components/Button";
+import i18n from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const KrLayout = () => {
+  const { t } = useTranslation();
+  const [searchParams] = useSearchParams();
+  const lng = searchParams.get('lng') || 'kr';
+  
+  // 监听URL参数变化，切换语言
+  useEffect(() => {
+    if (lng === 'en') {
+      i18n.changeLanguage('kr_en');
+    } else {
+      i18n.changeLanguage('kr');
+    }
+  }, [lng]);
+
   const taskId = useRef<number>(0);
   const quizId = useRef<number>(0);
   const quizRef = useRef<any>(null);
@@ -126,7 +141,7 @@ export const KrLayout = () => {
 
           setQuizVisible(true);
         } catch (error) {
-          toast.error("Failed to load quiz questions");
+          toast.error(t('failedToLoadQuizQuestions'));
         }
         break;
       case "invite":
@@ -161,13 +176,13 @@ export const KrLayout = () => {
         "twitter"
       );
       if (response.code === "200") {
-        toast.success("Invite code bound successfully!");
+        toast.success(t('inviteCodeBoundSuccessfully'));
         dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
       } else {
-        toast.error(response.msg || "Failed to bind invite code");
+        toast.error(response.msg || t('failedToBindInviteCode'));
       }
     } catch (error) {
-      toast.error("Failed to bind invite code");
+      toast.error(t('failedToBindInviteCode'));
     }
   }, []);
 
@@ -181,7 +196,7 @@ export const KrLayout = () => {
     if (inviteCode) {
       localStorage.setItem("cysic_kr_invite_code", inviteCode);
       removeParamFromUrl("_c");
-      toast.success("Invite code received!");
+      toast.success(t('inviteCodeReceived'));
     }
 
     // 处理认证token
@@ -195,7 +210,7 @@ export const KrLayout = () => {
         bindInviteCodeAfterLogin(storedInviteCode);
       }
 
-      toast.success("Login successful!");
+      toast.success(t('loginSuccessful'));
     }
   }, [bindInviteCodeAfterLogin, setAuthToken]);
 
@@ -333,7 +348,7 @@ export const KrLayout = () => {
 
   const handleSubmitPost = async () => {
     await taskApi.submitTask(taskId.current, postTwitterUrl);
-    toast.success("Your tweet is now under-reviewing");
+    toast.success(t('yourTweetIsNowUnderReviewing'));
 
     await sleep(1000);
     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
@@ -349,7 +364,7 @@ export const KrLayout = () => {
 
   const handleSubmitQuote = async () => {
     await taskApi.submitTask(taskId.current, quoteTwitterUrl);
-    toast.success("Your tweet is now under-reviewing");
+    toast.success(t('yourTweetIsNowUnderReviewing'));
 
     await sleep(1000);
     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
@@ -379,7 +394,7 @@ export const KrLayout = () => {
     const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
 
     if (!tweetId) {
-      toast.error("Invalid Twitter URL or ID");
+      toast.error(t('invalidTwitterURLOrID'));
       return;
     }
 
@@ -391,7 +406,7 @@ export const KrLayout = () => {
     const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
 
     if (!tweetId) {
-      toast.error("Invalid Twitter URL or ID");
+      toast.error(t('invalidTwitterURLOrID'));
       return;
     }
 
@@ -419,7 +434,7 @@ export const KrLayout = () => {
       <Modal
         isOpen={quizVisible}
         onClose={() => setQuizVisible(false)}
-        title="Quiz"
+        title={t('quiz')}
         className="max-w-[600px]"
       >
         <>
@@ -442,13 +457,13 @@ export const KrLayout = () => {
       <Modal
         isOpen={inviteVisible}
         onClose={() => setInviteVisible(false)}
-        title="Get Your Invite Codes"
+        title={t('getYourInviteCodes')}
         className="max-w-[400px]"
       >
         <>
           <div className="flex flex-col gap-6">
             <p className="text-white/80 text-sm">
-              Share your invite codes with friends to earn rewards!
+              {t('shareInviteCodesWithFriendsToEarnRewards')}
             </p>
 
             {inviteCodesRef.current.length > 0 ? (
@@ -467,7 +482,7 @@ export const KrLayout = () => {
               </div>
             ) : (
               <div className="text-center py-8 text-white/50">
-                No invite codes available
+                {t('noInviteCodesAvailable')}
               </div>
             )}
           </div>
@@ -480,13 +495,13 @@ export const KrLayout = () => {
           setPostTwitterVisible(false);
           setPostTwitterUrl("");
         }}
-        title="Post"
+        title={t('post')}
         className="max-w-[400px]"
       >
         <>
           <div className="flex flex-col gap-2">
             <p className="text-white/80 text-sm">
-              1. Post the following section
+              {t('postFollowingSection')}
             </p>
 
             <Card className="p-4 rounded-[8px]">
@@ -498,12 +513,11 @@ export const KrLayout = () => {
               type="light"
               onClick={() => handlePost(postTwitterContentRef.current)}
             >
-              Post
+              {t('post')}
             </Button>
 
             <p className="text-white/80 text-sm">
-              2. Enter your Tweet url. (You can only submit once, please be
-              careful)
+              {t('enterYourTweetUrl')}
             </p>
 
             <Input
@@ -518,7 +532,7 @@ export const KrLayout = () => {
               onClick={handleSubmitPost}
               type="light"
             >
-              Submit
+              {t('submit')}
             </Button>
           </div>
         </>
@@ -530,13 +544,13 @@ export const KrLayout = () => {
           setQuoteTwitterVisible(false);
           setQuoteTwitterUrl("");
         }}
-        title="Reply"
+        title={t('reply')}
         className="max-w-[400px]"
       >
         <>
           <div className="flex flex-col gap-2">
             <p className="text-white/80 text-sm">
-              1. Reply to the following tweet
+              {t('replyToFollowingTweet')}
             </p>
 
             <Card className="p-4 rounded-[8px] overflow-auto">
@@ -565,12 +579,11 @@ export const KrLayout = () => {
               type="light"
               onClick={() => handleQuote(quoteTwitterIdRef.current)}
             >
-              Go to Tweet
+              {t('goToTweet')}
             </Button>
 
             <p className="text-white/80 text-sm">
-              2. Enter your Tweet url. (You can only submit once, please be
-              careful)
+              {t('enterYourTweetUrl')}
             </p>
 
             <Input
@@ -585,7 +598,7 @@ export const KrLayout = () => {
               onClick={handleSubmitQuote}
               type="light"
             >
-              Submit
+              {t('submit')}
             </Button>
           </div>
         </>
@@ -597,13 +610,13 @@ export const KrLayout = () => {
           setRetweetAndLikeTwitterVisible(false);
           setRetweetAndLikeTwitterUrl("");
         }}
-        title="Retweet and Like"
+        title={t('retweetAndLike')}
         className="max-w-[400px]"
       >
         <>
           <div className="flex flex-col gap-2">
             <p className="text-white/80 text-sm">
-              1. Retweet and Like the following tweet
+              {t('retweetAndLikeFollowingTweet')}
             </p>
 
             <Card className="p-4 rounded-[8px] overflow-auto">
@@ -634,7 +647,7 @@ export const KrLayout = () => {
                 handleRetweetAndLike(retweetAndLikeTwitterContentRef.current)
               }
             >
-              Retweet & Like
+              {t('retweetLike')}
             </Button>
           </div>
         </>
