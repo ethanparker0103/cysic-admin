@@ -158,7 +158,7 @@ export const SignInRewardManagement = () => {
 
   // Get stamp name
   const getStampName = (stampId: number) => {
-    const stamp = stamps.find(s => s.id === stampId);
+    const stamp = stamps?.find(s => s.id === stampId);
     return stamp ? stamp.name : `Stamp ID: ${stampId}`;
   };
 
