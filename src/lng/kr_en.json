@@ -11,7 +11,7 @@
   "openTelegram": "Open Telegram",
   "followOnTwitter": "Follow on Twitter",
   "stayUpdated": "Stay updated with our latest announcements",
-  "followX": "Follow X",
+  "followX": "Follow {{handler}}",
   "iHaveAlreadyFollowed": "I have already Followed!",
   "verifyContinue": "Verify & Continue",
   "twitterPostBeingVerified": "Your Twitter post is being verified. This usually takes a few minutes to a few hours.",

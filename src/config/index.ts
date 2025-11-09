@@ -147,6 +147,7 @@ export const mediasLink = {
   whitePaper: "https://hackmd.io/@Cysic/H1XlGr0jle",
   discord: "https://t.co/V7D83oIVWE",
   twitter: "https://x.com/cysic_xyz",
+  twitterKR: "https://x.com/cysic_kr",
   medium: "https://medium.com/@cysic",
   twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
   telegram: "https://t.me/CysicHQ",

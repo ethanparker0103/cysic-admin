@@ -11,7 +11,7 @@
   "openTelegram": "텔레그램 열기",
   "followOnTwitter": "트위터 팔로우",
   "stayUpdated": "최신 공지사항을 확인하세요",
-  "followX": "X 팔로우",
+  "followX": "{{handler}} 팔로우",
   "iHaveAlreadyFollowed": "이미 팔로우했습니다!",
   "verifyContinue": "확인 및 계속",
   "twitterPostBeingVerified": "트위터 게시물이 확인 중입니다. 보통 몇 분에서 몇 시간이 소요됩니다.",
@@ -30,7 +30,7 @@
   "taskInformationNotAvailable": "작업 정보를 사용할 수 없습니다",
   "taskSubmittedSuccessfully": "작업이 성공적으로 제출되었습니다!",
   "failedToSubmitTask": "작업 제출 실패",
-  "bindYourEVMAddress": "EVM 주소 연결",
+  "bindYourEVMAddress": "EVM 지갑 주소 제출",
   "enterYourEVMAddress": "EVM 주소를 입력하세요",
   "notice": "주의사항:",
   "addressMustBeEVMAddress": "주소는 EVM 주소여야 합니다",
@@ -108,5 +108,6 @@
   "invalidTwitterURLOrID": "유효하지 않은 트위터 URL 또는 ID",
   "failedToLoadQuizQuestions": "퀴즈 질문 로드 실패",
   "addressBoundSuccessfully": "주소가 성공적으로 연결되었습니다",
-  "failedToBindAddress": "주소 연결 실패"
+  "failedToBindAddress": "주소 연결 실패",
+  "pleaseFollowAllTheMedias": "모든 미디어를 팔로우하세요"
 }

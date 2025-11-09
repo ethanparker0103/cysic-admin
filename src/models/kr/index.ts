@@ -7,13 +7,15 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 dayjs.extend(weekOfYear);
 
 const persistFields: any = ["user",  "userOverview", "authToken"];
+const totalWeek = 4;
 
-const getMonthWeeksInfo = (date?: dayjs.Dayjs) => {
-  const targetDate = date || dayjs();
+
+const getMonthWeeksInfo = () => {
+  const targetDate = dayjs(1762768800000);
   
-  const startOfMonth = targetDate.startOf('month');
-  const endOfMonth = targetDate.endOf('month');
-  
+  const startOfMonth = targetDate;
+  const endOfMonth = targetDate.add(totalWeek - 1, 'week');
+
   const firstWeek = startOfMonth.week();
   const lastWeek = endOfMonth.week();
   

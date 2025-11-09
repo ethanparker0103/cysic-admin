@@ -25,9 +25,11 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import i18n from "i18next";
 
-// 邀请码逻辑现在在LoginPage中处理
-
 const ConnectUs = () => {
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tgClick, setTgClick] = useState(false);
+  const [twitterClick, setTwitterClick] = useState(false);
+  const [twitterKRClick, setTwitterKRClick] = useState(false);
   const { t } = useTranslation();
   const [hasConnected, setHasConnected] = useState(false);
   const handleClick = () => {
@@ -62,10 +64,10 @@ const ConnectUs = () => {
 
               <div className="text-left ml-1">
                 <p className="text-white teachers-16-200 !normal-case">
-                  {t('joinTelegramGroup')}
+                  {t("joinTelegramGroup")}
                 </p>
                 <p className="mt-1 text-sub/40 teachers-14-200 !normal-case">
-                  {t('connectWithCommunity')}
+                  {t("connectWithCommunity")}
                 </p>
               </div>
             </>
@@ -75,9 +77,10 @@ const ConnectUs = () => {
               href={mediasLink.telegram}
               target="_blank"
               className="mx-auto w-full"
+              onClick={() => { setTooltipOpen(false); setTgClick(true)}}
             >
               <Button className="w-full " type="light">
-                {t('openTelegram')}
+                {t("openTelegram")}
               </Button>
             </a>
           </CardBody>
@@ -108,37 +111,62 @@ const ConnectUs = () => {
 
               <div className="text-left ml-1">
                 <p className="text-white teachers-16-200 !normal-case">
-                  {t('followOnTwitter')}
+                  {t("followOnTwitter")}
                 </p>
                 <p className="mt-1 text-sub/40 teachers-14-200 !normal-case">
-                  {t('stayUpdated')}
+                  {t("stayUpdated")}
                 </p>
               </div>
             </>
           </CardHeader>
           <CardBody>
-            <a
-              href={mediasLink.twitter}
-              target="_blank"
-              className="mx-auto w-full"
-            >
-              <Button className="w-full " type="light">
-                {t('followX')}
-              </Button>
-            </a>
+            <div className="flex items-center justify-center gap-2">
+              <a
+                href={mediasLink.twitter}
+                target="_blank"
+                className="mx-auto w-full"
+                onClick={() => { setTooltipOpen(false); setTwitterClick(true)}}
+              >
+                <Button className="w-full " type="light">
+                  {t("followX", { handler: "@Cysic_xyz" })}
+                </Button>
+              </a>
+              <a
+                href={mediasLink.twitterKR}
+                target="_blank"
+                className="mx-auto w-full"
+                onClick={() => { setTooltipOpen(false); setTwitterKRClick(true)}}
+              >
+                <Button className="w-full " type="light">
+                  {t("followX", { handler: "@Cysic_KR" })}
+                </Button>
+              </a>
+            </div>
           </CardBody>
         </Card>
 
         <div className="mt-8 flex flex-col gap-2 mx-auto justify-center items-center">
-          <Checkbox
-            isSelected={hasConnected}
-            onValueChange={setHasConnected}
-            size="sm"
+          <Tooltip
+            isOpen={tooltipOpen}
+            content={<>{t("pleaseFollowAllTheMedias")}</>}
+            placement="top"
           >
-            {t('iHaveAlreadyFollowed')}
-          </Checkbox>
+            <Checkbox
+              isSelected={hasConnected}
+              onValueChange={(v) => {
+                if (!tgClick || !twitterClick || !twitterKRClick) {
+                  setTooltipOpen(true);
+                  return;
+                }
+                setHasConnected(v);
+              }}
+              size="sm"
+            >
+              {t("iHaveAlreadyFollowed")}
+            </Checkbox>
+          </Tooltip>
           <Button disabled={!hasConnected} type="light" onClick={handleClick}>
-            {t('verifyContinue')}
+            {t("verifyContinue")}
           </Button>
         </div>
       </>
@@ -159,25 +187,25 @@ const Post = () => {
       !postLink.includes("https") ||
       !postLink.includes("x.com/")
     ) {
-      toast.error(t('pleaseEnterValidTwitterPostLink'));
+      toast.error(t("pleaseEnterValidTwitterPostLink"));
       return;
     }
 
     if (!firstTask?.id) {
-      toast.error(t('taskInformationNotAvailable'));
+      toast.error(t("taskInformationNotAvailable"));
       return;
     }
 
     try {
       const response = await taskApi.submitTask(firstTask.id, postLink);
       if (response.code === "200" || response.code == "501") {
-        toast.success(t('taskSubmittedSuccessfully'));
+        toast.success(t("taskSubmittedSuccessfully"));
         setPendingVisible(true);
       } else {
-        toast.error(response.msg || t('failedToSubmitTask'));
+        toast.error(response.msg || t("failedToSubmitTask"));
       }
     } catch (error) {
-      toast.error(t('failedToSubmitTask'));
+      toast.error(t("failedToSubmitTask"));
     }
   };
 
@@ -218,28 +246,28 @@ const Post = () => {
       {pendingVisible ? (
         <>
           <div className="mt-8 teachers-18-200 !normal-case mb-8">
-            {t('twitterPostBeingVerified')}
+            {t("twitterPostBeingVerified")}
           </div>
 
           <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
               <Check className="size-3" />
             </div>
-            {t('inviteCodeVerified')}
+            {t("inviteCodeVerified")}
           </div>
           <div className="mb-4 text-green-500 bg-green-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-green-500 mr-2">
               <Check className="size-3" />
             </div>
-            {t('socialConnectionsCompleted')}
+            {t("socialConnectionsCompleted")}
           </div>
           <div className="mb-4 text-orange-500 bg-orange-500/10 p-4 rounded-[8px] flex items-center justify-center">
             <div className="rounded-full inline-flex items-center justify-center p-[2px] border border-orange-500 mr-2 size-5"></div>
-            {t('twitterPostVerificationInProgress')}
+            {t("twitterPostVerificationInProgress")}
           </div>
 
           <Button className="mt-4 w-fit" type="light" onClick={handleNextStep}>
-            {t('nextStep')}
+            {t("nextStep")}
           </Button>
         </>
       ) : (
@@ -270,16 +298,16 @@ const Post = () => {
             </div>
           </div>
           <div className="text-left flex-1">
-            <p className="mb-2 text-lg">{t('instructions')}</p>
+            <p className="mb-2 text-lg">{t("instructions")}</p>
             <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-              <li>{t('downloadImageUsingButton')}</li>
-              <li>{t('goToTwitterAndCreateNewPost')}</li>
-              <li>{t('uploadDownloadedImage')}</li>
-              <li>{t('postWithTitle')}</li>
+              <li>{t("downloadImageUsingButton")}</li>
+              <li>{t("goToTwitterAndCreateNewPost")}</li>
+              <li>{t("uploadDownloadedImage")}</li>
+              <li>{t("postWithTitle")}</li>
               {/* <li>{t('copyPostLinkAndPasteBelow')}</li> */}
             </ul>
 
-            <div className="mt-4 mb-2">{t('twitterPostLink')}</div>
+            <div className="mt-4 mb-2">{t("twitterPostLink")}</div>
             <Input
               classNames={{ input: "text-center" }}
               placeholder="https://x.com/..."
@@ -301,7 +329,7 @@ const Post = () => {
               type="light"
               onClick={handleClick}
             >
-              {t('verifyContinue')}
+              {t("verifyContinue")}
             </Button>
           </div>
         </div>
@@ -327,13 +355,16 @@ const Guidlines = () => {
   const isInviteCodeEnabled = systemSetting?.enableInviteCode;
 
   const inviteCodes =
-    _inviteCodes?.filter((i: any) => i?.available)?.map((i: any) => i?.code) || [];
+    _inviteCodes?.filter((i: any) => i?.available)?.map((i: any) => i?.code) ||
+    [];
 
   const totalUserList = userList;
   return (
     <>
       <div className="flex flex-col gap-8 w-fit mx-auto">
-        <p className="teachers-18-200 !normal-case">{t('cysicCommunityMembers')}</p>
+        <p className="teachers-18-200 !normal-case">
+          {t("cysicCommunityMembers")}
+        </p>
 
         <div
           className={cn("grid justify-center items-center")}
@@ -368,7 +399,7 @@ const Guidlines = () => {
           <Divider className="my-8" />
           <div className="flex flex-col gap-8 w-fit mx-auto">
             <p className="teachers-18-200 !normal-case">
-              {t('shareInviteCodesWithFriends')}
+              {t("shareInviteCodesWithFriends")}
             </p>
 
             {inviteCodes?.length > 0 ? (
@@ -385,7 +416,7 @@ const Guidlines = () => {
               </div>
             ) : (
               <div className="text-center py-8 text-white/50">
-                {t('noInviteCodesAvailable')}
+                {t("noInviteCodesAvailable")}
               </div>
             )}
           </div>
@@ -395,24 +426,20 @@ const Guidlines = () => {
       <Divider className="my-8" />
       <div className="flex flex-col gap-8 w-fit mx-auto">
         <p className="teachers-18-200 !normal-case">
-          {t('campaignDescriptionAndGuidelines')}
+          {t("campaignDescriptionAndGuidelines")}
         </p>
 
         <ul className="max-w-[400px] text-left text-sm list-disc list-inside [&_li]:mb-2">
-          <li>{t('campaignOnlyOpenToKoreanUsers')}</li>
-          <li>{t('preregisteredUsersReceiveExclusiveStamp')}</li>
-          <li>
-            {t('onceCountdownEnds')}
-          </li>
-          <li>
-            {t('byParticipatingInCampaignMissions')}
-          </li>
+          <li>{t("campaignOnlyOpenToKoreanUsers")}</li>
+          <li>{t("preregisteredUsersReceiveExclusiveStamp")}</li>
+          <li>{t("onceCountdownEnds")}</li>
+          <li>{t("byParticipatingInCampaignMissions")}</li>
         </ul>
       </div>
 
       <a href="/kr/dashboard">
         <Button className="mt-8" type="light">
-          {t('welcomeToDashboard')}
+          {t("welcomeToDashboard")}
         </Button>
       </a>
     </>
@@ -426,39 +453,50 @@ const BindAddress = () => {
 
   const handleClick = async () => {
     const response = await userApi.bindAddress(address);
-    if (response.code === '200' || response.msg == "Address has already been bound and cannot be updated") {
-      toast.success(t('addressBoundSuccessfully'));
+    if (
+      response.code === "200" ||
+      response.msg == "Address has already been bound and cannot be updated"
+    ) {
+      toast.success(t("addressBoundSuccessfully"));
       dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
     } else {
-      toast.error(response.msg || t('failedToBindAddress'));
+      toast.error(response.msg || t("failedToBindAddress"));
     }
   };
 
-  const isValid = address && address.trim().startsWith("0x") && re.test(address.trim());
+  const isValid =
+    address && address.trim().startsWith("0x") && re.test(address.trim());
 
   return (
     <>
       <div className="flex flex-col gap-8 w-full">
-        <p className="teachers-18-200 !normal-case">{t('bindYourEVMAddress')}</p>
+        <p className="teachers-18-200 !normal-case">
+          {t("bindYourEVMAddress")}
+        </p>
 
         <Input
-          classNames={{base: '!bg-default-100 rounded-[8px] overflow-hidden'}}
-          placeholder={t('enterYourEVMAddress')}
+          classNames={{ base: "!bg-default-100 rounded-[8px] overflow-hidden" }}
+          placeholder={t("enterYourEVMAddress")}
           value={address}
           onValueChange={setAddress}
           isInvalid={!isValid}
         />
         <div className="text-left mx-auto w-fit">
-          <p className="mb-2">{t('notice')}</p>
+          <p className="mb-2">{t("notice")}</p>
           <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-            <li>{t('addressMustBeEVMAddress')}</li>
-            <li>{t('addressMustBeValidAddress')}</li>
+            <li>{t("addressMustBeEVMAddress")}</li>
+            <li>{t("addressMustBeValidAddress")}</li>
           </ul>
         </div>
       </div>
 
-      <Button className="mt-8" type="light" onClick={handleClick} disabled={!isValid}>
-        {t('nextStep')}
+      <Button
+        className="mt-8"
+        type="light"
+        onClick={handleClick}
+        disabled={!isValid}
+      >
+        {t("nextStep")}
       </Button>
     </>
   );
@@ -468,14 +506,14 @@ const BindAddress = () => {
 export const KRActivity = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const lng = searchParams.get('lng') || 'kr';
-  
+  const lng = searchParams.get("lng") || "kr";
+
   // 监听URL参数变化，切换语言
   useEffect(() => {
-    if (lng === 'en') {
-      i18n.changeLanguage('kr_en');
+    if (lng === "en") {
+      i18n.changeLanguage("kr_en");
     } else {
-      i18n.changeLanguage('kr');
+      i18n.changeLanguage("kr");
     }
   }, [lng]);
 
@@ -486,12 +524,12 @@ export const KRActivity = () => {
   }
 
   const currentStep = step;
-  
+
   const EStepName: Record<string, string> = {
-    Step1: t('step1'),
-    Step2: t('step2'),
-    Step3: t('step3'),
-    Step4: t('step4'),
+    Step1: t("step1"),
+    Step2: t("step2"),
+    Step3: t("step3"),
+    Step4: t("step4"),
   };
 
   if (loading) {
@@ -510,9 +548,9 @@ export const KRActivity = () => {
     <>
       <PT12Wrapper className="w-full">
         <GradientBorderCard borderRadius={8} className="py-8 px-8 text-center">
-          <h1 className="unbounded-40-300">{t('welcomeTitle')}</h1>
+          <h1 className="unbounded-40-300">{t("welcomeTitle")}</h1>
           <h3 className="mt-4 unbounded-18-200 text-sub">
-            {t('welcomeSubtitle')}
+            {t("welcomeSubtitle")}
           </h3>
 
           <div className="max-w-[800px] mx-auto">
@@ -540,7 +578,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">{t('step1')}</span>
+                  <span className="whitespace-nowrap">{t("step1")}</span>
                 </div>
               </div>
 
@@ -569,7 +607,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">{t('step2')}</span>
+                  <span className="whitespace-nowrap">{t("step2")}</span>
                 </div>
               </div>
 
@@ -598,7 +636,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className={cn("")}>{t('step3')}</span>
+                  <span className={cn("")}>{t("step3")}</span>
                 </div>
               </div>
 
@@ -627,15 +665,17 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className={cn("")}>{t('step4')}</span>
+                  <span className={cn("")}>{t("step4")}</span>
                 </div>
               </div>
             </div>
             {systemSetting?.enableInviteCode && (
               <div className="mt-8 rounded-[8px] bg-white text-black py-3 px-6 mx-auto teachers-14-400 !normal-case">
                 🎉{" "}
-                <span className="text-[#9D47FF]">{t('preRegistrationPeriod')}</span>{" "}
-                {t('first72HoursGetExclusiveStamp')}
+                <span className="text-[#9D47FF]">
+                  {t("preRegistrationPeriod")}
+                </span>{" "}
+                {t("first72HoursGetExclusiveStamp")}
               </div>
             )}
             <div className="text-left mb-2 mt-8">
