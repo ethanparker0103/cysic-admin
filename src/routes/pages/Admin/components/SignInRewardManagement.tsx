@@ -202,8 +202,8 @@ export const SignInRewardManagement = () => {
                   <TableCell>{reward.rewardPoints}</TableCell>
                   <TableCell className='flex items-center gap-1'>
                     <Image
-                      src={stamps.find(s => s.id === reward.rewardStampId)?.imgUrl}
-                      alt={stamps.find(s => s.id === reward.rewardStampId)?.name}
+                      src={stamps?.find(s => s.id === reward.rewardStampId)?.imgUrl}
+                      alt={stamps?.find(s => s.id === reward.rewardStampId)?.name}
                       width={20}
                       height={20}
                       className="rounded"
