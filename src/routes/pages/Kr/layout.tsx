@@ -295,9 +295,9 @@ export const KrLayout = () => {
 
 
   useEffect(()=>{
-    if(window.location.pathname == '/krkrkr/dashboard'){
+    if(window.location.pathname == '/kr/dashboard'){
         if(!authToken || [EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) ||  !user?.address){
-            navigate("/krkrkr");
+            navigate("/kr");
         }
     }
   }, [authToken, firstTask?.currentStatus, user?.address])
@@ -305,7 +305,7 @@ export const KrLayout = () => {
   useEffect(() => {
     if (!authToken) {
       setState({ showLogin: true });
-    } else if (window.location.pathname == "/krkrkr") {
+    } else if (window.location.pathname == "/kr") {
       if (systemSetting?.enableInviteCode && Number(inviterId) <= 0) {
         setState({ showLogin: true });
       } else {
@@ -317,7 +317,7 @@ export const KrLayout = () => {
   }, [authToken, systemSetting?.enableInviteCode, inviterId, setState]);
 
   useEffect(() => {
-    if(authToken && window.location.pathname == '/krkrkr'){
+    if(authToken && window.location.pathname == '/kr'){
         if([EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus)){
             dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 1 }));
         }else if(!user?.address){
@@ -471,7 +471,7 @@ export const KrLayout = () => {
                 {inviteCodesRef.current.map((inviteCode: string) => (
                   <Copy
                     key={inviteCode}
-                    value={window.location.origin + "/krkrkr?_c=" + inviteCode}
+                    value={window.location.origin + "/kr?_c=" + inviteCode}
                     className="justify-between bg-white/10 border border-white/20 rounded-lg px-4 py-3 hover:bg-white/15 transition-colors"
                   >
                     <span className="font-mono text-white font-semibold tracking-wider">

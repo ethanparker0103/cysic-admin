@@ -74,14 +74,14 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                                 {t('stamps')}
                             </span>
                             <span className="unbounded-18-400 text-white">
-                                {earnedLength}
+                                {earnedLength || 0}
                             </span>
                         </div>
                     </div>
                 </div>
 
                 {/* Stamp Collection */}
-                {stampList.length > 0 && (
+                {stampList?.length > 0 && (
                     <>
                         <Divider className="my-4" />
                         <div className="flex flex-col gap-2">
@@ -89,7 +89,7 @@ export const ProfileSection = ({ user, stampList }: ProfileSectionProps) => {
                                 {t('cysicEmblems')}
                             </span>
                             <div className="flex flex-wrap gap-2">
-                                {stampList.map((stamp: Stamp) => {
+                                {stampList?.map((stamp: Stamp) => {
                                     const isEarned = stamp.earnedAt > 0;
                                     return (
                                         <div

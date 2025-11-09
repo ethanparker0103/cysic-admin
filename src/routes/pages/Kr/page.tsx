@@ -275,10 +275,8 @@ const Post = () => {
               <li>{t('downloadImageUsingButton')}</li>
               <li>{t('goToTwitterAndCreateNewPost')}</li>
               <li>{t('uploadDownloadedImage')}</li>
-              <li>
-                {t('postWithTitle', { title: firstTask?.title || "Cysic is inevitable" })}
-              </li>
-              <li>{t('copyPostLinkAndPasteBelow')}</li>
+              <li>{t('postWithTitle')}</li>
+              {/* <li>{t('copyPostLinkAndPasteBelow')}</li> */}
             </ul>
 
             <div className="mt-4 mb-2">{t('twitterPostLink')}</div>
@@ -378,7 +376,7 @@ const Guidlines = () => {
                 {inviteCodes?.map((inviteCode: string) => (
                   <Copy
                     key={inviteCode}
-                    value={window.location.origin + "/krkrkr?_c=" + inviteCode}
+                    value={window.location.origin + "/kr?_c=" + inviteCode}
                     className="[&_svg]:size-3 text-sm"
                   >
                     <span className="text-white">{inviteCode}</span>
@@ -412,7 +410,7 @@ const Guidlines = () => {
         </ul>
       </div>
 
-      <a href="/krkrkr/dashboard">
+      <a href="/kr/dashboard">
         <Button className="mt-8" type="light">
           {t('welcomeToDashboard')}
         </Button>
