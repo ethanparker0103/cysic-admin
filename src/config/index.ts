@@ -151,6 +151,7 @@ export const mediasLink = {
   medium: "https://medium.com/@cysic",
   twitterWhitePaper: "https://x.com/cysic_xyz/status/1846960627878866984",
   telegram: "https://t.me/CysicHQ",
+  telegramKR: "https://t.me/Cysic_Korea_Official",
   github: "https://github.com/cysic-labs",
   doc: "https://hackmd.io/@Cysic",
   cosmosExplorer: "https://explorer-testnet.prover.xyz",

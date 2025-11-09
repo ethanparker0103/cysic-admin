@@ -74,7 +74,7 @@ const ConnectUs = () => {
           </CardHeader>
           <CardBody>
             <a
-              href={mediasLink.telegram}
+              href={mediasLink.telegramKR}
               target="_blank"
               className="mx-auto w-full"
               onClick={() => { setTooltipOpen(false); setTgClick(true)}}
