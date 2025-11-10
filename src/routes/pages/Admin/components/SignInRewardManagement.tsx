@@ -315,7 +315,7 @@ export const SignInRewardManagement = () => {
                   }}
                   renderValue={(items) => {
                     return items.map((item) => {
-                      const stamp = stamps.find(s => s.id.toString() === item.key);
+                      const stamp = stamps?.find(s => s.id.toString() === item.key);
                       if (!stamp) return item.textValue;
                       return (
                         <div key={item.key} className="flex items-center gap-2">
@@ -336,7 +336,7 @@ export const SignInRewardManagement = () => {
                     Select Stamp
                   </SelectItem>
                   <React.Fragment>
-                    {stamps.map((stamp) => (
+                    {stamps?.map((stamp) => (
                       <SelectItem 
                         key={stamp.id.toString()} 
                         value={stamp.id.toString()}

@@ -568,8 +568,8 @@ export const TaskManagement = () => {
                           <TableCell>{task.RewardPoints}</TableCell>
                           <TableCell className='flex items-center gap-1'>
                             <Image
-                              src={stamps.find(s => s.id === task.RewardStampId)?.imgUrl}
-                              alt={stamps.find(s => s.id === task.RewardStampId)?.name}
+                              src={stamps?.find(s => s.id === task.RewardStampId)?.imgUrl}
+                              alt={stamps?.find(s => s.id === task.RewardStampId)?.name}
                               width={20}
                               height={20}
                               className="rounded"
@@ -708,7 +708,7 @@ export const TaskManagement = () => {
                       }}
                       renderValue={(items) => {
                         return items.map((item) => {
-                          const stamp = stamps.find(s => s.id.toString() === item.key);
+                          const stamp = stamps?.find(s => s.id.toString() === item.key);
                           if (!stamp) return item.textValue;
                           return (
                             <div key={item.key} className="flex items-center gap-2">
@@ -729,7 +729,7 @@ export const TaskManagement = () => {
                         Select Stamp
                       </SelectItem>
                       <React.Fragment>
-                        {stamps.map((stamp) => (
+                        {stamps?.map((stamp) => (
                           <SelectItem
                             key={stamp.id.toString()}
                             value={stamp.id.toString()}

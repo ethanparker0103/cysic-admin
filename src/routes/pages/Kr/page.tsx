@@ -177,7 +177,7 @@ const ConnectUs = () => {
 const Post = () => {
   const { t } = useTranslation();
   const [postLink, setPostLink] = useState("");
-  const { firstTask } = useKrActivity();
+  const { firstTask, inviteCodes } = useKrActivity();
 
   const [pendingVisible, setPendingVisible] = useState(false);
 
@@ -212,8 +212,12 @@ const Post = () => {
   const handleOpenPost = () => {
     if (!firstTask?.postTwitterTaskConfig?.content) return;
 
+    const codes = inviteCodes
+    ?.filter((inviteCode: any) => inviteCode.available)
+    ?.map((inviteCode: any) => inviteCode.code) || [];
+
     const link = `https://x.com/intent/post?${generateQueryString({
-      text: firstTask?.postTwitterTaskConfig?.content,
+      text: firstTask?.postTwitterTaskConfig?.content?.replace('{{code}}', codes?.[0]),
     })}`;
 
     window.open(link, "_blank");
