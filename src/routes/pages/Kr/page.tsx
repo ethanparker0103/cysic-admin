@@ -215,13 +215,8 @@ const Post = () => {
 
     const codes = inviteCodes?.map((inviteCode: any) => inviteCode.code) || [];
 
-    const codesContent = isInviteCodeEnabled ? codes.join("\n") : '';
-
-    const content = firstTask?.postTwitterTaskConfig?.content
-      ?.replace(/{{code}}/g, codesContent)
-
     const link = `https://x.com/intent/post?${generateQueryString({
-      text: content || "",
+      text: firstTask?.postTwitterTaskConfig?.content?.replace('{{code}}', `?_c=${codes?.[0]}`) || "",
     })}`;
 
     window.open(link, "_blank");
