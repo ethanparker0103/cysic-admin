@@ -487,8 +487,9 @@ const BindAddress = () => {
         <div className="text-left mx-auto w-fit">
           <p className="mb-2">{t("notice")}</p>
           <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-            <li>{t("addressMustBeEVMAddress")}</li>
-            <li>{t("addressMustBeValidAddress")}</li>
+            <li>거래소 지갑이 아닌 개인 EVM 지갑 주소를 제출해주세요.</li>
+            <li>보상이 지급될 지갑이므로, 반드시 사용 가능한 주소를 제출해주세요.</li>
+            <li>지갑 분실로 인한 보상 미수령에 대해서는 팀이 책임질 수 없습니다.</li>
           </ul>
         </div>
       </div>
