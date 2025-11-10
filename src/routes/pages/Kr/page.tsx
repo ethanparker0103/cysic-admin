@@ -301,12 +301,12 @@ const Post = () => {
             </div>
           </div>
           <div className="text-left flex-1">
-            <p className="mb-2 text-lg">{t("instructions")}</p>
+            <p className="mb-2 text-lg">작업 가이드</p>
             <ul className="list-decimal list-inside text-sub/60 [&_li]:mb-2">
-              <li>{t("downloadImageUsingButton")}</li>
-              <li>{t("goToTwitterAndCreateNewPost")}</li>
-              <li>{t("uploadDownloadedImage")}</li>
-              <li>{t("postWithTitle")}</li>
+              <li>오른쪽 상단 저장 버튼을 클릭하여, 이미지를 저장해주세요</li>
+              <li>저장 옆 버튼을 클릭해서 트위터로 이동해주세요</li>
+              <li>해당 스크립트에서 이미지를 첨부해서 포스팅을 진행해주세요</li>
+              <li>포스팅된 링크를 아래 넣고 제출해주세요</li>
               {/* <li>{t('copyPostLinkAndPasteBelow')}</li> */}
             </ul>
 
