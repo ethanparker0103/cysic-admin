@@ -68,7 +68,11 @@ export const LoginPage = () => {
                     toast.success(t('inviteCodeBoundSuccessfully'));
                     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
                 } else {
-                    toast.error(response.msg || t('failedToBindInviteCode'));
+                    if(response.msg == 'Invite code max use times'){
+                        toast.error('초대코드 사용 완료. 다른 코드로 시도하세요!' || t('failedToBindInviteCode'));
+                      }else{
+                        toast.error(response.msg || t('failedToBindInviteCode'));          
+                      }
                 }
             } else {
                 localStorage.setItem('cysic_kr_invite_code', inviteCode.trim());
