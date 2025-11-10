@@ -77,7 +77,7 @@ const ConnectUs = () => {
               href={mediasLink.telegramKR}
               target="_blank"
               className="mx-auto w-full"
-              onClick={() => { setTooltipOpen(false); setTgClick(true)}}
+              onClick={() => { setTooltipOpen(false); setTgClick(true) }}
             >
               <Button className="w-full " type="light">
                 {t("openTelegram")}
@@ -125,7 +125,7 @@ const ConnectUs = () => {
                 href={mediasLink.twitter}
                 target="_blank"
                 className="mx-auto w-full"
-                onClick={() => { setTooltipOpen(false); setTwitterClick(true)}}
+                onClick={() => { setTooltipOpen(false); setTwitterClick(true) }}
               >
                 <Button className="w-full " type="light">
                   {t("followX", { handler: "@Cysic_xyz" })}
@@ -135,7 +135,7 @@ const ConnectUs = () => {
                 href={mediasLink.twitterKR}
                 target="_blank"
                 className="mx-auto w-full"
-                onClick={() => { setTooltipOpen(false); setTwitterKRClick(true)}}
+                onClick={() => { setTooltipOpen(false); setTwitterKRClick(true) }}
               >
                 <Button className="w-full " type="light">
                   {t("followX", { handler: "@Cysic_KR" })}
@@ -177,7 +177,8 @@ const ConnectUs = () => {
 const Post = () => {
   const { t } = useTranslation();
   const [postLink, setPostLink] = useState("");
-  const { firstTask, inviteCodes } = useKrActivity();
+  const { firstTask, inviteCodes, systemSetting } = useKrActivity();
+  const isInviteCodeEnabled = systemSetting?.enableInviteCode;
 
   const [pendingVisible, setPendingVisible] = useState(false);
 
@@ -212,12 +213,15 @@ const Post = () => {
   const handleOpenPost = () => {
     if (!firstTask?.postTwitterTaskConfig?.content) return;
 
-    const codes = inviteCodes
-    ?.filter((inviteCode: any) => inviteCode.available)
-    ?.map((inviteCode: any) => inviteCode.code) || [];
+    const codes = inviteCodes?.map((inviteCode: any) => inviteCode.code) || [];
+
+    const codesContent = isInviteCodeEnabled ? codes.join("\n") : '';
+
+    const content = firstTask?.postTwitterTaskConfig?.content
+      ?.replace(/{{code}}/g, codesContent)
 
     const link = `https://x.com/intent/post?${generateQueryString({
-      text: firstTask?.postTwitterTaskConfig?.content?.replace('{{code}}', codes?.[0]),
+      text: content || "",
     })}`;
 
     window.open(link, "_blank");
