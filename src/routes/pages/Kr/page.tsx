@@ -153,7 +153,7 @@ const ConnectUs = () => {
                 onClick={() => { setTooltipOpen(false); setRetweetClick(true) }}
               >
                 <Button className="w-full " type="light">
-                  좋알리
+                  Like And Retweet
                 </Button>
               </a>
           </CardBody>
