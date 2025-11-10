@@ -25,11 +25,13 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import i18n from "i18next";
 
+const retweetUrl = 'https://x.com/Cysic_KR/status/1987807782519873717'
 const ConnectUs = () => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tgClick, setTgClick] = useState(false);
   const [twitterClick, setTwitterClick] = useState(false);
   const [twitterKRClick, setTwitterKRClick] = useState(false);
+  const [retweetClick, setRetweetClick] = useState(false);
   const { t } = useTranslation();
   const [hasConnected, setHasConnected] = useState(false);
   const handleClick = () => {
@@ -120,7 +122,7 @@ const ConnectUs = () => {
             </>
           </CardHeader>
           <CardBody>
-            <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center justify-center gap-2">
               <a
                 href={mediasLink.twitter}
                 target="_blank"
@@ -142,8 +144,21 @@ const ConnectUs = () => {
                 </Button>
               </a>
             </div>
+
+
+            <a
+                href={retweetUrl}
+                target="_blank"
+                className="mx-auto w-full mt-2"
+                onClick={() => { setTooltipOpen(false); setRetweetClick(true) }}
+              >
+                <Button className="w-full " type="light">
+                  좋알리
+                </Button>
+              </a>
           </CardBody>
         </Card>
+
 
         <div className="mt-8 flex flex-col gap-2 mx-auto justify-center items-center">
           <Tooltip
@@ -154,7 +169,7 @@ const ConnectUs = () => {
             <Checkbox
               isSelected={hasConnected}
               onValueChange={(v) => {
-                if (!tgClick || !twitterClick || !twitterKRClick) {
+                if (!tgClick || !twitterClick || !twitterKRClick || !retweetClick) {
                   setTooltipOpen(true);
                   return;
                 }
@@ -582,7 +597,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">{t("step1")}</span>
+                  <span className="md:whitespace-nowrap">{t("step1")}</span>
                 </div>
               </div>
 
@@ -611,7 +626,7 @@ export const KRActivity = () => {
                       </div>
                     )}
                   </div>
-                  <span className="whitespace-nowrap">{t("step2")}</span>
+                  <span className="md:whitespace-nowrap">{t("step2")}</span>
                 </div>
               </div>
 
