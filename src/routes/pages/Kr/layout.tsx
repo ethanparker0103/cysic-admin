@@ -20,7 +20,7 @@ export const KrLayout = () => {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const lng = searchParams.get('lng') || 'kr';
-  
+
   // 监听URL参数变化，切换语言
   useEffect(() => {
     if (lng === 'en') {
@@ -179,10 +179,10 @@ export const KrLayout = () => {
         toast.success(t('inviteCodeBoundSuccessfully'));
         dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh_user_overview"));
       } else {
-        if(response.msg == 'Invite code max use times'){
+        if (response.msg == 'Invite code max use times') {
           toast.error('초대코드 사용 완료. 다른 코드로 시도하세요!' || t('failedToBindInviteCode'));
-        }else{
-          toast.error(response.msg || t('failedToBindInviteCode'));          
+        } else {
+          toast.error(response.msg || t('failedToBindInviteCode'));
         }
       }
     } catch (error) {
@@ -207,12 +207,6 @@ export const KrLayout = () => {
     if (token) {
       setAuthToken(token);
       removeParamFromUrl("_t");
-
-      // 检查是否有邀请码需要绑定
-      const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
-      if (storedInviteCode) {
-        bindInviteCodeAfterLogin(storedInviteCode);
-      }
 
       toast.success(t('loginSuccessful'));
     }
@@ -274,7 +268,15 @@ export const KrLayout = () => {
 
   useEffect(() => {
     if (authToken) {
-      initUserOverview();
+      initUserOverview().then(res => {
+        const inviterId = useKrActivity.getState().inviterId;
+        if (!inviterId || Number(inviterId) <= 0) {
+          const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
+          if (storedInviteCode) {
+            bindInviteCodeAfterLogin(storedInviteCode);
+          }
+        }
+      });
     }
   }, [authToken]);
 
@@ -298,11 +300,11 @@ export const KrLayout = () => {
   }, [authToken, inviterId, systemSetting?.enableInviteCode]);
 
 
-  useEffect(()=>{
-    if(window.location.pathname == '/kr/dashboard'){
-        if(!authToken || [EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) ||  !user?.address){
-            navigate("/kr");
-        }
+  useEffect(() => {
+    if (window.location.pathname == '/kr/dashboard') {
+      if (!authToken || [EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) || !user?.address) {
+        navigate("/kr");
+      }
     }
   }, [authToken, firstTask?.currentStatus, user?.address])
 
@@ -321,16 +323,16 @@ export const KrLayout = () => {
   }, [authToken, systemSetting?.enableInviteCode, inviterId, setState]);
 
   useEffect(() => {
-    if(authToken && window.location.pathname == '/kr'){
-        if([EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus)){
-            dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 1 }));
-        }else if(!user?.address){
-            dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
-        } 
+    if (authToken && window.location.pathname == '/kr') {
+      if ([EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus)) {
+        dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 1 }));
+      } else if (!user?.address) {
+        dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 3 }));
+      }
 
-        if(![EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) && user?.address){
-            dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
-        }
+      if (![EUserTaskStatus.UserTaskCompletionStatusIncomplete].includes(firstTask?.currentStatus) && user?.address) {
+        dispatchEvent(new CustomEvent("cysic_kr_next_step", { detail: 4 }));
+      }
     }
   }, [authToken, user?.address, firstTask?.currentStatus]);
 
