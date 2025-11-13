@@ -288,6 +288,7 @@ export const KrLayout = () => {
   useEffect(() => {
     if (authToken && systemSetting?.enableInviteCode !== undefined && !!user?.id) {
       const week = useKrActivity.getState().week;
+
       if (systemSetting?.enableInviteCode) {
         if (Number(inviterId) > 0) {
           loadFirstTask();
@@ -564,26 +565,27 @@ export const KrLayout = () => {
               {t('replyToFollowingTweet')}
             </p>
 
-            <Card className="p-4 rounded-[8px] overflow-auto">
-              <div className="flex flex-col gap-2">
+            {/* <Card className="p-4 rounded-[8px] overflow-auto"> */}
+              <div className="flex flex-col gap-2 text-sm text-sub">
                 {quoteTwitterIdRef.current && (
-                  <a
-                    href={
-                      quoteTwitterIdRef.current.startsWith("http")
-                        ? quoteTwitterIdRef.current
-                        : `https://x.com/${quoteTwitterIdRef.current}`
-                    }
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 text-sm break-all"
-                  >
-                    {quoteTwitterIdRef.current.startsWith("http")
-                      ? quoteTwitterIdRef.current
-                      : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
-                  </a>
+                  <p>해당 포스팅의 RT + LIKE + 댓글을 달아주세요</p>
+                  // <a
+                  //   href={
+                  //     quoteTwitterIdRef.current.startsWith("http")
+                  //       ? quoteTwitterIdRef.current
+                  //       : `https://x.com/${quoteTwitterIdRef.current}`
+                  //   }
+                  //   target="_blank"
+                  //   rel="noopener noreferrer"
+                  //   className="text-blue-400 hover:text-blue-300 text-sm break-all"
+                  // >
+                  //   {quoteTwitterIdRef.current.startsWith("http")
+                  //     ? quoteTwitterIdRef.current
+                  //     : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
+                  // </a>
                 )}
               </div>
-            </Card>
+            {/* </Card> */}
 
             <Button
               className="mb-4"
@@ -594,7 +596,7 @@ export const KrLayout = () => {
             </Button>
 
             <p className="text-white/80 text-sm">
-              {t('enterYourTweetUrl')}
+              포스팅의 댓글 링크를 첨부해주세요 (수정이 불가능합니다 주의하세요)
             </p>
 
             <Input

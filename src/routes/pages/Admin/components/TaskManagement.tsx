@@ -72,7 +72,7 @@ export const TASK_TYPE_LABELS = {
   [ETaskType.TaskTypeInvite]: 'Invite',
   [ETaskType.TaskTypeQuiz]: 'Quiz',
   [ETaskType.TaskTypePostTwitter]: 'Post',
-  [ETaskType.TaskTypeQuoteTwitter]: 'Quote',
+  [ETaskType.TaskTypeQuoteTwitter]: 'Comment',
   [ETaskType.TaskTypeRetweetAndLike]: 'Retweet&Like',
 };
 

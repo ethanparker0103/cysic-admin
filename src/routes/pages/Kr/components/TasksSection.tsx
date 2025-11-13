@@ -158,7 +158,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                             </div>
 
                                             <Button
-                                                disabled={!ifActive || dayjs(task.endAt * 1000).isBefore(dayjs()) || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusCompleted || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusPending}
+                                                disabled={!ifActive || dayjs().isBefore(dayjs(task.startAt * 1000)) || dayjs(task.endAt * 1000).isBefore(dayjs()) || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusCompleted || task.currentStatus == EUserTaskStatus.UserTaskCompletionStatusPending}
                                                 className="min-h-fit h-fit"
                                                 type="light"
                                                 onClick={() =>
@@ -169,7 +169,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
                                                     )
                                                 }
                                             >
-                                                {getTaskStatusText(task.currentStatus, task.taskType === ETaskType.TaskTypeQuoteTwitter ? t('quote') : task.taskType === ETaskType.TaskTypePostTwitter ? t('post') : undefined, t)}
+                                                {getTaskStatusText(task.currentStatus, task.taskType === ETaskType.TaskTypeQuoteTwitter ? t('comment') : task.taskType === ETaskType.TaskTypePostTwitter ? t('post') : undefined, t)}
                                             </Button>
                                         </>
                                     </GradientBorderCard>
