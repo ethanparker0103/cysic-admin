@@ -379,6 +379,7 @@ export const KrLayout = () => {
     toast.success(t('yourTweetIsNowUnderReviewing'));
 
     await sleep(1000);
+    setQuoteTwitterVisible(false);
     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
   };
 
