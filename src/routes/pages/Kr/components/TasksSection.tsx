@@ -55,7 +55,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
     const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `${t('week')} ${index + 1}` }))
 
     // 根据startAt分类
-    const formattedTaskMap = taskList?.sort((a,b)=>{return a.startAt - b.startAt}).reduce(
+    const formattedTaskMap = taskList?.sort((a, b) => { return a.startAt - b.startAt }).reduce(
         (acc: Record<string, Task[]>, task: Task) => {
             const startAt = (task.startAt * 1000).toString();
             if (!acc[startAt]) {
@@ -79,7 +79,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
 
                 <Select
                     items={weekSelects}
-                    classNames={{value: '!unbounded-24-200 ', innerWrapper: 'w-fit', trigger: 'w-fit !pr-10'}}
+                    classNames={{ value: '!unbounded-24-200 ', innerWrapper: 'w-fit', trigger: 'w-fit !pr-10' }}
                     className="[&_button]:p-0 w-[160px] flex items-center gap-1 [&_button]:!bg-transparent" defaultSelectedKeys={[week?.toString()]} value={[week?.toString()]} onChange={(e) => {
                         setState({ week: e.target.value.toString() })
                         dispatchEvent(new CustomEvent('cysic_kr_tasks_change_week'))
@@ -89,7 +89,13 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
             </div>
 
             <div className="relative mt-4 flex flex-col gap-6">
-                {loading ? (
+
+                {loading && taskList?.length ? (
+                    <div className="z-[10] absolute top-1/2 left-1/2 translate-x-1/2 translate-y-1/2 flex justify-center py-8">
+                        <Spinner size="lg" />
+                    </div>
+                ) : null}
+                {(loading && !taskList?.length) ? (
                     <div className="flex justify-center py-8">
                         <Spinner size="lg" />
                     </div>
