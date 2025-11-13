@@ -267,9 +267,14 @@ export const KrLayout = () => {
   }, []);
 
   useEffect(() => {
-    if (authToken) {
+    if (authToken && systemSetting?.enableInviteCode !== undefined) {
       initUserOverview().then(res => {
+
         const inviterId = useKrActivity.getState().inviterId;
+        const enableInviteCode = useKrActivity.getState().systemSetting?.enableInviteCode
+
+        if(!enableInviteCode) return;
+
         if (!inviterId || Number(inviterId) <= 0) {
           const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
           if (storedInviteCode) {
@@ -278,10 +283,10 @@ export const KrLayout = () => {
         }
       });
     }
-  }, [authToken]);
+  }, [authToken, systemSetting?.enableInviteCode]);
 
   useEffect(() => {
-    if (authToken && systemSetting?.enableInviteCode !== undefined) {
+    if (authToken && systemSetting?.enableInviteCode !== undefined && !!user?.id) {
       const week = useKrActivity.getState().week;
       if (systemSetting?.enableInviteCode) {
         if (Number(inviterId) > 0) {
@@ -297,7 +302,7 @@ export const KrLayout = () => {
         signIn();
       }
     }
-  }, [authToken, inviterId, systemSetting?.enableInviteCode]);
+  }, [authToken, inviterId, systemSetting?.enableInviteCode, user?.id]);
 
 
   useEffect(() => {
