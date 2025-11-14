@@ -148,15 +148,12 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                                 closeDelay={0}
                                 content={
                                     <div className="py-2 flex flex-col gap-1 text-white/80">
-                                        <span>{t('firstCheckInBadge')}</span>
+                                        <span className="mb-1">출석체크는 4주 캠페인이 종료된 시점, 포인트로 전환됩니다! </span>
                                         <span>
-                                            {t('sevenDayWarriorBadge')}
+                                            🏆 7일 연속 달성시, 추가 포인트가 제공됩니다
                                         </span>
                                         <span>
-                                            {t('thirtyDayChampionBadge')}
-                                        </span>
-                                        <span>
-                                            {t('hundredDayLegendBadge')}
+                                            👑 4주 연속 달성시, 개근상 스탬프가 제공됩니다
                                         </span>
                                     </div>
                                 }
@@ -242,7 +239,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                                         className={cn(
                                             "min-w-[40px] relative opacity-30 text-black bg-white flex flex-col gap-1 pt-1 items-center justify-center rounded-[6px] text-center aspect-[1/1.1] shadow-md",
                                             activeList.includes(item?.formatWithMonth) &&
-                                                "opacity-100 bg-white text-black shadow-lg",
+                                            "opacity-100 bg-white text-black shadow-lg",
                                             item.isToday && "ring-2 ring-blue-500"
                                         )}
                                     >
@@ -250,7 +247,7 @@ export const CheckInSection = ({ signInList, ifActive }: CheckInSectionProps) =>
                                         <span
                                             className={cn(
                                                 !activeList.includes(item?.formatWithMonth) &&
-                                                    "grayscale",
+                                                "grayscale",
                                                 ""
                                             )}
                                         >

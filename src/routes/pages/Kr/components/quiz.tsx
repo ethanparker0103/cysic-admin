@@ -1,130 +1,153 @@
-import { sleep } from "@/utils/tools";
 import React, { useState } from "react";
 import confetti from "canvas-confetti";
+import { taskApi } from "@/routes/pages/Kr/krApi";
+import { sleep } from "@/utils/tools";
+import Button from "@/components/Button";
+import { cn } from "@nextui-org/react";
 
 interface QuizItem {
     q: string;
     choice: string[];
-    a: number; // NOTE: your data appears to be 1-based (1..n). We'll convert to 0-based internally.
 }
 
 interface QuizsProps {
-    quizId: number;
-    quiz: QuizItem[];
-    onFinish?: (answer: string) => void;
-    autoAdvanceDelay?: number; // ms to wait after correct before advancing (default 600)
+    quizId: number; // 任务ID，用于提交答案
+    quiz: QuizItem[]; // 不再包含正确答案，后端评判
+    autoAdvanceDelay?: number; // 题内跳转延迟
+    setQuizVisible: (visible: boolean) => void;
 }
 
-const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, onFinish, autoAdvanceDelay = 300 }) => {
+let selectionsResult: any[] = [];
+
+const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible, autoAdvanceDelay = 300 }) => {
     const [current, setCurrent] = useState(0);
 
-    // status: 'idle' - 未答 / 可选
-    //         'wrong' - 已选错（展示错/对），等待用户点击正确答案
-    //         'correct' - 已选对，待跳转（短延迟）
-    const [status, setStatus] = useState<"idle" | "wrong" | "correct">("idle");
-    const [selectedWrongIdx, setSelectedWrongIdx] = useState<number | null>(null);
+    const [selections, setSelections] = useState<number[]>(
+        () => Array.isArray(quiz) ? new Array(Math.max(quiz.length, 0)).fill(0) : []
+    );
+    const [submitted, setSubmitted] = useState(false);
+    const [correctAnswers1Based, setCorrectAnswers1Based] = useState<number[] | null>(null);
+    const [loading, setLoading] = useState(false);
 
     const q = quiz[current];
     if (!q) return <div>No questions</div>;
 
-    // convert 1-based a to 0-based index safely
-    const correctIdx = Math.max(0, Math.min(q.choice.length - 1, q.a - 1));
+    const handleSubmitAll = async () => {
 
-    const goNext = async () => {
-        const next = current + 1;
-        if (next < quiz.length) {
-            setCurrent(next);
-            setStatus("idle");
-            setSelectedWrongIdx(null);
+        const answers1Based = selectionsResult.map((idx) => idx + 1);
+        try {
+            setLoading(true);
+            const resp = await taskApi.submitTask(quizId, JSON.stringify(answers1Based));
+            setSubmitted(true);
+
+            if (resp?.isRight) {
+                confetti({
+                    particleCount: 150,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                });
+            }
+
+            setCorrectAnswers1Based(JSON.parse(resp?.result as string));
+
+            dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+
+            setTimeout(async () => {
+                if (resp?.isRight) {
+                    setQuizVisible(false);
+                }
+            }, 1_200)
+
+
+        } catch (e) {
+            setSubmitted(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const goNext = async (fromIndex?: number) => {
+        const base = typeof fromIndex === "number" ? fromIndex : current;
+        const nextIndex = base + 1;
+        if (nextIndex < quiz.length) {
+            setCurrent(nextIndex);
         } else {
-
-            const answer = quiz.map(q=>q.a);
-
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-            })
-            
-            await onFinish?.(JSON.stringify(answer));
+            await handleSubmitAll();
         }
     };
 
-    const handleOptionClick = (idx: number) => {
-        if (status === "correct") return; // 在短延迟里防止重复点击
-        if (status === "idle") {
-            if (idx === correctIdx) {
-                // 直接答对：标绿并自动跳转（短延迟）
-                setStatus("correct");
-                setTimeout(goNext, autoAdvanceDelay);
-            } else {
-                // 第一次选错：标错 + 同时显示正确答案为绿色，但不跳题，等待用户点击正确答案
-                setSelectedWrongIdx(idx);
-                setStatus("wrong");
-            }
-            return;
-        }
-        if (status === "wrong") {
-            // 已经选错：只有点击正确答案才会进入下一题
-            if (idx === correctIdx) {
-                setStatus("correct");
-                setTimeout(goNext, autoAdvanceDelay);
-            } else {
-                // 点击其他错误选项时：可以切换错误高亮（可选），我们这里切换 selectedWrongIdx
-                setSelectedWrongIdx(idx);
-            }
-        }
+    const handleOptionClick = async (idx: number) => {
+        if (submitted) return; // 提交后不允许更改
+
+        setSelections((prev) => {
+            const nextSel = [...prev];
+            nextSel[current] = idx;
+            selectionsResult = nextSel
+            return nextSel;
+        });
+        await goNext(current);
     };
 
-    const optionClass = (idx: number) => {
-        // base
-        const base = "rounded-[8px] px-4 py-3 text-left border w-full";
-
-        if (status === "idle") {
-            return `${base} hover:bg-white/10`;
-        }
-
-        if (status === "correct") {
-            if (idx === correctIdx) return `${base} border-green-500 bg-green-500/10`;
-            return `${base} opacity-60`;
-        }
-
-        if (status === "wrong") {
-            if (idx === selectedWrongIdx) return `${base} border-red-500 bg-red-500/10`;
-            if (idx === correctIdx) return `${base} border-green-500 bg-green-500/10`;
-            return `${base} opacity-60`;
-        }
-
-        return base;
-    };
+    // 当前题目的用户选择与正确答案（0-based）
+    const userIdx = selections[current];
+    const correct1 = correctAnswers1Based?.[current];
+    const correctIdx = typeof correct1 === "number" ? correct1 - 1 : null;
 
     return (
         <div className="p-4">
-            <div className="text-sm text-gray-500">
-                Question {current + 1} / {quiz.length}
-            </div>
+            <>
+                <style>
+                    {`
+                    @keyframes quiz-shake {
+                      0% { transform: translateX(0); }
+                      20% { transform: translateX(-6px); }
+                      40% { transform: translateX(6px); }
+                      60% { transform: translateX(-4px); }
+                      80% { transform: translateX(4px); }
+                      100% { transform: translateX(0); }
+                    }
+                    .quiz-shake {
+                      animation: quiz-shake 0.4s ease-in-out;
+                      will-change: transform;
+                    }
+                    `}
+                </style>
+                <div className="text-sm text-gray-500">
+                    Question {current + 1} / {quiz.length}
+                </div>
 
-            <div className="mb-4 text-lg font-semibold">{q.q}</div>
+                <div className="mb-4 text-lg font-semibold">{q.q}</div>
 
-            <div className="flex flex-col gap-3">
-                {q.choice.map((ch, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => handleOptionClick(idx)}
-                        className={optionClass(idx)}
-                        aria-disabled={status === "correct"}
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-6 text-sm font-medium">{String.fromCharCode(65 + idx)}</div>
-                            <div className="flex-1 text-left">{ch}</div>
-                        </div>
-                    </button>
-                ))}
-            </div>
-
-            {status === "wrong" && (
-                <div className="mt-3 text-sm text-red-600">Wrong! — Please pick the right answer.</div>
-            )}
+                <div className="flex flex-col gap-3">
+                    {q.choice.map((ch, idx) => (
+                        <Button
+                            disabled={loading}
+                            type="solid"
+                            key={idx}
+                            onClick={() => handleOptionClick(idx)}
+                            className={cn(
+                                // 基础样式（按钮需要边框用于显示红/绿终态）
+                                "rounded-[8px] px-4 py-3 text-left border w-full hover:!bg-white/10",
+                                submitted && "pointer-events-none",
+                                // 提交后终态颜色：优先使用逐题正确答案
+                                submitted && correctIdx !== null && idx === correctIdx && idx === userIdx && "!border-green-500 !bg-green-500/10",
+                                submitted && correctIdx !== null && idx === correctIdx && idx !== userIdx && "!border-green-500 !bg-green-500/10 opacity-95",
+                                submitted && correctIdx !== null && idx === userIdx && userIdx !== correctIdx && "!border-red-500 !bg-red-500/10 quiz-shake",
+                                submitted && correctIdx !== null && idx !== correctIdx && idx !== userIdx && "opacity-60",
+                                // 若后端未提供逐题答案，仅弱化非选择项并弱绿色/白色边框提示所选
+                                submitted && correctIdx === null && idx === userIdx && "!border-white/60 !bg-white/10",
+                                submitted && correctIdx === null && idx !== userIdx && "opacity-60",
+                            )}
+                            aria-disabled={false}
+                        >
+                            <div className="flex items-center gap-3 w-full">
+                                <div className="w-6 text-sm font-medium">{String.fromCharCode(65 + idx)}</div>
+                                <div className="flex-1 text-left">{ch}</div>
+                            </div>
+                        </Button>
+                    ))}
+                </div>
+            </>
         </div>
     );
 };

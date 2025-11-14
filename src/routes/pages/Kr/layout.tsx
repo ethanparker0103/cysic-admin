@@ -116,28 +116,25 @@ export const KrLayout = () => {
       case "quiz":
         try {
           const quizStr = state.quizTaskConfig?.quiz || "";
-          const answerStr = state.quizTaskConfig?.answer || "";
 
-          let questions = [];
-          let answer = [];
+          let questions: unknown[] = [];
 
           try {
             questions = quizStr ? JSON.parse(quizStr) : [];
-            answer = answerStr ? JSON.parse(answerStr) : [];
           } catch (parseError) {
             console.error("JSON parse error:", parseError);
             const cleanedQuiz = quizStr.trim().replace(/^"(.*)"$/, "$1");
-            const cleanedAnswer = answerStr.trim().replace(/^"(.*)"$/, "$1");
             questions = cleanedQuiz ? JSON.parse(cleanedQuiz) : [];
-            answer = cleanedAnswer ? JSON.parse(cleanedAnswer) : [];
           }
 
           quizId.current = state.id;
-          quizRef.current = questions?.map((question: any, idx: number) => ({
-            q: question.q || question.question,
-            choice: question.choice || question.options,
-            a: answer[idx],
-          }));
+          quizRef.current = questions?.map((raw) => {
+            const question = raw as { q?: string; question?: string; choice?: string[]; options?: string[] };
+            return {
+              q: question.q || question.question,
+              choice: question.choice || question.options,
+            };
+          });
 
           setQuizVisible(true);
         } catch (error) {
@@ -268,7 +265,7 @@ export const KrLayout = () => {
 
   useEffect(() => {
     if (authToken && systemSetting?.enableInviteCode !== undefined) {
-      initUserOverview().then(res => {
+      initUserOverview().then(() => {
 
         const inviterId = useKrActivity.getState().inviterId;
         const enableInviteCode = useKrActivity.getState().systemSetting?.enableInviteCode
@@ -452,17 +449,9 @@ export const KrLayout = () => {
       >
         <>
           <Quizs
+            setQuizVisible={setQuizVisible}
             quizId={quizId.current}
             quiz={quizRef.current}
-            onFinish={async (answer: string) => {
-              await taskApi.submitTask(quizId.current, answer);
-              await taskApi.claimTask(quizId.current);
-
-              await sleep(1000);
-              setQuizVisible(false);
-
-              dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
-            }}
           />
         </>
       </Modal>
