@@ -401,14 +401,14 @@ export const KrLayout = () => {
   };
 
   const handleQuote = (tweetUrlOrContent: string) => {
-    const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
+    // const tweetId = extractTweetId(tweetUrlOrContent) || tweetUrlOrContent;
 
-    if (!tweetId) {
-      toast.error(t('invalidTwitterURLOrID'));
-      return;
-    }
+    // if (!tweetId) {
+    //   toast.error(t('invalidTwitterURLOrID'));
+    //   return;
+    // }
 
-    const replyUrl = `https://twitter.com/intent/tweet?in_reply_to=${tweetId}`;
+    const replyUrl = tweetUrlOrContent;
     window.open(replyUrl, "_blank");
   };
 
