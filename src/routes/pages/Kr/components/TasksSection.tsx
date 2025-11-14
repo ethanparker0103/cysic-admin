@@ -55,7 +55,7 @@ export const TasksSection = ({ taskList, loading, ifActive }: TasksSectionProps)
     const weekSelects = Array.from({ length: totalWeeks }, (_, index) => ({ key: (index + 1)?.toString(), label: `${t('week')} ${index + 1}` }))
 
     // 根据startAt分类
-    const formattedTaskMap = taskList?.sort((a, b) => { return a.startAt - b.startAt }).reduce(
+    const formattedTaskMap = taskList?.sort((a, b) => { return b.startAt - a.startAt }).reduce(
         (acc: Record<string, Task[]>, task: Task) => {
             const startAt = (task.startAt * 1000).toString();
             if (!acc[startAt]) {
