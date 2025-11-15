@@ -296,7 +296,9 @@ export const PendingTaskManagement = () => {
                     <TableCell>{task.taskType}</TableCell>
                     <TableCell>{task.userId}</TableCell>
                     <TableCell>{task.taskTitle}</TableCell>
-                    <TableCell className="max-w-xs truncate">{task.taskResult}</TableCell>
+                    <TableCell className="max-w-xs truncate">{
+                      task.taskResult?.startsWith('http') ? (<a href={task.taskResult} target='_blank'>{task.taskResult}</a>) : task.taskResult
+                      }</TableCell>
                     <TableCell>
                       <Chip
                         color={task.status === EUserTaskCompletionStatus.UserTaskCompletionStatusPending ? 'warning' : 'success'}
