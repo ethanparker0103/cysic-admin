@@ -346,10 +346,27 @@ export const taskApi = {
     }),
 
   // 获取待审核的 Twitter 任务
-  getPendingPostTwitterTasks: (page?: number, pageSize?: number): Promise<ListResponse<unknown>> =>
+  getPendingPostTwitterTasks: (params?: {
+    page?: number;
+    pageSize?: number;
+    taskType?: string;
+    taskStatus?: number;
+    taskGroupId?: number;
+    taskId?: number;
+    fromTime?: number;
+    toTime?: number;
+    userId?: number;
+  }): Promise<ListResponse<unknown>> =>
     request(`/socialtask/api/v1/admin/task/pendingPostTwitter?${new URLSearchParams({
-      ...(page && { page: page.toString() }),
-      ...(pageSize && { pageSize: pageSize.toString() }),
+      ...(params?.page && { page: params.page.toString() }),
+      ...(params?.pageSize && { pageSize: params.pageSize.toString() }),
+      ...(params?.taskType && { taskType: params.taskType }),
+      ...(params?.taskStatus && { taskStatus: params.taskStatus.toString() }),
+      ...(params?.taskGroupId && { taskGroupId: params.taskGroupId.toString() }),
+      ...(params?.taskId && { taskId: params.taskId.toString() }),
+      ...(params?.fromTime && { fromTime: params.fromTime.toString() }),
+      ...(params?.toTime && { toTime: params.toTime.toString() }),
+      ...(params?.userId && { userId: params.userId.toString() }),
     })}`),
 };
 

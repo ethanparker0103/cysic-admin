@@ -3,18 +3,13 @@ import { Card, CardBody, CardHeader, Spinner } from '@nextui-org/react';
 import { Button } from '@nextui-org/react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react';
 import { Chip } from '@nextui-org/react';
+import { Input, Select, SelectItem } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { taskApi } from '@/routes/pages/Admin/adminApi';
-import { EUserTaskCompletionStatus } from '@/routes/pages/Admin/interface';
-
-
-export enum ETaskStatus {
-  TaskStatusIncomplete = 0, // 未完成
-  TaskStatusPending = 1, // 待审核
-  TaskStatusWaitClaim = 2, // 待领取
-  TaskStatusCompleted = 3, // 已完成
-}
+import { EUserTaskCompletionStatus, ETaskType, ETaskStatus, EUserTaskStatus } from '@/routes/pages/Admin/interface';
+import { CustomDatePicker } from './Datepicker';
+import { TASK_TYPES } from '@/routes/pages/Admin/components/TaskManagement';
 
 interface PendingTask {
   id: number;
@@ -30,10 +25,45 @@ interface PendingTask {
 
 export const PendingTaskManagement = () => {
   const [pendingTasks, setPendingTasks] = useState<PendingTask[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [listLoading, setListLoading] = useState(false);
+  const [actionLoadingIds, setActionLoadingIds] = useState<Set<number>>(new Set());
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [filters, setFilters] = useState<{
+    taskType: string;
+    taskStatus: string;
+    taskGroupId: string;
+    taskId: string;
+    fromTime: number;
+    toTime: number;
+    userId: string;
+  }>({
+    taskType: '',
+    taskStatus: '',
+    taskGroupId: '',
+    taskId: '',
+    fromTime: 0,
+    toTime: 0,
+    userId: '',
+  });
+  const [appliedFilters, setAppliedFilters] = useState<{
+    taskType: string;
+    taskStatus: string;
+    taskGroupId: string;
+    taskId: string;
+    fromTime: number;
+    toTime: number;
+    userId: string;
+  }>({
+    taskType: '',
+    taskStatus: '',
+    taskGroupId: '',
+    taskId: '',
+    fromTime: 0,
+    toTime: 0,
+    userId: '',
+  });
   
   // Pending task details modal
   const { isOpen: isPendingDetailsOpen, onOpen: onPendingDetailsOpen, onOpenChange: onPendingDetailsOpenChange } = useDisclosure();
@@ -47,8 +77,18 @@ export const PendingTaskManagement = () => {
   // Load pending tasks
   const loadPendingTasks = useCallback(async () => {
     try {
-      setLoading(true);
-      const response = await taskApi.getPendingPostTwitterTasks(page, pageSize);
+      setListLoading(true);
+      const response = await taskApi.getPendingPostTwitterTasks({
+        page,
+        pageSize,
+        ...(appliedFilters.taskType && { taskType: appliedFilters.taskType }),
+        ...(appliedFilters.taskStatus && { taskStatus: parseInt(appliedFilters.taskStatus, 10) }),
+        ...(appliedFilters.taskGroupId && { taskGroupId: parseInt(appliedFilters.taskGroupId, 10) }),
+        ...(appliedFilters.taskId && { taskId: parseInt(appliedFilters.taskId, 10) }),
+        ...(appliedFilters.fromTime ? { fromTime: appliedFilters.fromTime } : {}),
+        ...(appliedFilters.toTime ? { toTime: appliedFilters.toTime } : {}),
+        ...(appliedFilters.userId && { userId: parseInt(appliedFilters.userId, 10) }),
+      });
       if (response.code === '200') {
         setPendingTasks(response.list as PendingTask[]);
         setTotal(parseInt(response.total));
@@ -57,14 +97,18 @@ export const PendingTaskManagement = () => {
       console.error('Failed to load pending tasks:', error);
       toast.error('Failed to load pending tasks');
     } finally {
-      setLoading(false);
+      setListLoading(false);
     }
-  }, [page, pageSize]);
+  }, [page, pageSize, appliedFilters]);
 
   // Approve task
   const approveTask = async (id: number) => {
     try {
-      setLoading(true);
+      setActionLoadingIds(prev => {
+        const next = new Set(prev);
+        next.add(id);
+        return next;
+      });
       const response = await taskApi.approveTask(id);
       if (response.code === '200') {
         toast.success('Task approved successfully');
@@ -77,7 +121,11 @@ export const PendingTaskManagement = () => {
       console.error('Failed to approve task:', error);
       toast.error('Failed to approve task');
     } finally {
-      setLoading(false);
+      setActionLoadingIds(prev => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
     }
   };
 
@@ -93,7 +141,7 @@ export const PendingTaskManagement = () => {
 
   return (
     <div className="space-y-6">
-      {loading && (
+      {listLoading && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center">
           <Spinner color="primary" size="lg" />
         </div>
@@ -106,6 +154,128 @@ export const PendingTaskManagement = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <h4 className="font-medium">Pending Twitter Post Tasks</h4>
+            </div>
+
+            {/* Filters */}
+            <div className="space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <Select
+                  label="Task Type"
+                  placeholder="All"
+                  selectedKeys={filters.taskType ? [filters.taskType] : []}
+                  onSelectionChange={(keys) => {
+                    const val = Array.from(keys)[0] as string;
+                    setFilters(prev => ({ ...prev, taskType: val || '' }));
+                  }}
+                >
+                  <SelectItem key="" value="">
+                    All
+                  </SelectItem>
+                  {(TASK_TYPES as any).map(t => (
+                    <SelectItem key={t.key} value={t.key}>
+                      {t.label}
+                    </SelectItem>
+                  ))}
+                </Select>
+
+                <Select
+                  label="Task Status"
+                  placeholder="All"
+                  selectedKeys={filters.taskStatus ? [filters.taskStatus] : []}
+                  onSelectionChange={(keys) => {
+                    const val = Array.from(keys)[0] as string;
+                    setFilters(prev => ({ ...prev, taskStatus: val || '' }));
+                  }}
+                >
+                  <SelectItem key="" value="">
+                    All
+                  </SelectItem>
+                  <SelectItem key={EUserTaskStatus.UserTaskCompletionStatusIncomplete.toString()} value={EUserTaskStatus.UserTaskCompletionStatusIncomplete.toString()}>
+                    Incomplete
+                  </SelectItem>
+                  <SelectItem key={EUserTaskStatus.UserTaskCompletionStatusPending.toString()} value={EUserTaskStatus.UserTaskCompletionStatusPending.toString()}>
+                    Pending
+                  </SelectItem>
+                  <SelectItem key={EUserTaskStatus.UserTaskCompletionStatusWaitClaim.toString()} value={EUserTaskStatus.UserTaskCompletionStatusWaitClaim.toString()}>
+                    Wait For Claim
+                  </SelectItem>
+                  <SelectItem key={EUserTaskStatus.UserTaskCompletionStatusCompleted.toString()} value={EUserTaskStatus.UserTaskCompletionStatusCompleted.toString()}>
+                    Completed
+                  </SelectItem>
+                </Select>
+
+                <Input
+                  type="number"
+                  label="Task Group ID"
+                  placeholder="Enter group id"
+                  value={filters.taskGroupId}
+                  onChange={(e) => setFilters(prev => ({ ...prev, taskGroupId: e.target.value }))}
+                />
+                <Input
+                  type="number"
+                  label="Task ID"
+                  placeholder="Enter task id"
+                  value={filters.taskId}
+                  onChange={(e) => setFilters(prev => ({ ...prev, taskId: e.target.value }))}
+                />
+                <Input
+                  type="number"
+                  label="User ID"
+                  placeholder="Enter user id"
+                  value={filters.userId}
+                  onChange={(e) => setFilters(prev => ({ ...prev, userId: e.target.value }))}
+                />
+                <CustomDatePicker
+                  label="From Time"
+                  value={filters.fromTime}
+                  onChange={(ts) => setFilters(prev => ({ ...prev, fromTime: ts }))}
+                  granularity="minute"
+                />
+                <CustomDatePicker
+                  label="To Time"
+                  value={filters.toTime}
+                  onChange={(ts) => setFilters(prev => ({ ...prev, toTime: ts }))}
+                  granularity="minute"
+                />
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  color="primary"
+                  variant="flat"
+                  onClick={() => {
+                    setPage(1);
+                    setAppliedFilters(filters);
+                  }}
+                >
+                  Search
+                </Button>
+                <Button
+                  variant="flat"
+                  onClick={() => {
+                    setPage(1);
+                    setFilters({
+                      taskType: '',
+                      taskStatus: '',
+                      taskGroupId: '',
+                      taskId: '',
+                      fromTime: 0,
+                      toTime: 0,
+                      userId: '',
+                    });
+                    setAppliedFilters({
+                      taskType: '',
+                      taskStatus: '',
+                      taskGroupId: '',
+                      taskId: '',
+                      fromTime: 0,
+                      toTime: 0,
+                      userId: '',
+                    });
+                  }}
+                >
+                  Reset
+                </Button>
+              </div>
             </div>
 
             <Table aria-label="Pending Task List">
@@ -152,7 +322,7 @@ export const PendingTaskManagement = () => {
                             color="success"
                             variant="flat"
                             onClick={() => approveTask(task.id)}
-                            isLoading={loading}
+                            isLoading={actionLoadingIds.has(task.id)}
                           >
                             Approve
                           </Button>
@@ -237,7 +407,7 @@ export const PendingTaskManagement = () => {
                       </div>
                       <div>
                         <label className="text-sm font-medium text-gray-500">Submitted At</label>
-                        <p className="text-sm">{formatTime(selectedPendingTask.createdAt)}</p>
+                        <p className="text-sm">{formatTime(selectedPendingTask.createdAt * 1000)}</p>
                       </div>
                     </div>
                   </>
@@ -251,7 +421,7 @@ export const PendingTaskManagement = () => {
                   <Button 
                     color="success" 
                     onPress={() => selectedPendingTask && approveTask(selectedPendingTask.id)}
-                    isLoading={loading}
+                    isLoading={selectedPendingTask ? actionLoadingIds.has(selectedPendingTask.id) : false}
                   >
                     Approve Task
                   </Button>
