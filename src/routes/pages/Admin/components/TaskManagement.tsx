@@ -44,6 +44,7 @@ interface Task {
   quoteTwitterTaskConfig?: { content: string };
   quizTaskConfig?: { quiz: string; answer: string };
   retweetAndLikeTwitterTaskConfig?: { content: string };
+  interactionNicknameTwitterTaskConfig?: { content: string };
   createdAt: number;
   updatedAt: number;
 }
@@ -59,13 +60,14 @@ interface Stamp {
   disabled: boolean;
 }
 
-const TASK_TYPES = [
+export const TASK_TYPES = [
   { key: ETaskType.TaskTypeInvite, label: 'Invite Task' },
   { key: ETaskType.TaskTypeQuiz, label: 'Quiz Task' },
   // { key: 'signIn', label: 'Sign-in Task' }, // 签到任务暂时保持原样，因为枚举中没有定义
   { key: ETaskType.TaskTypePostTwitter, label: 'Post Twitter Task' },
   { key: ETaskType.TaskTypeQuoteTwitter, label: 'Quote Twitter Task' },
   { key: ETaskType.TaskTypeRetweetAndLike, label: 'Retweet and Like Task' },
+  { key: ETaskType.TaskTypeInteractionNickname, label: 'Interaction With Nickname' },
 ];
 
 export const TASK_TYPE_LABELS = {
@@ -74,6 +76,7 @@ export const TASK_TYPE_LABELS = {
   [ETaskType.TaskTypePostTwitter]: 'Post',
   [ETaskType.TaskTypeQuoteTwitter]: 'Comment',
   [ETaskType.TaskTypeRetweetAndLike]: 'Retweet&Like',
+  [ETaskType.TaskTypeInteractionNickname]: 'Interaction',
 };
 
 
@@ -106,6 +109,7 @@ export const TaskManagement = () => {
     postTwitterTaskConfig: { content: '' },
     quoteTwitterTaskConfig: { content: '' },
     retweetAndLikeTwitterTaskConfig: { content: '' },
+    interactionNicknameTwitterTaskConfig: { content: '' },
     quizTaskConfig: { quiz: '', answer: '' },
   });
   const [uploading, setUploading] = useState(false);
@@ -368,6 +372,7 @@ export const TaskManagement = () => {
       postTwitterTaskConfig: { content: '' },
       quoteTwitterTaskConfig: { content: '' },
       retweetAndLikeTwitterTaskConfig: { content: '' },
+      interactionNicknameTwitterTaskConfig: { content: '' },
       quizTaskConfig: { quiz: '', answer: '' },
     });
     setEditingTask(null);
@@ -400,6 +405,7 @@ export const TaskManagement = () => {
         quoteTwitterTaskConfig: task.quoteTwitterTaskConfig || { content: '' },
         quizTaskConfig: quizConfig,
         retweetAndLikeTwitterTaskConfig: task.retweetAndLikeTwitterTaskConfig || { content: '' },
+        interactionNicknameTwitterTaskConfig: task.interactionNicknameTwitterTaskConfig || { content: '' },
       });
     } else {
       resetForm();
@@ -823,7 +829,7 @@ export const TaskManagement = () => {
                   />
                 )}
 
-{(taskForm.taskType === 'retweetAndLike') && (
+                {(taskForm.taskType === 'retweetAndLike') && (
                   <Textarea
                     label="Twitter Quote URL"
                     placeholder="Enter Twitter URL"
@@ -838,6 +844,20 @@ export const TaskManagement = () => {
                   />
                 )}
 
+                {(taskForm.taskType === 'interaction.nickname') && (
+                  <Textarea
+                    label="Interaction Nickname"
+                    placeholder="Enter interaction nickname"
+                    value={taskForm.interactionNicknameTwitterTaskConfig.content}
+                    onChange={(e) => setTaskForm(prev => ({
+                      ...prev,
+                      interactionNicknameTwitterTaskConfig: {
+                        ...prev.interactionNicknameTwitterTaskConfig,
+                        content: e.target.value
+                      }
+                    }))}
+                  />
+                )}
 
                 {taskForm.taskType === 'quiz' && (
                   <div className="space-y-4">

@@ -8,6 +8,14 @@ import { toast } from 'react-toastify';
 import { taskApi } from '@/routes/pages/Admin/adminApi';
 import { EUserTaskCompletionStatus } from '@/routes/pages/Admin/interface';
 
+
+export enum ETaskStatus {
+  TaskStatusIncomplete = 0, // 未完成
+  TaskStatusPending = 1, // 待审核
+  TaskStatusWaitClaim = 2, // 待领取
+  TaskStatusCompleted = 3, // 已完成
+}
+
 interface PendingTask {
   id: number;
   userId: number;

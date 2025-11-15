@@ -13,7 +13,8 @@ export enum ETaskType {
     TaskTypeInvite = "invite",
     TaskTypePostTwitter = "postTwitter",
     TaskTypeQuoteTwitter = "quoteTwitter",
-    TaskTypeRetweetAndLike = "retweetAndLike"
+    TaskTypeRetweetAndLike = "retweetAndLike",
+    TaskTypeInteractionNickname = "interaction.nickname",
 }
 
 // 任务状态常量
