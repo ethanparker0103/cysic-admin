@@ -183,7 +183,9 @@ export const TasksSection = ({
                       <Button
                         disabled={
                           task.currentStatus ==
-                          EUserTaskStatus.UserTaskCompletionStatusWaitClaim
+                            EUserTaskStatus.UserTaskCompletionStatusWaitClaim ||
+                          (EUserTaskStatus.UserTaskCompletionStatusCompleted &&
+                            task.taskType === ETaskType.TaskTypeQuiz)
                             ? false
                             : !ifActive ||
                               dayjs().isBefore(dayjs(task.startAt * 1000)) ||
@@ -201,10 +203,12 @@ export const TasksSection = ({
                             EUserTaskStatus.UserTaskCompletionStatusWaitClaim
                           ) {
                             const res = await taskApi.claimTask(task.id);
-                            dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+                            dispatchEvent(
+                              new CustomEvent("cysic_kr_tasks_refresh")
+                            );
 
-                            await sleep(1_000)
-                            
+                            await sleep(1_000);
+
                             if (res.code == "200") {
                               toast.success(res.msg);
                               return;
@@ -219,15 +223,23 @@ export const TasksSection = ({
                           }
                         }}
                       >
-                        {getTaskStatusText(
-                          task.currentStatus,
-                          task.taskType === ETaskType.TaskTypeQuoteTwitter
-                            ? t("comment")
-                            : task.taskType === ETaskType.TaskTypePostTwitter
-                            ? t("post")
-                            : undefined,
-                          t
-                        )}
+                        {task.taskType === ETaskType.TaskTypeQuiz &&
+                        task.currentStatus ==
+                          EUserTaskStatus.UserTaskCompletionStatusCompleted
+                          ? "Review"
+                          : getTaskStatusText(
+                              task.currentStatus,
+                              task.taskType === ETaskType.TaskTypeQuoteTwitter
+                                ? t("comment")
+                                : task.taskType ===
+                                  ETaskType.TaskTypeQuoteTwitter
+                                ? "Intergration"
+                                : task.taskType ===
+                                  ETaskType.TaskTypePostTwitter
+                                ? t("post")
+                                : undefined,
+                              t
+                            )}
                       </Button>
                     </>
                   </GradientBorderCard>

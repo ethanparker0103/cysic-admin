@@ -259,6 +259,9 @@ export interface Task {
   retweetAndLikeTwitterTaskConfig?: {
     content: string;
   };
+  interactionNicknameTwitterTaskConfig?: {
+    content: string;
+  };
 }
 
 // 任务相关接口

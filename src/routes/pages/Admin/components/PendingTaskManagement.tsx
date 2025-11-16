@@ -7,8 +7,8 @@ import { Input, Select, SelectItem } from '@nextui-org/react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 import { taskApi } from '@/routes/pages/Admin/adminApi';
-import { EUserTaskCompletionStatus, ETaskType, ETaskStatus, EUserTaskStatus } from '@/routes/pages/Admin/interface';
-import { CustomDatePicker } from './Datepicker';
+import { EUserTaskCompletionStatus, EUserTaskStatus } from '@/routes/pages/Admin/interface';
+import { CustomDateRangePicker } from './Datepicker';
 import { TASK_TYPES } from '@/routes/pages/Admin/components/TaskManagement';
 
 interface PendingTask {
@@ -30,6 +30,17 @@ export const PendingTaskManagement = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(10);
   const [total, setTotal] = useState(0);
+  // helpers: current month start/end in seconds
+  const getCurrentMonthRange = () => {
+    const nowDate = new Date();
+    const start = new Date(nowDate.getFullYear(), nowDate.getMonth(), 1, 0, 0, 0);
+    const end = new Date(nowDate.getFullYear(), nowDate.getMonth() + 1, 0, 23, 59, 59);
+    return {
+      from: Math.floor(start.getTime() / 1000),
+      to: Math.floor(end.getTime() / 1000),
+    };
+  };
+  const defaultMonth = getCurrentMonthRange();
   const [filters, setFilters] = useState<{
     taskType: string;
     taskStatus: string;
@@ -39,12 +50,12 @@ export const PendingTaskManagement = () => {
     toTime: number;
     userId: string;
   }>({
-    taskType: '',
-    taskStatus: '',
+    taskType: 'quoteTwitter',
+    taskStatus: '1',
     taskGroupId: '',
     taskId: '',
-    fromTime: 0,
-    toTime: 0,
+    fromTime: defaultMonth.from,
+    toTime: defaultMonth.to,
     userId: '',
   });
   const [appliedFilters, setAppliedFilters] = useState<{
@@ -56,12 +67,12 @@ export const PendingTaskManagement = () => {
     toTime: number;
     userId: string;
   }>({
-    taskType: '',
-    taskStatus: '',
+    taskType: 'quoteTwitter',
+    taskStatus: '1',
     taskGroupId: '',
     taskId: '',
-    fromTime: 0,
-    toTime: 0,
+    fromTime: defaultMonth.from,
+    toTime: defaultMonth.to,
     userId: '',
   });
   
@@ -78,6 +89,9 @@ export const PendingTaskManagement = () => {
   const loadPendingTasks = useCallback(async () => {
     try {
       setListLoading(true);
+      const timeParams = (appliedFilters.fromTime && appliedFilters.toTime)
+        ? { fromTime: appliedFilters.fromTime, toTime: appliedFilters.toTime }
+        : {};
       const response = await taskApi.getPendingPostTwitterTasks({
         page,
         pageSize,
@@ -85,8 +99,7 @@ export const PendingTaskManagement = () => {
         ...(appliedFilters.taskStatus && { taskStatus: parseInt(appliedFilters.taskStatus, 10) }),
         ...(appliedFilters.taskGroupId && { taskGroupId: parseInt(appliedFilters.taskGroupId, 10) }),
         ...(appliedFilters.taskId && { taskId: parseInt(appliedFilters.taskId, 10) }),
-        ...(appliedFilters.fromTime ? { fromTime: appliedFilters.fromTime } : {}),
-        ...(appliedFilters.toTime ? { toTime: appliedFilters.toTime } : {}),
+        ...timeParams,
         ...(appliedFilters.userId && { userId: parseInt(appliedFilters.userId, 10) }),
       });
       if (response.code === '200') {
@@ -161,17 +174,17 @@ export const PendingTaskManagement = () => {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                 <Select
                   label="Task Type"
-                  placeholder="All"
+                  placeholder={TASK_TYPES?.[3]?.label}
                   selectedKeys={filters.taskType ? [filters.taskType] : []}
                   onSelectionChange={(keys) => {
                     const val = Array.from(keys)[0] as string;
                     setFilters(prev => ({ ...prev, taskType: val || '' }));
                   }}
                 >
-                  <SelectItem key="" value="">
+                  {/* <SelectItem key="" value="">
                     All
-                  </SelectItem>
-                  {(TASK_TYPES as any).map(t => (
+                  </SelectItem> */}
+                  {TASK_TYPES.map((t: { key: string; label: string }) => (
                     <SelectItem key={t.key} value={t.key}>
                       {t.label}
                     </SelectItem>
@@ -180,16 +193,16 @@ export const PendingTaskManagement = () => {
 
                 <Select
                   label="Task Status"
-                  placeholder="All"
+                  placeholder="Pending"
                   selectedKeys={filters.taskStatus ? [filters.taskStatus] : []}
                   onSelectionChange={(keys) => {
                     const val = Array.from(keys)[0] as string;
                     setFilters(prev => ({ ...prev, taskStatus: val || '' }));
                   }}
                 >
-                  <SelectItem key="" value="">
+                  {/* <SelectItem key="" value="">
                     All
-                  </SelectItem>
+                  </SelectItem> */}
                   <SelectItem key={EUserTaskStatus.UserTaskCompletionStatusIncomplete.toString()} value={EUserTaskStatus.UserTaskCompletionStatusIncomplete.toString()}>
                     Incomplete
                   </SelectItem>
@@ -225,17 +238,13 @@ export const PendingTaskManagement = () => {
                   value={filters.userId}
                   onChange={(e) => setFilters(prev => ({ ...prev, userId: e.target.value }))}
                 />
-                <CustomDatePicker
-                  label="From Time"
-                  value={filters.fromTime}
-                  onChange={(ts) => setFilters(prev => ({ ...prev, fromTime: ts }))}
-                  granularity="minute"
-                />
-                <CustomDatePicker
-                  label="To Time"
-                  value={filters.toTime}
-                  onChange={(ts) => setFilters(prev => ({ ...prev, toTime: ts }))}
-                  granularity="minute"
+                <CustomDateRangePicker
+                  label="Time Range"
+                  from={filters.fromTime}
+                  to={filters.toTime}
+                  onChange={(fromTs, toTs) => setFilters(prev => ({ ...prev, fromTime: fromTs, toTime: toTs }))}
+                  granularity="second"
+                  className="col-span-1 md:col-span-2"
                 />
               </div>
               <div className="flex gap-2">
@@ -244,7 +253,13 @@ export const PendingTaskManagement = () => {
                   variant="flat"
                   onClick={() => {
                     setPage(1);
-                    setAppliedFilters(filters);
+                    // ensure time params pass together
+                    const next = { ...filters };
+                    if (!(filters.fromTime && filters.toTime)) {
+                      next.fromTime = 0;
+                      next.toTime = 0;
+                    }
+                    setAppliedFilters(next);
                   }}
                 >
                   Search
@@ -254,21 +269,21 @@ export const PendingTaskManagement = () => {
                   onClick={() => {
                     setPage(1);
                     setFilters({
-                      taskType: '',
-                      taskStatus: '',
+                      taskType: 'quoteTwitter',
+                      taskStatus: '1',
                       taskGroupId: '',
                       taskId: '',
-                      fromTime: 0,
-                      toTime: 0,
+                      fromTime: defaultMonth.from,
+                      toTime: defaultMonth.to,
                       userId: '',
                     });
                     setAppliedFilters({
-                      taskType: '',
-                      taskStatus: '',
+                      taskType: 'quoteTwitter',
+                      taskStatus: '1',
                       taskGroupId: '',
                       taskId: '',
-                      fromTime: 0,
-                      toTime: 0,
+                      fromTime: defaultMonth.from,
+                      toTime: defaultMonth.to,
                       userId: '',
                     });
                   }}

@@ -5,8 +5,9 @@ import { useEventListener } from "ahooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { inviteCodeApi, signInApi, stampApi, Task, taskApi } from "./krApi";
+import { uploadApi } from "@/routes/pages/Admin/adminApi";
 import { toast } from "react-toastify";
-import { EUserTaskStatus } from "@/routes/pages/Admin/interface";
+import { ETaskType, EUserTaskStatus } from "@/routes/pages/Admin/interface";
 import { FIRST_TASK_ID } from "@/routes/pages/Kr/config";
 import dayjs from "dayjs";
 import { generateQueryString, sleep } from "@/utils/tools";
@@ -35,6 +36,7 @@ export const KrLayout = () => {
   const quizRef = useRef<any>(null);
   const retweetAndLikeTwitterContentRef = useRef<any>("");
   const postTwitterContentRef = useRef<any>("");
+  const interactionNicknameContentRef = useRef<any>("");
   const quoteTwitterIdRef = useRef<any>("");
   const inviteCodesRef = useRef<string[]>([]);
   const [quizVisible, setQuizVisible] = useState<boolean>(false);
@@ -43,10 +45,14 @@ export const KrLayout = () => {
     useState(false);
   const [quoteTwitterVisible, setQuoteTwitterVisible] = useState(false);
   const [postTwitterVisible, setPostTwitterVisible] = useState(false);
-
+  const [interactionNicknameVisible, setInteractionNicknameVisible] = useState(false);
   const [postTwitterUrl, setPostTwitterUrl] = useState("");
   const [quoteTwitterUrl, setQuoteTwitterUrl] = useState("");
   const [retweetAndLikeTwitterUrl, setRetweetAndLikeTwitterUrl] = useState("");
+  const [interactionNicknameUrl, setInteractionNicknameUrl] = useState("");
+  const [interactionNicknameImageUrl, setInteractionNicknameImageUrl] = useState("");
+  const [interactionNicknameUploading, setInteractionNicknameUploading] = useState(false);
+  const interactionImageInputRef = useRef<HTMLInputElement | null>(null);
 
   const {
     user,
@@ -76,7 +82,7 @@ export const KrLayout = () => {
     const state = customEvent?.detail as Task;
 
     if (
-      state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusCompleted
+      state.currentStatus === EUserTaskStatus.UserTaskCompletionStatusCompleted && state.taskType != ETaskType.TaskTypeQuiz
     ) {
       return;
     }
@@ -97,6 +103,11 @@ export const KrLayout = () => {
 
     taskId.current = state.id;
     switch (state.taskType) {
+      case "interaction.nickname": {
+        interactionNicknameContentRef.current = state.interactionNicknameTwitterTaskConfig?.content;
+        setInteractionNicknameVisible(true);
+        break;
+      }
       case "postTwitter": {
         postTwitterContentRef.current = state.postTwitterTaskConfig?.content;
         setPostTwitterVisible(true);
@@ -116,23 +127,38 @@ export const KrLayout = () => {
       case "quiz":
         try {
           const quizStr = state.quizTaskConfig?.quiz || "";
+          const answerStr = state.quizTaskConfig?.answer || "";
+          const taskResultStr = state.taskResult || ""
 
           let questions: unknown[] = [];
+          let answer: unknown[] = [];
+          let taskResult: unknown[] = [];
 
           try {
             questions = quizStr ? JSON.parse(quizStr) : [];
+            answer = answerStr ? JSON.parse(answerStr) : [];
+            taskResult = taskResultStr ? JSON.parse(taskResultStr) : [];
           } catch (parseError) {
             console.error("JSON parse error:", parseError);
             const cleanedQuiz = quizStr.trim().replace(/^"(.*)"$/, "$1");
             questions = cleanedQuiz ? JSON.parse(cleanedQuiz) : [];
+
+            const cleanedAnswer = answerStr.trim().replace(/^"(.*)"$/, "$1");
+            answer = cleanedAnswer ? JSON.parse(cleanedAnswer) : [];
+
+            const cleanedTaskResult = taskResultStr.trim().replace(/^"(.*)"$/, "$1");
+            taskResult = cleanedTaskResult ? JSON.parse(cleanedTaskResult) : [];
+
           }
 
           quizId.current = state.id;
-          quizRef.current = questions?.map((raw) => {
+          quizRef.current = questions?.map((raw, index) => {
             const question = raw as { q?: string; question?: string; choice?: string[]; options?: string[] };
             return {
               q: question.q || question.question,
               choice: question.choice || question.options,
+              a: answer?.[index] || "",
+              taskResult: taskResult?.[index] || ""
             };
           });
 
@@ -211,6 +237,8 @@ export const KrLayout = () => {
 
   const loadFirstTask = async () => {
     try {
+      setState({tweetUnderReview: false});
+      return;
       const response = await taskApi.getTaskList(FIRST_TASK_ID);
       if (response.code === "200") {
         setState({
@@ -439,6 +467,53 @@ export const KrLayout = () => {
     dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
   };
 
+  const handleUploadInteractionImage = async (file: File) => {
+    if (!file) return;
+    if (interactionNicknameUploading) return;
+    if (file.size > 1024 * 1024) {
+      toast.error("이미지 크기는 1MB 미만이어야 합니다");
+      // reset input so selecting the same file again will trigger change
+      if (interactionImageInputRef.current) interactionImageInputRef.current.value = "";
+      return;
+    }
+    try {
+      setInteractionNicknameUploading(true);
+      const res = await uploadApi.upload(file);
+      if (res.code === "200" && res.fileUrl) {
+        setInteractionNicknameImageUrl(res.fileUrl);
+        toast.success("이미지가 업로드되었습니다");
+      } else {
+        setInteractionNicknameImageUrl("");
+        toast.error(res.msg || "이미지 업로드 실패");
+      }
+    } catch (e) {
+      setInteractionNicknameImageUrl("");
+      toast.error("이미지 업로드 실패");
+    } finally {
+      setInteractionNicknameUploading(false);
+      // always clear the file input to allow re-selecting the same file
+      if (interactionImageInputRef.current) interactionImageInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmitInteractionNickname = async () => {
+    if (!interactionNicknameUrl) {
+      toast.error("링크를 입력해주세요");
+      return;
+    }
+    const payload =
+      interactionNicknameImageUrl
+        ? `${interactionNicknameUrl}\n${interactionNicknameImageUrl}`
+        : interactionNicknameUrl;
+    await taskApi.submitTask(taskId.current, payload);
+    toast.success("제출되었습니다. 검토 중입니다");
+    await sleep(1000);
+    setInteractionNicknameVisible(false);
+    setInteractionNicknameUrl("");
+    setInteractionNicknameImageUrl("");
+    dispatchEvent(new CustomEvent("cysic_kr_tasks_refresh"));
+  };
+
   return (
     <>
       <Modal
@@ -653,6 +728,85 @@ export const KrLayout = () => {
               {t('retweetLike')}
             </Button>
           </div>
+        </>
+      </Modal>
+
+      {/* changeNickname */}
+      <Modal
+        isOpen={interactionNicknameVisible}
+        onClose={() => {
+          setInteractionNicknameVisible(false);
+          setInteractionNicknameUrl("");
+          setInteractionNicknameImageUrl("");
+          interactionNicknameContentRef.current = "";
+        }}
+        title={"닉네임 변경"}
+        className="max-w-[400px]"
+      >
+        <>
+        <div className="flex flex-col gap-2">
+          <p className="text-white/80 text-sm">
+            아래 안내에 따라 닉네임을 변경하고, 확인 가능한 링크를 첨부해주세요.
+          </p>
+
+          {interactionNicknameContentRef.current ? (
+            <Card className="p-4 rounded-[8px]">
+              {interactionNicknameContentRef.current}
+            </Card>
+          ) : null}
+
+          <p className="text-white/80 text-sm mt-2">
+            닉네임 변경 후 확인 가능한 링크를 입력해주세요
+          </p>
+          <Input
+            placeholder="https://x.com/..."
+            value={interactionNicknameUrl}
+            onValueChange={setInteractionNicknameUrl}
+          />
+
+          <p className="text-white/80 text-sm mt-2">
+            선택 사항: 스크린샷 이미지를 업로드할 수 있습니다 (1MB 미만)
+          </p>
+          <input
+            id="interaction-image-upload"
+            type="file"
+            accept="image/*"
+            className="hidden"
+            ref={interactionImageInputRef}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) handleUploadInteractionImage(file);
+            }}
+          />
+          <label
+            htmlFor="interaction-image-upload"
+            className={`border-2 border-dashed border-white/25 hover:border-white/40 rounded-lg p-4 transition-colors flex items-center justify-center min-h-[160px] bg-white/5 hover:bg-white/10 ${interactionNicknameUploading ? "opacity-70 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
+          >
+            {interactionNicknameImageUrl ? (
+              <img
+                src={interactionNicknameImageUrl}
+                alt="screenshot"
+                className="rounded max-h-[280px] object-contain w-full"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-center text-white/70">
+                <div className="text-sm">
+                  {interactionNicknameUploading ? "업로드 중..." : "여기를 클릭하여 이미지를 업로드하세요"}
+                </div>
+                <div className="text-xs text-white/50 mt-1">(1MB 미만, PNG/JPG 등 이미지 파일)</div>
+              </div>
+            )}
+          </label>
+
+          <Button
+            className="mt-2"
+            type="light"
+            disabled={!interactionNicknameUrl}
+            onClick={handleSubmitInteractionNickname}
+          >
+            제출
+          </Button>
+        </div>
         </>
       </Modal>
 

@@ -1,33 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { taskApi } from "@/routes/pages/Kr/krApi";
-import { sleep } from "@/utils/tools";
 import Button from "@/components/Button";
 import { cn } from "@nextui-org/react";
 
 interface QuizItem {
     q: string;
     choice: string[];
+    a?: string;
+    taskResult?: string;
 }
 
 interface QuizsProps {
     quizId: number; // 任务ID，用于提交答案
     quiz: QuizItem[]; // 不再包含正确答案，后端评判
-    autoAdvanceDelay?: number; // 题内跳转延迟
     setQuizVisible: (visible: boolean) => void;
 }
 
-let selectionsResult: any[] = [];
+let selectionsResult: number[] = [];
 
-const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible, autoAdvanceDelay = 300 }) => {
+const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible }) => {
     const [current, setCurrent] = useState(0);
 
     const [selections, setSelections] = useState<number[]>(
-        () => Array.isArray(quiz) ? new Array(Math.max(quiz.length, 0)).fill(0) : []
+        () => Array.isArray(quiz) ? new Array(Math.max(quiz.length, 0)).fill(-1) : []
     );
     const [submitted, setSubmitted] = useState(false);
     const [correctAnswers1Based, setCorrectAnswers1Based] = useState<number[] | null>(null);
     const [loading, setLoading] = useState(false);
+    const [readonlyMode, setReadonlyMode] = useState(false); // 仅在弹窗“打开时”根据是否存在 a 决定只读
+
+    // 已答阅模式：如果题目存在 a（后端返回已答），进入只读查看正确答案
+    useEffect(() => {
+        const hasAnswered = Array.isArray(quiz) && quiz.length > 0 && quiz.every((q) => typeof q.a !== "undefined" && q.a !== null && q.a !== "");
+        if (hasAnswered) {
+            const answers = quiz.map((q) => {
+                const val = typeof q.a === "number" ? q.a : parseInt(String(q.a), 10);
+                return isNaN(val) ? 0 : val;
+            });
+            setCorrectAnswers1Based(answers);
+            setReadonlyMode(true);
+            setSubmitted(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const q = quiz[current];
     if (!q) return <div>No questions</div>;
@@ -77,7 +93,7 @@ const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible, autoAdvance
     };
 
     const handleOptionClick = async (idx: number) => {
-        if (submitted) return; // 提交后不允许更改
+        if (submitted) return; // 只读或提交后不允许更改
 
         setSelections((prev) => {
             const nextSel = [...prev];
@@ -92,6 +108,8 @@ const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible, autoAdvance
     const userIdx = selections[current];
     const correct1 = correctAnswers1Based?.[current];
     const correctIdx = typeof correct1 === "number" ? correct1 - 1 : null;
+    // 只读展示答案的判断严格依赖“打开时”的判定，不随接口刷新改变
+    const readOnlyShowAnswers = readonlyMode;
 
     return (
         <div className="p-4">
@@ -132,8 +150,9 @@ const Quizs: React.FC<QuizsProps> = ({ quizId, quiz, setQuizVisible, autoAdvance
                                 // 提交后终态颜色：优先使用逐题正确答案
                                 submitted && correctIdx !== null && idx === correctIdx && idx === userIdx && "!border-green-500 !bg-green-500/10",
                                 submitted && correctIdx !== null && idx === correctIdx && idx !== userIdx && "!border-green-500 !bg-green-500/10 opacity-95",
-                                submitted && correctIdx !== null && idx === userIdx && userIdx !== correctIdx && "!border-red-500 !bg-red-500/10 quiz-shake",
-                                submitted && correctIdx !== null && idx !== correctIdx && idx !== userIdx && "opacity-60",
+                                // 已答阅（只读）模式下，不展示红色错误高亮；仅高亮正确项并弱化其它
+                                !readOnlyShowAnswers && submitted && correctIdx !== null && idx === userIdx && userIdx !== correctIdx && "!border-red-500 !bg-red-500/10 quiz-shake",
+                                submitted && correctIdx !== null && idx !== correctIdx && (readOnlyShowAnswers || idx !== userIdx) && "opacity-60",
                                 // 若后端未提供逐题答案，仅弱化非选择项并弱绿色/白色边框提示所选
                                 submitted && correctIdx === null && idx === userIdx && "!border-white/60 !bg-white/10",
                                 submitted && correctIdx === null && idx !== userIdx && "opacity-60",
