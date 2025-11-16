@@ -237,8 +237,8 @@ export const KrLayout = () => {
 
   const loadFirstTask = async () => {
     try {
-      setState({tweetUnderReview: false});
-      return;
+      // setState({tweetUnderReview: false});
+      // return;
       const response = await taskApi.getTaskList(FIRST_TASK_ID);
       if (response.code === "200") {
         setState({
@@ -501,7 +501,7 @@ export const KrLayout = () => {
       toast.error("링크를 입력해주세요");
       return;
     }
-    
+
     await taskApi.submitTask(taskId.current, interactionNicknameUrl, interactionNicknameImageUrl);
     toast.success("제출되었습니다. 검토 중입니다");
     await sleep(1000);
