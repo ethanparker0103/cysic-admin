@@ -226,11 +226,11 @@ export const KrLayout = () => {
       toast.success(t('inviteCodeReceived'));
     }
 
-    if(token == 'invalid'){
+    if (token == 'invalid') {
       removeParamFromUrl("_t");
 
       toast.error('Cysic 한국 온보딩 캠페인 사전등록 및 추가캠페인 참여등록이 마감되었습니다!');
-    }else if (token) {
+    } else if (token) {
       setAuthToken(token);
       removeParamFromUrl("_t");
 
@@ -301,7 +301,7 @@ export const KrLayout = () => {
         const inviterId = useKrActivity.getState().inviterId;
         const enableInviteCode = useKrActivity.getState().systemSetting?.enableInviteCode
 
-        if(!enableInviteCode) return;
+        if (!enableInviteCode) return;
 
         if (!inviterId || Number(inviterId) <= 0) {
           const storedInviteCode = localStorage.getItem("cysic_kr_invite_code");
@@ -631,25 +631,25 @@ export const KrLayout = () => {
             </p>
 
             {/* <Card className="p-4 rounded-[8px] overflow-auto"> */}
-              <div className="flex flex-col gap-2 text-sm text-sub">
-                {quoteTwitterIdRef.current && (
-                  <p>해당 포스팅의 RT + LIKE + 댓글을 달아주세요</p>
-                  // <a
-                  //   href={
-                  //     quoteTwitterIdRef.current.startsWith("http")
-                  //       ? quoteTwitterIdRef.current
-                  //       : `https://x.com/${quoteTwitterIdRef.current}`
-                  //   }
-                  //   target="_blank"
-                  //   rel="noopener noreferrer"
-                  //   className="text-blue-400 hover:text-blue-300 text-sm break-all"
-                  // >
-                  //   {quoteTwitterIdRef.current.startsWith("http")
-                  //     ? quoteTwitterIdRef.current
-                  //     : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
-                  // </a>
-                )}
-              </div>
+            <div className="flex flex-col gap-2 text-sm text-sub">
+              {quoteTwitterIdRef.current && (
+                <p>해당 포스팅의 RT + LIKE + 댓글을 달아주세요</p>
+                // <a
+                //   href={
+                //     quoteTwitterIdRef.current.startsWith("http")
+                //       ? quoteTwitterIdRef.current
+                //       : `https://x.com/${quoteTwitterIdRef.current}`
+                //   }
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                //   className="text-blue-400 hover:text-blue-300 text-sm break-all"
+                // >
+                //   {quoteTwitterIdRef.current.startsWith("http")
+                //     ? quoteTwitterIdRef.current
+                //     : `View tweet: https://x.com/${quoteTwitterIdRef.current}`}
+                // </a>
+              )}
+            </div>
             {/* </Card> */}
 
             <Button
@@ -740,73 +740,73 @@ export const KrLayout = () => {
           setInteractionNicknameImageUrl("");
           interactionNicknameContentRef.current = "";
         }}
-        title={"닉네임 변경"}
+        title={"트위터 닉네임 변경 미션"}
         className="max-w-[400px]"
       >
         <>
-        <div className="flex flex-col gap-2">
-          <p className="text-white/80 text-sm">
-            아래 안내에 따라 닉네임을 변경하고, 확인 가능한 링크를 첨부해주세요.
-          </p>
+          <div className="flex flex-col gap-2">
+            <p className="text-white/80 text-sm">
+              여러분들의 닉네임에, 싸이식을 추가하고, 프로필 링크 및 스크린샷을 첨부해 주세요
+            </p>
 
-          {interactionNicknameContentRef.current ? (
-            <Card className="p-4 rounded-[8px]">
-              {interactionNicknameContentRef.current}
-            </Card>
-          ) : null}
+            {interactionNicknameContentRef.current ? (
+              <Card className="p-4 rounded-[8px]">
+                {interactionNicknameContentRef.current}
+              </Card>
+            ) : null}
 
-          <p className="text-white/80 text-sm mt-2">
-            닉네임 변경 후 확인 가능한 링크를 입력해주세요
-          </p>
-          <Input
-            placeholder="https://x.com/..."
-            value={interactionNicknameUrl}
-            onValueChange={setInteractionNicknameUrl}
-          />
+            <p className="text-white/80 text-sm mt-2">
+              닉네임을 추가한 트위터링크를 입력해주세요
+            </p>
+            <Input
+              placeholder="https://x.com/..."
+              value={interactionNicknameUrl}
+              onValueChange={setInteractionNicknameUrl}
+            />
 
-          <p className="text-white/80 text-sm mt-2">
-            선택 사항: 스크린샷 이미지를 업로드할 수 있습니다 (1MB 미만)
-          </p>
-          <input
-            id="interaction-image-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            ref={interactionImageInputRef}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              if (file) handleUploadInteractionImage(file);
-            }}
-          />
-          <label
-            htmlFor="interaction-image-upload"
-            className={`border-2 border-dashed border-white/25 hover:border-white/40 rounded-lg p-4 transition-colors flex items-center justify-center min-h-[160px] bg-white/5 hover:bg-white/10 ${interactionNicknameUploading ? "opacity-70 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
-          >
-            {interactionNicknameImageUrl ? (
-              <img
-                src={interactionNicknameImageUrl}
-                alt="screenshot"
-                className="rounded max-h-[280px] object-contain w-full"
-              />
-            ) : (
-              <div className="flex flex-col items-center justify-center text-center text-white/70">
-                <div className="text-sm">
-                  {interactionNicknameUploading ? "업로드 중..." : "여기를 클릭하여 이미지를 업로드하세요"}
+            <p className="text-white/80 text-sm mt-2">
+              변경한 닉네임 스크린샷을 업로드해주세요
+            </p>
+            <input
+              id="interaction-image-upload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={interactionImageInputRef}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleUploadInteractionImage(file);
+              }}
+            />
+            <label
+              htmlFor="interaction-image-upload"
+              className={`border-2 border-dashed border-white/25 hover:border-white/40 rounded-lg p-4 transition-colors flex items-center justify-center min-h-[160px] bg-white/5 hover:bg-white/10 ${interactionNicknameUploading ? "opacity-70 cursor-not-allowed pointer-events-none" : "cursor-pointer"}`}
+            >
+              {interactionNicknameImageUrl ? (
+                <img
+                  src={interactionNicknameImageUrl}
+                  alt="screenshot"
+                  className="rounded max-h-[280px] object-contain w-full"
+                />
+              ) : (
+                <div className="flex flex-col items-center justify-center text-center text-white/70">
+                  <div className="text-sm">
+                    {interactionNicknameUploading ? "업로드 중..." : "여기를 클릭하여 이미지를 업로드하세요"}
+                  </div>
+                  <div className="text-xs text-white/50 mt-1">(1MB 미만, PNG/JPG 등 이미지 파일)</div>
                 </div>
-                <div className="text-xs text-white/50 mt-1">(1MB 미만, PNG/JPG 등 이미지 파일)</div>
-              </div>
-            )}
-          </label>
+              )}
+            </label>
 
-          <Button
-            className="mt-2"
-            type="light"
-            disabled={!interactionNicknameUrl}
-            onClick={handleSubmitInteractionNickname}
-          >
-            제출
-          </Button>
-        </div>
+            <Button
+              className="mt-2"
+              type="light"
+              disabled={!interactionNicknameUrl}
+              onClick={handleSubmitInteractionNickname}
+            >
+              제출
+            </Button>
+          </div>
         </>
       </Modal>
 
