@@ -501,11 +501,8 @@ export const KrLayout = () => {
       toast.error("링크를 입력해주세요");
       return;
     }
-    const payload =
-      interactionNicknameImageUrl
-        ? `${interactionNicknameUrl}\n${interactionNicknameImageUrl}`
-        : interactionNicknameUrl;
-    await taskApi.submitTask(taskId.current, payload);
+    
+    await taskApi.submitTask(taskId.current, interactionNicknameUrl, interactionNicknameImageUrl);
     toast.success("제출되었습니다. 검토 중입니다");
     await sleep(1000);
     setInteractionNicknameVisible(false);

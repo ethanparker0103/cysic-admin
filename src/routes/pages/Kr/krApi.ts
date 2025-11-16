@@ -291,10 +291,10 @@ export const taskApi = {
     ),
 
   // 提交任务
-  submitTask: (taskId: number, result: string): Promise<ApiResponse> =>
+  submitTask: (taskId: number, result: string, relatedUrl?: string): Promise<ApiResponse> =>
     request("/socialtask/api/v1/task/submit", {
       method: "POST",
-      body: JSON.stringify({ taskId, result }),
+      body: JSON.stringify({ taskId, result, relatedUrl }),
     }),
 
   // 领取任务奖励
