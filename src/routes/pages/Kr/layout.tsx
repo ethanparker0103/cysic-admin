@@ -226,8 +226,11 @@ export const KrLayout = () => {
       toast.success(t('inviteCodeReceived'));
     }
 
-    // 处理认证token
-    if (token) {
+    if(token == 'invalid'){
+      removeParamFromUrl("_t");
+
+      toast.error('현재 등록이 마감되었습니다');
+    }else if (token) {
       setAuthToken(token);
       removeParamFromUrl("_t");
 
