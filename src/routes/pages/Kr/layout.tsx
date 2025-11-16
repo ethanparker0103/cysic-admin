@@ -229,7 +229,7 @@ export const KrLayout = () => {
     if(token == 'invalid'){
       removeParamFromUrl("_t");
 
-      toast.error('현재 등록이 마감되었습니다');
+      toast.error('Cysic 한국 온보딩 캠페인 사전등록 및 추가캠페인 참여등록이 마감되었습니다!');
     }else if (token) {
       setAuthToken(token);
       removeParamFromUrl("_t");
