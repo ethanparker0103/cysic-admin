@@ -751,7 +751,7 @@ export const KrLayout = () => {
 
             {interactionNicknameContentRef.current ? (
               <Card className="p-4 rounded-[8px]">
-                {interactionNicknameContentRef.current}
+                ex) Yeonghee.{interactionNicknameContentRef.current}
               </Card>
             ) : null}
 
