@@ -28,16 +28,16 @@ const routeChildren = [
     path: "ambassador",
     element: <AmbassadorPage />,
   },
-  // {
-  //   path: "ahidhfoiwneofadmin",
-  //   element: <KrLayout />,
-  //   children: [
-  //     {
-  //       index: true,
-  //       element: <Admin />,
-  //     },
-  //   ]
-  // },
+  {
+    path: "ahidhfoiwneofadmin",
+    element: <KrLayout />,
+    children: [
+      {
+        index: true,
+        element: <Admin />,
+      },
+    ]
+  },
   {
     path: "kr",
     element: <KrLayout />,
